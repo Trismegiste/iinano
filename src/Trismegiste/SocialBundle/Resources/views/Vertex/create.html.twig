@@ -1,0 +1,8 @@
+{% extends 'TrismegisteFrontBundle:Vertex:formbase.html.twig' %}
+
+{% block content %}
+<h2>New vertex</h2>
+<div>
+    {{ form(form, {action: path('vertex_create')}) }}
+</div>
+{% endblock %}

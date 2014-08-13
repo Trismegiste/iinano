@@ -1,0 +1,5 @@
+<ul>
+    {% for item in vertices %}
+        <li><a href="{{ path('vertex_show', {id: item.getId()}) }}">{{ item.getTitle() }}</a></li>
+    {% endfor %}
+</ul>

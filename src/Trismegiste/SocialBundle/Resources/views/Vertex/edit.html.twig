@@ -1,0 +1,27 @@
+{% extends 'TrismegisteFrontBundle:Vertex:formbase.html.twig' %}
+
+{% block content %}
+<h2>Edit {{ vertex.getInfoType() }}
+    <a href="{{ path('vertex_show', {id: vertex.getId()}) }}">{{ vertex.getTitle() }}</a>
+    <a href="#deleteModal" class="btn btn-danger pull-right" role="button" data-toggle="modal">
+        <i class="icon-trash icon-white"></i>
+        Delete
+    </a>
+</h2>
+<div>
+    {{ form(form, {action: path('vertex_edit', {id: vertex.id})}) }}
+</div>
+
+<div id="deleteModal" class="modal hide fade" tabindex="-1" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Warning</h3>
+    </div>
+    <div class="modal-body">
+        <p>You're about to erase {{ vertex.getTitle() }}</p>
+    </div>
+    <div class="modal-footer">
+        <a href="{{ path('vertex_delete', {id: vertex.getId()}) }}" class="btn btn-danger">Delete</a>
+    </div>
+</div>
+{% endblock %}

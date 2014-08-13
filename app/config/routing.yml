@@ -1,0 +1,9 @@
+trismegiste_front:
+    resource: "@TrismegisteSocialBundle/Resources/config/routing.xml"
+    prefix:   /
+
+trismegiste_logincheck:
+    pattern: /login_check
+
+trismegiste_logout:
+    pattern: /logout

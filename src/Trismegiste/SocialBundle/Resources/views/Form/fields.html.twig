@@ -1,0 +1,16 @@
+{% block vertex_category_widget %}
+{% spaceless %}
+    {% for child in form %}
+        {{ form_label(
+            child,
+            null,
+            {
+                in_choice_list: true,
+                widget        : form_widget(child),
+                multiple      : multiple,
+                label_attr    : {class: 'inline'}
+            }
+        ) }}
+    {% endfor %}
+{% endspaceless %}
+{% endblock %}
