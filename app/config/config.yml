@@ -27,7 +27,6 @@ twig:
     form:
         resources:
             - '::form_tbs.html.twig'
-            - 'TrismegisteFrontBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
@@ -43,7 +42,12 @@ assetic:
         #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
 
 dokudoki:
-    stage: invocation
+    stage: whitemagic
     server: %mongodb_server%
     database: iinano
     collection: dokudoki
+    alias:
+        post: 'Trismegiste\Socialist\SimplePost'
+        user: 'Trismegiste\Socialist\User'
+        author: 'Trismegiste\Socialist\Author'
+        comm: 'Trismegiste\Socialist\Commentary'

@@ -3,7 +3,13 @@
 {% block content %}
 <div class="row-fluid">
     <div class="span12">
-something
+        <ul>
+        {% for v in vertex %}
+                <li>{{ v.title }} by {{ v.author.nickname }}</li>
+        {% endfor %}
+        </ul>
+
+
     </div>
 </div>
 {% endblock %}

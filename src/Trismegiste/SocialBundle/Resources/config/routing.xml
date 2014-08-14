@@ -11,42 +11,5 @@
     <route id="trismegiste_about" pattern="/about">
         <default key="_controller">TrismegisteSocialBundle:Vertex:about</default>
     </route>
-<!--
-    <route id="vertex_create" pattern="/vertex/create">
-        <default key="_controller">TrismegisteFrontBundle:Vertex:create</default>
-    </route>
 
-    <route id="vertex_edit" pattern="/vertex/edit/{id}">
-        <default key="_controller">TrismegisteFrontBundle:Vertex:edit</default>
-    </route>
-
-    <route id="vertex_show" pattern="/vertex/show/{id}">
-        <default key="_controller">TrismegisteFrontBundle:Vertex:show</default>
-        <requirement key="_method">GET</requirement>
-        <requirement key="id">[\da-f]{24}</requirement>
-    </route>
-
-    <route id="vertex_delete" pattern="/vertex/delete/{id}">
-        <default key="_controller">TrismegisteFrontBundle:Vertex:delete</default>
-        <requirement key="_method">GET</requirement>
-        <requirement key="id">[\da-f]{24}</requirement>
-    </route>
-        
-    <route id="edge_findbroken" pattern="/check/broken">
-        <default key="_controller">TrismegisteFrontBundle:Admin:brokenEdge</default>
-    </route>
-
-    <route id="vertex_batchcreate" pattern="/vertices/create">
-        <default key="_controller">TrismegisteFrontBundle:Admin:batch</default>
-    </route>
-
-    <route id="vertex_search" pattern="/vertex/search">
-        <requirement key="_method">GET</requirement>
-        <default key="_controller">TrismegisteFrontBundle:Vertex:search</default>
-    </route>
-
-    <route id="vertex_findbyslug" pattern="/vertex/{slug}">
-        <default key="_controller">TrismegisteFrontBundle:Vertex:findSlug</default>
-    </route>
--->
 </routes>
