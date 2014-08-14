@@ -1,7 +1,7 @@
 {% if app.user.username is not defined %}
 <form class="navbar-form pull-right" method="POST" action="{{ path('trismegiste_logincheck') }}">
-    <input class="span1" type="text" placeholder="Login" name="_username"/>
-    <input class="span1" type="password" placeholder="Password" name="_password"/>
+    <input class="span2" type="text" placeholder="Login" name="_username"/>
+    <input class="span2" type="password" placeholder="Password" name="_password"/>
     <input type="hidden" name="_target_path" value="/"/>
     <button type="submit" class="btn">Sign in</button>
 </form>

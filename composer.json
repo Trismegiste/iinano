@@ -1,13 +1,13 @@
 {
     "name": "trismegiste/iinano",
-    "description": "Iinano",
+    "description": "Social network for all",
     "autoload": {
         "psr-0": {"": "src/"}
     },
     "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/Trismegiste/Socialist.git"
+            "url": "c:/Users/flo/Documents/NetBeansProjects/Socialist"
         }
     ],
     "require": {
