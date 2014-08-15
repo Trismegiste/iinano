@@ -20,7 +20,16 @@ class VertexController extends Template
         $repo = $this->getRepository();
         $it = $repo->find([]);
 
-        $form = $this->createForm(new \Trismegiste\SocialBundle\Form\SimplePostForm());
+        $form = $this->createForm(new \Trismegiste\SocialBundle\Form\SimplePostForm()
+                , new SimplePost($this->getUser()->getAuthor())
+                , ['action' => $this->generateUrl('trismegiste_homepage')]
+        );
+
+        $form->handleRequest($this->getRequest());
+        if ($form->isValid()) {
+            $newPost = $form->getData();
+            $repo->persist($newPost);
+        }
 
         $doc = [
             'vertex' => $it,
