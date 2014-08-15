@@ -3,9 +3,9 @@
 {% block content %}
 <div class="row-fluid">
     <div class="span6">
-        {{ form_widget(form) }}
+        {{ form(form) }}
     </div>
-    <div class="span6²">
+    <div class="span6">
         <ul>
         {% for v in vertex %}
                 <li>{{ v.title }} by {{ v.author.nickname }}</li>

@@ -18,9 +18,9 @@ class SimplePostForm extends AbstractType
     {
         parent::buildForm($builder, $options);
         $builder->add("title")
-                ->add('body');
+                ->add('body','textarea')
+                ->add('save', 'submit');
     }
-
 
     public function getName()
     {
