@@ -20,7 +20,14 @@ class VertexController extends Template
         $repo = $this->getRepository();
         $it = $repo->find([]);
 
-        return $this->render('TrismegisteSocialBundle:Vertex:index.html.twig', ['vertex' => $it]);
+        $form = $this->createForm(new \Trismegiste\SocialBundle\Form\SimplePostForm());
+
+        $doc = [
+            'vertex' => $it,
+            'form' => $form->createView()
+        ];
+
+        return $this->render('TrismegisteSocialBundle:Vertex:index.html.twig', $doc);
     }
 
     public function aboutAction()
