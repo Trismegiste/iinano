@@ -1,18 +1,15 @@
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        Trismegiste\SocialBundle\Security\SocialUser: plaintext
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        hardcoded:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: toto, roles: [ 'ROLE_ADMIN' ] }
-
+        propretary:
+            id: security.user.repository
+            
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
@@ -20,7 +17,7 @@ security:
 
         secured_area:
             pattern:    ^/
-            provider: hardcoded
+            provider: propretary
             form_login:
                 check_path: /login_check
                 login_path: /
