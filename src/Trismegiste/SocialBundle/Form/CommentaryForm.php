@@ -9,22 +9,21 @@ namespace Trismegiste\SocialBundle\Form;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * SimplePostForm is a form for SimplePost
+ * CommentaryForm is a form for a Commentary
  */
-class SimplePostForm extends AbstractType
+class CommentaryForm extends AbstractType
 {
 
     public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-        $builder->add("title")
-                ->add('body','textarea')
+        $builder->add("message", 'textarea')
                 ->add('save', 'submit');
     }
 
     public function getName()
     {
-        return 'simple_post';
+        return 'commentary';
     }
 
 }

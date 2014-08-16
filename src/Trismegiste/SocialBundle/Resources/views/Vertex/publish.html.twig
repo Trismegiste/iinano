@@ -1,0 +1,16 @@
+{% extends 'TrismegisteSocialBundle:Default:frontpage.html.twig' %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span12">
+        <h3>{{ simplepost.title }} by {{ simplepost.author.nickname }}</h3>
+        {{ simplepost.body }}
+        {{ form(comment_form) }}
+        <ul>
+        {% for comment in simplepost.commentary %}
+              <li>{{ comment.author.nickname }} : {{ comment.message }}</li>
+          {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

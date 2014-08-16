@@ -12,4 +12,8 @@
         <default key="_controller">TrismegisteSocialBundle:Vertex:about</default>
     </route>
 
+    <route id="publish_detail" pattern="/pub/{pk}">
+        <default key="_controller">TrismegisteSocialBundle:Vertex:detail</default>
+    </route>
+
 </routes>

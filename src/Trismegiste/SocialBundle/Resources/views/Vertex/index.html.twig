@@ -6,13 +6,17 @@
         {{ form(form) }}
     </div>
     <div class="span6">
-        <ul>
-        {% for v in vertex %}
-                <li>{{ v.title }} by {{ v.author.nickname }}</li>
-        {% endfor %}
-        </ul>
-
-
+    {% for v in vertex %}
+            <div>
+                <h3><a href="{{ path('publish_detail', {pk: v.id}) }}">{{ v.title }}</a> by {{ v.author.nickname }}</h3>
+                {{ v.body }}
+                <ul>
+                {% for comment in v.commentary %}
+                    <li>{{ comment.author.nickname }} : {{ comment.message }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+    {% endfor %}
     </div>
 </div>
 {% endblock %}
