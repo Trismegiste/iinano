@@ -2,12 +2,12 @@
 <div class="row">
     <div class="large-2 columns small-3">
         <img src="http://placehold.it/80x80&text=[img]"/>
-        {{ content.author.nickname }}
+        
     </div>
     <div class="large-10 columns">
+        <h6 class="subheader">{{ content.author.nickname }} <small class="right">{{ content.lastEdited | date('Y/m/d') }}</small></h6>
         <h5><a href="{{ path('publish_detail', {pk: content.id}) }}">{{ content.title }}</a></h5>
-        <p>{{ content.body }}</p>
-        <p>{{ content.lastEdited | date('Y/m/d') }}</p>
+        <p>{{ content.body }}</p>        
         <ul class="inline-list">
             <li><a href="">Reply</a></li>
             <li><a href="">Share</a></li>
