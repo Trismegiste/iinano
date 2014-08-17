@@ -10,6 +10,7 @@
 
     <route id="foreigner_about" pattern="/about">
         <default key="_controller">TrismegisteSocialBundle:Foreigner:about</default>
+        <requirement key="_method">GET</requirement>
     </route>
     
     <route id="publishing_show" pattern="/pub/{id}">
