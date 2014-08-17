@@ -1,5 +1,5 @@
 # Iinano
-Work in Progress - does not work yet
+At last a social network that follows SOLID -- **Work in progress**
 
 ## What
 It's a private social network web application for small communities/business
@@ -12,8 +12,7 @@ I've decided to NOT contribute to Idno (sadly) but to retain the philosophy
 and rewrite this app.
 
 ## How
-Using Symfony2 and MongoDB. Silex could be cool but I don't want to fight my way through
-the routing and I don't know how big this project would grow. A graph database is 
+Using Symfony2 and MongoDB. A graph database is 
 the logical choice but too complicated (users don't care about how are stored their
 datas). Three rules to bind them all :
 
@@ -21,8 +20,8 @@ datas). Three rules to bind them all :
 * Write less, sleep more
 * SOLID or die
 
-Of course all fancy stuffs like Composer, PhpUnit, Twig, ApcCache, 
-Twitter bootstrap, jQuery and maybe AngularJs, I don't know.
+Of course all fancy stuffs like Composer, PhpUnit, Twig, ApcCache, HybridAuth,
+Zurb Foundation, jQuery or maybe AngularJs, I don't know.
 
 ## Who
 Small business, small communities ( around 1000 people could be cool I think ).
@@ -42,8 +41,6 @@ Local server and AWS of course !
 
 ### And again a silly name ?
 Yes, you know me, I'm very serious when I choose a name : it must be as silly
-as possible (I hesitated between Tachibanana (jp/en pun) and KissItSocial (recursive acronym) ).
-"Pandora" would be cool but already taken.
-
-"Like" in japanese facebook is roughly translated by "ii ne" ("good isn't it ?"), 
-I've chosen "ii nano" because it's kawaii and "nano" to recall the minimal design.
+as possible.
+"Like" in japanese facebook is roughly translated by "ii ne!" ("cool isn't it ?"), 
+I've chosen "ii na no" because it's kawaii and "nano" to recall the minimal design.
