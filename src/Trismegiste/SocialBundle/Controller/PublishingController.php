@@ -11,9 +11,11 @@ use Trismegiste\Socialist\Commentary;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * VertexController manages CRUD for Vertex
+ * PublishingController is the main controller for viewing the content
+ * 
+ * The user NEEDS to be authenticated
  */
-class VertexController extends Template
+class PublishingController extends Template
 {
 
     public function indexAction()
@@ -23,7 +25,7 @@ class VertexController extends Template
 
         $form = $this->createForm(new \Trismegiste\SocialBundle\Form\SimplePostForm()
                 , new SimplePost($this->getUser()->getAuthor())
-                , ['action' => $this->generateUrl('trismegiste_homepage')]
+                , ['action' => $this->generateUrl('content_index')]
         );
 
         $form->handleRequest($this->getRequest());
@@ -33,21 +35,21 @@ class VertexController extends Template
         }
 
         $doc = [
-            'vertex' => $it,
+            'listing' => $it,
             'form' => $form->createView()
         ];
 
-        return $this->render('TrismegisteSocialBundle:Vertex:index.html.twig', $doc);
+        return $this->render('TrismegisteSocialBundle:Content:index.html.twig', $doc);
     }
 
-    public function detailAction(Request $request)
+    public function showAction(Request $request)
     {
         $pk = $request->get('pk');
         $publish = $this->getRepository()->findByPk($pk);
 
         $form = $this->createForm(new \Trismegiste\SocialBundle\Form\CommentaryForm()
                 , new Commentary($this->getUser()->getAuthor())
-                , ['action' => $this->generateUrl('publish_detail', ['pk' => $pk])]
+                , ['action' => $this->generateUrl('publishing_show', ['pk' => $pk])]
         );
 
         $form->handleRequest($request);
@@ -62,7 +64,7 @@ class VertexController extends Template
             'comment_form' => $form->createView()
         ];
 
-        return $this->render('TrismegisteSocialBundle:Vertex:publish.html.twig', $content);
+        return $this->render('TrismegisteSocialBundle:Content:publishing_show.html.twig', $content);
     }
 
 }

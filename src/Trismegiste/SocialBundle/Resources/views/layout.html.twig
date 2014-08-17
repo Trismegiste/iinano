@@ -7,8 +7,8 @@
 
         <li class="name">
             <h1>
-                <a href="#">
-                    Top Bar Title
+                <a href="{{ path('content_index') }}">
+                    Home
                 </a>
             </h1>
         </li>
@@ -51,57 +51,25 @@
 
         </ul>
 
-
         <ul class="right">
             <li class="divider"></li>
-            <li class="has-dropdown">
-                <a href="#">Main Item 4</a>
-                <ul class="dropdown">
-                    <li><label>Section Name</label></li>
-                    <li class="has-dropdown">
-                        <a href="#" class="">Has Dropdown, Level 1</a>
-                        <ul class="dropdown">
-                            <li><a href="#">Dropdown Options</a></li>
-                            <li><a href="#">Dropdown Options</a></li>
-                            <li class="has-dropdown">
-                                <a href="#">Has Dropdown, Level 2</a>
-                                <ul class="dropdown test">
-                                    <li><a href="#">Subdropdown Option</a></li>
-                                    <li><a href="#">Subdropdown Option</a></li>
-                                    <li><a href="#">Subdropdown Option</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Subdropdown Option</a></li>
-                            <li><a href="#">Subdropdown Option</a></li>
-                            <li><a href="#">Subdropdown Option</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Dropdown Option</a></li>
-                    <li><a href="#">Dropdown Option</a></li>
-                    <li class="divider"></li>
-                    <li><label>Section Name</label></li>
-                    <li><a href="#">Dropdown Option</a></li>
-                    <li><a href="#">Dropdown Option</a></li>
-                    <li><a href="#">Dropdown Option</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">See all →</a></li>
-                </ul>
-            </li>
-            <li class="divider"></li>
-            <li><a href="#">Main Item 5</a></li>
-            <li class="divider"></li>
-            <li class="has-dropdown">
-                <a href="#">Main Item 6</a>
-                <ul class="dropdown">
-                    <li><a href="#">Dropdown Option</a></li>
-                    <li><a href="#">Dropdown Option</a></li>
-                    <li><a href="#">Dropdown Option</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">See all →</a></li>
-                </ul>
+            <li>
+                {% if app.user.author is defined %}
+                <a href="{{ path('trismegiste_logout') }}">
+                    {{ app.user.author.nickname }}
+                </a>
+                {% else %}
+                <a href="{{ path('trismegiste_login') }}">
+                    Sign in
+                </a>
+                {% endif %}
             </li>
         </ul>
+
     </section>
 </nav>
+{% endblock %}
 
- {% endblock %}
+{% block copyright_text %}
+Powered by <a href="{{ path('foreigner_about') }}">iinano</a> - 2014 - MIT licence
+{% endblock %}

@@ -6,7 +6,7 @@
     </div>
     <div class="large-10 columns">
         <h6 class="subheader">{{ content.author.nickname }} <small class="right">{{ content.lastEdited | date('Y/m/d') }}</small></h6>
-        <h5><a href="{{ path('publish_detail', {pk: content.id}) }}">{{ content.title }}</a></h5>
+        <h5><a href="{{ path('publishing_show', {pk: content.id}) }}">{{ content.title }}</a></h5>
         <p>{{ content.body }}</p>        
         <ul class="inline-list">
             <li><a href="">Reply</a></li>

@@ -4,16 +4,16 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="trismegiste_homepage" pattern="/">
-        <default key="_controller">TrismegisteSocialBundle:Vertex:index</default>
+    <route id="content_index" pattern="/">
+        <default key="_controller">TrismegisteSocialBundle:Publishing:index</default>
     </route>
 
     <route id="foreigner_about" pattern="/about">
         <default key="_controller">TrismegisteSocialBundle:Foreigner:about</default>
     </route>
     
-    <route id="publish_detail" pattern="/pub/{pk}">
-        <default key="_controller">TrismegisteSocialBundle:Vertex:detail</default>
+    <route id="publishing_show" pattern="/pub/{pk}">
+        <default key="_controller">TrismegisteSocialBundle:Publishing:show</default>
     </route>
 
     <route id="famous_add" pattern="/pub/famous/add/{id}">
