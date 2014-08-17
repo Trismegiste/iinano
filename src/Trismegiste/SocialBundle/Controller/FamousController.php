@@ -41,4 +41,14 @@ class FamousController extends Template
         return $this->redirectRouteOk('publish_detail', ['pk' => $pk]);
     }
 
+    public function removeFanOnPublishAction(Request $request)
+    {
+        $pk = $request->get('id');
+        $doc = $this->getRepository()->findByPk($pk);
+        $this->removeFanOn($doc);
+        $this->getRepository()->persist($doc);
+
+        return $this->redirectRouteOk('publish_detail', ['pk' => $pk]);
+    }
+
 }

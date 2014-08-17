@@ -5,7 +5,9 @@
     <div class="span12">
         <h3>{{ simplepost.title }} by {{ simplepost.author.nickname }}</h3>
         {{ simplepost.body }}<br/>
-        {{ simplepost.fanCount }} likes | <a href="{{ path('famous_add', {id:simplepost.id}) }}">+1</a>
+        {{ simplepost.fanCount }} likes
+        | <a href="{{ path('famous_add', {id:simplepost.id}) }}">+1</a>
+        | <a href="{{ path('famous_remove', {id:simplepost.id}) }}">-1</a>
         <hr/>
         {{ form(comment_form) }}
         <ul>
