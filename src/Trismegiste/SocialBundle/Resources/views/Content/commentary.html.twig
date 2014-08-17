@@ -1,0 +1,8 @@
+{# template for viewing one commentary entity #}
+<div class="row">
+    <div class="large-2 columns small-3"><img src="http://placehold.it/50x50&text=[img]"/></div>
+    <div class="large-10 columns">
+        <p>{{ comment.message }}</p>
+        <p>{{ comment.author.nickname }}, {{ comment.lastEdited | date('Y/m/d') }}</p>
+    </div>
+</div>

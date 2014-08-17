@@ -1,0 +1,22 @@
+{# Template for viewing one simple post root-entity #}
+<div class="row">
+    <div class="large-2 columns small-3">
+        <img src="http://placehold.it/80x80&text=[img]"/>
+        {{ content.author.nickname }}
+    </div>
+    <div class="large-10 columns">
+        <h5><a href="{{ path('publish_detail', {pk: v.id}) }}">{{ content.title }}</a></h5>
+        <p>{{ content.body }}</p>
+        <p>{{ content.lastEdited | date('Y/m/d') }}</p>
+        <ul class="inline-list">
+            <li><a href="">Reply</a></li>
+            <li><a href="">Share</a></li>
+        </ul>
+        {% if content.commentary|length > 0 %}
+            <h6>{{ content.commentary|length }} Comments</h6>
+            {% for comment in content.commentary %}
+                {% include 'TrismegisteSocialBundle:Content:commentary.html.twig' %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>

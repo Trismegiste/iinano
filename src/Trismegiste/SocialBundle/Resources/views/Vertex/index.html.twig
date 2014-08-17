@@ -1,22 +1,12 @@
 {% extends 'TrismegisteSocialBundle:Default:frontpage.html.twig' %}
 
-{% block content %}
-<div class="row-fluid">
-    <div class="span6">
-        {{ form(form) }}
-    </div>
-    <div class="span6">
-    {% for v in vertex %}
-            <div>
-                <h3><a href="{{ path('publish_detail', {pk: v.id}) }}">{{ v.title }}</a> by {{ v.author.nickname }}</h3>
-                {{ v.body }}
-                <ul>
-                {% for comment in v.commentary %}
-                    <li>{{ comment.author.nickname }} : {{ comment.message }}</li>
-                {% endfor %}
-                </ul>
-            </div>
-    {% endfor %}
-    </div>
+{% block feed %}
+<div class="row">
+    {{ form(form) }}
 </div>
+<hr/>
+{% for v in vertex %}
+    {% include 'TrismegisteSocialBundle:Content:simplepost.html.twig' with {'content' : v} %}
+    <hr/>
+{% endfor %}
 {% endblock %}
