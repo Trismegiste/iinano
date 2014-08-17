@@ -12,7 +12,7 @@
         <default key="_controller">TrismegisteSocialBundle:Foreigner:about</default>
     </route>
     
-    <route id="publishing_show" pattern="/pub/{pk}">
+    <route id="publishing_show" pattern="/pub/{id}">
         <default key="_controller">TrismegisteSocialBundle:Publishing:show</default>
     </route>
 

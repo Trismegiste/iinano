@@ -44,12 +44,12 @@ class PublishingController extends Template
 
     public function showAction(Request $request)
     {
-        $pk = $request->get('pk');
+        $pk = $request->get('id');
         $publish = $this->getRepository()->findByPk($pk);
 
         $form = $this->createForm(new \Trismegiste\SocialBundle\Form\CommentaryForm()
                 , new Commentary($this->getUser()->getAuthor())
-                , ['action' => $this->generateUrl('publishing_show', ['pk' => $pk])]
+                , ['action' => $this->generateUrl('publishing_show', ['id' => $pk])]
         );
 
         $form->handleRequest($request);

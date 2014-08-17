@@ -38,7 +38,7 @@ class FamousController extends Template
         $this->addFanOn($doc);
         $this->getRepository()->persist($doc);
 
-        return $this->redirectRouteOk('publishing_show', ['pk' => $pk]);
+        return $this->redirectRouteOk('publishing_show', ['id' => $pk]);
     }
 
     public function removeFanOnPublishAction(Request $request)
@@ -48,7 +48,7 @@ class FamousController extends Template
         $this->removeFanOn($doc);
         $this->getRepository()->persist($doc);
 
-        return $this->redirectRouteOk('publishing_show', ['pk' => $pk]);
+        return $this->redirectRouteOk('publishing_show', ['id' => $pk]);
     }
 
 }
