@@ -12,10 +12,6 @@
         <default key="_controller">TrismegisteSocialBundle:Foreigner:about</default>
     </route>
     
-    <route id="foreigner_authenticate" pattern="/login">
-        <default key="_controller">TrismegisteSocialBundle:Foreigner:login</default>
-    </route>
-
     <route id="publish_detail" pattern="/pub/{pk}">
         <default key="_controller">TrismegisteSocialBundle:Vertex:detail</default>
     </route>

@@ -1,0 +1,19 @@
+{% extends 'TrismegisteSocialBundle::layout.html.twig' %}
+
+{% block content %}
+<div class="large-12 columns ">
+    <h1>Login</h1>
+    <p>Please authenticate yourself</p>
+    <form action="{{ path('trismegiste_logincheck') }}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="_username" />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="_password" />
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+
+        <button type="submit">login</button>
+    </form>
+</div>
+{% endblock %}

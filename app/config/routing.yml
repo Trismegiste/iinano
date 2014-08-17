@@ -2,6 +2,10 @@ trismegiste_front:
     resource: "@TrismegisteSocialBundle/Resources/config/routing.xml"
     prefix:   /
 
+trismegiste_login:
+    pattern: /login
+    defaults: { _controller: TrismegisteSocialBundle:Foreigner:login }
+
 trismegiste_logincheck:
     pattern: /login_check
 

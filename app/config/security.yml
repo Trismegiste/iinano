@@ -7,7 +7,7 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
-        propretary:
+        proprietary:
             id: security.user.repository
             
     firewalls:
@@ -17,10 +17,11 @@ security:
 
         secured_area:
             pattern:    ^/
-            provider: propretary
+            provider: proprietary
             form_login:
                 check_path: /login_check
-                login_path: /
+                login_path: /login
+                csrf_provider: form.csrf_provider
             logout:
                 path:   /logout
                 target: /
