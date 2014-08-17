@@ -40,11 +40,6 @@ class VertexController extends Template
         return $this->render('TrismegisteSocialBundle:Vertex:index.html.twig', $doc);
     }
 
-    public function aboutAction()
-    {
-        return $this->render('TrismegisteSocialBundle:Default:about.html.twig');
-    }
-
     public function detailAction(Request $request)
     {
         $pk = $request->get('pk');

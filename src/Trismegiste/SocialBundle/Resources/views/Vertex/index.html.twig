@@ -5,8 +5,10 @@
     {{ form(form) }}
 </div>
 <hr/>
-{% for v in vertex %}
-    {% include 'TrismegisteSocialBundle:Content:simplepost.html.twig' with {'content' : v} %}
-    <hr/>
+{% for content in vertex %}
+    {%if not loop.first %}
+        <hr/>
+    {% endif %}
+    {% include 'TrismegisteSocialBundle:Content:simplepost.html.twig' %}
 {% endfor %}
 {% endblock %}

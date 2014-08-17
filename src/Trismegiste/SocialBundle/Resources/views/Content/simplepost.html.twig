@@ -5,7 +5,7 @@
         {{ content.author.nickname }}
     </div>
     <div class="large-10 columns">
-        <h5><a href="{{ path('publish_detail', {pk: v.id}) }}">{{ content.title }}</a></h5>
+        <h5><a href="{{ path('publish_detail', {pk: content.id}) }}">{{ content.title }}</a></h5>
         <p>{{ content.body }}</p>
         <p>{{ content.lastEdited | date('Y/m/d') }}</p>
         <ul class="inline-list">

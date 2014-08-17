@@ -9,15 +9,15 @@
     </head>
     <body>
 
+        {% block topbar %}
         <div class="row">
-            {% block topbar %}
             <div class="large-12 columns">
                 <div class="panel">
                     <h1>Feed Template</h1>
                 </div>
             </div>
-            {% endblock %}
         </div>
+        {% endblock %}
 
         <div class="row">
             {% block content %}
