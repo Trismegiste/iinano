@@ -16,4 +16,8 @@
         <default key="_controller">TrismegisteSocialBundle:Vertex:detail</default>
     </route>
 
+    <route id="famous_add" pattern="/pub/famous/add/{id}">
+        <default key="_controller">TrismegisteSocialBundle:Famous:addFanOnPublish</default>
+    </route>
+
 </routes>
