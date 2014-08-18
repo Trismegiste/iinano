@@ -5,17 +5,27 @@
         
     </div>
     <div class="large-10 columns">
-        <h6 class="subheader">{{ content.author.nickname }} <small class="right">{{ content.lastEdited | date('Y/m/d') }}</small></h6>
-        <h5><a href="{{ path('simplepost_edit', {id: content.id}) }}">{{ content.title }}</a></h5>
+        <a href="#" class="right" data-dropdown="drop{{ content.id }}"><i class="fi-widget"></i></a>
+        <ul id="drop{{ content.id }}" class="f-dropdown" data-dropdown-content>
+            <li><a href="{{ path('simplepost_edit', {id: content.id}) }}">Edit</a></li>
+            <li><a href="#">Delete</a></li>
+            <li><a href="#">Report</a></li>
+        </ul>
+        
+        <h6 class="subheader">{{ content.author.nickname }} <small>{{ content.lastEdited | date('Y/m/d') }}</small></h6>
+        <h4>{{ content.title }}</h4>
         <p>{{ content.body }}</p>        
         <ul class="inline-list">
             <li><a href="">Reply</a></li>
-            <li><a href="">Share</a></li>
+            <li>&middot</li>
+            <li>{{ content.fanCount }}</li>
+            <li><i class="fi-like"></i></li>
+            <li><i class="fi-dislike"></i></li>
         </ul>
         {% if content.commentary|length > 0 %}
             <h6>{{ content.commentary|length }} Comments</h6>
             {% for comment in content.commentary %}
-                {% include 'TrismegisteSocialBundle:Content:commentary.html.twig' %}
+                {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
             {% endfor %}
         {% endif %}
     </div>
