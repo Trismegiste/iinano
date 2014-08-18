@@ -43,4 +43,9 @@ abstract class Template extends Controller
         return $this->getUser()->getAuthor();
     }
 
+    protected function pushFlash($type, $msg)
+    {
+        $this->get('session')->getFlashBag()->add($type, $msg);
+    }
+
 }

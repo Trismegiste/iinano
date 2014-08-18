@@ -7,14 +7,34 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 use Trismegiste\Socialist\SimplePost;
-use Trismegiste\Socialist\Commentary;
-use Symfony\Component\HttpFoundation\Request;
+use Trismegiste\Socialist\Publishing;
+use Symfony\Component\Form\Form;
 
 /**
  * SimplePostController is the main controller for CRUD of SimplePost
  */
 class SimplePostController extends ContentController
 {
+
+    protected function processForm(Form $form)
+    {
+        $repo = $this->getRepository();
+
+        $form->handleRequest($this->getRequest());
+        if ($form->isValid()) {
+            $newPost = $form->getData();
+            $newPost->setLastEdited(new \DateTime());
+            try {
+                $repo->persist($newPost);
+                $this->pushFlash('notice', 'Message saved');
+                return $this->redirectRouteOk('content_index');
+            } catch (\MongoException $e) {
+                $this->pushFlash('warning', 'Cannot save message');
+            }
+        }
+
+        return $this->render('TrismegisteSocialBundle:Content:simplepost_form.html.twig', ['form' => $form->createView()]);
+    }
 
     public function createAction()
     {
@@ -25,19 +45,7 @@ class SimplePostController extends ContentController
                 , ['action' => $this->generateUrl('simplepost_create')]
         );
 
-        $form->handleRequest($this->getRequest());
-        if ($form->isValid()) {
-            $newPost = $form->getData();
-            try {
-                $repo->persist($newPost);
-                // @todo flash
-                return $this->redirectRouteOk('content_index');
-            } catch (\MongoException $e) {
-                
-            }
-        }
-
-        return $this->render('TrismegisteSocialBundle:Content:simplepost_form.html.twig', ['form' => $form->createView()]);
+        return $this->processForm($form);
     }
 
     public function editAction($id)
@@ -49,21 +57,13 @@ class SimplePostController extends ContentController
                 , $post
                 , ['action' => $this->generateUrl('simplepost_edit', ['id' => $id])]
         );
+        
+        return $this->processForm($form);
+    }
 
-        $form->handleRequest($this->getRequest());
-        if ($form->isValid()) {
-            $newPost = $form->getData();
-            $newPost->setLastEdited(new \DateTime());
-            try {
-                $repo->persist($newPost);
-                // @todo flash
-                return $this->redirectRouteOk('content_index');
-            } catch (\MongoException $e) {
-                
-            }
-        }
-
-        return $this->render('TrismegisteSocialBundle:Content:simplepost_form.html.twig', ['form' => $form->createView()]);
+    public function deleteAction()
+    {
+        
     }
 
 }
