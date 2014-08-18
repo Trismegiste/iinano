@@ -29,7 +29,7 @@
     <route id="famous_add" pattern="/pub/famous/add/{id}">
         <default key="_controller">TrismegisteSocialBundle:Famous:addFanOnPublish</default>
     </route>
-    <route id="famous_remove" pattern="/pub/famous/del/{id}">
+    <route id="famous_remove" pattern="/pub/famous/remove/{id}">
         <default key="_controller">TrismegisteSocialBundle:Famous:removeFanOnPublish</default>
     </route>
 

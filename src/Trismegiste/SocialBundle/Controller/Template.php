@@ -33,9 +33,9 @@ abstract class Template extends Controller
         return $this->get('dokudoki.collection');
     }
 
-    protected function redirectRouteOk($name, $param = [])
+    protected function redirectRouteOk($name, $param = [], $anchor = false)
     {
-        return $this->redirect($this->generateUrl($name, $param));
+        return $this->redirect($this->generateUrl($name, $param) . ($anchor ? '#' . $anchor : ''));
     }
 
     protected function getAuthor()
