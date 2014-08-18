@@ -5,18 +5,23 @@
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="content_index" pattern="/">
-        <default key="_controller">TrismegisteSocialBundle:Publishing:index</default>
+        <default key="_controller">TrismegisteSocialBundle:Content:index</default>
+        <requirement key="_method">GET</requirement>
     </route>
 
+    <route id="simplepost_create" pattern="/simplepost/create">
+        <default key="_controller">TrismegisteSocialBundle:SimplePost:create</default>
+    </route>
+
+    <route id="simplepost_edit" pattern="/simplepost/edit/{id}">
+        <default key="_controller">TrismegisteSocialBundle:SimplePost:edit</default>
+    </route>
+    
     <route id="foreigner_about" pattern="/about">
         <default key="_controller">TrismegisteSocialBundle:Foreigner:about</default>
         <requirement key="_method">GET</requirement>
     </route>
     
-    <route id="publishing_show" pattern="/pub/{id}">
-        <default key="_controller">TrismegisteSocialBundle:Publishing:show</default>
-    </route>
-
     <route id="famous_add" pattern="/pub/famous/add/{id}">
         <default key="_controller">TrismegisteSocialBundle:Famous:addFanOnPublish</default>
     </route>

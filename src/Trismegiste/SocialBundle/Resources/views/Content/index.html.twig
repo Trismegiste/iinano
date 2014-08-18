@@ -1,12 +1,5 @@
 {% extends 'TrismegisteSocialBundle::layout.html.twig' %}
 
-{% block crud %}
-<div class="row">
-    {{ form(form) }}
-</div>
-<hr/>
-{% endblock %}
-
 {% block feed %}
 {% for content in listing %}
     {%if not loop.first %}
