@@ -57,13 +57,21 @@ class SimplePostController extends ContentController
                 , $post
                 , ['action' => $this->generateUrl('simplepost_edit', ['id' => $id])]
         );
-        
+
         return $this->processForm($form);
     }
 
-    public function deleteAction()
+    public function deleteAction($id)
     {
-        
+        try {
+            $coll = $this->getCollection();
+            $coll->remove(['_id' => new \MongoId($id)]);
+            $this->pushFlash('notice', 'Message deleted');
+        } catch (\MongoException $e) {
+            $this->pushFlash('warning', 'Message not deleted');
+        }
+
+        return $this->redirectRouteOk('content_index');
     }
 
 }

@@ -16,6 +16,10 @@
     <route id="simplepost_edit" pattern="/simplepost/edit/{id}">
         <default key="_controller">TrismegisteSocialBundle:SimplePost:edit</default>
     </route>
+
+    <route id="simplepost_delete" pattern="/simplepost/delete/{id}">
+        <default key="_controller">TrismegisteSocialBundle:SimplePost:delete</default>
+    </route>
     
     <route id="foreigner_about" pattern="/about">
         <default key="_controller">TrismegisteSocialBundle:Foreigner:about</default>

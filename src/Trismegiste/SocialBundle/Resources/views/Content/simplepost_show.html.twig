@@ -8,7 +8,7 @@
         <a href="#" class="right" data-options="align:left" data-dropdown="drop{{ content.id }}"><i class="fi-widget"></i></a>
         <ul id="drop{{ content.id }}" class="f-dropdown" data-dropdown-content>
             <li><a href="{{ path('simplepost_edit', {id: content.id}) }}">Edit</a></li>
-            <li><a href="#">Delete</a></li>
+            <li><a href="{{ path('simplepost_delete', {id: content.id}) }}">Delete</a></li>
             <li><a href="#">Report</a></li>
         </ul>
         
