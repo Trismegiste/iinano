@@ -37,7 +37,7 @@ class SimplePostController extends ContentController
             }
         }
 
-        return $this->render('TrismegisteSocialBundle:Content:simplepost_create.html.twig', ['form' => $form->createView()]);
+        return $this->render('TrismegisteSocialBundle:Content:simplepost_form.html.twig', ['form' => $form->createView()]);
     }
 
     public function editAction($id)
@@ -63,7 +63,7 @@ class SimplePostController extends ContentController
             }
         }
 
-        return $this->render('TrismegisteSocialBundle:Content:simplepost_create.html.twig', ['form' => $form->createView()]);
+        return $this->render('TrismegisteSocialBundle:Content:simplepost_form.html.twig', ['form' => $form->createView()]);
     }
 
 }
