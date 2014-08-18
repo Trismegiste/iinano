@@ -40,4 +40,30 @@ class SimplePostController extends ContentController
         return $this->render('TrismegisteSocialBundle:Content:simplepost_create.html.twig', ['form' => $form->createView()]);
     }
 
+    public function editAction($id)
+    {
+        $repo = $this->getRepository();
+        $post = $repo->findByPk($id);
+
+        $form = $this->createForm(new \Trismegiste\SocialBundle\Form\SimplePostForm()
+                , $post
+                , ['action' => $this->generateUrl('simplepost_edit', ['id' => $id])]
+        );
+
+        $form->handleRequest($this->getRequest());
+        if ($form->isValid()) {
+            $newPost = $form->getData();
+            $newPost->setLastEdited(new \DateTime());
+            try {
+                $repo->persist($newPost);
+                // @todo flash
+                return $this->redirectRouteOk('content_index');
+            } catch (\MongoException $e) {
+                
+            }
+        }
+
+        return $this->render('TrismegisteSocialBundle:Content:simplepost_create.html.twig', ['form' => $form->createView()]);
+    }
+
 }
