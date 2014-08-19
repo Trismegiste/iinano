@@ -28,7 +28,7 @@ class ContentController extends Template
 
         $parameters['listing'] = $it;
 
-        return $this->container->get('templating')->renderResponse($view, $parameters, $response);
+        return parent::render($view, $parameters, $response);
     }
 
 }

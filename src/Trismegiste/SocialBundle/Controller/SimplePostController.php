@@ -27,7 +27,7 @@ class SimplePostController extends ContentController
             try {
                 $repo->persist($newPost);
                 $this->pushFlash('notice', 'Message saved');
-                return $this->redirectRouteOk('content_index');
+                return $this->redirectRouteOk('content_index', [], 'anchor-' . $newPost->getId());
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save message');
             }
