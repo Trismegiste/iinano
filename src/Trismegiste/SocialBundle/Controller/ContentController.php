@@ -26,8 +26,9 @@ class ContentController extends Template
         $repo = $this->getRepository();
         $it = $repo->find([]);
 
-        // If there is a document to skip for rendering in the list
-        // we decorate the iterator with a SkippableIterator
+        if (array_key_exists('skipped_pub', $parameters)) {
+            $it = new \Trismegiste\SocialBundle\Utils\SkippableIterator($it, [$parameters['skipped_pub']]);
+        }
         $parameters['listing'] = $it;
 
         return parent::render($view, $parameters, $response);

@@ -17,11 +17,11 @@ class CommentaryController extends ContentController
 
     public function addOnPublishingAction($id)
     {
+        $pub = $this->getRepository()->findByPk($id);
         $form = $this->createForm(new CommentaryForm(), new Commentary($this->getAuthor()));
 
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
-            $pub = $this->getRepository()->findByPk($id);
 
             $newPost = $form->getData();
             $pub->attachCommentary($newPost);
@@ -34,7 +34,7 @@ class CommentaryController extends ContentController
             }
         }
 
-        return $this->render('TrismegisteSocialBundle:Content:simplepost_form.html.twig', ['form' => $form->createView()]);
+        return $this->render('TrismegisteSocialBundle:Content:commentary_form.html.twig', ['publishing' => $pub, 'skipped_pub' => $id, 'form' => $form->createView()]);
     }
 
 }

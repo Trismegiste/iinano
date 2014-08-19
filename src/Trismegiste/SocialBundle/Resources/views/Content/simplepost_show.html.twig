@@ -23,6 +23,7 @@
         </ul>
         {% if content.commentary|length > 0 %}
             <h6>{{ content.commentary|length }} Comments</h6>
+            {% block commentary_create %}{% endblock %}
             {% for comment in content.commentary %}
                 {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
             {% endfor %}
