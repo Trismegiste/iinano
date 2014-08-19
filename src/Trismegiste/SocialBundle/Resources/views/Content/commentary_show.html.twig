@@ -5,8 +5,8 @@
         <a href="#" class="right" data-options="align:left" data-dropdown="drop{{ content.id }}"><i class="fi-widget"></i></a>
         <!-- todo dropdown -->
         <h6 class="subheader">
-            {{ content.author.nickname }}
-            <small>{{ content.lastEdited | date('Y/m/d') }}</small>
+            {{ comment.author.nickname }}
+            <small>{{ comment.lastEdited | date('Y/m/d') }}</small>
         </h6>
         <p>{{ comment.message }}</p>
     </div>
