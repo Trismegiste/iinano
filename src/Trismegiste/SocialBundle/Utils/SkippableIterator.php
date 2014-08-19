@@ -4,7 +4,7 @@
  * Iinano
  */
 
-namespace Trismegiste\SocialBundle;
+namespace Trismegiste\SocialBundle\Utils;
 
 use Trismegiste\Yuurei\Persistence\CollectionIterator;
 
@@ -14,10 +14,9 @@ use Trismegiste\Yuurei\Persistence\CollectionIterator;
  * It adds the capabilities of skipping some documents whose you
  * provide the primary key (in string)
  */
-class SkippableIterator implements \Iterator
+class SkippableIterator extends \FilterIterator
 {
 
-    protected $wrapped;
     protected $skipped = [];
 
     /**
@@ -28,49 +27,13 @@ class SkippableIterator implements \Iterator
      */
     public function __construct(CollectionIterator $it, array $primaryKey = [])
     {
-        $this->wrapped = $it;
+        parent::__construct($it);
         $this->skipped = $primaryKey;
     }
 
-    /**
-     * The core of this class :
-     */
-    protected function skipToNext()
+    public function accept()
     {
-        while ($this->wrapped->valid() &&
-        // @todo Demeter's law violation :
-        in_array((string) $this->wrapped->current()->getId(), $this->skipped)) {
-            $this->wrapped->next();
-        }
-    }
-
-    // next methods are classical
-
-    public function current()
-    {
-        return $this->wrapped->current();
-    }
-
-    public function key()
-    {
-        return $this->wrapped->key();
-    }
-
-    public function next()
-    {
-        $this->wrapped->next();
-        $this->skipToNext();
-    }
-
-    public function rewind()
-    {
-        $this->wrapped->rewind();
-        $this->skipToNext();
-    }
-
-    public function valid()
-    {
-        return $this->wrapped->valid();
+        return !in_array(parent::current()->getId(), $this->skipped);
     }
 
 }
