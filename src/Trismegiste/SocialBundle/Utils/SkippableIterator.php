@@ -33,7 +33,7 @@ class SkippableIterator extends \FilterIterator
 
     public function accept()
     {
-        return !in_array(parent::current()->getId(), $this->skipped);
+        return !in_array((string) parent::current()->getId(), $this->skipped);
     }
 
 }
