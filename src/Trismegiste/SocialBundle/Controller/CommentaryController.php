@@ -25,6 +25,7 @@ class CommentaryController extends ContentController
 
             $newPost = $form->getData();
             $pub->attachCommentary($newPost);
+
             try {
                 $this->getRepository()->persist($pub);
                 $this->pushFlash('notice', 'Message saved');
@@ -34,7 +35,18 @@ class CommentaryController extends ContentController
             }
         }
 
-        return $this->render('TrismegisteSocialBundle:Content:commentary_form.html.twig', ['publishing' => $pub, 'skipped_pub' => $id, 'form' => $form->createView()]);
+        $param = [
+            'publishing' => $pub,
+            'skipped_pub' => $id,
+            'form' => $form->createView()
+        ];
+
+        return $this->render('TrismegisteSocialBundle:Content:commentary_form.html.twig', $param);
+    }
+
+    public function editOnPublishingAction($id, $uuid)
+    {
+        
     }
 
 }
