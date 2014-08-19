@@ -26,6 +26,8 @@ class ContentController extends Template
         $repo = $this->getRepository();
         $it = $repo->find([]);
 
+        // If there is a document to skip for rendering in the list
+        // we decorate the iterator with a SkippableIterator
         $parameters['listing'] = $it;
 
         return parent::render($view, $parameters, $response);
