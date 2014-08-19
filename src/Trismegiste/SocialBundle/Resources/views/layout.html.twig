@@ -1,6 +1,14 @@
 {# Base template for the front #}
 {% extends '::base.html.twig' %}
 
+{%block stylesheets %}
+<style>
+nav.top-bar {
+    margin-bottom: 20px;
+}
+</style>
+{% endblock %}
+
 {% block topbar %}
 <nav class="top-bar" data-topbar>
     <ul class="title-area">

@@ -2,7 +2,6 @@
 <div class="row">
     <div class="large-2 columns small-3">
         <img src="http://placehold.it/80x80&text=[img]"/>
-        
     </div>
     <div class="large-10 columns">
         <a href="#" class="right" data-options="align:left" data-dropdown="drop{{ content.id }}"><i class="fi-widget"></i></a>
@@ -16,11 +15,11 @@
         <h4>{{ content.title }}</h4>
         <p>{{ content.body }}</p>        
         <ul class="inline-list">
-            <li><a href="">Reply</a></li>
+            <li><a href="{{ path('pub_commentary_add', {id: content.id}) }}">Reply</a></li>
             <li>&middot</li>
             <li>{{ content.fanCount }}</li>
-            <li><a href="{{ path('famous_add', {id: content.id}) }}"><i class="fi-like"></i></a></li>
-            <li><a href="{{ path('famous_remove', {id: content.id}) }}"><i class="fi-dislike"></i></a></li>
+            <li><a href="{{ path('pub_famous_add', {id: content.id}) }}"><i class="fi-like"></i></a></li>
+            <li><a href="{{ path('pub_famous_remove', {id: content.id}) }}"><i class="fi-dislike"></i></a></li>
         </ul>
         {% if content.commentary|length > 0 %}
             <h6>{{ content.commentary|length }} Comments</h6>

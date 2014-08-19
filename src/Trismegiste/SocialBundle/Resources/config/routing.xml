@@ -26,11 +26,15 @@
         <requirement key="_method">GET</requirement>
     </route>
     
-    <route id="famous_add" pattern="/pub/famous/add/{id}">
+    <route id="pub_famous_add" pattern="/pub/{id}/famous/add">
         <default key="_controller">TrismegisteSocialBundle:Famous:addFanOnPublish</default>
     </route>
-    <route id="famous_remove" pattern="/pub/famous/remove/{id}">
+    <route id="pub_famous_remove" pattern="/pub/{id}/famous/remove">
         <default key="_controller">TrismegisteSocialBundle:Famous:removeFanOnPublish</default>
+    </route>
+
+    <route id="pub_commentary_add" pattern="/pub/{id}/commentary/add">
+        <default key="_controller">TrismegisteSocialBundle:Commentary:addOnPublishing</default>
     </route>
 
 </routes>

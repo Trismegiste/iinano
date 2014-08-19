@@ -31,24 +31,22 @@ class FamousController extends Template
         
     }
 
-    public function addFanOnPublishAction(Request $request)
+    public function addFanOnPublishAction($id)
     {
-        $pk = $request->get('id');
-        $doc = $this->getRepository()->findByPk($pk);
+        $doc = $this->getRepository()->findByPk($id);
         $this->addFanOn($doc);
         $this->getRepository()->persist($doc);
 
-        return $this->redirectRouteOk('content_index', [], 'anchor-' . $pk);
+        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
     }
 
-    public function removeFanOnPublishAction(Request $request)
+    public function removeFanOnPublishAction($id)
     {
-        $pk = $request->get('id');
-        $doc = $this->getRepository()->findByPk($pk);
+        $doc = $this->getRepository()->findByPk($id);
         $this->removeFanOn($doc);
         $this->getRepository()->persist($doc);
 
-        return $this->redirectRouteOk('content_index', [], 'anchor-' . $pk);
+        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
     }
 
 }

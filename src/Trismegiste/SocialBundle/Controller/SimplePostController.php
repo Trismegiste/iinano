@@ -7,8 +7,8 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 use Trismegiste\Socialist\SimplePost;
-use Trismegiste\Socialist\Publishing;
 use Symfony\Component\Form\Form;
+use Trismegiste\SocialBundle\Form\SimplePostForm;
 
 /**
  * SimplePostController is the main controller for CRUD of SimplePost
@@ -38,9 +38,7 @@ class SimplePostController extends ContentController
 
     public function createAction()
     {
-        $repo = $this->getRepository();
-
-        $form = $this->createForm(new \Trismegiste\SocialBundle\Form\SimplePostForm()
+        $form = $this->createForm(new SimplePostForm()
                 , new SimplePost($this->getUser()->getAuthor())
                 , ['action' => $this->generateUrl('simplepost_create')]
         );
@@ -53,7 +51,7 @@ class SimplePostController extends ContentController
         $repo = $this->getRepository();
         $post = $repo->findByPk($id);
 
-        $form = $this->createForm(new \Trismegiste\SocialBundle\Form\SimplePostForm()
+        $form = $this->createForm(new SimplePostForm()
                 , $post
                 , ['action' => $this->generateUrl('simplepost_edit', ['id' => $id])]
         );
