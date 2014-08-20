@@ -16,25 +16,30 @@ use Symfony\Component\HttpFoundation\Request;
 class FamousController extends Template
 {
 
-    protected function addFanOn(Famous $obj)
+    public function addFanOnCommentaryAction($id, $uuid)
     {
-        $obj->addFan($this->getAuthor());
+        $pub = $this->getRepository()->findByPk($id);
+        $commentary = $pub->getCommentaryByUuid($uuid);
+        $commentary->addFan($this->getAuthor());
+        $this->getRepository()->persist($pub);
+
+        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
     }
 
-    protected function removeFanOn(Famous $obj)
+    public function removeFanOnCommentaryAction($id, $uuid)
     {
-        $obj->removeFan($this->getAuthor());
-    }
+        $pub = $this->getRepository()->findByPk($id);
+        $commentary = $pub->getCommentaryByUuid($uuid);
+        $commentary->removeFan($this->getAuthor());
+        $this->getRepository()->persist($pub);
 
-    public function addFanOnCommentAction(Request $request)
-    {
-        
+        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
     }
 
     public function addFanOnPublishAction($id)
     {
         $doc = $this->getRepository()->findByPk($id);
-        $this->addFanOn($doc);
+        $doc->addFan($this->getAuthor());
         $this->getRepository()->persist($doc);
 
         return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
@@ -43,7 +48,7 @@ class FamousController extends Template
     public function removeFanOnPublishAction($id)
     {
         $doc = $this->getRepository()->findByPk($id);
-        $this->removeFanOn($doc);
+        $doc->removeFan($this->getAuthor());
         $this->getRepository()->persist($doc);
 
         return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);

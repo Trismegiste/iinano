@@ -17,15 +17,7 @@
         <p>{{ content.body }}</p>
         
         <a href="{{ path('pub_commentary_add', {id: content.id}) }}" class="button tiny">Reply</a>
-        {% if content.hasFan(app.user.author) %}
-            <a href="{{ path('pub_famous_remove', {id: content.id}) }}" class="button tiny">Unlike</a>
-        {% else %}
-            <a href="{{ path('pub_famous_add', {id: content.id}) }}" class="button tiny">Like</a>
-        {% endif %}
-        <span data-tooltip class="label right secondary has-tip" title="{{ content.fanCount }} persons like this">
-            <i class="fi-like large"></i>
-            {{ content.fanCount }}
-        </span>
+        {% include 'TrismegisteSocialBundle:Content:simplepost_like_button.html.twig' %}        
 
         {% block commentary_create %}{% endblock %}
         {% if content.commentary|length > 0 %}

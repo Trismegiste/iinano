@@ -15,5 +15,6 @@
             <small>{{ comment.lastEdited | timeago }}</small>
         </h6>
         <p>{{ comment.message }}</p>
+        {% include 'TrismegisteSocialBundle:Content:commentary_like_button.html.twig' %}
     </div>
 </div>

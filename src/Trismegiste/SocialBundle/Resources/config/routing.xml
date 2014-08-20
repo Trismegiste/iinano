@@ -40,4 +40,11 @@
         <default key="_controller">TrismegisteSocialBundle:Commentary:editOnPublishing</default>
     </route>
 
+    <route id="commentary_famous_add" pattern="/pub/{id}/commentary/{uuid}/famous/add">
+        <default key="_controller">TrismegisteSocialBundle:Famous:addFanOnCommentary</default>
+    </route>
+    <route id="commentary_famous_remove" pattern="/pub/{id}/commentary/{uuid}/famous/remove">
+        <default key="_controller">TrismegisteSocialBundle:Famous:removeFanOnCommentary</default>
+    </route>
+    
 </routes>
