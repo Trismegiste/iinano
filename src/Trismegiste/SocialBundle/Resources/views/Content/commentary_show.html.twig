@@ -2,8 +2,9 @@
 <div class="row">
     <div class="large-2 columns small-3"><img src="http://placehold.it/50x50&text=[img]"/></div>
     <div class="large-10 columns">
-        <a href="#" class="right" data-options="align:left" data-dropdown="drop{{ content.id }}{{ comment.uuid }}"><i class="fi-widget"></i></a>
-        <ul id="drop{{ content.id }}{{ comment.uuid }}" class="f-dropdown" data-dropdown-content>
+        {% set dropdown_id = 'drop' ~ content.id ~ comment.uuid %}
+        <a href="#" class="right" data-options="align:left" data-dropdown="{{ dropdown_id }}"><i class="fi-widget"></i></a>
+        <ul id="{{ dropdown_id }}" class="f-dropdown" data-dropdown-content>
             <li><a href="{{ path('pub_commentary_edit', {id: content.id, uuid: comment.uuid}) }}">Edit</a></li> 
             <li><a href="#">Delete</a></li>
             <li><a href="#">Report</a></li>
