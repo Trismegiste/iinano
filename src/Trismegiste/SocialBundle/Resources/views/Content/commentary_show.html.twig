@@ -12,7 +12,7 @@
         <a id="anchor-{{ content.id }}-{{ comment.uuid }}"></a>
         <h6 class="subheader">
             {{ comment.author.nickname }}
-            <small>{{ comment.lastEdited | date('Y/m/d') }}</small>
+            <small>{{ comment.lastEdited | timeago }}</small>
         </h6>
         <p>{{ comment.message }}</p>
     </div>

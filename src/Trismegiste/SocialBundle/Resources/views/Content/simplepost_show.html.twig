@@ -12,7 +12,7 @@
             <li><a href="#">Report</a></li>
         </ul>
         <a id="anchor-{{ content.id }}"></a>
-        <h6 class="subheader">{{ content.author.nickname }} <small>{{ content.lastEdited | date('Y/m/d') }}</small></h6>
+        <h6 class="subheader">{{ content.author.nickname }} <small>{{ content.lastEdited | timeago }}</small></h6>
         <h4>{{ content.title }}</h4>
         <p>{{ content.body }}</p>        
         <ul class="inline-list">

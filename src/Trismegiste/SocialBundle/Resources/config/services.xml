@@ -14,5 +14,9 @@
             <argument type="service" id="social.user.repository"/>
         </service>
 
+        <service id="twig.humandate.renderer" class="Trismegiste\SocialBundle\Utils\HumanDateExtension">
+            <tag name="twig.extension"/>
+        </service>
+
     </services>
 </container>
