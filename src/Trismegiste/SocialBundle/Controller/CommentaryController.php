@@ -28,7 +28,7 @@ class CommentaryController extends ContentController
 
             try {
                 $this->getRepository()->persist($pub);
-                $this->pushFlash('notice', 'Message saved');
+                $this->pushFlash('notice', 'Commentary saved');
                 return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save message');
@@ -56,7 +56,7 @@ class CommentaryController extends ContentController
             try {
                 $commentary->setLastEdited(new \DateTime());
                 $this->getRepository()->persist($pub);
-                $this->pushFlash('notice', 'Message saved');
+                $this->pushFlash('notice', 'Commentary saved');
                 return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save message');
@@ -70,6 +70,22 @@ class CommentaryController extends ContentController
         ];
 
         return $this->render('TrismegisteSocialBundle:Content:commentary_form.html.twig', $param);
+    }
+
+    public function deleteOnPublishingAction($id, $uuid)
+    {
+        $pub = $this->getRepository()->findByPk($id);
+        $commentary = $pub->getCommentaryByUuid($uuid);
+
+        $pub->detachCommentary($commentary);
+        try {
+            $this->getRepository()->persist($pub);
+            $this->pushFlash('notice', 'Commentary deleted');
+        } catch (\MongoException $e) {
+            $this->pushFlash('warning', 'Cannot delete commentary');
+        }
+
+        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
     }
 
 }

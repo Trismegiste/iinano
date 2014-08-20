@@ -12,11 +12,9 @@
     <route id="simplepost_create" pattern="/simplepost/create">
         <default key="_controller">TrismegisteSocialBundle:SimplePost:create</default>
     </route>
-
     <route id="simplepost_edit" pattern="/simplepost/edit/{id}">
         <default key="_controller">TrismegisteSocialBundle:SimplePost:edit</default>
     </route>
-
     <route id="simplepost_delete" pattern="/simplepost/delete/{id}">
         <default key="_controller">TrismegisteSocialBundle:SimplePost:delete</default>
     </route>
@@ -36,8 +34,11 @@
     <route id="pub_commentary_add" pattern="/pub/{id}/commentary/add">
         <default key="_controller">TrismegisteSocialBundle:Commentary:addOnPublishing</default>
     </route>
-    <route id="pub_commentary_edit" pattern="/pub/{id}/commentary/edit/{uuid}">
+    <route id="pub_commentary_edit" pattern="/pub/{id}/commentary/{uuid}/edit">
         <default key="_controller">TrismegisteSocialBundle:Commentary:editOnPublishing</default>
+    </route>
+    <route id="pub_commentary_delete" pattern="/pub/{id}/commentary/{uuid}/delete">
+        <default key="_controller">TrismegisteSocialBundle:Commentary:deleteOnPublishing</default>
     </route>
 
     <route id="commentary_famous_add" pattern="/pub/{id}/commentary/{uuid}/famous/add">

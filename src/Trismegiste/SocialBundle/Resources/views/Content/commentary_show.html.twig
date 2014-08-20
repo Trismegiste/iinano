@@ -6,7 +6,7 @@
         <a href="#" class="right" data-options="align:left" data-dropdown="{{ dropdown_id }}"><i class="fi-widget"></i></a>
         <ul id="{{ dropdown_id }}" class="f-dropdown" data-dropdown-content>
             <li><a href="{{ path('pub_commentary_edit', {id: content.id, uuid: comment.uuid}) }}">Edit</a></li> 
-            <li><a href="#">Delete</a></li>
+            <li><a href="{{ path('pub_commentary_delete', {id: content.id, uuid: comment.uuid}) }}">Delete</a></li>
             <li><a href="#">Report</a></li>
         </ul>
         <a id="anchor-{{ content.id }}-{{ comment.uuid }}"></a>
