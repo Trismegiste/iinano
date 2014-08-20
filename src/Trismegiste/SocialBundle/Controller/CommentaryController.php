@@ -54,6 +54,7 @@ class CommentaryController extends ContentController
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
             try {
+                $commentary->setLastEdited(new \DateTime());
                 $this->getRepository()->persist($pub);
                 $this->pushFlash('notice', 'Message saved');
                 return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
