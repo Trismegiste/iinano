@@ -3,12 +3,13 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Foundation | Welcome</title>
-        <link rel="stylesheet" href="/css/normalize.css">
-        <link rel="stylesheet" href="/css/foundation.css" />
-        <link rel="stylesheet" href="/css/foundation-icons.css" />
-        {% block stylesheets %}{% endblock %}
-        <script src="/js/vendor/modernizr.js"></script>
+        <title>iinano | Welcome</title>
+        <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/foundation.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/foundation-icons.css') }}" />
+        {% block stylesheets %}
+        {% endblock %}
+        <script src="{{ asset('js/vendor/modernizr.js') }}"></script>
     </head>
     <body>
         {% block topbar %}
