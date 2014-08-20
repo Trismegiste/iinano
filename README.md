@@ -1,4 +1,4 @@
-# Iinano
+# iinano
 At last a social network that follows SOLID -- **Work in progress**
 
 ## What
@@ -21,7 +21,7 @@ datas). Three rules to bind them all :
 * SOLID or die
 
 Of course all fancy stuffs like Composer, PhpUnit, Twig, ApcCache, HybridAuth,
-Zurb Foundation, jQuery or maybe AngularJs, I don't know.
+Zurb Foundation and jQuery.
 
 ## Who
 Small business, small communities ( around 1000 people could be cool I think ).
