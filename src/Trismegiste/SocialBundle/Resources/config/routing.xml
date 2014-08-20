@@ -36,5 +36,8 @@
     <route id="pub_commentary_add" pattern="/pub/{id}/commentary/add">
         <default key="_controller">TrismegisteSocialBundle:Commentary:addOnPublishing</default>
     </route>
+    <route id="pub_commentary_edit" pattern="/pub/{id}/commentary/edit/{uuid}">
+        <default key="_controller">TrismegisteSocialBundle:Commentary:editOnPublishing</default>
+    </route>
 
 </routes>
