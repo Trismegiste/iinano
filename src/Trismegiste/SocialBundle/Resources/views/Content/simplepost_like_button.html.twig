@@ -3,7 +3,8 @@
 {% else %}
     <a href="{{ path('pub_famous_add', {id: content.id}) }}" class="button tiny">Like</a>
 {% endif %}
-<span data-tooltip class="label right secondary has-tip" title="{{ content.fanCount }} persons like this">
+{% set fanCount = content.fanCount %}
+<span data-tooltip class="label right secondary has-tip fan-count" title="{{ fanCount }} persons like this">
     <i class="fi-like"></i>
-    {{ content.fanCount }}
+    {{ fanCount }}
 </span>

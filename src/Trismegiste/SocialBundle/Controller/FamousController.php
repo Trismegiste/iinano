@@ -7,8 +7,6 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 use Trismegiste\SocialBundle\Controller\Template;
-use Trismegiste\Socialist\Famous;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * FamousController is a controller to manage action on entities with Famous contract
