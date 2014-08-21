@@ -57,6 +57,28 @@ class CommentaryControllerTest extends WebTestCasePlus
         $comment = $comment[0];
         $this->assertEquals(__METHOD__, $comment->getMessage());
         $this->assertEquals('kirk', $comment->getAuthor()->getNickname());
+
+        return $pk;
+    }
+
+    /**
+     * @depends testAddCommentary
+     */
+    public function testEditCommentary($pk)
+    {
+        $crawler = $this->getPage('content_index');
+        $link = $crawler->filter('div.commentary')->selectLink('Edit')->link();
+        $crawler = $this->client->click($link);
+        $form = $crawler->selectButton('Save')->form();
+        $this->client->submit($form, ['commentary' => ['message' => __METHOD__]]);
+
+        $restore = $this->getService('dokudoki.repository')->findByPk($pk);
+        $this->assertInstanceOf('Trismegiste\Socialist\SimplePost', $restore);
+        $comment = $restore->getCommentary();
+        $this->assertCount(1, $comment);
+        $comment = $comment[0];
+        $this->assertEquals(__METHOD__, $comment->getMessage());
+        $this->assertEquals('kirk', $comment->getAuthor()->getNickname());
     }
 
 }
