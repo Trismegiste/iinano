@@ -70,4 +70,24 @@ class SimplePostControllerTest extends WebTestCasePlus
         $this->assertEquals('kirk', $doc['author']['nickname']);
     }
 
+    public function testCreateSecondPost()
+    {
+        $crawler = $this->getPage('content_index');
+        $link = $crawler->selectLink('Simple Post')->link();
+        $crawler = $this->client->click($link);
+        $form = $crawler->selectButton('Save')->form();
+        $this->client->submit($form, ['simple_post' => ['title' => __CLASS__, 'body' => __METHOD__]]);
+
+        $this->assertCount(2, $this->collection->find());
+    }
+
+    public function testDeleteFirst()
+    {
+        $crawler = $this->getPage('content_index');
+        $link = $crawler->selectLink('Delete')->link();
+        $crawler = $this->client->click($link);
+
+        $this->assertCount(1, $this->collection->find());
+    }
+
 }

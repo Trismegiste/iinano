@@ -39,7 +39,7 @@ class SimplePostController extends ContentController
     public function createAction()
     {
         $form = $this->createForm(new SimplePostForm()
-                , new SimplePost($this->getUser()->getAuthor())
+                , new SimplePost($this->getAuthor())
                 , ['action' => $this->generateUrl('simplepost_create')]
         );
 
