@@ -79,6 +79,23 @@ class CommentaryControllerTest extends WebTestCasePlus
         $comment = $comment[0];
         $this->assertEquals(__METHOD__, $comment->getMessage());
         $this->assertEquals('kirk', $comment->getAuthor()->getNickname());
+
+        return $pk;
+    }
+
+    /**
+     * @depends testEditCommentary
+     */
+    public function testDeleteCommentary($pk)
+    {
+        $crawler = $this->getPage('content_index');
+        $link = $crawler->filter('div.commentary')->selectLink('Delete')->link();
+        $crawler = $this->client->click($link);
+
+        $restore = $this->getService('dokudoki.repository')->findByPk($pk);
+        $this->assertInstanceOf('Trismegiste\Socialist\SimplePost', $restore);
+        $comment = $restore->getCommentary();
+        $this->assertCount(0, $comment);
     }
 
 }
