@@ -48,9 +48,14 @@ class SimplePostControllerTest extends WebTestCasePlus
         $this->assertEquals(__CLASS__, $doc['title']);
         $this->assertEquals(__METHOD__, $doc['body']);
         $this->assertEquals('kirk', $doc['author']['nickname']);
+
+        return $doc['_id'];
     }
 
-    public function testEdit()
+    /**
+     * @depends testCreateFirstPost
+     */
+    public function testEdit($pk)
     {
         $crawler = $this->getPage('content_index');
         $link = $crawler->selectLink('Edit')->link();
@@ -58,10 +63,8 @@ class SimplePostControllerTest extends WebTestCasePlus
         $form = $crawler->selectButton('Save')->form();
         $this->client->submit($form, ['simple_post' => ['title' => __CLASS__, 'body' => __METHOD__]]);
 
-        $it = $this->collection->find();
-        $this->assertCount(1, $it);
-        $it->rewind();
-        $doc = $it->current();
+        $this->assertCount(1, $this->collection->find());
+        $doc = $this->collection->findOne(['_id' => $pk]);
 
         $this->assertEquals(__METHOD__, $doc['body']);
         $this->assertEquals('kirk', $doc['author']['nickname']);
