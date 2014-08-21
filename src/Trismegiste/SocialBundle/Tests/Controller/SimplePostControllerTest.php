@@ -49,11 +49,14 @@ class SimplePostControllerTest extends WebTestCase
         $crawler = $this->getPage('trismegiste_login');
         $form = $crawler->selectButton('Sign in')->form();
         // set some values
-        $form['_username'] = 'Kirk';
+        $form['_username'] = 'kirk';
         $form['_password'] = 'aaaa';
         $this->client->submit($form);
         $response = $this->client->getResponse();
         $this->assertTrue($response->isRedirect($this->generateUrl('content_index')));
+        $crawler = $this->client->followRedirect();
+        // check homepage
+        $this->assertEquals(1, $crawler->filter('nav.top-bar a:contains("kirk")')->count());
     }
 
 }
