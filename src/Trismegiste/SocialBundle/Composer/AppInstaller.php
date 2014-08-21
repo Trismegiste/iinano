@@ -1,28 +1,29 @@
 <?php
 
 /*
- * sf2ffbp
+ * iinano
  */
 
 namespace Trismegiste\SocialBundle\Composer;
 
+use Composer\Script\Event;
+
 /**
- * AppInstaller is ...
- *
- * @author flo
+ * AppInstaller is an auto-installer for platform specific parameters
  */
 class AppInstaller
 {
 
-    static public function installPlateform($event)
+    static public function installPlateform(Event $event)
     {
         $cfg = $event->getComposer()->getPackage()->getExtra();
         $plateformDir = $cfg['symfony-app-dir'] . '/config/platform/';
         $template = $plateformDir . 'default.yml';
-        $dest = $plateformDir . php_uname('n') . '.yml';
+        $platformName = php_uname('n');
+        $dest = $plateformDir . $platformName . '.yml';
         if (!file_exists($dest)) {
             $console = $event->getIO();
-            $console->write('<info>Configuring plateform-specific parameters :</info>');
+            $console->write("<info>Configuring parameters for $platformName :</info>");
 
             $defaultParam = \Symfony\Component\Yaml\Yaml::parse($template);
             foreach ($defaultParam['parameters'] as $key => $val) {
