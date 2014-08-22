@@ -3,7 +3,7 @@
 {% else %}
     <a href="{{ path('commentary_famous_add', {id: content.id, uuid: comment.uuid}) }}" class="button tiny">Like</a>
 {% endif %}
-<span data-tooltip class="label right secondary has-tip" title="{{ comment.fanCount }} persons like this">
+<span data-tooltip class="label right secondary has-tip fan-count" title="{{ comment.fanCount }} persons like this">
     <i class="fi-like"></i>
     {{ comment.fanCount }}
 </span>
