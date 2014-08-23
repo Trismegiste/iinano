@@ -10,7 +10,7 @@
             <argument type="service" id="dokudoki.repository"/>
         </service>            
         
-        <service id="security.user.repository" class="Trismegiste\SocialBundle\Security\UserRepository">
+        <service id="security.socialuser.provider" class="Trismegiste\SocialBundle\Security\SocialUserProvider">
             <argument type="service" id="social.user.repository"/>
         </service>
 

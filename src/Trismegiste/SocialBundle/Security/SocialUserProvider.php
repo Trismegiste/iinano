@@ -11,9 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 
 /**
- * UserRepository is a provider of symfony user based on Socialist User
+ * SocialUserProvider is a provider of symfony user based on Socialist User
  */
-class UserRepository implements UserProviderInterface
+class SocialUserProvider implements UserProviderInterface
 {
 
     protected $socialRepository;

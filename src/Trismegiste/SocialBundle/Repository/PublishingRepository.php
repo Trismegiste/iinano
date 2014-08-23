@@ -4,7 +4,7 @@
  * Iinano
  */
 
-namespace Trismegiste\SocialBundle;
+namespace Trismegiste\SocialBundle\Repository;
 
 use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
