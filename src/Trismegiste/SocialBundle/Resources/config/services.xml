@@ -6,6 +6,11 @@
 
     <services>
         
+        <service id="social.content.repository" class="Trismegiste\SocialBundle\Repository\PublishingRepository">
+            <argument type="service" id="dokudoki.repository"/>
+            <argument type="service" id="security.context"/>
+        </service>
+        
         <service id="social.user.repository" class="Trismegiste\Socialist\Repository\User">
             <argument type="service" id="dokudoki.repository"/>
         </service>            

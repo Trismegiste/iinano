@@ -25,7 +25,7 @@ abstract class Template extends Controller
      */
     protected function getRepository()
     {
-        return $this->get('dokudoki.repository');
+        return $this->get('social.content.repository');
     }
 
     protected function getCollection()

@@ -35,12 +35,12 @@ class PublishingRepository
         $this->aliasFilter = [MapAlias::CLASS_KEY => ['$in' => ['post']]]; // @todo EVIL
     }
 
-    public function findLast($limit = 20)
+    public function findLastEntries($limit = 20)
     {
         return $this->repository
                         ->find($this->aliasFilter)
                         ->limit($limit)
-                        ->sort(['createdAt' => false]);
+                        ->sort(['createdAt' => -1]);
     }
 
 }

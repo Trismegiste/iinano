@@ -24,7 +24,7 @@ class ContentController extends Template
     public function render($view, array $parameters = array(), Response $response = null)
     {
         $repo = $this->getRepository();
-        $it = $repo->find([]);
+        $it = $repo->findLastEntries();
 
         if (array_key_exists('skipped_pub', $parameters)) {
             $it = new \Trismegiste\SocialBundle\Utils\SkippableIterator($it, [$parameters['skipped_pub']]);
