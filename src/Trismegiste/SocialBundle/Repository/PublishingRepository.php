@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Repository;
 
 use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 
 /**
  * PublishingRepository is a business repository for subclasses of Publishing
@@ -24,17 +25,20 @@ class PublishingRepository
 
     protected $repository;
     protected $security;
+    protected $aliasFilter;
 
-    public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx)
+    // @todo put alias in the configuration of this bundle (with validation)
+    public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx, $aliases = [])
     {
         $this->security = $ctx;
         $this->repository = $repo;
+        $this->aliasFilter = [MapAlias::CLASS_KEY => ['$in' => ['post']]]; // @todo EVIL
     }
 
     public function findLast($limit = 20)
     {
         return $this->repository
-                        ->find(['-class' => ['$in' => ['post']]]) // @todo EVIL
+                        ->find($this->aliasFilter)
                         ->limit($limit)
                         ->sort(['createdAt' => false]);
     }
