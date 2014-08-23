@@ -45,6 +45,6 @@ dokudoki:
     collection: dokudoki
     alias:
         post: 'Trismegiste\Socialist\SimplePost'
-        user: 'Trismegiste\Socialist\User'
+        user: 'Trismegiste\SocialBundle\Security\SocialUser'
         author: 'Trismegiste\Socialist\Author'
         comm: 'Trismegiste\Socialist\Commentary'

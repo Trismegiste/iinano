@@ -34,7 +34,7 @@ class PublishingRepository
     public function findLast($limit = 20)
     {
         return $this->repository
-                        ->find()
+                        ->find(['-class' => ['$in' => ['post']]]) // @todo EVIL
                         ->limit($limit)
                         ->sort(['createdAt' => false]);
     }
