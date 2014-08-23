@@ -9,7 +9,7 @@ namespace Trismegiste\SocialBundle\Repository;
 use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
-use Trismegiste\Yuurei\Persistence\Persistable;
+use Trismegiste\Socialist\Publishing;
 
 /**
  * PublishingRepository is a business repository for subclasses of Publishing
@@ -36,6 +36,13 @@ class PublishingRepository
         $this->aliasFilter = [MapAlias::CLASS_KEY => ['$in' => ['post']]]; // @todo EVIL
     }
 
+    /**
+     * Retrieves an iterator on the last published entries
+     * 
+     * @param int $limit
+     * 
+     * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
+     */
     public function findLastEntries($limit = 20)
     {
         return $this->repository
@@ -44,11 +51,23 @@ class PublishingRepository
                         ->sort(['createdAt' => -1]);
     }
 
-    public function persist(Persistable $doc)
+    /**
+     * Persists a published content
+     * 
+     * @param \Trismegiste\Socialist\Publishing $doc
+     */
+    public function persist(Publishing $doc)
     {
         $this->repository->persist($doc);
     }
 
+    /**
+     * Returns a published content by its PK
+     * 
+     * @param string $pk
+     * 
+     * @return \Trismegiste\Socialist\Publishing
+     */
     public function findByPk($pk)
     {
         return $this->repository->findByPk($pk);
