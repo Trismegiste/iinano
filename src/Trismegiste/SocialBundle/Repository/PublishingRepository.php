@@ -9,6 +9,7 @@ namespace Trismegiste\SocialBundle\Repository;
 use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
+use Trismegiste\Yuurei\Persistence\Persistable;
 
 /**
  * PublishingRepository is a business repository for subclasses of Publishing
@@ -41,6 +42,16 @@ class PublishingRepository
                         ->find($this->aliasFilter)
                         ->limit($limit)
                         ->sort(['createdAt' => -1]);
+    }
+
+    public function persist(Persistable $doc)
+    {
+        $this->repository->persist($doc);
+    }
+
+    public function findByPk($pk)
+    {
+        return $this->repository->findByPk($pk);
     }
 
 }

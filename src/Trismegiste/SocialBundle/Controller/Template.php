@@ -19,7 +19,7 @@ abstract class Template extends Controller
     }
 
     /**
-     * Returns the main repository
+     * Returns the repository for published content
      * 
      * @return \Trismegiste\Yuurei\Persistence\RepositoryInterface
      */
