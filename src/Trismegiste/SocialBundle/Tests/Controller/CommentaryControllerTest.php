@@ -16,6 +16,7 @@ class CommentaryControllerTest extends WebTestCasePlus
 {
 
     protected $collection;
+    protected $contentRepo;
 
     protected function setUp()
     {
@@ -23,6 +24,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $this->client->followRedirects();
         $this->logIn('kirk');
         $this->collection = $this->getService('dokudoki.collection');
+        $this->contentRepo = $this->getService('social.content.repository');
     }
 
     /**
@@ -35,6 +37,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $post = new SimplePost(new Author('kirk'));
         $this->getService('dokudoki.repository')->persist($post);
         $this->assertCount(1, $this->collection->find());
+        $this->addUserFixture('kirk');
 
         return (string) $post->getId();
     }
