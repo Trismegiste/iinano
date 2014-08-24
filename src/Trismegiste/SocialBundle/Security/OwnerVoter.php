@@ -9,7 +9,7 @@ namespace Trismegiste\SocialBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Trismegiste\Socialist\Content;
-use Trismegiste\SocialBundle\Security\SocialUser;
+use Trismegiste\SocialBundle\Security\Netizen;
 
 /**
  * OwnerVoter is a voter to vote if a user has owning rights on a Content
@@ -33,7 +33,7 @@ class OwnerVoter implements VoterInterface
             if ($this->supportsAttribute($attribute) && $this->supportsClass($object)) {
                 $author = $token->getUser()->getAuthor();
 
-                if (($token->getUser() instanceof SocialUser) && ($object->getAuthor() == $author)) {
+                if (($token->getUser() instanceof Netizen) && ($object->getAuthor() == $author)) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
             }

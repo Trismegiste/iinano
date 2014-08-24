@@ -11,12 +11,12 @@
             <argument type="service" id="security.context"/>
         </service>
         
-        <service id="social.user.repository" class="Trismegiste\Socialist\Repository\User">
+        <service id="social.netizen.repository" class="Trismegiste\SocialBundle\Repository\NetizenRepository">
             <argument type="service" id="dokudoki.repository"/>
         </service>            
         
-        <service id="security.socialuser.provider" class="Trismegiste\SocialBundle\Security\SocialUserProvider">
-            <argument type="service" id="social.user.repository"/>
+        <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">
+            <argument type="service" id="social.netizen.repository"/>
         </service>
 
         <service id="twig.humandate.renderer" class="Trismegiste\SocialBundle\Utils\HumanDateExtension">

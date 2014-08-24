@@ -9,7 +9,7 @@ namespace Trismegiste\SocialBundle\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\BrowserKit\Cookie;
-use Trismegiste\SocialBundle\Security\SocialUser;
+use Trismegiste\SocialBundle\Security\Netizen;
 use Trismegiste\Socialist\Author;
 
 /**
@@ -44,7 +44,7 @@ class WebTestCasePlus extends WebTestCase
     {
         $session = $this->client->getContainer()->get('session');
         $firewall = 'secured_area';
-        $token = new UsernamePasswordToken(new SocialUser(new Author($nick)), null, $firewall, array('ROLE_USER'));
+        $token = new UsernamePasswordToken(new Netizen(new Author($nick)), null, $firewall, array('ROLE_USER'));
         $session->set('_security_' . $firewall, serialize($token));
         $session->save();
         $cookie = new Cookie($session->getName(), $session->getId());

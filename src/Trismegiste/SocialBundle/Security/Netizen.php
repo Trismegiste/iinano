@@ -10,10 +10,10 @@ use Trismegiste\Socialist\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * SocialUser is a User with features of login, security 
+ * Netizen is a User with features of login, security 
  * and connection stuff with external provider
  */
-class SocialUser extends User implements UserInterface
+class Netizen extends User implements UserInterface
 {
 
     // Listing of strategies for connection

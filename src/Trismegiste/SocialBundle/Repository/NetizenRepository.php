@@ -9,11 +9,11 @@ namespace Trismegiste\SocialBundle\Repository;
 use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 
 /**
- * SocialUserRepository is a repository for SocialUser
+ * NetizenRepository is a repository for Netizen
  * 
  * @todo Is this a decorator ( ie implementing RepositoryInterface ) ?
  */
-class SocialUserRepository
+class NetizenRepository implements NetizenRepositoryInterface
 {
 
     protected $repository;
@@ -23,7 +23,7 @@ class SocialUserRepository
         $this->repository = $repo;
     }
 
-    public function findByNickname()
+    public function findByNickname($nick)
     {
         
     }
