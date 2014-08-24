@@ -35,6 +35,8 @@ class FamousControllerTest extends WebTestCasePlus
         $post = new SimplePost(new Author('kirk'));
         $this->getService('dokudoki.repository')->persist($post);
         $this->assertCount(1, $this->collection->find());
+        $this->addUserFixture('kirk');
+        $this->addUserFixture('spock');
 
         return (string) $post->getId();
     }
@@ -101,8 +103,10 @@ class FamousControllerTest extends WebTestCasePlus
     {
         $this->logIn('kirk');
         // add a commentary
-        $repo = $this->getService('dokudoki.repository');
-        $doc = $repo->findOne();
+        $repo = $this->getService('social.content.repository');
+        $it = $repo->findLastEntries(1);
+        $it->rewind();
+        $doc = $it->current();
         $doc->attachCommentary(new Commentary(new Author('spock')));
         $repo->persist($doc);
         // click on the 'like' on the commentary
@@ -118,7 +122,9 @@ class FamousControllerTest extends WebTestCasePlus
         $crawler = $this->client->click($unlikeIter->link());
         $this->assertEquals(0, (int) $crawler->filter('div.commentary span.fan-count')->text());
         // check the database
-        $doc = $repo->findOne();
+        $it = $repo->findLastEntries(1);
+        $it->rewind();
+        $doc = $it->current();
         $comments = $doc->getCommentary();
         $this->assertCount(1, $comments);
         $this->assertEquals(0, $comments[0]->getFanCount());
