@@ -19,11 +19,18 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('trismegiste_social');
-
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
-
+        
+        $rootNode->children()
+                    ->arrayNode('alias')
+                        ->children()
+                            ->scalarNode('user')->end()
+                            ->arrayNode('content')
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end();
+        
         return $treeBuilder;
     }
 }
