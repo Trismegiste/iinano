@@ -44,4 +44,9 @@ class NetizenRepository implements NetizenRepositoryInterface
         return new Netizen(new Author($nick));
     }
 
+    public function persist(Netizen $obj)
+    {
+        $this->repository->persist($obj);
+    }
+
 }
