@@ -20,10 +20,12 @@ class NetizenRepository implements NetizenRepositoryInterface
 {
 
     protected $repository;
+    protected $classAlias;
 
-    public function __construct(RepositoryInterface $repo)
+    public function __construct(RepositoryInterface $repo, $alias)
     {
         $this->repository = $repo;
+        $this->classAlias = $alias;
     }
 
     public function findByNickname($nick)
