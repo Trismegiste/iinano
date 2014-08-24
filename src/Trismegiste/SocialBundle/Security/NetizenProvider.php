@@ -25,12 +25,12 @@ class NetizenProvider implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
-        return new Netizen(new \Trismegiste\Socialist\Author($username));
+        return $this->socialRepository->create($username);
     }
 
     public function refreshUser(UserInterface $user)
     {
-        return new Netizen(new \Trismegiste\Socialist\Author($user->getUsername()));
+        return $this->socialRepository->create($user->getUsername());
     }
 
     public function supportsClass($class)
