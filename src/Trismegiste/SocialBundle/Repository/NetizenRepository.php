@@ -32,7 +32,7 @@ class NetizenRepository implements NetizenRepositoryInterface
     {
         $obj = $this->repository->findOne([
             MapAlias::CLASS_KEY => $this->classAlias,
-            'author' => ['nickname' => $nick]
+            'author.nickname' => $nick
         ]);
 
         return $obj;
