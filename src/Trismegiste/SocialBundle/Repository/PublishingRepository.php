@@ -21,7 +21,7 @@ use Trismegiste\Socialist\Publishing;
  * with business relevance.
  * Maybe an interface for decoupling will be a good idea.
  */
-class PublishingRepository
+class PublishingRepository implements PublishingRepositoryInterface
 {
 
     protected $repository;
