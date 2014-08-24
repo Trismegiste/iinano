@@ -28,12 +28,11 @@ class PublishingRepository
     protected $security;
     protected $aliasFilter;
 
-    // @todo put alias in the configuration of this bundle (with validation)
     public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx, $aliases)
     {
         $this->security = $ctx;
         $this->repository = $repo;
-        $this->aliasFilter = [MapAlias::CLASS_KEY => ['$in' => $aliases]]; // @todo EVIL
+        $this->aliasFilter = [MapAlias::CLASS_KEY => ['$in' => $aliases]];
     }
 
     /**

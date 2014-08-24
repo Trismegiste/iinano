@@ -31,7 +31,7 @@ class NetizenRepository implements NetizenRepositoryInterface
     public function findByNickname($nick)
     {
         $obj = $this->repository->findOne([
-            MapAlias::CLASS_KEY => 'netizen', // @todo EVIL, something must be done about this problem, perhaps, a way to retrieve the aliases from the repository ?
+            MapAlias::CLASS_KEY => $this->classAlias,
             'author' => ['nickname' => $nick]
         ]);
 
