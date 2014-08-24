@@ -26,6 +26,17 @@ class AppKernel extends Kernel
         return $bundles;
     }
 
+    /**
+     * Loading the config for the current evironment 
+     * and importing platform-specific parameters depending of computer's name
+     * 
+     * With this system you can store/commit/track (or not with .gitignore) every change in
+     * every config on every computer. Reduce the rate of "But it works on my computer !"
+     * 
+     * I prefer this system than one from Incenteev
+     * 
+     * @param \Symfony\Component\Config\Loader\LoaderInterface $loader
+     */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
@@ -35,7 +46,8 @@ class AppKernel extends Kernel
     /**
      * Injecting the owner's name of this AppKernel file to add an "env parameter"
      * Note : This mechanism is only avalaible in DEV because it is only intended
-     * in development environment.
+     * in development environment. With this parameter, you can customize any
+     * parameter of config_dev.yml with the shortcut %developer.name% 
      *
      * @return array
      */

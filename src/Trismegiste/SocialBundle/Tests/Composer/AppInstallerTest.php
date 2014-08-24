@@ -43,6 +43,9 @@ class AppInstallerTest extends WebTestCase
         $package->expects($this->once())
                 ->method('getExtra')
                 ->will($this->returnValue([
+                            // I will generate the config in the cache. It's a little ugly
+                            // but who cares ? Furthermore, it's only in the test environment
+                            // so there's no security issue
                             'symfony-app-dir' => $this->cacheDir,
         ]));
 
@@ -69,6 +72,8 @@ class AppInstallerTest extends WebTestCase
         $event->expects($this->once())
                 ->method('getIO')
                 ->will($this->returnValue($console));
+        // after so many mockup, this is what I call the undoubtful proof for a violation of Demeter's law somewhere
+        // Remember, everytime you broke Demeter's law, God kills a kitten. Please think of the kitten
 
         $this->assertFileNotExists($this->generated);
         AppInstaller::installPlateform($event);
