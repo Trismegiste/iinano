@@ -13,6 +13,7 @@ class SimplePostControllerTest extends WebTestCasePlus
 {
 
     protected $collection;
+    protected $contentRepo;
 
     protected function setUp()
     {
@@ -20,6 +21,7 @@ class SimplePostControllerTest extends WebTestCasePlus
         $this->client->followRedirects();
         $this->logIn('kirk');
         $this->collection = $this->getService('dokudoki.collection');
+        $this->contentRepo = $this->getService('social.content.repository');
     }
 
     /**
@@ -29,8 +31,7 @@ class SimplePostControllerTest extends WebTestCasePlus
     {
         $this->collection->drop();
         $this->assertCount(0, $this->collection->find());
-        $user = $this->getService('social.netizen.repository')->create('kirk');
-        $this->getService('dokudoki.repository')->persist($user);
+        $this->addUserFixture('kirk');
     }
 
     public function testCreateFirstPost()
@@ -41,17 +42,17 @@ class SimplePostControllerTest extends WebTestCasePlus
         $form = $crawler->selectButton('Save')->form();
         $this->client->submit($form, ['simple_post' => ['title' => __CLASS__, 'body' => __METHOD__]]);
 
-        $it = $this->collection->find();
+        $it = $this->contentRepo->findLastEntries();
         $this->assertCount(1, $it);
         $it->rewind();
         $doc = $it->current();
 
-        $this->assertEquals('post', $doc['-class']);
-        $this->assertEquals(__CLASS__, $doc['title']);
-        $this->assertEquals(__METHOD__, $doc['body']);
-        $this->assertEquals('kirk', $doc['author']['nickname']);
+        $this->assertInstanceOf('Trismegiste\Socialist\SimplePost', $doc);
+        $this->assertEquals(__CLASS__, $doc->getTitle());
+        $this->assertEquals(__METHOD__, $doc->getBody());
+        $this->assertEquals('kirk', $doc->getAuthor()->getNickname());
 
-        return $doc['_id'];
+        return (string) $doc->getId();
     }
 
     /**
@@ -65,11 +66,11 @@ class SimplePostControllerTest extends WebTestCasePlus
         $form = $crawler->selectButton('Save')->form();
         $this->client->submit($form, ['simple_post' => ['title' => __CLASS__, 'body' => __METHOD__]]);
 
-        $this->assertCount(1, $this->collection->find());
-        $doc = $this->collection->findOne(['_id' => $pk]);
+        $this->assertCount(1, $this->contentRepo->findLastEntries());
+        $doc = $this->contentRepo->findByPk($pk);
 
-        $this->assertEquals(__METHOD__, $doc['body']);
-        $this->assertEquals('kirk', $doc['author']['nickname']);
+        $this->assertEquals(__METHOD__, $doc->getBody());
+        $this->assertEquals('kirk', $doc->getAuthor()->getNickname());
     }
 
     public function testCreateSecondPost()
@@ -80,7 +81,7 @@ class SimplePostControllerTest extends WebTestCasePlus
         $form = $crawler->selectButton('Save')->form();
         $this->client->submit($form, ['simple_post' => ['title' => __CLASS__, 'body' => __METHOD__]]);
 
-        $this->assertCount(2, $this->collection->find());
+        $this->assertCount(2, $this->contentRepo->findLastEntries());
     }
 
     public function testDeleteFirst()
@@ -89,7 +90,7 @@ class SimplePostControllerTest extends WebTestCasePlus
         $link = $crawler->selectLink('Delete')->link();
         $crawler = $this->client->click($link);
 
-        $this->assertCount(1, $this->collection->find());
+        $this->assertCount(1, $this->contentRepo->findLastEntries());
     }
 
 }

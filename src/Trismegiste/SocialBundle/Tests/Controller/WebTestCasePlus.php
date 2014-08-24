@@ -51,4 +51,11 @@ class WebTestCasePlus extends WebTestCase
         $this->client->getCookieJar()->set($cookie);
     }
 
+    protected function addUserFixture($nickname)
+    {
+        $repo = $this->getService('social.netizen.repository');
+        $user = $repo->create($nickname);
+        $repo->persist($user);
+    }
+
 }

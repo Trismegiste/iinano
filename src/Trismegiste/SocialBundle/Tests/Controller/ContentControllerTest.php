@@ -22,9 +22,7 @@ class ContentControllerTest extends WebTestCasePlus
 
     public function testAuthenticate()
     {
-        $repo = $this->getService('social.netizen.repository');
-        $user = $repo->create('kirk');
-        $repo->persist($user);
+        $this->addUserFixture('kirk');
 
         $crawler = $this->getPage('trismegiste_login');
         $form = $crawler->selectButton('Sign in')->form();
