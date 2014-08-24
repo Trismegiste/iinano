@@ -29,6 +29,8 @@ class SimplePostControllerTest extends WebTestCasePlus
     {
         $this->collection->drop();
         $this->assertCount(0, $this->collection->find());
+        $user = $this->getService('social.netizen.repository')->create('kirk');
+        $this->getService('dokudoki.repository')->persist($user);
     }
 
     public function testCreateFirstPost()

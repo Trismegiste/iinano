@@ -21,7 +21,7 @@ class CreateUser extends ContainerAwareCommand
     public function configure()
     {
         $this->setName('social:user:create')
-                ->setDescription('Create a user with privileges')
+                ->setDescription('Create a user and privileges')
                 ->addArgument('nickname', InputArgument::REQUIRED);
     }
 

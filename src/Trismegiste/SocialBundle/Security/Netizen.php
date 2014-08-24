@@ -26,11 +26,13 @@ class Netizen extends User implements UserInterface
 
     public function getPassword()
     {
+        // @todo implement and change encoding
         return 'aaaa';
     }
 
     public function getRoles()
     {
+        // @todo not implemented yet
         return ['ROLE_USER'];
     }
 
