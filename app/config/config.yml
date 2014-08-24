@@ -38,13 +38,17 @@ assetic:
         #yui_css:
         #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
 
+parameters:
+    user_class_alias: netizen
+    simplepost_class_alias: post
+
 dokudoki:
     stage: whitemagic
     server: %mongodb_server%
     database: iinano
     collection: dokudoki
     alias:
-        post: 'Trismegiste\Socialist\SimplePost'
-        user: 'Trismegiste\SocialBundle\Security\Netizen'
+        %simplepost_class_alias%: 'Trismegiste\Socialist\SimplePost'
+        %user_class_alias%: 'Trismegiste\SocialBundle\Security\Netizen'
         author: 'Trismegiste\Socialist\Author'
         comm: 'Trismegiste\Socialist\Commentary'
