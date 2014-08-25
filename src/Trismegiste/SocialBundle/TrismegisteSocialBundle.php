@@ -9,7 +9,7 @@ class TrismegisteSocialBundle extends Bundle
 {
 
     /**
-     * SRSLY ?
+     * KISS
      */
     public function getContainerExtension()
     {
@@ -17,7 +17,7 @@ class TrismegisteSocialBundle extends Bundle
     }
 
     /**
-     * SRSLY ?
+     * KISS
      */
     public function registerCommands(Application $application)
     {
