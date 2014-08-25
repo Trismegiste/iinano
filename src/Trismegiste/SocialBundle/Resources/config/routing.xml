@@ -12,11 +12,13 @@
     <route id="simplepost_create" pattern="/simplepost/create">
         <default key="_controller">TrismegisteSocialBundle:SimplePost:create</default>
     </route>
-    <route id="simplepost_edit" pattern="/simplepost/edit/{id}">
+    <route id="simplepost_edit" pattern="/simplepost/{id}/edit">
         <default key="_controller">TrismegisteSocialBundle:SimplePost:edit</default>
+        <requirement key="id">[\da-f]{24}</requirement>        
     </route>
-    <route id="simplepost_delete" pattern="/simplepost/delete/{id}">
+    <route id="simplepost_delete" pattern="/simplepost/{id}/delete">
         <default key="_controller">TrismegisteSocialBundle:SimplePost:delete</default>
+        <requirement key="id">[\da-f]{24}</requirement>        
     </route>
     
     <route id="foreigner_about" pattern="/about">
@@ -26,26 +28,37 @@
     
     <route id="pub_famous_add" pattern="/pub/{id}/famous/add">
         <default key="_controller">TrismegisteSocialBundle:Famous:addFanOnPublish</default>
+        <requirement key="id">[\da-f]{24}</requirement>        
     </route>
     <route id="pub_famous_remove" pattern="/pub/{id}/famous/remove">
         <default key="_controller">TrismegisteSocialBundle:Famous:removeFanOnPublish</default>
+        <requirement key="id">[\da-f]{24}</requirement>
     </route>
 
     <route id="pub_commentary_add" pattern="/pub/{id}/commentary/add">
         <default key="_controller">TrismegisteSocialBundle:Commentary:addOnPublishing</default>
+        <requirement key="id">[\da-f]{24}</requirement>
     </route>
     <route id="pub_commentary_edit" pattern="/pub/{id}/commentary/{uuid}/edit">
         <default key="_controller">TrismegisteSocialBundle:Commentary:editOnPublishing</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="uuid">[\da-f]{40}</requirement>
     </route>
     <route id="pub_commentary_delete" pattern="/pub/{id}/commentary/{uuid}/delete">
         <default key="_controller">TrismegisteSocialBundle:Commentary:deleteOnPublishing</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="uuid">[\da-f]{40}</requirement>
     </route>
 
     <route id="commentary_famous_add" pattern="/pub/{id}/commentary/{uuid}/famous/add">
         <default key="_controller">TrismegisteSocialBundle:Famous:addFanOnCommentary</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="uuid">[\da-f]{40}</requirement>
     </route>
     <route id="commentary_famous_remove" pattern="/pub/{id}/commentary/{uuid}/famous/remove">
         <default key="_controller">TrismegisteSocialBundle:Famous:removeFanOnCommentary</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="uuid">[\da-f]{40}</requirement>
     </route>
     
 </routes>
