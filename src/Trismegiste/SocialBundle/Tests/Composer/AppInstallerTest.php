@@ -32,7 +32,10 @@ class AppInstallerTest extends WebTestCase
         $dest = $baseDir . 'default.yml';
         file_put_contents($dest, \Symfony\Component\Yaml\Yaml::dump($defaultCfg));
         $this->generated = $baseDir . php_uname('n') . '.yml';
-        unlink($this->generated);
+        // make sure old tests are deleted
+        if (file_exists($this->generated)) {
+            unlink($this->generated);
+        }
     }
 
     public function testInstall()
