@@ -66,7 +66,6 @@ class AppKernel extends Kernel
             }
         }
 
-
         return $base;
     }
 

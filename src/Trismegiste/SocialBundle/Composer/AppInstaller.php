@@ -14,7 +14,7 @@ use Composer\Script\Event;
 class AppInstaller
 {
 
-    static public function installPlateform(Event $event)
+    static public function installPlatform(Event $event)
     {
         $cfg = $event->getComposer()->getPackage()->getExtra();
         $plateformDir = $cfg['symfony-app-dir'] . '/config/platform/';

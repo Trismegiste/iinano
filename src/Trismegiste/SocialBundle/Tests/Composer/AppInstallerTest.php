@@ -79,7 +79,7 @@ class AppInstallerTest extends WebTestCase
         // Remember, everytime you broke Demeter's law, God kills a kitten. Please think of the kitten
 
         $this->assertFileNotExists($this->generated);
-        AppInstaller::installPlateform($event);
+        AppInstaller::installPlatform($event);
         $this->assertFileExists($this->generated);
 
         $customCfg = \Symfony\Component\Yaml\Yaml::parse(file_get_contents($this->generated));

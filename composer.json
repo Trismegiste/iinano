@@ -22,7 +22,7 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "Trismegiste\\FrontBundle\\Composer\\AppInstaller::installPlateform",
+            "Trismegiste\\FrontBundle\\Composer\\AppInstaller::installPlatform",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
