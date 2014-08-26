@@ -14,12 +14,27 @@ use Composer\Script\Event;
 class AppInstaller
 {
 
+    /**
+     * Gets the platform's name
+     * 
+     * @return string
+     */
+    static public function getPlatformName()
+    {
+        return php_uname('n');
+    }
+
+    /**
+     * Install script called by Composer
+     *
+     * @param \Composer\Script\Event $event
+     */
     static public function installPlatform(Event $event)
     {
         $cfg = $event->getComposer()->getPackage()->getExtra();
         $plateformDir = $cfg['symfony-app-dir'] . '/config/platform/';
         $template = $plateformDir . 'default.yml';
-        $platformName = php_uname('n');
+        $platformName = static::getPlatformName();
         $dest = $plateformDir . $platformName . '.yml';
         if (!file_exists($dest)) {
             $console = $event->getIO();
