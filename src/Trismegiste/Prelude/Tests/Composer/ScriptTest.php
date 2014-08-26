@@ -59,7 +59,7 @@ class ScriptTest extends WebTestCase
                 ->method('getPackage')
                 ->will($this->returnValue($package));
 
-        $console = $this->getMockBuilder('Console')
+        $console = $this->getMockBuilder('Composer\IO\ConsoleIO')
                 ->setMethods(['write', 'ask'])
                 ->getMock();
         $console->expects($this->any())
@@ -79,7 +79,7 @@ class ScriptTest extends WebTestCase
         // Remember, everytime you broke Demeter's law, God kills a kitten. Please think of the kitten
 
         $this->assertFileNotExists($this->generated);
-        AppInstaller::installPlatform($event);
+        Script::installPlatform($event);
         $this->assertFileExists($this->generated);
 
         $customCfg = \Symfony\Component\Yaml\Yaml::parse(file_get_contents($this->generated));
