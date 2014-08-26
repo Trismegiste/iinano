@@ -6,25 +6,23 @@
 
 namespace Trismegiste\Prelude\Tests\Composer;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Trismegiste\Prelude\Composer\Script;
 
 /**
  * ScriptTest tests the auto-installer
  */
-class ScriptTest extends WebTestCase
+class ScriptTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $client;
-    protected $cacheDir;
+    protected $tempDir;
     static protected $subDir = '/config/platform/';
     protected $generated;
 
     protected function setUp()
     {
-        $this->client = self::createClient();
-        $this->cacheDir = self::$kernel->getContainer()->getParameter('kernel.cache_dir');
-        $baseDir = $this->cacheDir . static::$subDir;
+        $this->tempDir = sys_get_temp_dir();
+        $baseDir = $this->tempDir . static::$subDir;
         if (!file_exists($baseDir)) {
             mkdir($baseDir, 0777, true);
         }
@@ -45,12 +43,7 @@ class ScriptTest extends WebTestCase
                 ->getMock();
         $package->expects($this->once())
                 ->method('getExtra')
-                ->will($this->returnValue([
-                            // I will generate the config in the cache. It's a little ugly
-                            // but who cares ? Furthermore, it's only in the test environment
-                            // so there's no security issue
-                            'symfony-app-dir' => $this->cacheDir,
-        ]));
+                ->will($this->returnValue(['symfony-app-dir' => $this->tempDir]));
 
         $composer = $this->getMockBuilder('Composer')
                 ->setMethods(['getPackage'])

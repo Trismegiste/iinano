@@ -7,13 +7,14 @@
 namespace Trismegiste\Prelude\Composer;
 
 use Composer\IO\ConsoleIO;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * InstallApp is a CLI app for installing a Symfony app
  * (called by Composer script)
  * 
  * Main purpose: It decouples the install script from Composer
- * for easy testing/mockuping
+ * for easy testing/mockuping and does not violate Demeter's Law
  */
 class InstallApp
 {
@@ -45,13 +46,13 @@ class InstallApp
         if (!file_exists($dest)) {
             $this->composerIO->write("<info>Configuring parameters for $platformName :</info>");
 
-            $defaultParam = \Symfony\Component\Yaml\Yaml::parse($template);
+            $defaultParam = Yaml::parse($template);
             foreach ($defaultParam['parameters'] as $key => $val) {
                 $override = $this->composerIO->ask("<question>$key</question> [$val] = ", $val);
                 $newValues[$key] = $override;
             }
             $newConfig['parameters'] = $newValues;
-            file_put_contents($dest, \Symfony\Component\Yaml\Yaml::dump($newConfig));
+            file_put_contents($dest, Yaml::dump($newConfig));
 
             $this->composerIO->write("Writing parameters to <comment>$dest</comment>");
         }
