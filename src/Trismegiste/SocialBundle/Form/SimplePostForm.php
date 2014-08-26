@@ -16,7 +16,6 @@ class SimplePostForm extends AbstractType
 
     public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
         $builder->add("title")
                 ->add('body','textarea')
                 ->add('save', 'submit');
