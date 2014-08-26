@@ -7,12 +7,12 @@
 namespace Trismegiste\Prelude\Tests\Composer;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Trismegiste\Prelude\Composer\AppInstaller;
+use Trismegiste\Prelude\Composer\Script;
 
 /**
- * AppInstallerTest tests the auto-installer
+ * ScriptTest tests the auto-installer
  */
-class AppInstallerTest extends WebTestCase
+class ScriptTest extends WebTestCase
 {
 
     protected $client;

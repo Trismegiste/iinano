@@ -9,9 +9,9 @@ namespace Trismegiste\Prelude\Composer;
 use Composer\Script\Event;
 
 /**
- * AppInstaller is an auto-installer for platform specific parameters
+ * Script is an auto-installer for platform specific parameters
  */
-class AppInstaller
+class Script
 {
 
     /**
