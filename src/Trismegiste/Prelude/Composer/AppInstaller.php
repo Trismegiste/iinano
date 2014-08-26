@@ -1,10 +1,10 @@
 <?php
 
 /*
- * iinano
+ * Prelude
  */
 
-namespace Trismegiste\SocialBundle\Composer;
+namespace Trismegiste\Prelude\Composer;
 
 use Composer\Script\Event;
 

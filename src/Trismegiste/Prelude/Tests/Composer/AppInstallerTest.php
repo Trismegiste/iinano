@@ -1,13 +1,13 @@
 <?php
 
 /*
- * Iinano
+ * Prelude
  */
 
-namespace Trismegiste\SocialBundle\Tests\Composer;
+namespace Trismegiste\Prelude\Tests\Composer;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Trismegiste\SocialBundle\Composer\AppInstaller;
+use Trismegiste\Prelude\Composer\AppInstaller;
 
 /**
  * AppInstallerTest tests the auto-installer
