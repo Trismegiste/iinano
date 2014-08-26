@@ -8,6 +8,10 @@
         {
             "type": "git",
             "url": "c:/Users/flo/Documents/NetBeansProjects/Socialist"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/Trismegiste/symfony-prelude.git"
         }
     ],
     "require": {
@@ -18,7 +22,8 @@
         "symfony/monolog-bundle": "2.3.*",
         "sensio/distribution-bundle": "2.3.*",
         "trismegiste/dokudoki": "dev-master",
-        "trismegiste/socialist": "dev-master"
+        "trismegiste/socialist": "dev-master",
+        "trismegiste/symfony-prelude": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
