@@ -28,7 +28,7 @@ class ContentControllerTest extends WebTestCasePlus
         $form = $crawler->selectButton('Sign in')->form();
         // set some values
         $form['_username'] = 'kirk';
-        $form['_password'] = 'aaaa';
+        $form['_password'] = 'mellon';
         $this->client->submit($form);
         $response = $this->client->getResponse();
         $this->assertTrue($response->isRedirect($this->generateUrl('content_index')));

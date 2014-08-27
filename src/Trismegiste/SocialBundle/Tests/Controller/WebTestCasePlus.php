@@ -57,7 +57,7 @@ class WebTestCasePlus extends WebTestCase
     protected function addUserFixture($nickname)
     {
         $repo = $this->getService('social.netizen.repository');
-        $user = $repo->create($nickname);
+        $user = $repo->create($nickname, 'mellon');
         $repo->persist($user);
     }
 
