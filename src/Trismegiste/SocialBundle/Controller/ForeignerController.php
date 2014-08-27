@@ -35,4 +35,11 @@ class ForeignerController extends Template
         return $this->render('TrismegisteSocialBundle:Foreigner:login.html.twig', ['error' => $error]);
     }
 
+    public function registerAction()
+    {
+        $form = $this->createForm(new \Trismegiste\SocialBundle\Form\RegisterForm());
+
+        return $this->render('TrismegisteSocialBundle:Foreigner:register.html.twig', ['register' => $form->createView()]);
+    }
+
 }
