@@ -9,5 +9,6 @@
     </transformer>
     <files>
         <directory>src</directory>
+        <ignore>Tests/</ignore>
     </files>
 </phpdoc>
