@@ -51,6 +51,8 @@ class SimplePostController extends ContentController
         $repo = $this->getRepository();
         $post = $repo->findByPk($id);
 
+        $this->checkOwningRight($post);
+
         $form = $this->createForm(new SimplePostForm()
                 , $post
                 , ['action' => $this->generateUrl('simplepost_edit', ['id' => $id])]

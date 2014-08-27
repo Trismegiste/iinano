@@ -22,6 +22,10 @@
         <service id="twig.humandate.renderer" class="Trismegiste\SocialBundle\Utils\HumanDateExtension">
             <tag name="twig.extension"/>
         </service>
+        
+        <service id="security.owner.voter" class="Trismegiste\SocialBundle\Security\OwnerVoter">
+            <tag name="security.voter"/>
+        </service>
 
     </services>
 </container>

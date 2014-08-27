@@ -7,6 +7,8 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Trismegiste\Socialist\Content;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * ContentController is a template for the wall/dashboard
@@ -32,6 +34,13 @@ class ContentController extends Template
         $parameters['listing'] = $it;
 
         return parent::render($view, $parameters, $response);
+    }
+
+    protected function checkOwningRight(Content $post)
+    {
+        if (!$this->get('security.context')->isGranted('OWNER', $post)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
     }
 
 }

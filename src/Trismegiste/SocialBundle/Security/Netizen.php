@@ -55,4 +55,14 @@ class Netizen extends User implements UserInterface
         $this->cred = $strat;
     }
 
+    /**
+     * For further support in authenticationProvider or security listener
+     * 
+     * @return string fqcn
+     */
+    public function getCredentialType()
+    {
+        return get_class($this->cred);
+    }
+
 }
