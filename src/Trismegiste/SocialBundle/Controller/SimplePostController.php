@@ -64,6 +64,11 @@ class SimplePostController extends ContentController
     public function deleteAction($id)
     {
         try {
+            $repo = $this->getRepository();
+            $post = $repo->findByPk($id);
+
+            $this->checkOwningRight($post);
+
             $coll = $this->getCollection();
             $coll->remove(['_id' => new \MongoId($id)]);
             $this->pushFlash('notice', 'Message deleted');
