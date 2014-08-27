@@ -13,15 +13,22 @@ class Internal implements Strategy
 {
 
     private $password;
+    private $salt;
 
-    public function getCredential()
+    public function getPassword()
     {
         return $this->password;
     }
 
-    public function __construct($pwd)
+    public function __construct($pwd, $salt)
     {
         $this->password = $pwd;
+        $this->salt = $salt;
+    }
+
+    public function getSalt()
+    {
+        return $this->salt;
     }
 
 }

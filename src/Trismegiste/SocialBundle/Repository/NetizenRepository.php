@@ -11,6 +11,7 @@ use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 use Trismegiste\SocialBundle\Security\Netizen;
 use Trismegiste\Socialist\Author;
 use Trismegiste\SocialBundle\Security\Credential\Internal;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * NetizenRepository is a repository for Netizen (and also Author)
@@ -22,11 +23,13 @@ class NetizenRepository implements NetizenRepositoryInterface
 
     protected $repository;
     protected $classAlias;
+    protected $encoderFactory;
 
-    public function __construct(RepositoryInterface $repo, $alias)
+    public function __construct(RepositoryInterface $repo, EncoderFactoryInterface $encoderFactory, $alias)
     {
         $this->repository = $repo;
         $this->classAlias = $alias;
+        $this->encoderFactory = $encoderFactory;
     }
 
     public function findByNickname($nick)
@@ -42,7 +45,14 @@ class NetizenRepository implements NetizenRepositoryInterface
     public function create($nick, $password)
     {
         // @todo check on unique nickname here ? => yes
-        return new Netizen(new Author($nick), new Internal($password));
+        $user = new Netizen(new Author($nick));
+        $salt = \rand(100, 999);
+        $password = $this->encoderFactory
+                ->getEncoder($user)
+                ->encodePassword($password, $salt);
+        $user->setCredential(new Internal($password, $salt));
+        
+        return $user;
     }
 
     public function persist(Netizen $obj)

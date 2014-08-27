@@ -30,7 +30,7 @@ class Netizen extends User implements UserInterface
 
     public function getPassword()
     {
-        return $this->cred->getCredential();
+        return $this->cred->getPassword();
     }
 
     public function getRoles()
@@ -41,7 +41,7 @@ class Netizen extends User implements UserInterface
 
     public function getSalt()
     {
-        return null;
+        return $this->cred->getSalt();
     }
 
     public function getUsername()
@@ -49,9 +49,8 @@ class Netizen extends User implements UserInterface
         return $this->author->getNickname();
     }
 
-    public function __construct(AuthorInterface $author, Credential\Strategy $strat)
+    public function setCredential(Credential\Strategy $strat)
     {
-        parent::__construct($author);
         $this->cred = $strat;
     }
 

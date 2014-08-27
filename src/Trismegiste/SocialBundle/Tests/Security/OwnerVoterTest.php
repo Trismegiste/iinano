@@ -9,9 +9,7 @@ namespace Trismegiste\SocialBundle\Tests\Security;
 use Trismegiste\SocialBundle\Security\OwnerVoter;
 use Trismegiste\Socialist\SimplePost;
 use Trismegiste\Socialist\Author;
-use Trismegiste\SocialBundle\Security\Netizen;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Trismegiste\SocialBundle\Security\Credential\Internal;
 
 /**
  * OwnerVoterTest tests the voter OwnerVoter
@@ -26,7 +24,14 @@ class OwnerVoterTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->sut = new OwnerVoter();
-        $this->currentUser = new Netizen(new Author('kirk'), new Internal('ncc1701'));
+
+        $this->currentUser = $this->getMockBuilder('Trismegiste\SocialBundle\Security\Netizen')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->currentUser->expects($this->any())
+                ->method('getAuthor')
+                ->will($this->returnValue(new Author('kirk')));
+
         $this->token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $this->token->expects($this->any())
                 ->method('getUser')

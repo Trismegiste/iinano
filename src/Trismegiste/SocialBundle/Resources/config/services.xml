@@ -13,6 +13,7 @@
         
         <service id="social.netizen.repository" class="Trismegiste\SocialBundle\Repository\NetizenRepository">
             <argument type="service" id="dokudoki.repository"/>
+            <argument type="service" id="security.encoder_factory"/>
         </service>            
         
         <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">
