@@ -30,7 +30,7 @@ class CreateUserTest extends WebTestCase
             'command' => $command->getName(),
             'nickname' => 'scotty'
         ]);
-        $this->assertRegExp('/.../', $commandTester->getDisplay());
+        $this->assertRegExp('#scotty#', $commandTester->getDisplay());
     }
 
 }

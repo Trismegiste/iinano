@@ -10,6 +10,7 @@ use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 use Trismegiste\SocialBundle\Security\Netizen;
 use Trismegiste\Socialist\Author;
+use Trismegiste\SocialBundle\Security\Credential\Internal;
 
 /**
  * NetizenRepository is a repository for Netizen (and also Author)
@@ -38,10 +39,10 @@ class NetizenRepository implements NetizenRepositoryInterface
         return $obj;
     }
 
-    public function create($nick)
+    public function create($nick, $password)
     {
         // @todo check on unique nickname here ? => yes
-        return new Netizen(new Author($nick));
+        return new Netizen(new Author($nick), new Internal($password));
     }
 
     public function persist(Netizen $obj)

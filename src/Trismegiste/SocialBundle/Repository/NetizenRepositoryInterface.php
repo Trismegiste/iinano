@@ -27,10 +27,11 @@ interface NetizenRepositoryInterface
      * Creates a new Netizen from mandatory datas
      * 
      * @param string $nick
+     * @param string $pwd
      * 
      * @return \Trismegiste\SocialBundle\Security\Netizen
      */
-    public function create($nick);
+    public function create($nick, $pwd);
 
     /**
      * Persists a Netizen into the db
