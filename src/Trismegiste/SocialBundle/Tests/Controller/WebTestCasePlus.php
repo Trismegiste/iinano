@@ -42,9 +42,12 @@ class WebTestCasePlus extends WebTestCase
 
     protected function logIn($nick)
     {
+        $repo = $this->getService('social.netizen.repository');
+        $user = $repo->findByNickname($nick);
+
         $session = $this->client->getContainer()->get('session');
         $firewall = 'secured_area';
-        $token = new UsernamePasswordToken(new Netizen(new Author($nick)), null, $firewall, array('ROLE_USER'));
+        $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_USER'));
         $session->set('_security_' . $firewall, serialize($token));
         $session->save();
         $cookie = new Cookie($session->getName(), $session->getId());

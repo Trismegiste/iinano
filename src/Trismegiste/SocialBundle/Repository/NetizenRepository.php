@@ -49,4 +49,9 @@ class NetizenRepository implements NetizenRepositoryInterface
         $this->repository->persist($obj);
     }
 
+    public function findByPk($id)
+    {
+        return $this->repository->findByPk($id);
+    }
+
 }
