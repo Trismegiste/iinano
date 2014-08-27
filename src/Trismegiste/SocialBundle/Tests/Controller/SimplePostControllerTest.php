@@ -32,6 +32,7 @@ class SimplePostControllerTest extends WebTestCasePlus
         $this->collection->drop();
         $this->assertCount(0, $this->collection->find());
         $this->addUserFixture('kirk');
+        $this->addUserFixture('spock');
     }
 
     public function testCreateFirstPost()
@@ -61,7 +62,7 @@ class SimplePostControllerTest extends WebTestCasePlus
     public function testEdit($pk)
     {
         $crawler = $this->getPage('content_index');
-        $link = $crawler->selectLink('Edit')->link();
+        $link = $crawler->filter('div.publishing')->selectLink('Edit')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
         $this->client->submit($form, ['simple_post' => ['title' => __CLASS__, 'body' => __METHOD__]]);
@@ -91,6 +92,42 @@ class SimplePostControllerTest extends WebTestCasePlus
         $crawler = $this->client->click($link);
 
         $this->assertCount(1, $this->contentRepo->findLastEntries());
+    }
+
+    public function testNoEditFromOther()
+    {
+        //override user
+        $this->logIn('spock');
+        $crawler = $this->getPage('content_index');
+        $this->assertCount(0, $crawler->filter('div.publishing')->selectLink('Edit'));
+    }
+
+    public function testHackEditFromOther()
+    {
+        //override user
+        $this->logIn('spock');
+        $crawler = $this->getPage('content_index');
+        $anchor = $crawler->filter("div.publishing a[id^=anchor]")
+                        ->eq(0)->attr('id');
+        preg_match('#^anchor-([\da-f]{24})$#', $anchor, $match);
+        $pk = $match[1];
+        // try to get the form edit
+        $crawler = $this->getPage('simplepost_edit', ['id' => $pk]);
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+
+        return $pk;
+    }
+
+    /**
+     * @depends testHackEditFromOther
+     */
+    public function testHackDeleteFromOther($pk)
+    {
+        //override user
+        $this->logIn('spock');
+        // try to delete
+        $crawler = $this->getPage('simplepost_delete', ['id' => $pk]);
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
 
 }

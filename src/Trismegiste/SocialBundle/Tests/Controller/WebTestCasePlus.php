@@ -35,6 +35,9 @@ class WebTestCasePlus extends WebTestCase
         return $this->getService('router')->generate($route, $param, \Symfony\Component\Routing\Router::ABSOLUTE_URL);
     }
 
+    /**
+     * @return \Symfony\Component\DomCrawler\Crawler
+     */
     protected function getPage($route, $param = [])
     {
         return $this->client->request('GET', $this->generateUrl($route, $param));
