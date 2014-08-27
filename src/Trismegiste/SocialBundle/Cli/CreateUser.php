@@ -22,18 +22,22 @@ class CreateUser extends ContainerAwareCommand
     {
         $this->setName('social:user:create')
                 ->setDescription('Create a user and privileges')
-                ->addArgument('nickname', InputArgument::REQUIRED);
+                ->addArgument('nickname', InputArgument::REQUIRED)
+                ->addArgument('password', InputArgument::REQUIRED);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $nickname = $input->getArgument('nickname');
+        $password = $input->getArgument('password');
         $output->writeln("Create $nickname");
 
-        $user = $this->getContainer()->get('social.netizen.repository')
-                ->create($nickname);
+        $user = $this->getContainer()
+                ->get('social.netizen.repository')
+                ->create($nickname, $password);
 
-        $this->getContainer()->get('dokudoki.repository')
+        $this->getContainer()
+                ->get('dokudoki.repository')
                 ->persist($user);
     }
 

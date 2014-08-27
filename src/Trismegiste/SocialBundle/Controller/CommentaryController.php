@@ -49,6 +49,8 @@ class CommentaryController extends ContentController
         $pub = $this->getRepository()->findByPk($id);
         $commentary = $pub->getCommentaryByUuid($uuid);
 
+        $this->checkOwningRight($commentary);
+
         $form = $this->createForm(new CommentaryForm(), $commentary);
 
         $form->handleRequest($this->getRequest());
@@ -76,6 +78,8 @@ class CommentaryController extends ContentController
     {
         $pub = $this->getRepository()->findByPk($id);
         $commentary = $pub->getCommentaryByUuid($uuid);
+
+        $this->checkOwningRight($commentary);
 
         $pub->detachCommentary($commentary);
         try {

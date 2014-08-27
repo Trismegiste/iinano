@@ -28,9 +28,10 @@ class CreateUserTest extends WebTestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
-            'nickname' => 'scotty'
+            'nickname' => 'scotty',
+            'password' => 'warp'
         ]);
-        $this->assertRegExp('/.../', $commandTester->getDisplay());
+        $this->assertRegExp('#scotty#', $commandTester->getDisplay());
     }
 
 }

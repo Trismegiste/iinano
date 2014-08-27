@@ -6,6 +6,8 @@
 
 namespace Trismegiste\SocialBundle\Repository;
 
+use Trismegiste\SocialBundle\Security\Netizen;
+
 /**
  * NetizenRepositoryInterface is a contract for a NetizenRepository
  */
@@ -25,8 +27,23 @@ interface NetizenRepositoryInterface
      * Creates a new Netizen from mandatory datas
      * 
      * @param string $nick
+     * @param string $pwd
      * 
      * @return \Trismegiste\SocialBundle\Security\Netizen
      */
-    public function create($nick);
+    public function create($nick, $pwd);
+
+    /**
+     * Persists a Netizen into the db
+     * 
+     * @param \Trismegiste\SocialBundle\Repository\Netizen $obj
+     */
+    public function persist(Netizen $obj);
+
+    /**
+     * Retrieve a Netizen by its pk
+     * 
+     * @param string $id
+     */
+    public function findByPk($id);
 }

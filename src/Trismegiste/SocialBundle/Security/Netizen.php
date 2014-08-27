@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Security;
 
 use Trismegiste\Socialist\User;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Trismegiste\Socialist\AuthorInterface;
 
 /**
  * Netizen is a User with features of login, security 
@@ -16,8 +17,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Netizen extends User implements UserInterface
 {
 
-    // Listing of strategies for connection
-    protected $connect = [];
+    /**
+     * A strategy for authentication
+     * @var Credential\Strategy 
+     */
+    protected $cred;
 
     public function eraseCredentials()
     {
@@ -26,8 +30,7 @@ class Netizen extends User implements UserInterface
 
     public function getPassword()
     {
-        // @todo implement and change encoding
-        return 'aaaa';
+        return $this->cred->getCredential();
     }
 
     public function getRoles()
@@ -44,6 +47,22 @@ class Netizen extends User implements UserInterface
     public function getUsername()
     {
         return $this->author->getNickname();
+    }
+
+    public function __construct(AuthorInterface $author, Credential\Strategy $strat)
+    {
+        parent::__construct($author);
+        $this->cred = $strat;
+    }
+
+    /**
+     * For further support in authenticationProvider or security listener
+     * 
+     * @return string fqcn
+     */
+    public function getCredentialType()
+    {
+        return get_class($this->cred);
     }
 
 }

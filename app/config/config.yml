@@ -52,6 +52,7 @@ dokudoki:
         %user_class_alias%: 'Trismegiste\SocialBundle\Security\Netizen'
         author: 'Trismegiste\Socialist\Author'
         comm: 'Trismegiste\Socialist\Commentary'
+        intern: 'Trismegiste\SocialBundle\Security\Credential\Internal'
 
 trismegiste_social:
     alias: 
