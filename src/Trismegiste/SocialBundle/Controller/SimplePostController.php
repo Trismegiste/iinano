@@ -8,7 +8,7 @@ namespace Trismegiste\SocialBundle\Controller;
 
 use Trismegiste\Socialist\SimplePost;
 use Symfony\Component\Form\Form;
-use Trismegiste\SocialBundle\Form\SimplePostForm;
+use Trismegiste\SocialBundle\Form\SimplePostType;
 
 /**
  * SimplePostController is the main controller for CRUD of SimplePost
@@ -38,7 +38,7 @@ class SimplePostController extends ContentController
 
     public function createAction()
     {
-        $form = $this->createForm(new SimplePostForm()
+        $form = $this->createForm(new SimplePostType()
                 , new SimplePost($this->getAuthor())
                 , ['action' => $this->generateUrl('simplepost_create')]
         );
@@ -53,7 +53,7 @@ class SimplePostController extends ContentController
 
         $this->checkOwningRight($post);
 
-        $form = $this->createForm(new SimplePostForm()
+        $form = $this->createForm(new SimplePostType()
                 , $post
                 , ['action' => $this->generateUrl('simplepost_edit', ['id' => $id])]
         );
