@@ -64,4 +64,8 @@
         <requirement key="uuid">[\da-f]{40}</requirement>
     </route>
     
+    <route id="netizen_show" pattern="/profile">
+        <default key="_controller">TrismegisteSocialBundle:Netizen:showProfile</default>
+    </route>
+        
 </routes>

@@ -8,3 +8,29 @@
     {% include 'TrismegisteSocialBundle:Content:simplepost_show.html.twig' %}
 {% endfor %}
 {% endblock %}
+
+        
+{% block navbar %}
+<a href="#"><img src="http://placehold.it/300x240&text=[img]"/></a>
+<h5><a href="{{ path('netizen_show') }}">{{ app.user.author.nickname }}</a></h5>
+<div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
+    <section class="section">
+        <h5 class="title"><a href="#">Section 1</a></h5>
+    </section>
+    <section class="section">
+        <h5 class="title"><a href="#">Section 2</a></h5>
+    </section>
+    <section class="section">
+        <h5 class="title"><a href="#">Section 3</a></h5>
+    </section>
+    <section class="section">
+        <h5 class="title"><a href="#">Section 4</a></h5>
+    </section>
+    <section class="section">
+        <h5 class="title"><a href="#">Section 5</a></h5>
+    </section>
+    <section class="section">
+        <h5 class="title"><a href="#">Section 6</a></h5>
+    </section>
+</div>
+{% endblock navbar %}
