@@ -11,27 +11,23 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 
 /**
- * SimplePostType is a form for SimplePost
+ * CommentaryType is a form for a Commentary
  */
-class SimplePostType extends AbstractType
+class CommentaryType extends AbstractType
 {
 
     public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
-        $builder->add("title", 'text', ['constraints' => [
+        $builder->add("message", 'textarea', ['constraints' => [
                         new NotBlank(),
-                        new Length(['min' => 3, 'max' => 80])
-            ]])
-                ->add('body', 'textarea', ['constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 10, 'max' => 280])
+                        new Length(['min' => 3, 'max' => 280])
             ]])
                 ->add('save', 'submit');
     }
 
     public function getName()
     {
-        return 'simple_post';
+        return 'commentary';
     }
 
 }

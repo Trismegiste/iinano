@@ -6,7 +6,7 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
-use Trismegiste\SocialBundle\Form\CommentaryForm;
+use Trismegiste\SocialBundle\Form\CommentaryType;
 use Trismegiste\Socialist\Commentary;
 
 /**
@@ -18,7 +18,7 @@ class CommentaryController extends ContentController
     public function addOnPublishingAction($id)
     {
         $pub = $this->getRepository()->findByPk($id);
-        $form = $this->createForm(new CommentaryForm(), new Commentary($this->getAuthor()));
+        $form = $this->createForm(new CommentaryType(), new Commentary($this->getAuthor()));
 
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
@@ -51,7 +51,7 @@ class CommentaryController extends ContentController
 
         $this->checkOwningRight($commentary);
 
-        $form = $this->createForm(new CommentaryForm(), $commentary);
+        $form = $this->createForm(new CommentaryType(), $commentary);
 
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
