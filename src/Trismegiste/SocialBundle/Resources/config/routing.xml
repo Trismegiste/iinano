@@ -67,5 +67,7 @@
     <route id="netizen_show" pattern="/profile">
         <default key="_controller">TrismegisteSocialBundle:Netizen:showProfile</default>
     </route>
-        
+    <route id="netizen_avatar" pattern="/avatar">
+        <default key="_controller">TrismegisteSocialBundle:Netizen:sendAvatar</default>
+    </route>        
 </routes>
