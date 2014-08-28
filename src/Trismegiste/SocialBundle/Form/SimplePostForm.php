@@ -9,9 +9,9 @@ namespace Trismegiste\SocialBundle\Form;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * SimplePostForm is a form for SimplePost
+ * SimplePostType is a form for SimplePost
  */
-class SimplePostForm extends AbstractType
+class SimplePostType extends AbstractType
 {
 
     public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)

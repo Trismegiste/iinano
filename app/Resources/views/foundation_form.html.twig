@@ -1,0 +1,28 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_errors %}
+{% if errors|length > 0 %}
+<div class="row">
+    <div class="columns">
+        <div data-alert class="alert-box alert">
+            <ul>
+            {% for error in errors %}
+                <li>{{ error.message }}</li>
+            {% endfor %}
+            </ul>
+            <a href="#" class="close">&times;</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock form_errors %}
+
+{% block form_widget_errors %}
+{% if errors|length > 0 %}
+    <small class="error">
+    {% for error in errors %}
+        {{ error.message }}{% if not loop.last %}<br />{% endif %}
+    {% endfor %}
+    </small>
+{% endif %}
+{% endblock form_widget_errors %}

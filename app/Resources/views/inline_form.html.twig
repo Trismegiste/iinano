@@ -1,0 +1,13 @@
+{% extends '::foundation_form.html.twig' %}
+
+{% block form_row %}
+<div class="row">
+    <div class="small-3 columns">
+        <label for="right-label" class="right inline">{{ form_label(form) }}</label>
+    </div>
+    <div class="small-9 columns">
+        {{ form_widget(form) }}
+    </div>
+    {{ block('form_widget_errors') }}
+</div>
+{% endblock form_row %}
