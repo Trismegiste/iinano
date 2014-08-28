@@ -9,6 +9,8 @@ namespace Trismegiste\SocialBundle\Controller;
 use Trismegiste\SocialBundle\Controller\Template;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Trismegiste\SocialBundle\Security\Netizen;
 
 /**
  * ForeignerController is a controller for unathentificated user
@@ -42,11 +44,33 @@ class ForeignerController extends Template
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+
+                $profile = $form->getData();
+                $user = $this->get('social.netizen.repository')
+                        ->create($profile['nickname'], $profile['password']);
+                // @todo no unique name check
+                $this->get('dokudoki.repository')->persist($user);
+
+                $this->authenticateAccount($user);
+
+                return $this->redirectRouteOk('content_index');
+            } else {
+                
+            }
         }
 
         return $this->render('TrismegisteSocialBundle:Foreigner:register.html.twig', ['register' => $form->createView()]);
+    }
+
+    /**
+     * Automatic post-registration user authentication
+     */
+    protected function authenticateAccount(Netizen $account)
+    {
+        $token = new UsernamePasswordToken($account, null, 'secured_area', $account->getRoles());
+        $this->get('security.context')->setToken($token);
     }
 
 }
