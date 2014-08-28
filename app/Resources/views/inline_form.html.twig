@@ -5,9 +5,9 @@
     <div class="small-3 columns">
         <label for="right-label" class="right inline {% if form.vars.errors|length > 0 %}error{% endif %}">{{- form_label(form) -}}</label>
     </div>
-    <div class="small-9 columns">
+    <div class="small-9 columns {% if form.vars.errors|length > 0 %}error{% endif %}">
         {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
     </div>
-    {{- form_errors(form) -}}
 </div>
 {% endblock form_row %}
