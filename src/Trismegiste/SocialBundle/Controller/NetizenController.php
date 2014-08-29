@@ -27,7 +27,7 @@ class NetizenController extends Template
 
     public function sendAvatarAction()
     {
-        $basePath = $this->container->getParameter('kernel.root_dir') . '/static/';
+        $basePath = $this->container->getParameter('kernel.root_dir') . '/../storage/';
         $file = $basePath . 'hinaitigo.png';
 
         $response = new Response();

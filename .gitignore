@@ -3,10 +3,10 @@
 /app/cache/*
 /app/config/parameters.yml
 /app/logs/*
-/app/static/*
+/storage/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
-!/app/static/.gitkeep
+!/storage/.gitkeep
 /build/
 /vendor/
 /bin/
