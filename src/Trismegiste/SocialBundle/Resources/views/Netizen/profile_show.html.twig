@@ -1,6 +1,12 @@
 {% extends 'TrismegisteSocialBundle::layout.html.twig' %}
 
 {% block content %}
-{{ dump(app.user) }}
-<img src="{{ path('netizen_avatar') }}"/>
+<div class="small-3 column">
+    <img src="{{ path('netizen_avatar') }}"/>
+</div>
+<div class="small-6 column">
+{{ profile.nickname }}
+</div>
+<div class="small-3 column">
+</div>
 {% endblock content %}

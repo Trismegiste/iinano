@@ -29,6 +29,7 @@ class RegisterType extends AbstractType
             ]])
                 ->add('fullName', 'text', ['constraints' => new NotBlank()])
                 ->add('dateOfBirth', 'date')
+                ->add('avatar', 'file')
                 ->add('save', 'submit', ['attr' => ['class' => 'right']]);
     }
 

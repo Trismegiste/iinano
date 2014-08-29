@@ -7,7 +7,6 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 use Trismegiste\SocialBundle\Controller\Template;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -18,7 +17,9 @@ class NetizenController extends Template
 
     public function showProfileAction()
     {
-        return $this->render('TrismegisteSocialBundle:Netizen:profile_show.html.twig');
+        $profile = $this->getAuthor();
+        
+        return $this->render('TrismegisteSocialBundle:Netizen:profile_show.html.twig', ['profile' => $profile]);
     }
 
     public function sendAvatarAction()
