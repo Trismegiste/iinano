@@ -23,6 +23,11 @@ class Netizen extends User implements UserInterface
      */
     protected $cred;
 
+    /**
+     * @var Profile
+     */
+    protected $profile;
+
     public function eraseCredentials()
     {
         
@@ -62,6 +67,16 @@ class Netizen extends User implements UserInterface
     public function getCredentialType()
     {
         return get_class($this->cred);
+    }
+
+    public function getProfile()
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(Profile $pr)
+    {
+        $this->profile = $pr;
     }
 
 }

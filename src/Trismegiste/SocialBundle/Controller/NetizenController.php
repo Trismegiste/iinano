@@ -17,9 +17,12 @@ class NetizenController extends Template
 
     public function showProfileAction()
     {
-        $profile = $this->getAuthor();
-        
-        return $this->render('TrismegisteSocialBundle:Netizen:profile_show.html.twig', ['profile' => $profile]);
+        $user = $this->getUser();
+
+        return $this->render('TrismegisteSocialBundle:Netizen:profile_show.html.twig', [
+                    'author' => $user->getAuthor(),
+                    'profile' => $user->getProfile()
+        ]);
     }
 
     public function sendAvatarAction()
