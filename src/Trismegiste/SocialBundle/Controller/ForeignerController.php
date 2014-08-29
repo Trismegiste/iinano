@@ -40,19 +40,14 @@ class ForeignerController extends Template
 
     public function registerAction(Request $request)
     {
-        $form = $this->createForm(new \Trismegiste\SocialBundle\Form\RegisterType());
+        $form = $this->createForm('netizen_register');
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-
-                $profile = $form->getData();
-                $user = $this->get('social.netizen.repository')
-                        ->create($profile['nickname'], $profile['password']);
-                // @todo no unique name check
+                $user = $form->getData();
                 $this->get('dokudoki.repository')->persist($user);
-
                 $this->authenticateAccount($user);
 
                 return $this->redirectRouteOk('content_index');

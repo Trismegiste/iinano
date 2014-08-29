@@ -28,5 +28,10 @@
             <tag name="security.voter"/>
         </service>
 
+        <service id="social.type.netizen.type" class="Trismegiste\SocialBundle\Form\RegisterType">
+            <argument type="service" id="social.netizen.repository"/>
+            <tag name="form.type" alias="netizen_register"/>
+        </service>
+
     </services>
 </container>
