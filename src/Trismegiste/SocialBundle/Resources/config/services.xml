@@ -39,5 +39,10 @@
             <tag name="form.type" alias="gender"/>
         </service>
 
+        <service id="social.validator.unique_nickname" class="Trismegiste\SocialBundle\Validator\UniqueNicknameValidator">
+            <argument type="service" id="social.netizen.repository"/>
+            <tag name="validator.constraint_validator" alias="unique_nickname"/>
+        </service>
+
     </services>
 </container>

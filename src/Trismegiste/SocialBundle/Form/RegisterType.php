@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Trismegiste\SocialBundle\Validator\UniqueNickname;
 
 /**
  * RegisterType is a form to register an account
@@ -32,7 +33,8 @@ class RegisterType extends AbstractType
         $builder->add('nickname', 'text', [
                     'constraints' => [
                         new NotBlank(),
-                        new Length(['min' => 5, 'max' => 20])
+                        new Length(['min' => 5, 'max' => 20]),
+                        new UniqueNickname()
                     ],
                     'mapped' => false
                 ])

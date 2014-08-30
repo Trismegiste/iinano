@@ -2,11 +2,14 @@
 
 {% block feed %}
 {% for content in listing %}
-    {%if not loop.first %}
-        <hr/>
-    {% endif %}
     {% include 'TrismegisteSocialBundle:Content:simplepost_show.html.twig' %}
+    <hr/>
 {% endfor %}
+<div class="row publishing">
+    <div class="small-12 column">
+        <a href="#" class="button small-12 secondary">More</a>
+    </div>
+</div>
 {% endblock %}
         
 {% block navbar %}

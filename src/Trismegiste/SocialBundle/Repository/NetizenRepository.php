@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * NetizenRepository is a repository for Netizen (and also Author)
  * 
  * @todo Is this a decorator ( ie implementing RepositoryInterface ) ?
+ * 
+ * @todo This class is no longer SRP => refactor
  */
 class NetizenRepository implements NetizenRepositoryInterface
 {
@@ -48,6 +50,7 @@ class NetizenRepository implements NetizenRepositoryInterface
     public function create($nick, $password)
     {
         // @todo check on unique nickname here ? => yes
+        //  db.dokudoki.ensureIndex({"author.nickname":1},{sparse:true, unique:true});
         $author = new Author($nick);
         $user = new Netizen($author);
 
@@ -91,6 +94,11 @@ class NetizenRepository implements NetizenRepositoryInterface
     public function getAvatarAbsolutePath($filename)
     {
         return $this->storage . $filename;
+    }
+
+    public function isExistingNickname($nick)
+    {
+        return !is_null($this->findByNickname($nick));
     }
 
 }
