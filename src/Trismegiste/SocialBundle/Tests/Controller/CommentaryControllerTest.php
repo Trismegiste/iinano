@@ -32,7 +32,7 @@ class CommentaryControllerTest extends WebTestCasePlus
     {
         $this->collection->drop();
         $this->assertCount(0, $this->collection->find());
-        $post = new SimplePost(new Author('kirk'));
+        $post = new SimplePost($this->createAuthor('kirk'));
         $this->getService('dokudoki.repository')->persist($post);
         $this->assertCount(1, $this->collection->find());
         $this->addUserFixture('kirk');

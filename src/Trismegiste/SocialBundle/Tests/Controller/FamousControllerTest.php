@@ -32,7 +32,7 @@ class FamousControllerTest extends WebTestCasePlus
     {
         $this->collection->drop();
         $this->assertCount(0, $this->collection->find());
-        $post = new SimplePost(new Author('kirk'));
+        $post = new SimplePost($this->createAuthor('kirk'));
         $this->getService('dokudoki.repository')->persist($post);
         $this->assertCount(1, $this->collection->find());
         $this->addUserFixture('kirk');
@@ -107,7 +107,7 @@ class FamousControllerTest extends WebTestCasePlus
         $it = $repo->findLastEntries(1);
         $it->rewind();
         $doc = $it->current();
-        $doc->attachCommentary(new Commentary(new Author('spock')));
+        $doc->attachCommentary(new Commentary($this->createAuthor('spock')));
         $repo->persist($doc);
         // click on the 'like' on the commentary
         $crawler = $this->getPage('content_index');

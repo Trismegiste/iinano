@@ -9,7 +9,6 @@ namespace Trismegiste\SocialBundle\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\BrowserKit\Cookie;
-use Trismegiste\SocialBundle\Security\Netizen;
 use Trismegiste\Socialist\Author;
 
 /**
@@ -61,7 +60,16 @@ class WebTestCasePlus extends WebTestCase
     {
         $repo = $this->getService('social.netizen.repository');
         $user = $repo->create($nickname, 'mellon');
+        $user->getAuthor()->setAvatar('00.jpg');
         $repo->persist($user);
+    }
+
+    protected function createAuthor($name)
+    {
+        $author = new Author($name);
+        $author->setAvatar('00.jpg');
+
+        return $author;
     }
 
 }
