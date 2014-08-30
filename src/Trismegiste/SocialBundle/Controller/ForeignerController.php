@@ -41,6 +41,7 @@ class ForeignerController extends Template
     public function registerAction(Request $request)
     {
         // @todo block all users full authenticated
+        $repo = $this->get('social.netizen.repository');
         $form = $this->createForm('netizen_register');
 
         $form->handleRequest($request);
@@ -51,8 +52,8 @@ class ForeignerController extends Template
                 $user = $form->getData();
                 $avatar = $form->get('avatar')->getData();
                 // persist
-                $this->get('social.avatar.repository')->persist($user->getAuthor(), $avatar);
-                $this->get('social.netizen.repository')->persist($user);
+                $repo->persist($user);
+                $repo->persist($user, $avatar);
                 $this->authenticateAccount($user);
 
                 return $this->redirectRouteOk('content_index');

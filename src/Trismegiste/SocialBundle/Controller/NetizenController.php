@@ -27,12 +27,10 @@ class NetizenController extends Template
 
     public function sendAvatarAction($filename)
     {
-        $file = $this->get('social.avatar.repository')
+        $file = $this->get('social.netizen.repository')
                 ->getAvatarAbsolutePath($filename);
 
-        $response = new Response('', 200, ['X-Sendfile' => $file, 'Content-Type' => 'image/jpeg']);
-
-        return $response;
+        return new Response('', 200, ['X-Sendfile' => $file, 'Content-Type' => 'image/jpeg']);
     }
 
 }

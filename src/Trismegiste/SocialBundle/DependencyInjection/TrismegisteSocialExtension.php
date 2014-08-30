@@ -29,7 +29,7 @@ class TrismegisteSocialExtension extends Extension
         // inject parameters from the validated config of this bundle
         // alias for the netizen class :
         $container->getDefinition('social.netizen.repository')
-                ->addArgument($config['alias']['user']);
+                ->replaceArgument(2, $config['alias']['user']);
         // list of aliases for content classes :
         $container->getDefinition('social.content.repository')
                 ->addArgument($config['alias']['content']);
