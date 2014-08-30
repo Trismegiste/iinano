@@ -1,13 +1,13 @@
 {% extends 'TrismegisteSocialBundle::layout.html.twig' %}
 
 {% block content %}
-<div class="small-3 column">
+<div class="large-4 small-12 column">
     <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
 </div>
-<div class="small-6 column">
+<div class="large-8 column">
 {{ author.nickname }}<br/>
-{{ dump(profile) }}
-</div>
-<div class="small-3 column">
+{{ profile.fullName }}<br/>
+{{ profile.gender }}<br/>
+{{ profile.dateOfBirth|date("Y/m/d") }}<br/>
 </div>
 {% endblock content %}
