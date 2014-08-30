@@ -30,7 +30,17 @@ class NetizenController extends Template
         $file = $this->get('social.netizen.repository')
                 ->getAvatarAbsolutePath($filename);
 
-        return new Response('', 200, ['X-Sendfile' => $file, 'Content-Type' => 'image/jpeg']);
+        $response = new Response();
+        $response->setLastModified(new \DateTime(filemtime($file)));
+
+        if ($response->isNotModified($this->getRequest())) {
+            return $response;
+        }
+
+        $response->headers->set('X-Sendfile', $file);
+        $response->headers->set('Content-Type', 'image/jpeg');
+
+        return $response;
     }
 
 }

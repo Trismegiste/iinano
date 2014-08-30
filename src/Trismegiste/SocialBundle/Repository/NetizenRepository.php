@@ -70,12 +70,16 @@ class NetizenRepository implements NetizenRepositoryInterface
         return $this->repository->findByPk($id);
     }
 
-    public function updateAvatar(Netizen $user, UploadedFile $fch)
+    public function updateAvatar(Netizen $user, UploadedFile $fch = null)
     {
         $author = $user->getAuthor();
-        $abstracted = $this->getAvatarName($author->getNickname()) . '.' . $fch->getClientOriginalExtension();
+        if (is_null($fch)) {
+            $abstracted = $user->getProfile()->gender == 'xx' ? "00.jpg" : '01.jpg';
+        } else {
+            $abstracted = $this->getAvatarName($author->getNickname()) . '.' . $fch->getClientOriginalExtension();
+            $fch->move($this->storage, $abstracted);
+        }
         $author->setAvatar($abstracted);
-        $fch->move($this->storage, $abstracted);
         $this->persist($user);
     }
 

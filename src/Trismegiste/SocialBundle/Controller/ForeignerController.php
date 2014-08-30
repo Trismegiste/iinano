@@ -48,12 +48,12 @@ class ForeignerController extends Template
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                // retrieve data
+                // only user data data
                 $user = $form->getData();
-                $avatar = $form->get('avatar')->getData();
-                // persist
                 $repo->persist($user);
-                $repo->persist($user, $avatar);
+                // then avatar
+                $avatar = $form->get('avatar')->getData();
+                $repo->updateAvatar($user, $avatar);
                 $this->authenticateAccount($user);
 
                 return $this->redirectRouteOk('content_index');

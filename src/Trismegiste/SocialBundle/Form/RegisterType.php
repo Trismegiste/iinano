@@ -43,7 +43,7 @@ class RegisterType extends AbstractType
                     ],
                     'mapped' => false
                 ])
-                ->add('avatar', 'file', ['mapped' => false])
+                ->add('avatar', 'file', ['required' => false, 'mapped' => false])
                 ->add('profile', new ProfileType())
                 ->add('save', 'submit', ['attr' => ['class' => 'right']]);
     }
