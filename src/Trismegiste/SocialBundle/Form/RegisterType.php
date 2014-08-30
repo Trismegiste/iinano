@@ -13,8 +13,6 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
 
 /**
  * RegisterType is a form to register an account
@@ -45,6 +43,7 @@ class RegisterType extends AbstractType
                     ],
                     'mapped' => false
                 ])
+                ->add('avatar', 'file', ['mapped' => false])
                 ->add('profile', new ProfileType())
                 ->add('save', 'submit', ['attr' => ['class' => 'right']]);
     }

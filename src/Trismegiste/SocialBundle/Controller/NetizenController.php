@@ -25,14 +25,12 @@ class NetizenController extends Template
         ]);
     }
 
-    public function sendAvatarAction()
+    public function sendAvatarAction($filename)
     {
-        $basePath = $this->container->getParameter('kernel.root_dir') . '/../storage/';
-        $file = $basePath . 'hinaitigo.png';
+        $file = $this->get('social.avatar.repository')
+                ->getAvatarAbsolutePath($filename);
 
-        $response = new Response();
-        $response->headers->set('X-Sendfile', $file);
-        $response->headers->set('Content-Type', 'image/png');
+        $response = new Response('', 200, ['X-Sendfile' => $file, 'Content-Type' => 'image/jpeg']);
 
         return $response;
     }

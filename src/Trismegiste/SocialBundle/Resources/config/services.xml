@@ -15,7 +15,11 @@
             <argument type="service" id="dokudoki.repository"/>
             <argument type="service" id="security.encoder_factory"/>
         </service>            
-        
+
+        <service id="social.avatar.repository" class="Trismegiste\SocialBundle\Repository\AvatarRepository">
+            <argument type="string">%kernel.root_dir%/../storage/</argument>
+        </service>            
+                
         <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">
             <argument type="service" id="social.netizen.repository"/>
         </service>

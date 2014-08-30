@@ -67,7 +67,8 @@
     <route id="netizen_show" pattern="/profile">
         <default key="_controller">TrismegisteSocialBundle:Netizen:showProfile</default>
     </route>
-    <route id="netizen_avatar" pattern="/avatar">
+    <route id="netizen_avatar" pattern="/avatar/{filename}">
         <default key="_controller">TrismegisteSocialBundle:Netizen:sendAvatar</default>
+        <requirement key="filename">[\da-f]+\.(jpg|png)</requirement>
     </route>        
 </routes>

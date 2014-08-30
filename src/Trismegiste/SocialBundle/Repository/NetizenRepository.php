@@ -45,13 +45,17 @@ class NetizenRepository implements NetizenRepositoryInterface
     public function create($nick, $password)
     {
         // @todo check on unique nickname here ? => yes
-        $user = new Netizen(new Author($nick));
+        $author = new Author($nick);
+//        $author->setAvatar(bin2hex($nick));
+
+        $user = new Netizen($author);
+
         $salt = \rand(100, 999);
         $password = $this->encoderFactory
                 ->getEncoder($user)
                 ->encodePassword($password, $salt);
         $user->setCredential(new Internal($password, $salt));
-        
+
         return $user;
     }
 

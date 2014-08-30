@@ -1,7 +1,7 @@
 {# Template for viewing one simple post root-entity #}
 <div class="row publishing">
     <div class="large-2 columns small-3">
-        <img src="http://placehold.it/80x80&text=[img]"/>
+        <img src="{{ path('netizen_avatar', {filename: content.author.avatar}) }}"/>
     </div>
     <div class="large-10 columns">
         {% set dropdown_id = 'drop' ~ content.id %}
