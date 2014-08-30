@@ -6,7 +6,8 @@
 /storage/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
-!/storage/.gitkeep
+!/storage/00.jpg
+!/storage/01.jpg
 /build/
 /vendor/
 /bin/

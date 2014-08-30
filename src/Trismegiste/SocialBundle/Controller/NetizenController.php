@@ -31,7 +31,7 @@ class NetizenController extends Template
                 ->getAvatarAbsolutePath($filename);
 
         $response = new Response();
-        $response->setLastModified(new \DateTime(filemtime($file)));
+        $response->setEtag(filemtime($file)); // @todo ETag is working and not LastModified : why ?
 
         if ($response->isNotModified($this->getRequest())) {
             return $response;
