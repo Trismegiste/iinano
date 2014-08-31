@@ -104,7 +104,7 @@ class FamousControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
         // add a commentary
         $repo = $this->getService('social.content.repository');
-        $it = $repo->findLastEntries(1);
+        $it = $repo->findLastEntries(0, 1);
         $it->rewind();
         $doc = $it->current();
         $doc->attachCommentary(new Commentary($this->createAuthor('spock')));
@@ -122,7 +122,7 @@ class FamousControllerTest extends WebTestCasePlus
         $crawler = $this->client->click($unlikeIter->link());
         $this->assertEquals(0, (int) $crawler->filter('div.commentary span.fan-count')->text());
         // check the database
-        $it = $repo->findLastEntries(1);
+        $it = $repo->findLastEntries(0, 1);
         $it->rewind();
         $doc = $it->current();
         $comments = $doc->getCommentary();

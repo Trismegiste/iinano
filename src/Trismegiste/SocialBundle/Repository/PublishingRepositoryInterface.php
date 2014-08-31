@@ -21,7 +21,7 @@ interface PublishingRepositoryInterface
      * 
      * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
      */
-    public function findLastEntries($limit = 20);
+    public function findLastEntries($offset = 0, $limit = 20);
 
     /**
      * Persists a published content
