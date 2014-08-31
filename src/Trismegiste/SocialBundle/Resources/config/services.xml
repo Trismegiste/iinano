@@ -11,8 +11,11 @@
             <argument type="service" id="security.context"/>
         </service>
 
+        <service id="social.image.tool" class="Trismegiste\SocialBundle\Utils\ImageRefiner"></service>
+
         <service id="social.avatar.repository" class="Trismegiste\SocialBundle\Repository\AvatarRepository">
             <argument type="string">%kernel.root_dir%/../storage/</argument>            
+            <argument type="service" id="social.image.tool"/>
         </service>   
                 
         <service id="social.netizen.repository" class="Trismegiste\SocialBundle\Repository\NetizenRepository">

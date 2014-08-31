@@ -24,7 +24,7 @@
 
         <div class="row">
             {% block content %}
-            <div class="large-3 columns ">
+            <div class="large-3 medium-6 small-12 columns ">
                 <div class="panel">
                     {% block navbar %}
                     <a href="#"><img src="http://placehold.it/300x240&text=[img]"/></a>
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <div class="large-6 columns">
+            <div class="large-6 medium-6 columns">
                 {% for flashMessage in app.session.flashbag.get('notice') %}
                 <div data-alert class="alert-box success">
                     {{ flashMessage }}

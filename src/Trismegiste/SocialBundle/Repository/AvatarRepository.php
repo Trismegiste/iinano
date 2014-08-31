@@ -9,6 +9,7 @@ namespace Trismegiste\SocialBundle\Repository;
 use Trismegiste\Socialist\AuthorInterface;
 use Trismegiste\SocialBundle\Security\Profile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Trismegiste\SocialBundle\Utils\ImageRefiner;
 
 /**
  * AvatarRepository is a repository for avatar
@@ -17,22 +18,26 @@ class AvatarRepository
 {
 
     protected $storage;
+    protected $imageTool;
 
-    public function __construct($path)
+    public function __construct($path, ImageRefiner $imageTool)
     {
         $this->storage = $path;
+        $this->imageTool = $imageTool;
     }
 
     public function updateAvatar(AuthorInterface $author, Profile $profile, UploadedFile $fch = null)
     {
-        if (is_null($fch)) {
-            // @todo need to injected from config as a map : (with default)
-            $abstracted = $profile->gender == 'xx' ? "00.jpg" : '01.jpg';
-        } else {
-            $abstracted = $this->getAvatarName($author->getNickname()) . '.' . $fch->getClientOriginalExtension();
+        // @todo need to injected from config as a map : (with default)
+        $abstracted = $profile->gender == 'xx' ? "00.jpg" : '01.jpg';
+
+        if (!is_null($fch) && ($fch->getMimeType() == 'image/jpeg')) {
+            $abstracted = $this->getAvatarName($author->getNickname()) . '.jpg';
             $fch->move($this->storage, $abstracted);
-            // @todo resize, compress...
+            $source = $this->storage . '/' . $abstracted;
+            $this->imageTool->makeThumbnailFrom($source, $source, 300);
         }
+
         $author->setAvatar($abstracted);
     }
 
