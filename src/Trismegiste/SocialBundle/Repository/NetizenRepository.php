@@ -18,8 +18,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * NetizenRepository is a repository for Netizen (and also Author)
  * 
  * @todo Is this a decorator ( ie implementing RepositoryInterface ) ?
- * 
- * @todo This class is no longer SRP => refactor
  */
 class NetizenRepository implements NetizenRepositoryInterface
 {

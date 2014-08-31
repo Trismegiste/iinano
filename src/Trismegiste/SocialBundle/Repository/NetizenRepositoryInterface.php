@@ -7,11 +7,10 @@
 namespace Trismegiste\SocialBundle\Repository;
 
 use Trismegiste\SocialBundle\Security\Netizen;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * NetizenRepositoryInterface is a contract for a NetizenRepository
- * 
- * @todo Many methods from implementation are missing in this contract 
  */
 interface NetizenRepositoryInterface
 {
@@ -46,6 +45,25 @@ interface NetizenRepositoryInterface
      * Retrieve a Netizen by its pk
      * 
      * @param string $id
+     * 
+     * @return \Trismegiste\SocialBundle\Security\Netizen
      */
     public function findByPk($id);
+
+    /**
+     * Is a nickname already existing in database ?
+     * 
+     * @param string $nick
+     * 
+     * @return bool true if already exist
+     */
+    public function isExistingNickname($nick);
+
+    /**
+     * Update a Netizen with an uploaded image
+     * 
+     * @param \Trismegiste\SocialBundle\Security\Netizen $user
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $fch
+     */
+    public function updateAvatar(Netizen $user, UploadedFile $fch = null);
 }
