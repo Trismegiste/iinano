@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
 class UniqueNickname extends Constraint
 {
 
-    public $message = 'This nickname "%string%" is already taken';
+    public $message = 'This nickname "%string%" is already used';
 
     public function validatedBy()
     {

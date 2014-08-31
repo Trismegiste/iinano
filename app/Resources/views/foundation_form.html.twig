@@ -20,3 +20,23 @@
     </div>
 </div>
 {%- endblock form_row %}
+
+{% block date_widget %}
+    {% if widget == 'single_text' %}
+        {{ block('form_widget_simple') }}
+    {% else %}
+        {% if attr.class is defined %}
+            {% set attr = attr|merge({'class': 'row ' ~ attr.class }) %}
+        {% else %}
+            {% set attr = attr|merge({'class': 'row'}) %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            {{ date_pattern|replace({
+            '{{ year }}':  '<div class="medium-2 large-2 columns">' ~ form_widget(form.year) ~ '</div>',
+            '{{ month }}': '<div class="medium-2 large-2 columns">' ~ form_widget(form.month) ~ '</div>',
+            '{{ day }}':   '<div class="medium-2 large-2 columns">' ~ form_widget(form.day) ~ '</div>'
+            })|raw }}
+            <div class="medium-3 large-9 columns"></div>
+        </div>
+    {% endif %}
+{% endblock date_widget %}

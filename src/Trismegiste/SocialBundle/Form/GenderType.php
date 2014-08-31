@@ -27,7 +27,7 @@ class GenderType extends AbstractType
                 'xy' => 'Male',
                 'xx' => 'Female',
             ],
-            'empty_value' => 'Choose a gender'
+            'expanded' => true
         ]);
     }
 

@@ -10,6 +10,8 @@ use Trismegiste\SocialBundle\Security\Netizen;
 
 /**
  * NetizenRepositoryInterface is a contract for a NetizenRepository
+ * 
+ * @todo Many methods from implementation are missing in this contract 
  */
 interface NetizenRepositoryInterface
 {

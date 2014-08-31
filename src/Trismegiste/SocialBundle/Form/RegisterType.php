@@ -36,7 +36,8 @@ class RegisterType extends AbstractType
                         new Length(['min' => 5, 'max' => 20]),
                         new UniqueNickname()
                     ],
-                    'mapped' => false
+                    'mapped' => false,
+                    'attr' => ['placeholder' => 'Choose a nickname']
                 ])
                 ->add('password', 'password', [
                     'constraints' => [
