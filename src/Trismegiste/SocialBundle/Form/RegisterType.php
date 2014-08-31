@@ -14,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Trismegiste\SocialBundle\Validator\UniqueNickname;
+use Symfony\Component\Validator\Constraints\Image;
 
 /**
  * RegisterType is a form to register an account
@@ -46,7 +47,13 @@ class RegisterType extends AbstractType
                     ],
                     'mapped' => false
                 ])
-                ->add('avatar', 'file', ['required' => false, 'mapped' => false])
+                ->add('avatar', 'file', [
+                    'required' => false,
+                    'mapped' => false,
+                    'constraints' => [
+                        new Image(['minWidth' => 300, 'minHeight' => 300, 'mimeTypes' => 'image/jpeg'])
+                    ]
+                ])
                 ->add('profile', new ProfileType())
                 ->add('save', 'submit', ['attr' => ['class' => 'right']]);
     }
