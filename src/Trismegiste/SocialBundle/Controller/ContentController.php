@@ -23,13 +23,18 @@ class ContentController extends Template
         return $this->render('TrismegisteSocialBundle:Content:index.html.twig', []);
     }
 
-    public function moreAction($offset)
+    public function ajaxMoreAction($offset)
     {
         if (!$this->getRequest()->isXmlHttpRequest()) {
             throw new AccessDeniedException('U haxxor');
         }
 
-        // @todo moreAction not yet implemented
+        $repo = $this->getRepository();
+        $it = $repo->findLastEntries();
+
+        $parameters['listing'] = $it;
+
+        return parent::render('TrismegisteSocialBundle:Content:index_more.html.twig', $parameters);
     }
 
     public function render($view, array $parameters = array(), Response $response = null)

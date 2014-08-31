@@ -5,9 +5,10 @@
     {% include 'TrismegisteSocialBundle:Content:simplepost_show.html.twig' %}
     <hr/>
 {% endfor %}
-<div class="row publishing">
+<div id="pagination"></div>
+<div class="row">
     <div class="small-12 column">
-        <a href="#" class="button small-12 secondary">More</a>
+        <a id="more-button" href="{{ path('ajax_content_more', {offset: 20}) }}" class="button small-12 secondary">More</a>
     </div>
 </div>
 {% endblock %}
@@ -36,3 +37,22 @@
     </section>
 </div>
 {% endblock navbar %}
+    
+{% block javascripts %}
+    {{ parent() }}
+<script>
+    $(document).ready(function() {
+        
+        $('#more-button').on('click', function(event) {
+            $.ajax({
+                url: event.target.href,
+                success: function(data) {
+                    $('#pagination').after(data)
+                }
+            })
+            event.preventDefault()
+        })
+
+    })
+</script>
+{% endblock %}
