@@ -30,7 +30,7 @@ class ContentController extends Template
         }
 
         $repo = $this->getRepository();
-        $it = $repo->findLastEntries();
+        $it = $repo->findLastEntries($offset);
 
         $parameters['listing'] = $it;
 

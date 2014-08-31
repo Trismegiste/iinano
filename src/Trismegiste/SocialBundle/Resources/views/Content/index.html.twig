@@ -47,7 +47,9 @@
             $.ajax({
                 url: event.target.href,
                 success: function(data) {
-                    $('#pagination').after(data)
+                    $('#pagination').append(data)
+                    var old = event.target.href
+                    event.target.href = old.replace(/(\d+)$/, function(match, p1, offset, str) { return 20+Number(p1) })
                 }
             })
             event.preventDefault()

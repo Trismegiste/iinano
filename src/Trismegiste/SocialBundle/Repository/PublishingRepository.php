@@ -42,11 +42,12 @@ class PublishingRepository implements PublishingRepositoryInterface
      * 
      * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
      */
-    public function findLastEntries($limit = 20)
+    public function findLastEntries($offset = 0, $limit = 20)
     {
         return $this->repository
                         ->find($this->aliasFilter)
                         ->limit($limit)
+                        ->offset($offset)
                         ->sort(['createdAt' => -1]);
     }
 
