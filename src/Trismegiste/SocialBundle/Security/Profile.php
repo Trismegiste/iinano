@@ -17,5 +17,7 @@ class Profile
     public $gender;
     public $fullName;
     public $city;
+    public $email;
+    public $placeOfBirth;
 
 }

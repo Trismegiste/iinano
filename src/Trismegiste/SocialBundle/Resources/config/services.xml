@@ -10,12 +10,16 @@
             <argument type="service" id="dokudoki.repository"/>
             <argument type="service" id="security.context"/>
         </service>
-        
+
+        <service id="social.avatar.repository" class="Trismegiste\SocialBundle\Repository\AvatarRepository">
+            <argument type="string">%kernel.root_dir%/../storage/</argument>            
+        </service>   
+                
         <service id="social.netizen.repository" class="Trismegiste\SocialBundle\Repository\NetizenRepository">
             <argument type="service" id="dokudoki.repository"/>
             <argument type="service" id="security.encoder_factory"/>
             <argument/> <!-- injected by Extension -->
-            <argument type="string">%kernel.root_dir%/../storage/</argument>            
+            <argument type="service" id="social.avatar.repository"/>            
         </service>            
 
         <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">

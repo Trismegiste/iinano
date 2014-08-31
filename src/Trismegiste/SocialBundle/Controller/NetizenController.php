@@ -27,7 +27,7 @@ class NetizenController extends Template
 
     public function sendAvatarAction($filename)
     {
-        $file = $this->get('social.netizen.repository')
+        $file = $this->get('social.avatar.repository')
                 ->getAvatarAbsolutePath($filename);
 
         $response = new Response();

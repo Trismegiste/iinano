@@ -29,12 +29,12 @@ class NetizenRepository implements NetizenRepositoryInterface
     protected $encoderFactory;
     protected $storage;
 
-    public function __construct(RepositoryInterface $repo, EncoderFactoryInterface $encoderFactory, $alias, $path)
+    public function __construct(RepositoryInterface $repo, EncoderFactoryInterface $encoderFactory, $alias, AvatarRepository $storage)
     {
         $this->repository = $repo;
         $this->classAlias = $alias;
         $this->encoderFactory = $encoderFactory;
-        $this->storage = $path;
+        $this->storage = $storage;
     }
 
     public function findByNickname($nick)
@@ -49,7 +49,6 @@ class NetizenRepository implements NetizenRepositoryInterface
 
     public function create($nick, $password)
     {
-        // @todo check on unique nickname here ? => yes
         //  db.dokudoki.ensureIndex({"author.nickname":1},{sparse:true, unique:true});
         $author = new Author($nick);
         $user = new Netizen($author);
@@ -75,25 +74,8 @@ class NetizenRepository implements NetizenRepositoryInterface
 
     public function updateAvatar(Netizen $user, UploadedFile $fch = null)
     {
-        $author = $user->getAuthor();
-        if (is_null($fch)) {
-            $abstracted = $user->getProfile()->gender == 'xx' ? "00.jpg" : '01.jpg';
-        } else {
-            $abstracted = $this->getAvatarName($author->getNickname()) . '.' . $fch->getClientOriginalExtension();
-            $fch->move($this->storage, $abstracted);
-        }
-        $author->setAvatar($abstracted);
+        $this->storage->updateAvatar($user->getAuthor(), $user->getProfile(), $fch);
         $this->persist($user);
-    }
-
-    protected function getAvatarName($nick)
-    {
-        return bin2hex($nick);
-    }
-
-    public function getAvatarAbsolutePath($filename)
-    {
-        return $this->storage . $filename;
     }
 
     public function isExistingNickname($nick)
