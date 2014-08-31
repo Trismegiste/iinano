@@ -1,11 +1,16 @@
 {% extends '::foundation_form.html.twig' %}
 
+{% block form_label -%}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' right inline')|trim}) %}
+    {{ parent() }}
+{%- endblock form_label %}
+
 {% block form_row %}
-<div class="row">
+<div class="row {% if form.vars.errors|length > 0 %}error{% endif %}">
     <div class="small-3 columns">
-        <label for="right-label" class="right inline {% if form.vars.errors|length > 0 %}error{% endif %}">{{- form_label(form) -}}</label>
+        {{- form_label(form) -}}
     </div>
-    <div class="small-9 columns {% if form.vars.errors|length > 0 %}error{% endif %}">
+    <div class="small-9 columns">
         {{- form_widget(form) -}}
         {{- form_errors(form) -}}
     </div>
