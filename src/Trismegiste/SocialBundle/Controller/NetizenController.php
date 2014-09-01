@@ -15,9 +15,13 @@ use Symfony\Component\HttpFoundation\Response;
 class NetizenController extends Template
 {
 
-    public function showProfileAction()
+    public function showProfileAction($author)
     {
-        $user = $this->getUser();
+        if ($author == 'me') {
+            $user = $this->getUser();
+        } else {
+            $user = $this->get('social.netizen.repository')->findByNickname($author);
+        }
 
         return $this->render('TrismegisteSocialBundle:Netizen:profile_show.html.twig', [
                     'author' => $user->getAuthor(),

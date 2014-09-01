@@ -14,8 +14,8 @@
 {% endblock %}
         
 {% block navbar %}
-<a href="{{ path('netizen_show') }}"><img src="{{ path('netizen_avatar', {filename: app.user.author.avatar} ) }}"/></a>
-<h5><a href="{{ path('netizen_show') }}">{{ app.user.author.nickname }}</a></h5>
+<a href="{{ path('netizen_show', {author: current_user.author.nickname} ) }}"><img src="{{ path('netizen_avatar', {filename: current_user.author.avatar} ) }}"/></a>
+<h5><a href="{{ path('netizen_show', {author: current_user.author.nickname} ) }}">{{ current_user.author.nickname }}</a></h5>
 <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
     <section class="section">
         <h5 class="title"><a href="#">History</a></h5>

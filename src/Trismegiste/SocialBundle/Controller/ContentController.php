@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Trismegiste\Socialist\Content;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Trismegiste\SocialBundle\Utils\SkippableIterator;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * ContentController is a template for the wall/dashboard
@@ -48,9 +49,15 @@ class ContentController extends Template
         $repo = $this->getRepository();
         $it = $repo->findLastEntries(0, $this->getPagination());
 
+        // do we need to skip a record because it is currently edited ?
         if (array_key_exists('skipped_pub', $parameters)) {
             $it = new SkippableIterator($it, [$parameters['skipped_pub']]);
         }
+        // do we need to feed the current user (default = logged)
+        if (!array_key_exists('current_user', $parameters)) {
+            $parameters['current_user'] = $this->getUser();
+        }
+
         $parameters['listing'] = $it;
         $parameters['pagination'] = $this->getPagination();
 
@@ -64,14 +71,35 @@ class ContentController extends Template
         }
     }
 
-    public function filterAction($author, $what)
+    public function filterAction($center, $author, $offset)
     {
         // @todo filter content based on :
         // * current author vertex (me or someone else) => the content of the navbar
         // * type of edge (himself, following, follower, friends, all)
         // => must be stateless & default === index
 
-        return $this->render('TrismegisteSocialBundle:Content:index.html.twig', []);
+        $repo = $this->get('social.netizen.repository');
+        $user = $repo->findByNickname($center);
+        if (is_null($user)) {
+            throw new NotFoundHttpException("$center does not exists");
+        }
+        $parameters['current_user'] = $user;
+
+        // now filter on type of author :
+        switch ($author) {
+            case 'self' :
+                $filterAuthor = [$user->getAuthor()];
+                break;
+
+            default:
+                $filterAuthor = [];
+        }
+
+        $parameters['listing'] = $this->getRepository()
+                ->findLastEntries($offset, $this->getPagination(), $filterAuthor);
+        $parameters['pagination'] = $this->getPagination();
+
+        return parent::render('TrismegisteSocialBundle:Content:index.html.twig', $parameters);
     }
 
 }
