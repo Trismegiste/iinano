@@ -32,10 +32,14 @@ class AvatarRepository
         $abstracted = $profile->gender == 'xx' ? "00.jpg" : '01.jpg';
 
         if (!is_null($fch) && ($fch->getMimeType() == 'image/jpeg')) {
-            $abstracted = $this->getAvatarName($author->getNickname()) . '.jpg';
-            $fch->move($this->storage, $abstracted);
-            $source = $this->storage . '/' . $abstracted;
-            $this->imageTool->makeThumbnailFrom($source, $source, 300);
+            try {
+                $abstracted = $this->getAvatarName($author->getNickname()) . '.jpg';
+                $fch->move($this->storage, $abstracted);
+                $source = $this->storage . '/' . $abstracted;
+                $this->imageTool->makeThumbnailFrom($source, $source, 300);
+            } catch (\Exception $e) {
+                // @todo throw something (what ?)
+            }
         }
 
         $author->setAvatar($abstracted);

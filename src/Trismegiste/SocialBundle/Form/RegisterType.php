@@ -47,6 +47,7 @@ class RegisterType extends AbstractType
                     ],
                     'mapped' => false
                 ])
+                // @todo don't put the avatar on registering (too many error), put it on profile_avatar_edit
                 ->add('avatar', 'file', [
                     'required' => false,
                     'mapped' => false,

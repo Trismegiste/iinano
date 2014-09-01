@@ -17,7 +17,7 @@ nav.top-bar {
         <li class="name">
             <h1>
                 <a href="{{ path('content_index') }}">
-                    Home
+                    {% block home_title %}Home{% endblock %}
                 </a>
             </h1>
         </li>
@@ -32,8 +32,20 @@ nav.top-bar {
                 <a href="#">New</a>
                 <ul class="dropdown">
                     <li><a href="{{ path('simplepost_create') }}">Simple Post</a></li>
-                    <li><a href="#">Dropdown Option</a></li>
-                    <li><a href="#">Dropdown Option</a></li>
+                    <li><a href="#">Status</a></li>
+                    <li><a href="#">Pictures</a></li>
+                    <li><a href="#">Video</a></li>
+                </ul>
+            </li>
+            <li class="divider"></li>
+            <li class="has-dropdown">
+                <a href="#">Filter</a>
+                <ul class="dropdown">
+                    <li><a href="#">Me</a></li>
+                    <li><a href="#">(Someone)</a></li>
+                    <li><a href="#">Following</a></li>
+                    <li><a href="#">Followers</a></li>
+                    <li><a href="#">Friends</a></li>
                     <li class="divider"></li>
                     <li><a href="#">See all →</a></li>
                 </ul>
