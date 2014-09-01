@@ -65,17 +65,25 @@ nav.top-bar {
 
         <ul class="right">
             <li class="divider"></li>
-            <li>
-                {% if app.user.author is defined %}
-                <a href="{{ path('trismegiste_logout') }}">
-                    {{ app.user.author.nickname }}
-                </a>
-                {% else %}
-                <a href="{{ path('trismegiste_login') }}">
-                    Sign in
-                </a>
-                {% endif %}
-            </li>
+            {% if app.user.author is defined %}
+                <li>
+                    <a href="{{ path('netizen_show') }}">
+                        {{ app.user.author.nickname }}
+                    </a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a href="{{ path('trismegiste_logout') }}">
+                        Sign out
+                    </a>
+                </li>            
+            {% else %}
+                <li>
+                    <a href="{{ path('trismegiste_login') }}">
+                        Sign in
+                    </a>
+                </li>
+            {% endif %}
         </ul>
 
     </section>
