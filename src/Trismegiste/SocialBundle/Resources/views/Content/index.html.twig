@@ -8,7 +8,7 @@
 <div id="pagination"></div>
 <div class="row">
     <div class="small-12 column">
-        <a id="more-button" href="{{ path('ajax_content_more', {offset: 20}) }}" class="button small-12 secondary">More</a>
+        <a id="more-button" href="{{ path('ajax_content_more', {offset: pagination}) }}" class="button expand secondary">More</a>
     </div>
 </div>
 {% endblock %}
@@ -49,7 +49,7 @@
                 success: function(data) {
                     $('#pagination').append(data)
                     var old = event.target.href
-                    event.target.href = old.replace(/(\d+)$/, function(match, p1, offset, str) { return 20+Number(p1) })
+                    event.target.href = old.replace(/(\d+)$/, function(match, p1, offset, str) { return {{ pagination }}+Number(p1) })
                 }
             })
             event.preventDefault()
