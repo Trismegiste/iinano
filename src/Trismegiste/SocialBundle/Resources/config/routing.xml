@@ -13,9 +13,13 @@
         <requirement key="_method">GET</requirement>
         <requirement key="offset">[\d]+</requirement>        
     </route>
-    <route id="filtered_index" pattern="/filter/{author}/{what}">
+    <route id="filtered_index" pattern="/filter/{center}/{author}/{offset}">
         <default key="_controller">TrismegisteSocialBundle:Content:filter</default>
         <requirement key="_method">GET</requirement>
+        <requirement key="center">[-\da-z]+</requirement>
+        <requirement key="author">(self|follower|following|friend|all)</requirement>
+        <requirement key="offset">[\d]+</requirement>    
+        <default key="offset">0</default>    
     </route>
 
     <route id="simplepost_create" pattern="/simplepost/create">
@@ -75,7 +79,7 @@
     
     <route id="netizen_show" pattern="/profile/{author}">
         <default key="_controller">TrismegisteSocialBundle:Netizen:showProfile</default>
-        <requirement key="filename">[-\da-z]+</requirement>
+        <requirement key="author">[-\da-z]+</requirement>
         <default key="author">me</default>
     </route>
     <route id="netizen_avatar" pattern="/avatar/{filename}">

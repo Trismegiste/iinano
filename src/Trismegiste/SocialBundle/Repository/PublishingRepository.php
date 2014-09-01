@@ -38,13 +38,23 @@ class PublishingRepository implements PublishingRepositoryInterface
      * 
      * @param int $offset
      * @param int $limit
+     * @param AuthorInterface[] $author
      * 
      * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
      */
     public function findLastEntries($offset = 0, $limit = 20, array $author = [])
     {
+        $docFilter = $this->aliasFilter;
+        if (count($author)) {
+            $filter = [];
+            foreach ($author as $obj) {
+                $filter[] = $obj->getNickname();
+            }
+            $docFilter['owner.nickname'] = ['$in' => $filter];
+        }
+
         return $this->repository
-                        ->find($this->aliasFilter)
+                        ->find($docFilter)
                         ->limit($limit)
                         ->offset($offset)
                         ->sort(['createdAt' => -1]);

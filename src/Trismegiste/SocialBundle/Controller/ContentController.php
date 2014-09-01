@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Trismegiste\Socialist\Content;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Trismegiste\SocialBundle\Utils\SkippableIterator;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * ContentController is a template for the wall/dashboard
@@ -70,7 +71,7 @@ class ContentController extends Template
         }
     }
 
-    public function filterAction($author, $what)
+    public function filterAction($center, $author, $offset)
     {
         // @todo filter content based on :
         // * current author vertex (me or someone else) => the content of the navbar
@@ -78,14 +79,27 @@ class ContentController extends Template
         // => must be stateless & default === index
 
         $repo = $this->get('social.netizen.repository');
-        $user = $repo->findByNickname($author);
+        $user = $repo->findByNickname($center);
         if (is_null($user)) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException("$author does not exists");
+            throw new NotFoundHttpException("$center does not exists");
         }
-
         $parameters['current_user'] = $user;
 
-        return $this->render('TrismegisteSocialBundle:Content:index.html.twig', $parameters);
+        // now filter on type of author :
+        switch ($author) {
+            case 'self' :
+                $filterAuthor = [$user->getAuthor()];
+                break;
+
+            default:
+                $filterAuthor = [];
+        }
+
+        $parameters['listing'] = $this->getRepository()
+                ->findLastEntries($offset, $this->getPagination(), $filterAuthor);
+        $parameters['pagination'] = $this->getPagination();
+
+        return parent::render('TrismegisteSocialBundle:Content:index.html.twig', $parameters);
     }
 
 }
