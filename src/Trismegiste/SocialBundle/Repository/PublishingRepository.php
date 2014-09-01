@@ -15,11 +15,9 @@ use Trismegiste\Socialist\Publishing;
  * PublishingRepository is a business repository for subclasses of Publishing
  * 
  * This is a wrapper around a RepositoryInterface with SecurityContext
- * @todo Is this a decorator ( ie implementing RepositoryInterface ) ?
- * Perhaps not because security issue will tend to break liskov on persist/find/restore...
- * Try to avoid dumb repositories as well as dumb entities, only with methods
- * with business relevance.
- * Maybe an interface for decoupling will be a good idea.
+ * This is not a decorator of RepositoryInterface because we
+ * try to avoid dumb repositories as well as dumb entities, only with methods
+ * with business relevance. Plus, security concerns will break Liskov principle
  */
 class PublishingRepository implements PublishingRepositoryInterface
 {
