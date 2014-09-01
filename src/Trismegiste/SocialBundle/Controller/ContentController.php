@@ -48,9 +48,15 @@ class ContentController extends Template
         $repo = $this->getRepository();
         $it = $repo->findLastEntries(0, $this->getPagination());
 
+        // do we need to skip a record because it is currently edited ?
         if (array_key_exists('skipped_pub', $parameters)) {
             $it = new SkippableIterator($it, [$parameters['skipped_pub']]);
         }
+        // do we need to feed the current user (default = logged)
+        if (!array_key_exists('current_user', $parameters)) {
+            $parameters['current_user'] = $this->getUser();
+        }
+
         $parameters['listing'] = $it;
         $parameters['pagination'] = $this->getPagination();
 
@@ -71,7 +77,15 @@ class ContentController extends Template
         // * type of edge (himself, following, follower, friends, all)
         // => must be stateless & default === index
 
-        return $this->render('TrismegisteSocialBundle:Content:index.html.twig', []);
+        $repo = $this->get('social.netizen.repository');
+        $user = $repo->findByNickname($author);
+        if (is_null($user)) {
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException("$author does not exists");
+        }
+
+        $parameters['current_user'] = $user;
+
+        return $this->render('TrismegisteSocialBundle:Content:index.html.twig', $parameters);
     }
 
 }
