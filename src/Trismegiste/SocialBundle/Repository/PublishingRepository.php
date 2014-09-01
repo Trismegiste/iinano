@@ -38,11 +38,12 @@ class PublishingRepository implements PublishingRepositoryInterface
     /**
      * Retrieves an iterator on the last published entries
      * 
+     * @param int $offset
      * @param int $limit
      * 
      * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
      */
-    public function findLastEntries($offset = 0, $limit = 20)
+    public function findLastEntries($offset = 0, $limit = 20, array $author = [])
     {
         return $this->repository
                         ->find($this->aliasFilter)

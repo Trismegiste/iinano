@@ -64,4 +64,14 @@ class ContentController extends Template
         }
     }
 
+    public function filterAction($author, $what)
+    {
+        // @todo filter content based on :
+        // * current author vertex (me or someone else) => the content of the navbar
+        // * type of edge (himself, following, follower, friends, all)
+        // => must be stateless & default === index
+
+        return $this->render('TrismegisteSocialBundle:Content:index.html.twig', []);
+    }
+
 }
