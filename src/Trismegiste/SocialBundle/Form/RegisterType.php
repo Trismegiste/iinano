@@ -15,6 +15,7 @@ use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Trismegiste\SocialBundle\Validator\UniqueNickname;
 use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * RegisterType is a form to register an account
@@ -35,7 +36,8 @@ class RegisterType extends AbstractType
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 5, 'max' => 20]),
-                        new UniqueNickname()
+                        new UniqueNickname(),
+                        new Regex(['pattern'=>'#^[-\da-z]+$#'])
                     ],
                     'mapped' => false,
                     'attr' => ['placeholder' => 'Choose a nickname']
