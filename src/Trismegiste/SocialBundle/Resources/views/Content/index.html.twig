@@ -21,8 +21,9 @@
     <li><small>Followers: {{ current_user.followerCount }}</small></li>
     <li><small>Following: {{ current_user.followingCount }}</small></li>
 </ul>
-<a href="{{ path('netizen_famous', {id: current_user.id, action: 'add'}) }}" class="button tiny">Like</a>
-<a href="{{ path('netizen_follow', {id: current_user.id, action: 'add'}) }}" class="button tiny">Follow</a>
+{% if app.user != current_user %}
+    {% include 'TrismegisteSocialBundle:Netizen:social_network_action.html.twig' %}
+{% endif %}
 <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
     <section class="section">
         <h5 class="title"><a href="#">History</a></h5>
