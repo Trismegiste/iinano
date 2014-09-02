@@ -42,7 +42,7 @@ class ImageRefinerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getDimension
      */
-    public function testResizeSquare($ow, $oh, $tw, $th)
+    public function testThmbnailResize($ow, $oh, $tw, $th)
     {
         $source = $this->createTmpImage($ow, $oh);
         $this->sut->makeThumbnailFrom($source, $source, 100);

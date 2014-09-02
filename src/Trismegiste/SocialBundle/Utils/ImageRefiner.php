@@ -28,13 +28,9 @@ class ImageRefiner
         $width = \imagesx($source);
         $height = \imagesy($source);
 
-        if ($height > $width) {
-            $newHeight = $maxBoxSize;
-            $newWidth = $width * $maxBoxSize / (float) $height;
-        } else {
-            $newWidth = $maxBoxSize;
-            $newHeight = $height * $maxBoxSize / (float) $width;
-        }
+        $mostLarge = max([$width, $height]);
+        $newHeight = $height * $maxBoxSize / (float) $mostLarge;
+        $newWidth = $width * $maxBoxSize / (float) $mostLarge;
 
         $destination = \imagecreatetruecolor($newWidth, $newHeight);
         \imagecopyresampled($destination, $source, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
