@@ -21,19 +21,26 @@ class FillWithDummy extends ContainerAwareCommand
     public function configure()
     {
         $this->setName('social:fill:dummy')
-                ->setDescription('Fill with dummy data');
+                ->setDescription('Fill with dummy data')
+                ->addArgument('nickname', InputArgument::REQUIRED)
+                ->addArgument('count', InputArgument::OPTIONAL, 'how many', 120);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("Fill...");
+        $cardinal = $input->getArgument('count');
+        $nickname = $input->getArgument('nickname');
 
         $userRepo = $this->getContainer()->get('social.netizen.repository');
         $contentRepo = $this->getContainer()->get('social.content.repository');
 
-        $user = $userRepo->findByNickname('konpaku');
+        $user = $userRepo->findByNickname($nickname);
+        if (is_null($user)) {
+            throw new \InvalidArgumentException("$nickname does not exists");
+        }
 
-        for ($k = 0; $k < 120; $k++) {
+        for ($k = 0; $k < $cardinal; $k++) {
             $doc = new \Trismegiste\Socialist\SimplePost($user->getAuthor());
             $doc->setTitle("Un titre $k");
             $doc->setBody("Un content $k");
