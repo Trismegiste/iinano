@@ -11,7 +11,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 
 /**
- * UniqueNicknameValidator is he actual validator for ensuring uniqueness of nickname
+ * UniqueNicknameValidator is the actual validator for ensuring uniqueness of nickname
  */
 class UniqueNicknameValidator extends ConstraintValidator
 {

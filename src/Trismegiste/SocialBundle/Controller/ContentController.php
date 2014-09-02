@@ -34,6 +34,7 @@ class ContentController extends Template
     public function ajaxMoreAction($offset)
     {
         // @todo problem with dynamic tooltip
+        // @todo url is not valid when there is a filter : session ?
         if (!$this->getRequest()->isXmlHttpRequest()) {
             throw new AccessDeniedException('U haxxor');
         }

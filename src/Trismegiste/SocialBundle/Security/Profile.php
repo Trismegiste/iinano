@@ -19,5 +19,6 @@ class Profile
     public $city;
     public $email;
     public $placeOfBirth;
+    // @todo default filter for homepage : friend,following...
 
 }
