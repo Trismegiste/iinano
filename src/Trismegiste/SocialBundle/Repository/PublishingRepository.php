@@ -34,18 +34,12 @@ class PublishingRepository implements PublishingRepositoryInterface
     }
 
     /**
-     * Retrieves an iterator on the last published entries
-     * 
-     * @param int $offset
-     * @param int $limit
-     * @param AuthorInterface[] $author
-     * 
-     * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
+     * @inheritdoc
      */
-    public function findLastEntries($offset = 0, $limit = 20, array $author = [])
+    public function findLastEntries($offset = 0, $limit = 20, \ArrayIterator $author = null)
     {
         $docFilter = $this->aliasFilter;
-        if (count($author)) {
+        if (!is_null($author)) {
             $filter = [];
             foreach ($author as $obj) {
                 $filter[] = $obj->getNickname();

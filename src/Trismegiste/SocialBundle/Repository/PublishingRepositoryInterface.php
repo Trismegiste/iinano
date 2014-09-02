@@ -14,14 +14,16 @@ use Trismegiste\Socialist\Publishing;
 interface PublishingRepositoryInterface
 {
 
-    /**
+/**
      * Retrieves an iterator on the last published entries
      * 
+     * @param int $offset
      * @param int $limit
+     * @param \ArrayIterator $author an iterator over a list of AuthorInterface
      * 
      * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
      */
-    public function findLastEntries($offset = 0, $limit = 20);
+    public function findLastEntries($offset = 0, $limit = 20, \ArrayIterator $author = null);
 
     /**
      * Persists a published content

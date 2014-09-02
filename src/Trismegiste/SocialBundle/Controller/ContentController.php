@@ -87,12 +87,24 @@ class ContentController extends Template
 
         // now filter on type of author :
         switch ($author) {
-            case 'self' :
-                $filterAuthor = [$user->getAuthor()];
+            case 'self':
+                $filterAuthor = new \ArrayIterator([$user->getAuthor()]);
+                break;
+
+            case 'following':
+                $filterAuthor = $user->getFollowingIterator();
+                break;
+
+            case 'follower':
+                $filterAuthor = $user->getFollowerIterator();
+                break;
+
+            case 'friend':
+                $filterAuthor = $user->getFriendIterator();
                 break;
 
             default:
-                $filterAuthor = [];
+                $filterAuthor = null;
         }
 
         $parameters['listing'] = $this->getRepository()
