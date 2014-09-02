@@ -7,12 +7,21 @@
 namespace Trismegiste\SocialBundle\Utils;
 
 /**
- * ImageRefiner is a service for resizing, reducing weight of image,
+ * ImageRefiner is a simple service for resizing, reducing weight of image,
  * thumbnailing...
+ * 
+ * Require: GD2
  */
 class ImageRefiner
 {
 
+    /**
+     * Resize an image to make a thumbnail
+     * 
+     * @param string $filename absolute path to image
+     * @param string $target absolute path to image
+     * @param int $maxBoxSize the square box size which the thumbnail must fit in
+     */
     public function makeThumbnailFrom($filename, $target, $maxBoxSize)
     {
         $source = \imagecreatefromjpeg($filename);
@@ -32,6 +41,18 @@ class ImageRefiner
         \imagedestroy($source);
         \imagejpeg($destination, $target, 80);
         \imagedestroy($destination);
+    }
+
+    /**
+     * Resize and crop an image to make a square thumbnail
+     * 
+     * @param string $filename absolute path to image
+     * @param string $target absolute path to image
+     * @param int $maxBoxSize the square box size which the thumbnail must fit in
+     */
+    public function makeSquareThumbnailFrom($filename, $target, $maxBoxSize)
+    {
+        
     }
 
 }
