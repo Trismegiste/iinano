@@ -43,7 +43,10 @@ class HumanDateExtension extends \Twig_Extension
                     $curr /= 7;
                 }
 
-                return sprintf("%d %s%s ago\n", $curr, $word, ($curr > 1) ? 's' : '');
+                $numberUnit = sprintf("%d %s%s", $curr, $word, ($curr > 1) ? 's' : '');
+                $sentence = ($delta->invert === 0) ? "%s ago\n" : "in %s\n";
+
+                return sprintf($sentence, $numberUnit);
             }
         }
     }
