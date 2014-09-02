@@ -72,6 +72,7 @@ class NetizenRepository implements NetizenRepositoryInterface
 
     public function updateAvatar(Netizen $user, UploadedFile $fch = null)
     {
+        // @todo à faire dans un try catch   
         $this->storage->updateAvatar($user->getAuthor(), $user->getProfile(), $fch);
         $this->persist($user);
     }

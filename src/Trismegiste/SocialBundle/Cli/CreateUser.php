@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Trismegiste\SocialBundle\Security\Profile;
 
 /**
  * CreateUser is CLI tool for managing user
@@ -32,13 +33,12 @@ class CreateUser extends ContainerAwareCommand
         $password = $input->getArgument('password');
         $output->writeln("Create $nickname");
 
-        $user = $this->getContainer()
-                ->get('social.netizen.repository')
-                ->create($nickname, $password);
+        $repository = $this->getContainer()->get('social.netizen.repository');
 
-        $this->getContainer()
-                ->get('dokudoki.repository')
-                ->persist($user);
+        $user = $repository->create($nickname, $password);
+        $user->setProfile(new Profile());
+        $repository->updateAvatar($user);
+        $repository->persist($user);
     }
 
 }
