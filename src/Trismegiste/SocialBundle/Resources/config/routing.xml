@@ -86,4 +86,14 @@
         <default key="_controller">TrismegisteSocialBundle:Netizen:sendAvatar</default>
         <requirement key="filename">[\da-f]+\.jpg</requirement>
     </route>        
+    <route id="netizen_famous" pattern="/user/{id}/like/{action}">
+        <default key="_controller">TrismegisteSocialBundle:Netizen:likeNetizen</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="action">(add|remove)</requirement>
+    </route>
+    <route id="netizen_follow" pattern="/user/{id}/follow/{action}">
+        <default key="_controller">TrismegisteSocialBundle:Netizen:followNetizen</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="action">(add|remove)</requirement>
+    </route>
 </routes>

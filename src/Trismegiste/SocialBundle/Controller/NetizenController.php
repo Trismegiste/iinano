@@ -36,6 +36,7 @@ class NetizenController extends Template
 
         $response = new Response();
         $response->setEtag(filemtime($file)); // @todo ETag is working and not LastModified : why ?
+        $response->setPublic();
 
         if ($response->isNotModified($this->getRequest())) {
             return $response;
@@ -45,6 +46,55 @@ class NetizenController extends Template
         $response->headers->set('Content-Type', 'image/jpeg');
 
         return $response;
+    }
+
+    public function likeNetizenAction($id, $action)
+    {
+        $repo = $this->get('social.netizen.repository');
+        $target = $repo->findByPk($id);
+        $me = $this->getUser();
+
+        switch ($action) {
+            case 'add':
+                $target->addFan($me->getAuthor());
+                $message = "You like ";
+                break;
+            case 'remove':
+                $target->removeFan($me->getAuthor());
+                $message = "You unlike ";
+                break;
+        }
+
+        $repo->persist($target);
+
+        $this->pushFlash('notice', $message . $target->getAuthor()->getNickname());
+
+        return $this->redirectRouteOk('content_index');
+    }
+
+    public function followNetizenAction($id, $action)
+    {
+        $repo = $this->get('social.netizen.repository');
+        $following = $repo->findByPk($id);
+        $me = $this->getUser();
+
+        switch ($action) {
+            case 'add':
+                $me->follow($following);
+                $message = "You're following ";
+                break;
+            case 'remove':
+                $me->unfollow($following);
+                $message = "You no longer follow ";
+                break;
+        }
+
+        $repo->persist($me);
+        $repo->persist($following);
+
+        $this->pushFlash('notice', $message . $following->getAuthor()->getNickname());
+
+        return $this->redirectRouteOk('content_index');
     }
 
 }
