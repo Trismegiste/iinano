@@ -49,6 +49,8 @@ class HumanDateExtension extends \Twig_Extension
                 return sprintf($sentence, $numberUnit);
             }
         }
+
+        return 'now';
     }
 
 }

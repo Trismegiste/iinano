@@ -36,6 +36,7 @@ class HumanDateExtensionTest extends \PHPUnit_Framework_TestCase
             ['-800 day', '2 years ago'],
             ['+1 day', 'in 1 day'],
             ['+1800 second', 'in 30 minutes'],
+            ['now', 'now']
         ];
     }
 
