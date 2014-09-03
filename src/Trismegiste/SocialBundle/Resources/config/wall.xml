@@ -27,4 +27,18 @@
         <requirement key="action">(add|remove)</requirement>
     </route>
     
+    <route id="pub_commentary_add" pattern="/pub/{id}/commentary/add">
+        <default key="_controller">TrismegisteSocialBundle:Commentary:addOnPublishing</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+    </route>
+    <route id="pub_commentary_edit" pattern="/pub/{id}/commentary/{uuid}/edit">
+        <default key="_controller">TrismegisteSocialBundle:Commentary:editOnPublishing</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="uuid">[\da-f]{40}</requirement>
+    </route>
+    <route id="pub_commentary_delete" pattern="/pub/{id}/commentary/{uuid}/delete">
+        <default key="_controller">TrismegisteSocialBundle:Commentary:deleteOnPublishing</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="uuid">[\da-f]{40}</requirement>
+    </route>    
 </routes>

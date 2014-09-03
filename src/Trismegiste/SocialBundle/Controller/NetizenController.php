@@ -67,7 +67,7 @@ class NetizenController extends Template
 
         $repo->persist($target);
 
-        $this->pushFlash('notice', $message . $target->getAuthor()->getNickname());
+        $this->pushFlash('notice', $message . $target->getUsername());
 
         return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter]);
     }

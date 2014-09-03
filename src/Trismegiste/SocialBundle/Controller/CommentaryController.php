@@ -15,7 +15,7 @@ use Trismegiste\Socialist\Commentary;
 class CommentaryController extends ContentController
 {
 
-    public function addOnPublishingAction($id)
+    public function addOnPublishingAction($id, $wallNick, $wallFilter)
     {
         $pub = $this->getRepository()->findByPk($id);
         $form = $this->createForm(new CommentaryType(), new Commentary($this->getAuthor()));
@@ -29,7 +29,8 @@ class CommentaryController extends ContentController
             try {
                 $this->getRepository()->persist($pub);
                 $this->pushFlash('notice', 'Commentary saved');
-                return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
+
+                return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save message');
             }
@@ -41,7 +42,7 @@ class CommentaryController extends ContentController
             'form' => $form->createView()
         ];
 
-        return $this->render('TrismegisteSocialBundle:Content:commentary_form.html.twig', $param);
+        return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:commentary_form.html.twig', $param);
     }
 
     public function editOnPublishingAction($id, $uuid)
