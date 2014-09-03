@@ -76,7 +76,7 @@ class CommentaryController extends ContentController
         return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:commentary_form.html.twig', $param);
     }
 
-    public function deleteOnPublishingAction($id, $uuid)
+    public function deleteOnPublishingAction($id, $uuid, $wallNick, $wallFilter)
     {
         $pub = $this->getRepository()->findByPk($id);
         $commentary = $pub->getCommentaryByUuid($uuid);
@@ -91,7 +91,7 @@ class CommentaryController extends ContentController
             $this->pushFlash('warning', 'Cannot delete commentary');
         }
 
-        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
+        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
     }
 
 }
