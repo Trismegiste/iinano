@@ -115,4 +115,9 @@ class ContentController extends Template
         return parent::render('TrismegisteSocialBundle:Content:index.html.twig', $parameters);
     }
 
+    protected function renderWall($wallNick, $wallFilter, $wallSubview, $parameters)
+    {
+        
+    }
+
 }
