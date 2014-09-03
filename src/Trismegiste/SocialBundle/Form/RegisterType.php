@@ -29,7 +29,7 @@ class RegisterType extends AbstractType
     public function __construct(NetizenRepositoryInterface $repo, $regex)
     {
         $this->repository = $repo;
-        $this->nicknameRegex=$regex;
+        $this->nicknameRegex = $regex;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -40,7 +40,7 @@ class RegisterType extends AbstractType
                         new NotBlank(),
                         new Length(['min' => 5, 'max' => 20]),
                         new UniqueNickname(),
-                        new Regex(['pattern'=>'#^[-\da-z]+$#']) // @todo inject parameter nickname_regex
+                        new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#'])
                     ],
                     'mapped' => false,
                     'attr' => ['placeholder' => 'Choose a nickname']
