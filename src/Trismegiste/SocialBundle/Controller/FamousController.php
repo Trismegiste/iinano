@@ -14,42 +14,43 @@ use Trismegiste\SocialBundle\Controller\Template;
 class FamousController extends Template
 {
 
-    public function addFanOnCommentaryAction($id, $uuid)
+    public function likeCommentaryAction($id, $uuid, $action, $wallNick, $wallFilter)
     {
         $pub = $this->getRepository()->findByPk($id);
         $commentary = $pub->getCommentaryByUuid($uuid);
-        $commentary->addFan($this->getAuthor());
+        switch ($action) {
+            case 'add':
+                $commentary->addFan($this->getAuthor());
+                break;
+            case 'remove':
+                $commentary->removeFan($this->getAuthor());
+                break;
+            default:
+                $this->createNotFoundException("Action $action");
+        }
+
         $this->getRepository()->persist($pub);
 
-        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
+        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
     }
 
-    public function removeFanOnCommentaryAction($id, $uuid)
-    {
-        $pub = $this->getRepository()->findByPk($id);
-        $commentary = $pub->getCommentaryByUuid($uuid);
-        $commentary->removeFan($this->getAuthor());
-        $this->getRepository()->persist($pub);
-
-        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
-    }
-
-    public function addFanOnPublishAction($id)
+    public function likePublishAction($id, $action, $wallNick, $wallFilter)
     {
         $doc = $this->getRepository()->findByPk($id);
-        $doc->addFan($this->getAuthor());
+        switch ($action) {
+            case 'add':
+                $doc->addFan($this->getAuthor());
+                break;
+            case 'remove':
+                $doc->removeFan($this->getAuthor());
+                break;
+            default:
+                $this->createNotFoundException("Action $action");
+        }
+
         $this->getRepository()->persist($doc);
 
-        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
-    }
-
-    public function removeFanOnPublishAction($id)
-    {
-        $doc = $this->getRepository()->findByPk($id);
-        $doc->removeFan($this->getAuthor());
-        $this->getRepository()->persist($doc);
-
-        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
+        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
     }
 
 }

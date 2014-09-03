@@ -28,7 +28,10 @@ class ContentController extends Template
 
     public function indexAction()
     {
-        return $this->render('TrismegisteSocialBundle:Content:index.html.twig', []);
+        return $this->redirectRouteOk('wall_index', [
+                    'wallNick' => $this->getUser()->getUsername(),
+                    'wallFilter' => 'all'
+        ]);
     }
 
     public function ajaxMoreAction($offset)
@@ -45,7 +48,7 @@ class ContentController extends Template
         return parent::render('TrismegisteSocialBundle:Content:index_more.html.twig', $parameters);
     }
 
-    public function render($view, array $parameters = array(), Response $response = null)
+    public function old_render($view, array $parameters = array(), Response $response = null)
     {
         $repo = $this->getRepository();
         $it = $repo->findLastEntries(0, $this->getPagination());
@@ -72,47 +75,42 @@ class ContentController extends Template
         }
     }
 
-    public function filterAction($center, $author, $offset)
+    public function wallAction($wallNick, $wallFilter)
     {
-        // @todo filter content based on :
-        // * current author vertex (me or someone else) => the content of the navbar
-        // * type of edge (himself, following, follower, friends, all)
-        // => must be stateless & default === index
+        return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:index.html.twig');
+    }
 
-        $repo = $this->get('social.netizen.repository');
-        $user = $repo->findByNickname($center);
-        if (is_null($user)) {
-            throw new NotFoundHttpException("$center does not exists");
+    protected function renderWall($wallNick, $wallFilter, $wallSubview, array $parameters = [])
+    {
+        // filling the wall user (logged user or not)
+        if ($wallNick === $this->getUser()->getUsername()) {
+            $parameters['wallNick'] = $wallNick;
+            $parameters['wallUser'] = $this->getUser();
+        } else {
+            $repo = $this->get('social.netizen.repository');
+            $user = $repo->findByNickname($wallNick);
+            if (is_null($user)) {
+                throw new NotFoundHttpException("$wallNick does not exists");
+            }
+            $parameters['wallUser'] = $user;
+            $parameters['wallNick'] = $user->getUsername();
         }
-        $parameters['current_user'] = $user;
+        // filling the wall filter
+        $parameters['wallFilter'] = $wallFilter;
 
-        // now filter on type of author :
-        switch ($author) {
-            case 'self':
-                $filterAuthor = new \ArrayIterator([$user->getAuthor()]);
-                break;
+        // filling feed entries and skipping one if in CRUD
+        $repo = $this->getRepository();
+        $it = $repo->findWallEntries($parameters['wallUser'], $wallFilter, 0, $this->getPagination());
 
-            case 'following':
-                $filterAuthor = $user->getFollowingIterator();
-                break;
-
-            case 'follower':
-                $filterAuthor = $user->getFollowerIterator();
-                break;
-
-            case 'friend':
-                $filterAuthor = $user->getFriendIterator();
-                break;
-
-            default:
-                $filterAuthor = null;
+        // do we need to skip a record because it is currently edited ?
+        if (array_key_exists('skipped_pub', $parameters)) {
+            $it = new SkippableIterator($it, [$parameters['skipped_pub']]);
         }
 
-        $parameters['listing'] = $this->getRepository()
-                ->findLastEntries($offset, $this->getPagination(), $filterAuthor);
+        $parameters['listing'] = $it;
         $parameters['pagination'] = $this->getPagination();
 
-        return parent::render('TrismegisteSocialBundle:Content:index.html.twig', $parameters);
+        return $this->render($wallSubview, $parameters);
     }
 
 }

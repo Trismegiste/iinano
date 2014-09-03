@@ -18,7 +18,7 @@
         <h4>{{ content.title }}</h4>
         <p>{{ content.body }}</p>
         
-        <a href="{{ path('pub_commentary_add', {id: content.id}) }}" class="button tiny">Reply</a>
+        <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}" class="button tiny">Reply</a>
         {% include 'TrismegisteSocialBundle:Content:simplepost_like_button.html.twig' %}        
 
         {% block commentary_create %}{% endblock %}

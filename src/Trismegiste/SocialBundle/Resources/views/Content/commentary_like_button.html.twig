@@ -1,7 +1,7 @@
 {% if comment.hasFan(app.user.author) %}
-    <a href="{{ path('commentary_famous_remove', {id: content.id, uuid: comment.uuid}) }}" class="button tiny">Unlike</a>
+    <a href="{{ path('commentary_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid, action: 'remove'}) }}" class="button tiny">Unlike</a>
 {% else %}
-    <a href="{{ path('commentary_famous_add', {id: content.id, uuid: comment.uuid}) }}" class="button tiny">Like</a>
+    <a href="{{ path('commentary_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid, action: 'add'}) }}" class="button tiny">Like</a>
 {% endif %}
 <span data-tooltip class="label right secondary has-tip fan-count" title="{{ comment.fanCount }} persons like this">
     <i class="fi-like"></i>

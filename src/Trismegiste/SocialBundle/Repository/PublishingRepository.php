@@ -10,6 +10,7 @@ use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 use Trismegiste\Socialist\Publishing;
+use Trismegiste\SocialBundle\Security\Netizen;
 
 /**
  * PublishingRepository is a business repository for subclasses of Publishing
@@ -74,6 +75,37 @@ class PublishingRepository implements PublishingRepositoryInterface
     public function findByPk($pk)
     {
         return $this->repository->findByPk($pk);
+    }
+
+    public function findWallEntries(Netizen $wallUser, $wallFilter, $offset = 0, $limit = 20)
+    {
+        switch ($wallFilter) {
+
+            case 'self':
+                $filterAuthor = new \ArrayIterator([$wallUser->getAuthor()]);
+                break;
+
+            case 'following':
+                $filterAuthor = $wallUser->getFollowingIterator();
+                break;
+
+            case 'follower':
+                $filterAuthor = $wallUser->getFollowerIterator();
+                break;
+
+            case 'friend':
+                $filterAuthor = $wallUser->getFriendIterator();
+                break;
+
+            case 'all':
+                $filterAuthor = null;
+                break;
+
+            default:
+                throw new \InvalidArgumentException("$wallFilter is not valid filter");
+        }
+
+        return $this->findLastEntries($offset, $limit, $filterAuthor);
     }
 
 }

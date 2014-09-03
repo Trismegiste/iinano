@@ -6,8 +6,8 @@
         <a href="#" class="right" data-options="align:left" data-dropdown="{{ dropdown_id }}"><i class="fi-widget"></i></a>
         <ul id="{{ dropdown_id }}" class="f-dropdown" data-dropdown-content>
             {% if is_granted('OWNER', comment) %}
-            <li><a href="{{ path('pub_commentary_edit', {id: content.id, uuid: comment.uuid}) }}">Edit</a></li> 
-            <li><a href="{{ path('pub_commentary_delete', {id: content.id, uuid: comment.uuid}) }}">Delete</a></li>
+            <li><a href="{{ path('pub_commentary_edit', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Edit</a></li> 
+            <li><a href="{{ path('pub_commentary_delete', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Delete</a></li>
             {% endif %}
             <li><a href="#">Report</a></li>
         </ul>

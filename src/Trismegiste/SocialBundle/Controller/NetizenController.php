@@ -17,7 +17,7 @@ class NetizenController extends Template
 
     public function showProfileAction($author)
     {
-        if ($author == 'me') {
+        if ($author == $this->getUser()->getUsername()) {
             $user = $this->getUser();
         } else {
             $user = $this->get('social.netizen.repository')->findByNickname($author);
@@ -48,7 +48,7 @@ class NetizenController extends Template
         return $response;
     }
 
-    public function likeNetizenAction($id, $action)
+    public function likeNetizenAction($id, $action, $wallNick, $wallFilter)
     {
         $repo = $this->get('social.netizen.repository');
         $target = $repo->findByPk($id);
@@ -67,12 +67,12 @@ class NetizenController extends Template
 
         $repo->persist($target);
 
-        $this->pushFlash('notice', $message . $target->getAuthor()->getNickname());
+        $this->pushFlash('notice', $message . $target->getUsername());
 
-        return $this->redirectRouteOk('content_index');
+        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter]);
     }
 
-    public function followNetizenAction($id, $action)
+    public function followNetizenAction($id, $action, $wallNick, $wallFilter)
     {
         $repo = $this->get('social.netizen.repository');
         $following = $repo->findByPk($id);
@@ -94,7 +94,7 @@ class NetizenController extends Template
 
         $this->pushFlash('notice', $message . $following->getAuthor()->getNickname());
 
-        return $this->redirectRouteOk('content_index');
+        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter]);
     }
 
 }

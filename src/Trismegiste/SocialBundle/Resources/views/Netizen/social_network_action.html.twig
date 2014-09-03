@@ -1,10 +1,10 @@
-{% if current_user.hasFan(app.user.author) %}
-    <a href="{{ path('netizen_famous', {id: current_user.id, action: 'remove'}) }}" class="button tiny">Unlike</a>
+{% if wallUser.hasFan(app.user.author) %}
+    <a href="{{ path('netizen_famous', {wallNick: wallNick, wallFilter: wallFilter, id: wallUser.id, action: 'remove'}) }}" class="button tiny">Unlike</a>
 {% else %}
-    <a href="{{ path('netizen_famous', {id: current_user.id, action: 'add'}) }}" class="button tiny">Like</a>
+    <a href="{{ path('netizen_famous', {wallNick: wallNick, wallFilter: wallFilter, id: wallUser.id, action: 'add'}) }}" class="button tiny">Like</a>
 {% endif %}
-{% if app.user.isFollowing(current_user) %}
-    <a href="{{ path('netizen_follow', {id: current_user.id, action: 'remove'}) }}" class="button tiny">Unfollow</a>
+{% if app.user.isFollowing(wallUser) %}
+    <a href="{{ path('netizen_follow', {wallNick: wallNick, wallFilter: wallFilter, id: wallUser.id, action: 'remove'}) }}" class="button tiny">Unfollow</a>
 {% else %}
-    <a href="{{ path('netizen_follow', {id: current_user.id, action: 'add'}) }}" class="button tiny">Follow</a>
+    <a href="{{ path('netizen_follow', {wallNick: wallNick, wallFilter: wallFilter, id: wallUser.id, action: 'add'}) }}" class="button tiny">Follow</a>
 {% endif %}
