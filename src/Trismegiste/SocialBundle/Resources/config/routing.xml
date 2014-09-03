@@ -34,12 +34,12 @@
         <requirement key="id">[\da-f]{24}</requirement>        
     </route>
     
-    <route id="foreigner_about" pattern="/about">
-        <default key="_controller">TrismegisteSocialBundle:Foreigner:about</default>
+    <route id="guest_about" pattern="/guest/about">
+        <default key="_controller">TrismegisteSocialBundle:Guest:about</default>
         <requirement key="_method">GET</requirement>
     </route>
-    <route id="foreigner_register" pattern="/register">
-        <default key="_controller">TrismegisteSocialBundle:Foreigner:register</default>
+    <route id="guest_register" pattern="/guest/register">
+        <default key="_controller">TrismegisteSocialBundle:Guest:register</default>
     </route>
     
     <route id="pub_famous_add" pattern="/pub/{id}/famous/add">

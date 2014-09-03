@@ -20,7 +20,7 @@ security:
             provider: proprietary
             form_login:
                 check_path: /login_check
-                login_path: /login
+                login_path: /guest/login
                 csrf_provider: form.csrf_provider
             logout:
                 path:   /logout
@@ -28,7 +28,5 @@ security:
             anonymous: ~
 
     access_control:
-        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }      
-        - { path: ^/about$, roles: IS_AUTHENTICATED_ANONYMOUSLY }      
-        - { path: ^/register$, roles: IS_AUTHENTICATED_ANONYMOUSLY }      
+        - { path: ^/guest/, roles: IS_AUTHENTICATED_ANONYMOUSLY }      
         - { path: ^/, roles: ROLE_USER }
