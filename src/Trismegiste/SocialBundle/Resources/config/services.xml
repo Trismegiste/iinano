@@ -37,12 +37,13 @@
             <tag name="security.voter"/>
         </service>
 
-        <service id="social.type.netizen.type" class="Trismegiste\SocialBundle\Form\RegisterType">
+        <service id="social.type.netizen.register" class="Trismegiste\SocialBundle\Form\RegisterType">
             <argument type="service" id="social.netizen.repository"/>
+            <argument>%nickname_regex%</argument>
             <tag name="form.type" alias="netizen_register"/>
         </service>
 
-        <service id="social.gender.type" class="Trismegiste\SocialBundle\Form\GenderType">
+        <service id="social.type.gender" class="Trismegiste\SocialBundle\Form\GenderType">
             <tag name="form.type" alias="gender"/>
         </service>
 

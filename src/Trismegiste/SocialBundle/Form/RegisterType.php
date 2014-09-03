@@ -24,20 +24,23 @@ class RegisterType extends AbstractType
 {
 
     protected $repository;
+    protected $nicknameRegex;
 
-    public function __construct(NetizenRepositoryInterface $repo)
+    public function __construct(NetizenRepositoryInterface $repo, $regex)
     {
         $this->repository = $repo;
+        $this->nicknameRegex=$regex;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('nickname', 'text', [
                     'constraints' => [
+                        // @todo all these constraints seem to me a little redundant
                         new NotBlank(),
                         new Length(['min' => 5, 'max' => 20]),
                         new UniqueNickname(),
-                        new Regex(['pattern'=>'#^[-\da-z]+$#'])
+                        new Regex(['pattern'=>'#^[-\da-z]+$#']) // @todo inject parameter nickname_regex
                     ],
                     'mapped' => false,
                     'attr' => ['placeholder' => 'Choose a nickname']

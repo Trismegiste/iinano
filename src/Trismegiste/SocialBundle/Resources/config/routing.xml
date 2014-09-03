@@ -77,8 +77,7 @@
     
     <route id="netizen_show" pattern="/profile/{author}">
         <default key="_controller">TrismegisteSocialBundle:Netizen:showProfile</default>
-        <requirement key="author">[-\da-z]+</requirement>
-        <default key="author">me</default>
+        <requirement key="author">%nickname_regex%</requirement>
     </route>
     <route id="netizen_avatar" pattern="/avatar/{filename}">
         <default key="_controller">TrismegisteSocialBundle:Netizen:sendAvatar</default>

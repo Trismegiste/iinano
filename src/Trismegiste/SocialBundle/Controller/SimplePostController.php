@@ -27,13 +27,14 @@ class SimplePostController extends ContentController
             try {
                 $repo->persist($newPost);
                 $this->pushFlash('notice', 'Message saved');
+                // @todo new=> wall_index(logged) / edit=> wall_index(wallNick)
                 return $this->redirectRouteOk('content_index', [], 'anchor-' . $newPost->getId());
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save message');
             }
         }
 
-        return $this->render('TrismegisteSocialBundle:Content:simplepost_form.html.twig', ['form' => $form->createView()]);
+        return $this->renderWall($this->getUser()->getUsername(), 'all', 'TrismegisteSocialBundle:Content:simplepost_form.html.twig', ['form' => $form->createView()]);
     }
 
     public function createAction()
@@ -76,6 +77,7 @@ class SimplePostController extends ContentController
             $this->pushFlash('warning', 'Message not deleted');
         }
 
+        // @todo vers wall_index(wallNick)
         return $this->redirectRouteOk('content_index');
     }
 

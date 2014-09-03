@@ -17,7 +17,7 @@ class NetizenController extends Template
 
     public function showProfileAction($author)
     {
-        if ($author == 'me') {
+        if ($author == $this->getUser()->getUsername()) {
             $user = $this->getUser();
         } else {
             $user = $this->get('social.netizen.repository')->findByNickname($author);

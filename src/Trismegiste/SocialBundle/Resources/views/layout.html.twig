@@ -67,8 +67,8 @@ nav.top-bar {
             <li class="divider"></li>
             {% if app.user.author is defined %}
                 <li>
-                    <a href="{{ path('netizen_show') }}">
-                        {{ app.user.author.nickname }}
+                    <a href="{{ path('netizen_show',{ author: app.user.username}) }}">
+                        {{ app.user.username }}
                     </a>
                 </li>
                 <li class="divider"></li>
