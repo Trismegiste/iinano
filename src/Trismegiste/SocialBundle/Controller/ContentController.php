@@ -34,18 +34,14 @@ class ContentController extends Template
         ]);
     }
 
-    public function ajaxMoreAction($offset)
+    public function ajaxMoreAction($offset, $wallNick, $wallFilter)
     {
         // @todo problem with dynamic tooltip
-        // @todo url is not valid when there is a filter : session ?
         if (!$this->getRequest()->isXmlHttpRequest()) {
             throw new AccessDeniedException('U haxxor');
         }
 
-        $repo = $this->getRepository();
-        $parameters['listing'] = $repo->findLastEntries($offset, $this->getPagination());
-
-        return parent::render('TrismegisteSocialBundle:Content:index_more.html.twig', $parameters);
+        return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:index_more.html.twig', [], $offset);
     }
 
     protected function checkOwningRight(Content $post)
@@ -61,17 +57,18 @@ class ContentController extends Template
     }
 
     /**
-     * Render of index.html.twig or a subclass
+     * The rendering of index.html.twig or its subclass
      * 
      * @param string $wallNick the nickname of the currently viewed wall
-     * @param type $wallFilter the filter of the currently viewed wall
-     * @param type $wallSubview the twig template
+     * @param string $wallFilter the filter of the currently viewed wall
+     * @param string $wallSubview the twig template
      * @param array $parameters other parameters
      * 
      * @return Response
+     * 
      * @throws NotFoundHttpException
      */
-    protected function renderWall($wallNick, $wallFilter, $wallSubview, array $parameters = [])
+    protected function renderWall($wallNick, $wallFilter, $wallSubview, array $parameters = [], $offset = 0)
     {
         // filling the wall user (logged user or not)
         if ($wallNick === $this->getUser()->getUsername()) {
@@ -91,7 +88,7 @@ class ContentController extends Template
 
         // filling feed entries and skipping one if in CRUD
         $repo = $this->getRepository();
-        $it = $repo->findWallEntries($parameters['wallUser'], $wallFilter, 0, $this->getPagination());
+        $it = $repo->findWallEntries($parameters['wallUser'], $wallFilter, $offset, $this->getPagination());
 
         // do we need to skip a record because it is currently edited ?
         if (array_key_exists('skipped_pub', $parameters)) {

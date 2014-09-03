@@ -8,7 +8,7 @@
 <div id="pagination"></div>
 <div class="row">
     <div class="small-12 column">
-        <a id="more-button" href="{{ path('ajax_content_more', {offset: pagination}) }}" class="button expand secondary">More</a>
+        <a id="more-button" href="{{ path('ajax_content_more', {wallNick: wallNick, wallFilter: wallFilter, offset: pagination}) }}" class="button expand secondary">More</a>
     </div>
 </div>
 {% endblock %}
