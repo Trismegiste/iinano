@@ -34,19 +34,16 @@ class FamousController extends Template
         return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
     }
 
-    public function addFanOnPublishAction($id)
+    public function likePublishAction($id, $action)
     {
         $doc = $this->getRepository()->findByPk($id);
-        $doc->addFan($this->getAuthor());
-        $this->getRepository()->persist($doc);
-
-        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
-    }
-
-    public function removeFanOnPublishAction($id)
-    {
-        $doc = $this->getRepository()->findByPk($id);
-        $doc->removeFan($this->getAuthor());
+        switch ($action) {
+            case'add':$doc->addFan($this->getAuthor());
+                break;
+            case'remove':$doc->removeFan($this->getAuthor());
+                break;
+            default: $this->createNotFoundException("$action");
+        }
         $this->getRepository()->persist($doc);
 
         return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);

@@ -50,6 +50,7 @@ class NetizenController extends Template
 
     public function likeNetizenAction($id, $action)
     {
+        // @todo refactoriser les like sur simple_post et commentaire sur le même principe de l'action en param
         $repo = $this->get('social.netizen.repository');
         $target = $repo->findByPk($id);
         $me = $this->getUser();

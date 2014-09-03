@@ -1,7 +1,7 @@
 {% if content.hasFan(app.user.author) %}
-    <a href="{{ path('pub_famous_remove', {id: content.id}) }}" class="button tiny">Unlike</a>
+    <a href="{{ path('pub_famous', {id: content.id, action: 'remove'}) }}" class="button tiny">Unlike</a>
 {% else %}
-    <a href="{{ path('pub_famous_add', {id: content.id}) }}" class="button tiny">Like</a>
+    <a href="{{ path('pub_famous', {id: content.id, action: 'add'}) }}" class="button tiny">Like</a>
 {% endif %}
 {% set fanCount = content.fanCount %}
 <span data-tooltip class="label right secondary has-tip fan-count" title="{{ fanCount }} persons like this">
