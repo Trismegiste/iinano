@@ -45,7 +45,7 @@ class ContentController extends Template
         return parent::render('TrismegisteSocialBundle:Content:index_more.html.twig', $parameters);
     }
 
-    public function render($view, array $parameters = array(), Response $response = null)
+    public function old_render($view, array $parameters = array(), Response $response = null)
     {
         $repo = $this->getRepository();
         $it = $repo->findLastEntries(0, $this->getPagination());
@@ -117,8 +117,10 @@ class ContentController extends Template
 
     protected function renderWall($wallNick, $wallFilter, $wallSubview, array $parameters = [])
     {
+        // filling the wall user (logged user or not)
         if ($wallNick === $this->getUser()->getUsername()) {
-            $parameters['wallNick'] = $this->getUser();
+            $parameters['wallNick'] = $wallNick;
+            $parameters['wallUser'] = $this->getUser();
         } else {
             $repo = $this->get('social.netizen.repository');
             $user = $repo->findByNickname($wallNick);
@@ -128,8 +130,20 @@ class ContentController extends Template
             $parameters['wallUser'] = $user;
             $parameters['wallNick'] = $user->getUsername();
         }
-
+        // filling the wall filter
         $parameters['wallFilter'] = $wallFilter;
+
+        // filling feed entries and skipping one if in CRUD
+        $repo = $this->getRepository();
+        $it = $repo->findWallEntries($parameters['wallUser'], $wallFilter, 0, $this->getPagination());
+
+        // do we need to skip a record because it is currently edited ?
+        if (array_key_exists('skipped_pub', $parameters)) {
+            $it = new SkippableIterator($it, [$parameters['skipped_pub']]);
+        }
+
+        $parameters['listing'] = $it;
+        $parameters['pagination'] = $this->getPagination();
 
         return $this->render($wallSubview, $parameters);
     }
