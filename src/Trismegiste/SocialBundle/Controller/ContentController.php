@@ -48,26 +48,6 @@ class ContentController extends Template
         return parent::render('TrismegisteSocialBundle:Content:index_more.html.twig', $parameters);
     }
 
-    public function old_render($view, array $parameters = array(), Response $response = null)
-    {
-        $repo = $this->getRepository();
-        $it = $repo->findLastEntries(0, $this->getPagination());
-
-        // do we need to skip a record because it is currently edited ?
-        if (array_key_exists('skipped_pub', $parameters)) {
-            $it = new SkippableIterator($it, [$parameters['skipped_pub']]);
-        }
-        // do we need to feed the current user (default = logged)
-        if (!array_key_exists('current_user', $parameters)) {
-            $parameters['current_user'] = $this->getUser();
-        }
-
-        $parameters['listing'] = $it;
-        $parameters['pagination'] = $this->getPagination();
-
-        return parent::render($view, $parameters, $response);
-    }
-
     protected function checkOwningRight(Content $post)
     {
         if (!$this->get('security.context')->isGranted('OWNER', $post)) {
@@ -80,6 +60,17 @@ class ContentController extends Template
         return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:index.html.twig');
     }
 
+    /**
+     * Render of index.html.twig or a subclass
+     * 
+     * @param string $wallNick the nickname of the currently viewed wall
+     * @param type $wallFilter the filter of the currently viewed wall
+     * @param type $wallSubview the twig template
+     * @param array $parameters other parameters
+     * 
+     * @return Response
+     * @throws NotFoundHttpException
+     */
     protected function renderWall($wallNick, $wallFilter, $wallSubview, array $parameters = [])
     {
         // filling the wall user (logged user or not)
