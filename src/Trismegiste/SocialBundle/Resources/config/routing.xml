@@ -40,12 +40,6 @@
         <default key="_controller">TrismegisteSocialBundle:Guest:register</default>
     </route>
     
-    <route id="pub_famous" pattern="/pub/{id}/famous/{action}">
-        <default key="_controller">TrismegisteSocialBundle:Famous:likePublish</default>
-        <requirement key="id">[\da-f]{24}</requirement>        
-        <requirement key="action">(add|remove)</requirement>
-    </route>
-
     <route id="pub_commentary_add" pattern="/pub/{id}/commentary/add">
         <default key="_controller">TrismegisteSocialBundle:Commentary:addOnPublishing</default>
         <requirement key="id">[\da-f]{24}</requirement>
@@ -86,4 +80,10 @@
         <requirement key="id">[\da-f]{24}</requirement>
         <requirement key="action">(add|remove)</requirement>
     </route>
+    
+    <import resource="@TrismegisteSocialBundle/Resources/config/wall.xml" 
+            prefix="/wall/{wallNick}/{wallFilter}">
+        <requirement key="wallNick">%nickname_regex%</requirement>
+        <requirement key="wallFilter">(self|follower|following|friend|all)</requirement>
+    </import>
 </routes>

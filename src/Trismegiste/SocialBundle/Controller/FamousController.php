@@ -34,7 +34,7 @@ class FamousController extends Template
         return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
     }
 
-    public function likePublishAction($id, $action)
+    public function likePublishAction($id, $action, $wallNick, $wallFilter)
     {
         $doc = $this->getRepository()->findByPk($id);
         switch ($action) {
@@ -50,7 +50,7 @@ class FamousController extends Template
 
         $this->getRepository()->persist($doc);
 
-        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
+        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
     }
 
 }
