@@ -13,14 +13,14 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Trismegiste\SocialBundle\Security\Netizen;
 
 /**
- * ForeignerController is a controller for unathentificated user
+ * GuestController is a controller for unathentificated user
  */
-class ForeignerController extends Template
+class GuestController extends Template
 {
 
     public function aboutAction()
     {
-        return $this->render('TrismegisteSocialBundle:Foreigner:about.html.twig');
+        return $this->render('TrismegisteSocialBundle:Guest:about.html.twig');
     }
 
     public function loginAction()
@@ -35,7 +35,7 @@ class ForeignerController extends Template
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
 
-        return $this->render('TrismegisteSocialBundle:Foreigner:login.html.twig', ['error' => $error]);
+        return $this->render('TrismegisteSocialBundle:Guest:login.html.twig', ['error' => $error]);
     }
 
     public function registerAction(Request $request)
@@ -62,7 +62,7 @@ class ForeignerController extends Template
             }
         }
 
-        return $this->render('TrismegisteSocialBundle:Foreigner:register.html.twig', ['register' => $form->createView()]);
+        return $this->render('TrismegisteSocialBundle:Guest:register.html.twig', ['register' => $form->createView()]);
     }
 
     /**
