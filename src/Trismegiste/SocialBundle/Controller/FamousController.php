@@ -14,21 +14,21 @@ use Trismegiste\SocialBundle\Controller\Template;
 class FamousController extends Template
 {
 
-    public function addFanOnCommentaryAction($id, $uuid)
+    public function likeCommentaryAction($id, $uuid, $action)
     {
         $pub = $this->getRepository()->findByPk($id);
         $commentary = $pub->getCommentaryByUuid($uuid);
-        $commentary->addFan($this->getAuthor());
-        $this->getRepository()->persist($pub);
+        switch ($action) {
+            case 'add':
+                $commentary->addFan($this->getAuthor());
+                break;
+            case 'remove':
+                $commentary->removeFan($this->getAuthor());
+                break;
+            default:
+                $this->createNotFoundException("Action $action");
+        }
 
-        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
-    }
-
-    public function removeFanOnCommentaryAction($id, $uuid)
-    {
-        $pub = $this->getRepository()->findByPk($id);
-        $commentary = $pub->getCommentaryByUuid($uuid);
-        $commentary->removeFan($this->getAuthor());
         $this->getRepository()->persist($pub);
 
         return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
@@ -38,12 +38,16 @@ class FamousController extends Template
     {
         $doc = $this->getRepository()->findByPk($id);
         switch ($action) {
-            case'add':$doc->addFan($this->getAuthor());
+            case 'add':
+                $doc->addFan($this->getAuthor());
                 break;
-            case'remove':$doc->removeFan($this->getAuthor());
+            case 'remove':
+                $doc->removeFan($this->getAuthor());
                 break;
-            default: $this->createNotFoundException("$action");
+            default:
+                $this->createNotFoundException("Action $action");
         }
+
         $this->getRepository()->persist($doc);
 
         return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);

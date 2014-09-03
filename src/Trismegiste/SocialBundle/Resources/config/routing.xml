@@ -61,15 +61,11 @@
         <requirement key="uuid">[\da-f]{40}</requirement>
     </route>
 
-    <route id="commentary_famous_add" pattern="/pub/{id}/commentary/{uuid}/famous/add">
-        <default key="_controller">TrismegisteSocialBundle:Famous:addFanOnCommentary</default>
+    <route id="commentary_famous" pattern="/pub/{id}/commentary/{uuid}/famous/{action}">
+        <default key="_controller">TrismegisteSocialBundle:Famous:likeCommentary</default>
         <requirement key="id">[\da-f]{24}</requirement>
         <requirement key="uuid">[\da-f]{40}</requirement>
-    </route>
-    <route id="commentary_famous_remove" pattern="/pub/{id}/commentary/{uuid}/famous/remove">
-        <default key="_controller">TrismegisteSocialBundle:Famous:removeFanOnCommentary</default>
-        <requirement key="id">[\da-f]{24}</requirement>
-        <requirement key="uuid">[\da-f]{40}</requirement>
+        <requirement key="action">(add|remove)</requirement>
     </route>
     
     <route id="netizen_show" pattern="/profile/{author}">
