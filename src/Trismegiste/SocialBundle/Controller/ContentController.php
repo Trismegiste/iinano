@@ -115,9 +115,23 @@ class ContentController extends Template
         return parent::render('TrismegisteSocialBundle:Content:index.html.twig', $parameters);
     }
 
-    protected function renderWall($wallNick, $wallFilter, $wallSubview, $parameters)
+    protected function renderWall($wallNick, $wallFilter, $wallSubview, array $parameters = [])
     {
-        
+        if ($wallNick === $this->getUser()->getUsername()) {
+            $parameters['wallNick'] = $this->getUser();
+        } else {
+            $repo = $this->get('social.netizen.repository');
+            $user = $repo->findByNickname($wallNick);
+            if (is_null($user)) {
+                throw new NotFoundHttpException("$wallNick does not exists");
+            }
+            $parameters['wallUser'] = $user;
+            $parameters['wallNick'] = $user->getUsername();
+        }
+
+        $parameters['wallFilter'] = $wallFilter;
+
+        return $this->render($wallSubview, $parameters);
     }
 
 }
