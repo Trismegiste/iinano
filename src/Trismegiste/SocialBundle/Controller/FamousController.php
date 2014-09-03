@@ -14,7 +14,7 @@ use Trismegiste\SocialBundle\Controller\Template;
 class FamousController extends Template
 {
 
-    public function likeCommentaryAction($id, $uuid, $action)
+    public function likeCommentaryAction($id, $uuid, $action, $wallNick, $wallFilter)
     {
         $pub = $this->getRepository()->findByPk($id);
         $commentary = $pub->getCommentaryByUuid($uuid);
@@ -31,7 +31,7 @@ class FamousController extends Template
 
         $this->getRepository()->persist($pub);
 
-        return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
+        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
     }
 
     public function likePublishAction($id, $action, $wallNick, $wallFilter)

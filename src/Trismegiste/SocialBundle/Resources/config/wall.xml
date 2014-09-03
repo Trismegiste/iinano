@@ -9,5 +9,12 @@
         <requirement key="id">[\da-f]{24}</requirement>        
         <requirement key="action">(add|remove)</requirement>
     </route>
+
+    <route id="commentary_famous" pattern="/pub/{id}/commentary/{uuid}/famous/{action}">
+        <default key="_controller">TrismegisteSocialBundle:Famous:likeCommentary</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="uuid">[\da-f]{40}</requirement>
+        <requirement key="action">(add|remove)</requirement>
+    </route>
     
 </routes>
