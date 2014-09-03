@@ -45,7 +45,7 @@ class CommentaryController extends ContentController
         return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:commentary_form.html.twig', $param);
     }
 
-    public function editOnPublishingAction($id, $uuid)
+    public function editOnPublishingAction($id, $uuid, $wallNick, $wallFilter)
     {
         $pub = $this->getRepository()->findByPk($id);
         $commentary = $pub->getCommentaryByUuid($uuid);
@@ -60,7 +60,8 @@ class CommentaryController extends ContentController
                 $commentary->setLastEdited(new \DateTime());
                 $this->getRepository()->persist($pub);
                 $this->pushFlash('notice', 'Commentary saved');
-                return $this->redirectRouteOk('content_index', [], 'anchor-' . $id);
+
+                return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save message');
             }
@@ -72,7 +73,7 @@ class CommentaryController extends ContentController
             'form' => $form->createView()
         ];
 
-        return $this->render('TrismegisteSocialBundle:Content:commentary_form.html.twig', $param);
+        return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:commentary_form.html.twig', $param);
     }
 
     public function deleteOnPublishingAction($id, $uuid)
