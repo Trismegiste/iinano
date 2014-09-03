@@ -10,6 +10,7 @@ use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 use Trismegiste\Socialist\Publishing;
+use Trismegiste\SocialBundle\Security\Netizen;
 
 /**
  * PublishingRepository is a business repository for subclasses of Publishing
@@ -104,7 +105,7 @@ class PublishingRepository implements PublishingRepositoryInterface
                 throw new \InvalidArgumentException("$wallFilter is not valid filter");
         }
 
-        return $this->repository->findLastEntries($offset, $limit, $filterAuthor);
+        return $this->findLastEntries($offset, $limit, $filterAuthor);
     }
 
 }

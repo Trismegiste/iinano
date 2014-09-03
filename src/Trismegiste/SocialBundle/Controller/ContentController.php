@@ -28,7 +28,10 @@ class ContentController extends Template
 
     public function indexAction()
     {
-        return $this->render('TrismegisteSocialBundle:Content:index.html.twig', []);
+        return $this->redirectRouteOk('wall_index', [
+                    'wallNick' => $this->getUser()->getUsername(),
+                    'wallFilter' => 'all'
+        ]);
     }
 
     public function ajaxMoreAction($offset)
@@ -72,47 +75,9 @@ class ContentController extends Template
         }
     }
 
-    public function filterAction($center, $author, $offset)
+    public function wallAction($wallNick, $wallFilter)
     {
-        // @todo filter content based on :
-        // * current author vertex (me or someone else) => the content of the navbar
-        // * type of edge (himself, following, follower, friends, all)
-        // => must be stateless & default === index
-
-        $repo = $this->get('social.netizen.repository');
-        $user = $repo->findByNickname($center);
-        if (is_null($user)) {
-            throw new NotFoundHttpException("$center does not exists");
-        }
-        $parameters['current_user'] = $user;
-
-        // now filter on type of author :
-        switch ($author) {
-            case 'self':
-                $filterAuthor = new \ArrayIterator([$user->getAuthor()]);
-                break;
-
-            case 'following':
-                $filterAuthor = $user->getFollowingIterator();
-                break;
-
-            case 'follower':
-                $filterAuthor = $user->getFollowerIterator();
-                break;
-
-            case 'friend':
-                $filterAuthor = $user->getFriendIterator();
-                break;
-
-            default:
-                $filterAuthor = null;
-        }
-
-        $parameters['listing'] = $this->getRepository()
-                ->findLastEntries($offset, $this->getPagination(), $filterAuthor);
-        $parameters['pagination'] = $this->getPagination();
-
-        return parent::render('TrismegisteSocialBundle:Content:index.html.twig', $parameters);
+        return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:index.html.twig');
     }
 
     protected function renderWall($wallNick, $wallFilter, $wallSubview, array $parameters = [])

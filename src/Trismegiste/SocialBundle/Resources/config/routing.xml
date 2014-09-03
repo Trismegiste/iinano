@@ -13,13 +13,11 @@
         <requirement key="_method">GET</requirement>
         <requirement key="offset">[\d]+</requirement>        
     </route>
-    <route id="filtered_index" pattern="/filter/{center}/{author}/{offset}">
-        <default key="_controller">TrismegisteSocialBundle:Content:filter</default>
+    <route id="wall_index" pattern="/wall/{wallNick}/{wallFilter}">
+        <default key="_controller">TrismegisteSocialBundle:Content:wall</default>
         <requirement key="_method">GET</requirement>
-        <requirement key="center">%nickname_regex%</requirement>
-        <requirement key="author">(self|follower|following|friend|all)</requirement>
-        <requirement key="offset">[\d]+</requirement>    
-        <default key="offset">0</default>    
+        <requirement key="wallNick">%nickname_regex%</requirement>
+        <requirement key="wallFilter">(self|follower|following|friend|all)</requirement>
     </route>
 
     <route id="simplepost_create" pattern="/simplepost/create">

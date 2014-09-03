@@ -14,14 +14,14 @@
 {% endblock %}
         
 {% block navbar %}
-<a href="{{ path('netizen_show', {author: current_user.author.nickname} ) }}"><img src="{{ path('netizen_avatar', {filename: current_user.author.avatar} ) }}"/></a>
-<h5><a href="{{ path('netizen_show', {author: current_user.author.nickname} ) }}">{{ current_user.author.nickname }}</a></h5>
+<a href="{{ path('netizen_show', {author: wallNick} ) }}"><img src="{{ path('netizen_avatar', {filename: wallUser.author.avatar} ) }}"/></a>
+<h5><a href="{{ path('netizen_show', {author: wallNick} ) }}">{{ wallNick }}</a></h5>
 <ul class="inline-list">
-    <li><small>Likes: {{ current_user.fanCount }}</small></li>
-    <li><small>Followers: {{ current_user.followerCount }}</small></li>
-    <li><small>Following: {{ current_user.followingCount }}</small></li>
+    <li><small>Likes: {{ wallUser.fanCount }}</small></li>
+    <li><small>Followers: {{ wallUser.followerCount }}</small></li>
+    <li><small>Following: {{ wallUser.followingCount }}</small></li>
 </ul>
-{% if app.user != current_user %}
+{% if app.user != wallUser %}
     {% include 'TrismegisteSocialBundle:Netizen:social_network_action.html.twig' %}
 {% endif %}
 <div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
