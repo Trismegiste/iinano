@@ -33,6 +33,8 @@ class TrismegisteSocialExtension extends Extension
         // list of aliases for content classes :
         $container->getDefinition('social.content.repository')
                 ->addArgument($config['alias']['content']);
+        // injecting the regex for validation of nickname (dry)
+        $container->setParameter('nickname_regex', $config['nickname_regex']);        
     }
 
 }

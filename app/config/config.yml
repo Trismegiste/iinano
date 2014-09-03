@@ -59,6 +59,7 @@ dokudoki:
         profile: 'Trismegiste\SocialBundle\Security\Profile'
 
 trismegiste_social:
+    nickname_regex: "[-\da-z]+"
     alias: 
         user: %user_class_alias%
         content:

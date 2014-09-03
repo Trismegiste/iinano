@@ -21,6 +21,7 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('trismegiste_social');
         
         $rootNode->children()
+                    ->scalarNode('nickname_regex')->end()
                     ->arrayNode('alias')
                         ->children()
                             ->scalarNode('user')->end()
