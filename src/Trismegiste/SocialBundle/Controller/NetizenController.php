@@ -48,9 +48,8 @@ class NetizenController extends Template
         return $response;
     }
 
-    public function likeNetizenAction($id, $action)
+    public function likeNetizenAction($id, $action, $wallNick, $wallFilter)
     {
-        // @todo refactoriser les like sur simple_post et commentaire sur le même principe de l'action en param
         $repo = $this->get('social.netizen.repository');
         $target = $repo->findByPk($id);
         $me = $this->getUser();
@@ -70,10 +69,10 @@ class NetizenController extends Template
 
         $this->pushFlash('notice', $message . $target->getAuthor()->getNickname());
 
-        return $this->redirectRouteOk('content_index');
+        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter]);
     }
 
-    public function followNetizenAction($id, $action)
+    public function followNetizenAction($id, $action, $wallNick, $wallFilter)
     {
         $repo = $this->get('social.netizen.repository');
         $following = $repo->findByPk($id);
@@ -95,7 +94,7 @@ class NetizenController extends Template
 
         $this->pushFlash('notice', $message . $following->getAuthor()->getNickname());
 
-        return $this->redirectRouteOk('content_index');
+        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter]);
     }
 
 }
