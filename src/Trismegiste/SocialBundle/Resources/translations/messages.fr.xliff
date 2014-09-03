@@ -6,6 +6,18 @@
                 <source>Nickname</source>
                 <target>Surnom</target>
             </trans-unit>
+            <trans-unit id="2">
+                <source>Male</source>
+                <target>Homme</target>
+            </trans-unit>     
+            <trans-unit id="3">
+                <source>Female</source>
+                <target>Femme</target>
+            </trans-unit>          
+            <trans-unit id="4">
+                <source>Full name</source>
+                <target>Nom complet</target>
+            </trans-unit>          
         </body>
     </file>
 </xliff>

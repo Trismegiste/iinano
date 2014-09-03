@@ -15,11 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class GenderType extends AbstractType
 {
 
-    public function __construct(/* insert translation service here */)
-    {
-        
-    }
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
@@ -27,7 +22,8 @@ class GenderType extends AbstractType
                 'xy' => 'Male',
                 'xx' => 'Female',
             ],
-            'expanded' => true
+            'expanded' => true,
+            'required' => true
         ]);
     }
 
