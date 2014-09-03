@@ -58,7 +58,7 @@ class RegisterType extends AbstractType
                     ]
                 ])
                 ->add('profile', new ProfileType())
-                ->add('save', 'submit', ['attr' => ['class' => 'right']]);
+                ->add('register', 'submit', ['attr' => ['class' => 'right']]);
     }
 
     public function getName()
