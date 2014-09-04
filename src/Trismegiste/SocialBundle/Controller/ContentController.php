@@ -22,8 +22,7 @@ class ContentController extends Template
 
     protected function getPagination()
     {
-        // @todo add a config somewhere
-        return 20;
+        return $this->container->getParameter('social.pagination');
     }
 
     public function indexAction()

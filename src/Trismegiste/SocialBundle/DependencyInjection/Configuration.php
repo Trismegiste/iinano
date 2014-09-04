@@ -22,6 +22,9 @@ class Configuration implements ConfigurationInterface
         
         $rootNode->children()
                     ->scalarNode('nickname_regex')->end()
+                    ->scalarNode('pagination')
+                        ->defaultValue(20)
+                    ->end()
                     ->arrayNode('alias')
                         ->children()
                             ->scalarNode('user')->end()

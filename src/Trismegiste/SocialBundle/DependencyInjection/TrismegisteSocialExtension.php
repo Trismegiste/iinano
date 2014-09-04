@@ -34,7 +34,9 @@ class TrismegisteSocialExtension extends Extension
         $container->getDefinition('social.content.repository')
                 ->addArgument($config['alias']['content']);
         // injecting the regex for validation of nickname (dry)
-        $container->setParameter('nickname_regex', $config['nickname_regex']);        
+        $container->setParameter('nickname_regex', $config['nickname_regex']);  
+        // injecting how many contents inside a page
+        $container->setParameter('social.pagination', $config['pagination']);        
     }
 
 }
