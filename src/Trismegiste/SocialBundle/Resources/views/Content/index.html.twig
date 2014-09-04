@@ -55,9 +55,13 @@
             $.ajax({
                 url: event.target.href,
                 success: function(data) {
-                    $('#pagination').append(data)
-                    var old = event.target.href
-                    event.target.href = old.replace(/(\d+)$/, function(match, p1, offset, str) { return {{ pagination }}+Number(p1) })
+                    if ('' != data) {
+                        $('#pagination').append(data)
+                        var old = event.target.href
+                        event.target.href = old.replace(/(\d+)$/, function(match, p1, offset, str) { return {{ pagination }}+Number(p1) })
+                    } else {
+                        $('#more-button').hide()
+                    }
                 }
             })
             event.preventDefault()

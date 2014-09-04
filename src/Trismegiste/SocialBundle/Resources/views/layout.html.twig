@@ -28,39 +28,42 @@ nav.top-bar {
 
         <ul class="left">
             <li class="divider"></li>
-            <li class="has-dropdown">
-                <a href="#">New</a>
-                <ul class="dropdown">
-                    <li><a href="{{ path('simplepost_create') }}">Simple Post</a></li>
-                    <li><a href="#">Status</a></li>
-                    <li><a href="#">Pictures</a></li>
-                    <li><a href="#">Video</a></li>
-                </ul>
-            </li>
-            <li class="divider"></li>
-            <li class="has-dropdown">
-                <a href="#">Filter</a>
-                <ul class="dropdown">
-                    <li><a href="#">Me</a></li>
-                    <li><a href="#">(Someone)</a></li>
-                    <li><a href="#">Following</a></li>
-                    <li><a href="#">Followers</a></li>
-                    <li><a href="#">Friends</a></li>
+            {% if app.user.author is defined %}
+                <li class="has-dropdown">
+                    <a href="#">New</a>
+                    <ul class="dropdown">
+                        <li><a href="{{ path('simplepost_create') }}">Simple Post</a></li>
+                        <li><a href="#">Status</a></li>
+                        <li><a href="#">Pictures</a></li>
+                        <li><a href="#">Video</a></li>
+                    </ul>
+                </li>
+                <li class="divider"></li>
+                {% if wallNick is defined %}
+                    <li class="has-dropdown">
+                        <a href="#">Filtering contents</a>
+                        <ul class="dropdown">
+                            <li><a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'self' }) }}">from {{ wallNick }}</a></li>
+                            <li><a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'following' }) }}">from {{ wallNick }}'s followings</a></li>
+                            <li><a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'follower' }) }}">from {{ wallNick }}'s followers</a></li>
+                            <li><a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'friend' }) }}">from {{ wallNick }}'s friends</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'all' }) }}">See all →</a></li>
+                        </ul>
+                    </li>
                     <li class="divider"></li>
-                    <li><a href="#">See all →</a></li>
-                </ul>
-            </li>
-            <li class="divider"></li>
-            <li class="has-form">
-                <div class="row collapse">
-                  <div class="large-8 small-9 columns">
-                    <input type="text" placeholder="Find Stuff">
-                  </div>
-                  <div class="large-4 small-3 columns">
-                    <a href="#" class="alert button expand">Search</a>
-                  </div>
-                </div>
-            </li>
+                {% endif %}
+                <li class="has-form">
+                    <div class="row collapse">
+                      <div class="large-8 small-9 columns">
+                        <input type="text" placeholder="Find Stuff">
+                      </div>
+                      <div class="large-4 small-3 columns">
+                        <a href="#" class="alert button expand">Search</a>
+                      </div>
+                    </div>
+                </li>
+            {% endif %}
         </ul>
 
         <ul class="right">
@@ -78,6 +81,12 @@ nav.top-bar {
                     </a>
                 </li>            
             {% else %}
+                <li>
+                    <a href="{{ path('guest_register') }}">
+                        Register
+                    </a>
+                </li>            
+                <li class="divider"></li>
                 <li>
                     <a href="{{ path('trismegiste_login') }}">
                         Sign in
