@@ -59,7 +59,7 @@ nav.top-bar {
                         <input type="text" placeholder="Find Stuff">
                       </div>
                       <div class="large-4 small-3 columns">
-                        <a href="#" class="alert button expand">Search</a>
+                        <a href="#" class="button expand">Search</a>
                       </div>
                     </div>
                 </li>
@@ -75,8 +75,8 @@ nav.top-bar {
                     </a>
                 </li>
                 <li class="divider"></li>
-                <li>
-                    <a href="{{ path('trismegiste_logout') }}">
+                <li class="has-form">
+                    <a href="{{ path('trismegiste_logout') }}" class="button alert">
                         Sign out
                     </a>
                 </li>            
@@ -87,8 +87,8 @@ nav.top-bar {
                     </a>
                 </li>            
                 <li class="divider"></li>
-                <li>
-                    <a href="{{ path('trismegiste_login') }}">
+                <li class="has-form">
+                    <a href="{{ path('trismegiste_login') }}" class="button success">
                         Sign in
                     </a>
                 </li>
