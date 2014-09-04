@@ -36,7 +36,6 @@ class ContentController extends Template
 
     public function ajaxMoreAction($offset, $wallNick, $wallFilter)
     {
-        // @todo problem with dynamic tooltip
         if (!$this->getRequest()->isXmlHttpRequest()) {
             throw new AccessDeniedException('U haxxor');
         }
