@@ -23,19 +23,16 @@
         {% endif %}
     </section>
     <section class="section">
+        <h5 class="title"><a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'following' }) }}">Following: {{ wallUser.followingCount }}</a></h5>
+    </section>
+    <section class="section">
+        <h5 class="title"><a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'follower' }) }}">Followers: {{ wallUser.followerCount }}</a></h5>
+    </section>
+    <section class="section">
+        <h5 class="title"><a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'friend' }) }}">Friends: {{ wallUser.friendIterator|length }}</a></h5>
+    </section>
+    <section class="section">
         <h5 class="title">Likes: {{ wallUser.fanCount }}</h5>
-    </section>
-    <section class="section">
-        <h5 class="title">Following: {{ wallUser.followingCount }}</h5>
-    </section>
-    <section class="section">
-        <h5 class="title">Followers: {{ wallUser.followerCount }}</h5>
-    </section>
-    <section class="section">
-        <h5 class="title">Friends: {{ wallUser.friendIterator|length }}</h5>
-    </section>
-    <section class="section">
-        <h5 class="title"><a href="#">History</a></h5>
     </section>
 </div>
 {% endblock navbar %}
