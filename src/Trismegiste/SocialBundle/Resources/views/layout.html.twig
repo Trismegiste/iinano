@@ -38,7 +38,7 @@ nav.top-bar {
             <li class="divider"></li>
             {% if app.user.author is defined %}
                 <li class="has-dropdown">
-                    <a href="#">New</a>
+                    <a href="#">New content</a>
                     <ul class="dropdown">
                         <li><a href="{{ path('simplepost_create') }}">Simple Post</a></li>
                         <li><a href="#">Status</a></li>
@@ -49,7 +49,7 @@ nav.top-bar {
                 <li class="divider"></li>
                 {% if wallNick is defined %}
                     <li class="has-dropdown">
-                        <a href="#">View</a>
+                        <a href="#">View contents from</a>
                         <ul class="dropdown">
                             <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'following' }) }}">My following</a></li>
                             <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'follower' }) }}">My followers</a></li>
