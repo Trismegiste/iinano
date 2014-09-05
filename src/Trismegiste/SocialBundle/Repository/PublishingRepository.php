@@ -87,6 +87,7 @@ class PublishingRepository implements PublishingRepositoryInterface
 
             case 'following':
                 $filterAuthor = $wallUser->getFollowingIterator();
+                // @todo like twitter add self
                 break;
 
             case 'follower':
