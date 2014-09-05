@@ -1,0 +1,12 @@
+{# avatar icon + dropdown with mini content #}
+{% if app.user.author == author %}
+<img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
+{% else %}
+{% set avatar_dropdown_counter = author.nickname ~ random() %}
+<a href="#" data-dropdown="{{ avatar_dropdown_counter }}"><img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/></a>
+<div id="{{ avatar_dropdown_counter }}" class="f-dropdown content medium" aria-hidden="true" tabindex="-1">
+    <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
+    <p class="text-center">{{ author.nickname }}</p>
+    AJAX : Like / Follow / View profile
+</div>
+{% endif %}
