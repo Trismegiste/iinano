@@ -4,7 +4,7 @@
  * Iinano
  */
 
-namespace Trismegiste\SocialBundle\Tests\Controller;
+namespace Trismegiste\SocialBundle\Tests\Functional\Controller;
 
 /**
  * ContentControllerTest tests ContentController

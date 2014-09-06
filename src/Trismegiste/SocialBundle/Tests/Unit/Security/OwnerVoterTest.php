@@ -4,7 +4,7 @@
  * Iinano
  */
 
-namespace Trismegiste\SocialBundle\Tests\Security;
+namespace Trismegiste\SocialBundle\Tests\Unit\Security;
 
 use Trismegiste\SocialBundle\Security\OwnerVoter;
 use Trismegiste\Socialist\SimplePost;

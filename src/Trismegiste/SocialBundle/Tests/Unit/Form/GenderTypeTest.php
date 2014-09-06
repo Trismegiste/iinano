@@ -4,7 +4,7 @@
  * Iinano
  */
 
-namespace Trismegiste\SocialBundle\Tests\Form;
+namespace Trismegiste\SocialBundle\Tests\Unit\Form;
 
 use Symfony\Component\Form\Forms;
 use Trismegiste\SocialBundle\Form\GenderType;

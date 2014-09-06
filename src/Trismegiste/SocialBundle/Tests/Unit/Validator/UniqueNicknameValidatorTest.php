@@ -4,7 +4,7 @@
  * Iinano
  */
 
-namespace Trismegiste\SocialBundle\Tests\Validator;
+namespace Trismegiste\SocialBundle\Tests\Unit\Validator;
 
 use Trismegiste\SocialBundle\Validator\UniqueNicknameValidator;
 use Trismegiste\SocialBundle\Validator\UniqueNickname;

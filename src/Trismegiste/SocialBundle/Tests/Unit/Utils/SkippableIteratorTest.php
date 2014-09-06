@@ -4,7 +4,7 @@
  * Iinano
  */
 
-namespace Trismegiste\SocialBundle\Tests\Utils;
+namespace Trismegiste\SocialBundle\Tests\Unit\Utils;
 
 use Trismegiste\SocialBundle\Utils\SkippableIterator;
 
