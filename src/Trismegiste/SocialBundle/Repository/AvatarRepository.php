@@ -22,7 +22,7 @@ class AvatarRepository
 
     public function __construct($path, ImageRefiner $imageTool)
     {
-        $this->storage = $path;
+        $this->storage = realpath($path) . DIRECTORY_SEPARATOR;
         $this->imageTool = $imageTool;
     }
 
@@ -35,7 +35,7 @@ class AvatarRepository
             try {
                 $abstracted = $this->getAvatarName($author->getNickname()) . '.jpg';
                 $fch->move($this->storage, $abstracted);
-                $source = $this->storage . '/' . $abstracted;
+                $source = $this->storage . $abstracted;
                 $this->imageTool->makeThumbnailFrom($source, $source, 300);
             } catch (\Exception $e) {
                 // @todo throw something (what ?)
