@@ -66,6 +66,7 @@ class Netizen extends User implements UserInterface
      */
     public function getCredentialType()
     {
+        // @todo perhaps a better idea to return an "abstract key type" of the credential
         return get_class($this->cred);
     }
 
