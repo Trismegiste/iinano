@@ -47,19 +47,17 @@ nav.top-bar {
                     </ul>
                 </li>
                 <li class="divider"></li>
-                {% if wallNick is defined %}
-                    <li class="has-dropdown">
-                        <a href="#">View contents from</a>
-                        <ul class="dropdown">
-                            <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'following' }) }}">My following</a></li>
-                            <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'follower' }) }}">My followers</a></li>
-                            <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'friend' }) }}">My friends</a></li>
-                            <li class="divider"></li>
-                            <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'all' }) }}">View all →</a></li>
-                        </ul>
-                    </li>
-                    <li class="divider"></li>
-                {% endif %}
+                <li class="has-dropdown">
+                    <a href="#">View contents from</a>
+                    <ul class="dropdown">
+                        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'following' }) }}">My following</a></li>
+                        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'follower' }) }}">My followers</a></li>
+                        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'friend' }) }}">My friends</a></li>
+                        <li class="divider"></li>
+                        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'all' }) }}">View all →</a></li>
+                    </ul>
+                </li>
+                <li class="divider"></li>
                 <li class="has-form">
                     <div class="row collapse">
                       <div class="large-8 small-9 columns">
