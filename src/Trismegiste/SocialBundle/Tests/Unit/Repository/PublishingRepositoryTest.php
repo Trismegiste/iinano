@@ -21,6 +21,7 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
     protected $repository;
     protected $security;
     protected $author;
+    protected $document;
 
     protected function setUp()
     {
@@ -28,6 +29,10 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->security = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
         $this->sut = new PublishingRepository($this->repository, $this->security, ['message']);
         $this->author = new Author('kirk');
+        $this->document = $this->getMockBuilder('Trismegiste\Socialist\Publishing')
+                ->setConstructorArgs([$this->author])
+                ->setMethods([])
+                ->getMock();
     }
 
     public function testGetByPk()
@@ -59,6 +64,15 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($cursor));
 
         $this->sut->findLastEntries(0, 20, new \ArrayIterator([$this->author]));
+    }
+
+    public function testPersist()
+    {
+        $this->repository->expects($this->once())
+                ->method('persist')
+                ->with($this->equalTo($this->document));
+
+        $this->sut->persist($this->document);
     }
 
 }
