@@ -27,6 +27,13 @@ class PublishingRepository implements PublishingRepositoryInterface
     protected $security;
     protected $aliasFilter;
 
+    /**
+     * Ctor
+     * 
+     * @param \Trismegiste\Yuurei\Persistence\RepositoryInterface $repo
+     * @param \Symfony\Component\Security\Core\SecurityContextInterface $ctx
+     * @param array $aliases a list a class key for each document
+     */
     public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx, $aliases)
     {
         $this->security = $ctx;
