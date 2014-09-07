@@ -27,12 +27,15 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->repository = $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface');
         $this->storage = $this->getMock('Trismegiste\SocialBundle\Repository\AvatarRepository', [], [], '', false);
 
-        $this->sut = new NetizenRepository($this->repository, $this->encoder, ['netizen'], $this->storage);
+        $this->sut = new NetizenRepository($this->repository, $this->encoder, 'netizen', $this->storage);
     }
 
-    public function test()
+    public function testFindByNickname()
     {
-        $this->sut;
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->with($this->equalTo(['-class' => 'netizen', 'author.nickname' => 'kirk']));
+        $this->sut->findByNickname('kirk');
     }
 
 }

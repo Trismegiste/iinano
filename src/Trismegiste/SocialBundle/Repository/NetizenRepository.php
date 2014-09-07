@@ -53,7 +53,7 @@ class NetizenRepository implements NetizenRepositoryInterface
 
         $salt = \rand(100, 999);
         $password = $this->encoderFactory
-                ->getEncoder($user)
+                ->getEncoder($user) // @todo Demeter's law violation : inject encoder as a service with a factory ?
                 ->encodePassword($password, $salt);
         $user->setCredential(new Internal($password, $salt));
 
