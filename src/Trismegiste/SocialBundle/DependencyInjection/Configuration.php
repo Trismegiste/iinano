@@ -29,6 +29,7 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('user')->end()
                             ->arrayNode('content')
+                                ->requiresAtLeastOneElement()
                                 ->prototype('scalar')->end()
                             ->end()
                         ->end()

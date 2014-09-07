@@ -1,0 +1,5 @@
+nickname_regex: "[-\da-z]+"
+alias: 
+    user: netizen
+    content:
+        - message
