@@ -58,7 +58,7 @@ dokudoki:
         intern: 'Trismegiste\SocialBundle\Security\Credential\Internal'
         profile: 'Trismegiste\SocialBundle\Security\Profile'
 
-trismegiste_social:
+iinano:
     nickname_regex: "[-\da-z]+"
     alias: 
         user: %user_class_alias%

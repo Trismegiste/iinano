@@ -4,7 +4,7 @@ namespace Trismegiste\SocialBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension as BaseExtension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class TrismegisteSocialExtension extends Extension
+class Extension extends BaseExtension
 {
 
     /**
@@ -34,9 +34,14 @@ class TrismegisteSocialExtension extends Extension
         $container->getDefinition('social.content.repository')
                 ->addArgument($config['alias']['content']);
         // injecting the regex for validation of nickname (dry)
-        $container->setParameter('nickname_regex', $config['nickname_regex']);  
+        $container->setParameter('nickname_regex', $config['nickname_regex']);
         // injecting how many contents inside a page
-        $container->setParameter('social.pagination', $config['pagination']);        
+        $container->setParameter('social.pagination', $config['pagination']);
+    }
+
+    public function getAlias()
+    {
+        return 'iinano';
     }
 
 }

@@ -13,7 +13,7 @@ class TrismegisteSocialBundle extends Bundle
      */
     public function getContainerExtension()
     {
-        return new DependencyInjection\TrismegisteSocialExtension();
+        return new DependencyInjection\Extension();
     }
 
     /**
