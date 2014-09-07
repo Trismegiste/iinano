@@ -38,4 +38,12 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->findByNickname('kirk');
     }
 
+    public function testFindByPk()
+    {
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo(123));
+        $this->sut->findByPk(123);
+    }
+
 }
