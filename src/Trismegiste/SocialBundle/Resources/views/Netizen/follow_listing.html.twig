@@ -1,0 +1,8 @@
+<ul class="inline-list">
+    {% for user in listing %}
+        <li class="small-3">
+            <img src="{{ path('netizen_avatar', {filename: user.avatar}) }}"/>
+            <p class="text-center">{{ user.nickname }}</p>
+        </li>
+    {% endfor %}
+</ul>

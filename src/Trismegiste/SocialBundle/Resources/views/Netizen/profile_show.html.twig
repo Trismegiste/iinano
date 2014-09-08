@@ -3,8 +3,6 @@
 {% block content %}
 <div class="large-4 small-12 column">
     <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
-</div>
-<div class="large-8 column">
     <h2>{{ author.nickname }}</h2>
     <ul class="vcard">
         <li class="fn">{{ profile.fullName }}</li>
@@ -14,5 +12,13 @@
         <li>{{ profile.dateOfBirth|date("Y/m/d") }}</li>
         <li>{{ profile.placeOfBirth }}</li>
     </ul>
+</div>
+<div class="large-4 column">
+    <h2>Followers</h2>
+    {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: follower} %}
+</div>
+<div class="large-4 column">
+    <h2>Following</h2>
+    {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: following} %}
 </div>
 {% endblock content %}

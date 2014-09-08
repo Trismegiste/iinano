@@ -24,6 +24,8 @@ class NetizenController extends Template
         }
 
         return $this->render('TrismegisteSocialBundle:Netizen:profile_show.html.twig', [
+                    'follower' => $user->getFollowerIterator(),
+                    'following' => $user->getFollowingIterator(),
                     'author' => $user->getAuthor(),
                     'profile' => $user->getProfile()
         ]);
