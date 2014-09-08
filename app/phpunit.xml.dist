@@ -46,4 +46,10 @@
              lowUpperBound="50" highLowerBound="90"/>
     </logging>
 
+    <listeners>
+        <listener class="Trismegiste\SocialBundle\Tests\Functional\Controller\DumperListener">
+            <arguments>
+            </arguments>
+        </listener>
+    </listeners>
 </phpunit>

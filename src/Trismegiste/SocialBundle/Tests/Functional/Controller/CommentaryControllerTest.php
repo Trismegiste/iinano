@@ -141,7 +141,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $anchor = $crawler->filter("div.commentary a[id^=anchor]")
                         ->eq(0)->attr('id');
         preg_match('#^anchor-([\da-f]{24})-([\da-f]{40})$#', $anchor, $match);
-        $pk = ['id' => $match[1], 'uuid' => $match[2]];
+        $pk = ['id' => $match[1], 'uuid' => $match[2], 'wallNick' => 'kirk', 'wallFilter' => 'self'];
         // try to get the form edit
         $crawler = $this->getPage('pub_commentary_edit', $pk);
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());

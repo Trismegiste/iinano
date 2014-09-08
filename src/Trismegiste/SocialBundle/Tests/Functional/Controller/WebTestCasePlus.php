@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\BrowserKit\Cookie;
 use Trismegiste\Socialist\Author;
+use Trismegiste\SocialBundle\Security\Profile;
 
 /**
  * WebTestCasePlus is an extended WebTestCase with usefull helper
@@ -32,6 +33,11 @@ class WebTestCasePlus extends WebTestCase
     protected function generateUrl($route, $param = [])
     {
         return $this->getService('router')->generate($route, $param, \Symfony\Component\Routing\Router::ABSOLUTE_URL);
+    }
+
+    public function getCurrentContent()
+    {
+        return $this->client->getResponse()->getContent();
     }
 
     /**
@@ -61,6 +67,9 @@ class WebTestCasePlus extends WebTestCase
         $repo = $this->getService('social.netizen.repository');
         $user = $repo->create($nickname, 'mellon');
         $user->getAuthor()->setAvatar('00.jpg');
+        $prof = new Profile();
+        $prof->fullName = ucfirst($nickname);
+        $user->setProfile($prof);
         $repo->persist($user);
     }
 
