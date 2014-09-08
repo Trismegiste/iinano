@@ -18,6 +18,7 @@ use Trismegiste\SocialBundle\Security\Profile;
 class WebTestCasePlus extends WebTestCase
 {
 
+    /** @var Symfony\Bundle\FrameworkBundle\Client */
     protected $client = null;
 
     protected function setUp()
@@ -35,9 +36,14 @@ class WebTestCasePlus extends WebTestCase
         return $this->getService('router')->generate($route, $param, \Symfony\Component\Routing\Router::ABSOLUTE_URL);
     }
 
-    public function getCurrentContent()
+    /**
+     * For phpunit listener
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getCurrentResponse()
     {
-        return $this->client->getResponse()->getContent();
+        return $this->client->getResponse();
     }
 
     /**
