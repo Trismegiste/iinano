@@ -18,7 +18,7 @@ use Trismegiste\SocialBundle\Security\Profile;
 class WebTestCasePlus extends WebTestCase
 {
 
-    /** @var Symfony\Bundle\FrameworkBundle\Client */
+    /** @var \Symfony\Component\BrowserKit\Client */
     protected $client = null;
 
     protected function setUp()
@@ -33,7 +33,8 @@ class WebTestCasePlus extends WebTestCase
 
     protected function generateUrl($route, $param = [])
     {
-        return $this->getService('router')->generate($route, $param, \Symfony\Component\Routing\Router::ABSOLUTE_URL);
+        return $this->getService('router')
+                ->generate($route, $param, \Symfony\Component\Routing\Router::ABSOLUTE_URL);
     }
 
     /**

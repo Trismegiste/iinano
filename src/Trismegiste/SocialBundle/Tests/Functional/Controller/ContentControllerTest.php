@@ -41,4 +41,47 @@ class ContentControllerTest extends WebTestCasePlus
         $this->assertEquals(1, $crawler->filter('nav.top-bar a:contains("kirk")')->count());
     }
 
+    public function testSecuredAjaxMore()
+    {
+        $more = $this->generateUrl('ajax_content_more', ['wallNick' => 'kirk', 'wallFilter' => 'all', 'offset' => 0]);
+        $this->client->request('GET', $more);
+        $response = $this->client->getResponse();
+        $this->assertEquals(302, $response->getStatusCode());
+    }
+
+    public function testDeniedAccessAjaxMore()
+    {
+        $this->logIn('kirk');
+        $more = $this->generateUrl('ajax_content_more', ['wallNick' => 'kirk', 'wallFilter' => 'all', 'offset' => 0]);
+        $this->client->request('GET', $more);
+        $response = $this->client->getResponse();
+        $this->assertEquals(403, $response->getStatusCode());
+    }
+
+    public function testOnlyAjaxMore()
+    {
+        $this->logIn('kirk');
+        $more = $this->generateUrl('ajax_content_more', ['wallNick' => 'kirk', 'wallFilter' => 'all', 'offset' => 0]);
+        $this->client->request('GET', $more, [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
+    public function testWallWithOtherNetizen()
+    {
+        $this->addUserFixture('spock');
+        $this->logIn('kirk');
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'spock', 'wallFilter' => 'all']);
+
+        $this->assertCount(1, $crawler->filter('nav.top-bar a:contains("kirk")'));
+        $this->assertCount(1, $crawler->filter('.vertical-nav section:contains("Spock")'));
+    }
+
+    public function testNotFoundNetizen()
+    {
+        $this->logIn('kirk');
+        $this->getPage('wall_index', ['wallNick' => 'gorn', 'wallFilter' => 'all']);
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+    }
+
 }
