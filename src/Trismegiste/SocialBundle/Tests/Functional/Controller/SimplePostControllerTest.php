@@ -106,7 +106,7 @@ class SimplePostControllerTest extends WebTestCasePlus
     {
         //override user
         $this->logIn('spock');
-        $crawler = $this->getPage('content_index');
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'spock', 'wallFilter' => 'all']);
         $anchor = $crawler->filter("div.publishing a[id^=anchor]")
                         ->eq(0)->attr('id');
         preg_match('#^anchor-([\da-f]{24})$#', $anchor, $match);
