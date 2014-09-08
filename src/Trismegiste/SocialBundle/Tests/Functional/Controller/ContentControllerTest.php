@@ -23,16 +23,20 @@ class ContentControllerTest extends WebTestCasePlus
     public function testAuthenticate()
     {
         $this->addUserFixture('kirk');
+        $this->client->followRedirects(true);
 
         $crawler = $this->getPage('trismegiste_login');
         $form = $crawler->selectButton('Sign in')->form();
         // set some values
         $form['_username'] = 'kirk';
         $form['_password'] = 'mellon';
-        $this->client->submit($form);
+        $crawler = $this->client->submit($form);
         $response = $this->client->getResponse();
-        $this->assertTrue($response->isRedirect($this->generateUrl('content_index')));
-        $crawler = $this->client->followRedirect();
+
+        // redirect to the wall
+        $wallUri = $this->generateUrl('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
+        $this->assertEquals($wallUri, $this->client->getHistory()->current()->getUri());
+
         // check homepage
         $this->assertEquals(1, $crawler->filter('nav.top-bar a:contains("kirk")')->count());
     }
