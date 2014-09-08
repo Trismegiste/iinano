@@ -22,7 +22,8 @@ class TrismegisteSocialBundle extends Bundle
     public function registerCommands(Application $application)
     {
         $application->addCommands([
-            new Cli\CreateUser()
+            new Cli\CreateUser(),
+            new Cli\NormalizeDatabase()
         ]);
         if ($this->container->getParameter('kernel.environment') == 'dev') {
             $application->add(new Cli\FillWithDummy());

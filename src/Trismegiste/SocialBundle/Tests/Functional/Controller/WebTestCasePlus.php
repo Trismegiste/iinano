@@ -18,7 +18,7 @@ use Trismegiste\SocialBundle\Security\Profile;
 class WebTestCasePlus extends WebTestCase
 {
 
-    /** @var \Symfony\Component\BrowserKit\Client */
+    /* @var \Symfony\Component\BrowserKit\Client */
     protected $client = null;
 
     protected function setUp()

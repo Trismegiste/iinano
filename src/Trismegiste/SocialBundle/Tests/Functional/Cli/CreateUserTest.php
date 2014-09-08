@@ -17,6 +17,15 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 class CreateUserTest extends WebTestCase
 {
 
+    protected function getInputStream($input)
+    {
+        $stream = fopen('php://memory', 'r+', false);
+        fputs($stream, $input);
+        rewind($stream);
+
+        return $stream;
+    }
+
     public function testExecute()
     {
         $kernel = $this->createKernel();
@@ -26,6 +35,9 @@ class CreateUserTest extends WebTestCase
         $application->add(new CreateUser());
         $command = $application->find('social:user:create');
         $commandTester = new CommandTester($command);
+        $dialog = $command->getHelper('dialog');
+        $dialog->setInputStream($this->getInputStream("Test\n0\n"));
+
         $commandTester->execute([
             'command' => $command->getName(),
             'nickname' => 'scotty',
