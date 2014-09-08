@@ -29,7 +29,7 @@ class ContentController extends Template
     {
         return $this->redirectRouteOk('wall_index', [
                     'wallNick' => $this->getUser()->getUsername(),
-                    'wallFilter' => 'all'
+                    'wallFilter' => $this->getUser()->getProfile()->defaultWallFilter
         ]);
     }
 

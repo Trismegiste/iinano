@@ -31,12 +31,20 @@ class CreateUser extends ContainerAwareCommand
     {
         $nickname = $input->getArgument('nickname');
         $password = $input->getArgument('password');
-        $output->writeln("Create $nickname");
+        $dialog = $this->getHelperSet()->get('dialog');
+        $output->writeln("Creating $nickname...");
 
         $repository = $this->getContainer()->get('social.netizen.repository');
-
         $user = $repository->create($nickname, $password);
-        $user->setProfile(new Profile());
+        $profile = new Profile();
+        $user->setProfile($profile);
+
+        // addintional info 
+        $profile->fullName = $dialog->ask($output, 'Full name ', ucfirst($nickname));
+        $gender = ['xy', 'xx'];
+        $choice = $dialog->select($output, 'Gender', $gender, 0);
+        $profile->gender = $gender[$choice];
+
         $repository->updateAvatar($user);
         $repository->persist($user);
     }

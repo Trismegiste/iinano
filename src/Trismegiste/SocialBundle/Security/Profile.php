@@ -13,12 +13,12 @@ namespace Trismegiste\SocialBundle\Security;
 class Profile
 {
 
-    public $dateOfBirth;
+    public $email;
     public $gender;
     public $fullName;
     public $city;
-    public $email;
+    public $dateOfBirth;
     public $placeOfBirth;
-    // @todo default filter for homepage : friend,following...
+    public $defaultWallFilter = 'following';
 
 }
