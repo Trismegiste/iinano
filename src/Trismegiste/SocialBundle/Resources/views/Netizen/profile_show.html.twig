@@ -13,18 +13,20 @@
         <li>{{ profile.placeOfBirth }}</li>
     </ul>
     {% if app.user.username == author.nickname %} 
-    <ul class="stack secondary button-group">
-        <li><a href="#" class="button">Edit my profile</a></li>
-        <li><a href="#" class="button">Change my password</a></li>
-        <li><a href="#" class="button">Change my avatar</a></li>
+    <ul class="stack button-group">
+        <li><a href="#" class="button secondary">Edit my profile</a></li>
+        <li><a href="#" class="button secondary">Change my password</a></li>
+        <li><a href="#" class="button secondary">Change my avatar</a></li>
     </ul>
     {% endif %}
 </div>
 <div class="large-4 column">
+    <a id="profile-follower"></a>
     <h3>Followers</h3>
     {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: follower} %}
 </div>
 <div class="large-4 column">
+    <a id="profile-following"></a>
     <h3>Following</h3>
     {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: following} %}
 </div>

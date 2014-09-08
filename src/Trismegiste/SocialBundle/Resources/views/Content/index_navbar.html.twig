@@ -1,0 +1,31 @@
+<div class="section-container vertical-nav" data-section data-options="deep_linking: false; one_up: true">
+    <section class="section">
+        {% set fanCount = wallUser.fanCount %}
+        <span data-tooltip class="label right secondary has-tip fan-count" title="{{ fanCount }} persons like this">
+            <i class="fi-like"></i>
+            {{ fanCount }}
+        </span>
+        <h4 class="title"><a href="{{ path('netizen_show', {author: wallNick} ) }}">{{ wallUser.profile.fullName }}</a></h4>
+        {% if app.user != wallUser %}
+            {% include 'TrismegisteSocialBundle:Netizen:social_network_action.html.twig' %}
+        {% endif %}
+    </section>
+    <section class="section clearfix">
+        <h5 class="title">
+            <a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'following' }) }}">Following</a>
+            <a class="label right secondary" href="{{ path('netizen_show', {author: wallNick} ) }}#profile-following">{{ wallUser.followingCount }}</a>
+        </h5>
+    </section>
+    <section class="section clearfix">
+        <h5 class="title">
+            <a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'follower' }) }}">Followers</a>
+            <a class="label right secondary" href="{{ path('netizen_show', {author: wallNick} ) }}#profile-follower">{{ wallUser.followerCount }}</a>
+        </h5>
+    </section>
+    <section class="section clearfix">
+        <h5 class="title">
+            <a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'friend' }) }}">Friends</a>
+            <a class="label right secondary" href="#">{{ wallUser.friendIterator|length }}</a>
+        </h5>
+    </section>
+</div>
