@@ -12,6 +12,15 @@ namespace Trismegiste\SocialBundle\Tests\Functional\Controller;
 class ContentControllerTest extends WebTestCasePlus
 {
 
+    /**
+     * @test
+     */
+    public function initialize()
+    {
+        $this->getService('dokudoki.collection')->drop();
+        $this->addUserFixture('kirk');
+    }
+
     public function testSecuredIndex()
     {
         $loginUrl = $this->generateUrl('trismegiste_login');
@@ -22,7 +31,6 @@ class ContentControllerTest extends WebTestCasePlus
 
     public function testAuthenticate()
     {
-        $this->addUserFixture('kirk');
         $this->client->followRedirects(true);
 
         $crawler = $this->getPage('trismegiste_login');
@@ -34,7 +42,7 @@ class ContentControllerTest extends WebTestCasePlus
         $response = $this->client->getResponse();
 
         // redirect to the wall
-        $wallUri = $this->generateUrl('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
+        $wallUri = $this->generateUrl('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'self']);
         $this->assertEquals($wallUri, $this->client->getHistory()->current()->getUri());
 
         // check homepage

@@ -19,6 +19,6 @@ class Profile
     public $city;
     public $dateOfBirth;
     public $placeOfBirth;
-    public $defaultWallFilter = 'following';
+    public $defaultWallFilter = 'self';
 
 }
