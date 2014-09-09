@@ -25,6 +25,11 @@ class FamousControllerTest extends WebTestCasePlus
         $this->collection = $this->getService('dokudoki.collection');
     }
 
+    protected function getSelfWallCrawlerFor($nick)
+    {
+        return $this->getPage('wall_index', ['wallNick' => $nick, 'wallFilter' => 'self']);
+    }
+
     /**
      * @test
      */
@@ -48,7 +53,7 @@ class FamousControllerTest extends WebTestCasePlus
     {
         $this->logIn('kirk');
 
-        $crawler = $this->getPage('content_index');
+        $crawler = $this->getSelfWallCrawlerFor('kirk');
         $link = $crawler->filter('.publishing')->selectLink('Like')->link();
         $crawler = $this->client->click($link);
         $this->assertCount(1, $crawler->filter('.publishing')->selectLink('Unlike'));
@@ -68,7 +73,7 @@ class FamousControllerTest extends WebTestCasePlus
     {
         $this->logIn('spock');
 
-        $crawler = $this->getPage('content_index');
+        $crawler = $this->getSelfWallCrawlerFor('kirk');
         $link = $crawler->filter('.publishing')->selectLink('Like')->link();
         $crawler = $this->client->click($link);
         $this->assertCount(1, $crawler->filter('.publishing')->selectLink('Unlike'));
@@ -88,7 +93,7 @@ class FamousControllerTest extends WebTestCasePlus
     {
         $this->logIn('kirk');
 
-        $crawler = $this->getPage('content_index');
+        $crawler = $this->getSelfWallCrawlerFor('kirk');
         $link = $crawler->filter('.publishing')->selectLink('Unlike')->link();
         $crawler = $this->client->click($link);
         $this->assertCount(1, $crawler->filter('.publishing')->selectLink('Like'));
@@ -110,7 +115,7 @@ class FamousControllerTest extends WebTestCasePlus
         $doc->attachCommentary(new Commentary($this->createAuthor('spock')));
         $repo->persist($doc);
         // click on the 'like' on the commentary
-        $crawler = $this->getPage('content_index');
+        $crawler = $this->getSelfWallCrawlerFor('kirk');
         $link = $crawler->filter('.publishing .commentary')->selectLink('Like')->link();
         $crawler = $this->client->click($link);
         // check we have 'unlike' button

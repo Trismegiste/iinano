@@ -16,6 +16,7 @@ class CommentaryControllerTest extends WebTestCasePlus
 {
 
     protected $collection;
+    protected $wallParam;
 
     protected function setUp()
     {
@@ -23,6 +24,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $this->client->followRedirects();
         $this->logIn('kirk');
         $this->collection = $this->getService('dokudoki.collection');
+        $this->wallParam = ['wallNick' => 'kirk', 'wallFilter' => 'self'];
     }
 
     /**
@@ -46,7 +48,7 @@ class CommentaryControllerTest extends WebTestCasePlus
      */
     public function testAddCommentary($pk)
     {
-        $crawler = $this->getPage('content_index');
+        $crawler = $this->getPage('wall_index', $this->wallParam);
         $link = $crawler->selectLink('Reply')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
@@ -68,7 +70,7 @@ class CommentaryControllerTest extends WebTestCasePlus
      */
     public function testEditCommentary($pk)
     {
-        $crawler = $this->getPage('content_index');
+        $crawler = $this->getPage('wall_index', $this->wallParam);
         $link = $crawler->filter('div.commentary')->selectLink('Edit')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
@@ -90,7 +92,7 @@ class CommentaryControllerTest extends WebTestCasePlus
      */
     public function testDeleteCommentary($pk)
     {
-        $crawler = $this->getPage('content_index');
+        $crawler = $this->getPage('wall_index', $this->wallParam);
         $link = $crawler->filter('div.commentary')->selectLink('Delete')->link();
         $crawler = $this->client->click($link);
 
@@ -108,8 +110,8 @@ class CommentaryControllerTest extends WebTestCasePlus
     public function testOtherAddCommentary($pk)
     {
         $this->login('spock');
-        $crawler = $this->getPage('content_index');
-        $link = $crawler->selectLink('Reply')->link();
+        $crawler = $this->getPage('wall_index', $this->wallParam);
+        $link = $crawler->filter('.publishing')->selectLink('Reply')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
         $this->client->submit($form, ['commentary' => ['message' => __METHOD__]]);
@@ -125,23 +127,25 @@ class CommentaryControllerTest extends WebTestCasePlus
 
     public function testNoEditOnCommentaryFromOther()
     {
-        $crawler = $this->getPage('content_index');
+        $crawler = $this->getPage('wall_index', $this->wallParam);
         $this->assertCount(0, $crawler->filter('div.commentary')->selectLink('Edit'));
     }
 
     public function testNoDeleteOnCommentaryFromOther()
     {
-        $crawler = $this->getPage('content_index');
+        $crawler = $this->getPage('wall_index', $this->wallParam);
         $this->assertCount(0, $crawler->filter('div.commentary')->selectLink('Delete'));
     }
 
     public function testHackEditCommentaryFromOther()
     {
-        $crawler = $this->getPage('content_index');
+        $crawler = $this->getPage('wall_index', $this->wallParam);
+        $this->assertCount(1, $crawler->filter('div.commentary:contains("spock")'));
+
         $anchor = $crawler->filter("div.commentary a[id^=anchor]")
                         ->eq(0)->attr('id');
         preg_match('#^anchor-([\da-f]{24})-([\da-f]{40})$#', $anchor, $match);
-        $pk = ['id' => $match[1], 'uuid' => $match[2], 'wallNick' => 'kirk', 'wallFilter' => 'self'];
+        $pk = array_merge(['id' => $match[1], 'uuid' => $match[2]], $this->wallParam);
         // try to get the form edit
         $crawler = $this->getPage('pub_commentary_edit', $pk);
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
