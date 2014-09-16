@@ -1,33 +1,35 @@
 {% extends 'TrismegisteSocialBundle::layout.html.twig' %}
 
 {% block content %}
-<div class="large-4 small-12 column">
-    <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
-    <h2>{{ author.nickname }}</h2>
-    <ul class="vcard">
-        <li class="fn">{{ profile.fullName }}</li>
-        <li class="">{{ profile.gender }}</li>
-        <li class="locality">{{ profile.city }}</li>
-        <li class="email">{{ profile.email }}</li>
-        <li>{{ profile.dateOfBirth|date("Y/m/d") }}</li>
-        <li>{{ profile.placeOfBirth }}</li>
-    </ul>
+<div class="row">
     {% if app.user.username == author.nickname %} 
-    <ul class="stack button-group">
+    <ul class="button-group">
         <li><a href="#" class="button secondary">Edit my profile</a></li>
         <li><a href="#" class="button secondary">Change my password</a></li>
         <li><a href="#" class="button secondary">Change my avatar</a></li>
     </ul>
     {% endif %}
-</div>
-<div class="large-4 column">
-    <a id="profile-follower"></a>
-    <h3>Followers</h3>
-    {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: follower} %}
-</div>
-<div class="large-4 column">
-    <a id="profile-following"></a>
-    <h3>Following</h3>
-    {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: following} %}
+    <div class="large-4 small-12 column">
+        <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
+        <h2>{{ author.nickname }}</h2>
+        <ul class="vcard">
+            <li class="fn">{{ profile.fullName }}</li>
+            <li class="">{{ profile.gender }}</li>
+            <li class="locality">{{ profile.city }}</li>
+            <li class="email">{{ profile.email }}</li>
+            <li>{{ profile.dateOfBirth|date("Y/m/d") }}</li>
+            <li>{{ profile.placeOfBirth }}</li>
+        </ul>
+    </div>
+    <div class="large-4 column">
+        <a id="profile-follower"></a>
+        <h3>Followers</h3>
+        {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: follower} %}
+    </div>
+    <div class="large-4 column">
+        <a id="profile-following"></a>
+        <h3>Following</h3>
+        {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: following} %}
+    </div>
 </div>
 {% endblock content %}

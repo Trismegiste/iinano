@@ -52,8 +52,7 @@ class GuestController extends Template
                 $user = $form->getData();
                 $repo->persist($user);
                 // then avatar
-                $avatar = $form->get('avatar')->getData();
-                $repo->updateAvatar($user, $avatar);
+                $repo->updateAvatar($user);
                 $this->authenticateAccount($user);
 
                 return $this->redirectRouteOk('content_index');
