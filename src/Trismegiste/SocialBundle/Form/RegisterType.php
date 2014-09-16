@@ -63,6 +63,11 @@ class RegisterType extends AbstractType
                 ->add('gender', 'gender', ['property_path' => 'profile.gender'])
                 ->add('fullName', 'text', ['constraints' => new NotBlank(), 'property_path' => 'profile.fullName'])
                 ->add('dateOfBirth', 'date', ['property_path' => 'profile.dateOfBirth'])
+                ->add('email', 'email', [
+                    'attr' => ['placeholder' => "Optional : a valid email used only if you've lost your password"],
+                    'property_path' => 'profile.email',
+                    'required' => false
+                ])
                 ->add('register', 'submit', ['attr' => ['class' => 'right']]);
     }
 
