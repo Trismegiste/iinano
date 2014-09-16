@@ -6,8 +6,6 @@
 
 namespace Trismegiste\SocialBundle\Utils;
 
-use Mother;
-
 /**
  * HumanDateExtension is a twig extension for a human date renderer filter
  */
@@ -43,7 +41,7 @@ class HumanDateExtension extends \Twig_Extension
                     $curr /= 7;
                 }
 
-                $numberUnit = sprintf("%d %s%s", $curr, $word, ($curr > 1) ? 's' : '');
+                $numberUnit = sprintf("%d %s%s", $curr, $word, ($curr >= 2) ? 's' : '');
                 $sentence = ($delta->invert === 0) ? "%s ago\n" : "in %s\n";
 
                 return sprintf($sentence, $numberUnit);

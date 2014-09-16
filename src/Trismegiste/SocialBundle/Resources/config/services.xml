@@ -31,6 +31,7 @@
 
         <service id="twig.humandate.renderer" class="Trismegiste\SocialBundle\Utils\HumanDateExtension">
             <tag name="twig.extension"/>
+            <!-- inject translation service here -->
         </service>
         
         <service id="security.owner.voter" class="Trismegiste\SocialBundle\Security\OwnerVoter">

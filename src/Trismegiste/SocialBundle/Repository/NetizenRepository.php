@@ -47,7 +47,6 @@ class NetizenRepository implements NetizenRepositoryInterface
 
     public function create($nick, $password)
     {
-        //  db.dokudoki.ensureIndex({"author.nickname":1},{sparse:true, unique:true});
         $author = new Author($nick);
         $user = new Netizen($author);
 
