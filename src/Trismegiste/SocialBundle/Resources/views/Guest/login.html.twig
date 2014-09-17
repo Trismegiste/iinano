@@ -1,25 +1,27 @@
 {% extends 'TrismegisteSocialBundle::layout.html.twig' %}
 
 {% block content %}
-<div class="large-12 columns ">
-    <h1>Sign in</h1>
-    <p>Please authenticate yourself</p>
-    {% if error %}
-        <div data-alert class="alert-box warning">
-            {{ error.message }}
-            <a href="#" class="close">&times;</a>                
-        </div>
-    {% endif %}
-    <form action="{{ path('trismegiste_logincheck') }}" method="post">
-        <label for="username">Nickname</label>
-        <input type="text" id="username" name="_username" />
+<div class="row">
+    <div class="large-12 columns ">
+        <h1>Sign in</h1>
+        <p>Please authenticate yourself</p>
+        {% if error %}
+            <div data-alert class="alert-box warning">
+                {{ error.message }}
+                <a href="#" class="close">&times;</a>                
+            </div>
+        {% endif %}
+        <form action="{{ path('trismegiste_logincheck') }}" method="post">
+            <label for="username">Nickname</label>
+            <input type="text" id="username" name="_username" />
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="_password" />
+            <label for="password">Password</label>
+            <input type="password" id="password" name="_password" />
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
 
-        <button type="submit" class="success">Sign in</button>
-    </form>
+            <button type="submit" class="success">Sign in</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

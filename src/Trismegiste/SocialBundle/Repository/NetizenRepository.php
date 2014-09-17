@@ -13,6 +13,7 @@ use Trismegiste\Socialist\Author;
 use Trismegiste\SocialBundle\Security\Credential\Internal;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Trismegiste\SocialBundle\Security\Profile;
 
 /**
  * NetizenRepository is a repository for Netizen (and also Author)
@@ -55,6 +56,7 @@ class NetizenRepository implements NetizenRepositoryInterface
                 ->getEncoder($user) // @todo Demeter's law violation : inject encoder as a service with a factory ?
                 ->encodePassword($password, $salt);
         $user->setCredential(new Internal($password, $salt));
+        $user->setProfile(new Profile());
 
         return $user;
     }
