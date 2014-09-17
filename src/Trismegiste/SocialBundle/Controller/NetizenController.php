@@ -32,7 +32,7 @@ class NetizenController extends Template
         ]);
     }
 
-    public function sendAvatarAction($filename)
+    public function getAvatarAction($filename)
     {
         $file = $this->get('social.avatar.repository')
                 ->getAvatarAbsolutePath($filename);
@@ -102,7 +102,21 @@ class NetizenController extends Template
 
     public function editAvatarAction(Request $request)
     {
-        return $this->render('TrismegisteSocialBundle:Netizen:avatar_edit.html.twig');
+        $form = $this->createForm(new \Trismegiste\SocialBundle\Form\AvatarType());
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $repo = $this->get('social.netizen.repository');
+            $picture = $form->getData()['picture'];
+            $repo->updateAvatar($this->getUser(), $picture);
+
+            return $this->redirectRouteOk('netizen_show', ['author' => $this->getUser()->getUsername()]);
+        }
+
+        return $this->render('TrismegisteSocialBundle:Netizen:avatar_edit.html.twig', [
+                    'form' => $form->createView()
+        ]);
     }
 
 }

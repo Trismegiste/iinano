@@ -4,14 +4,16 @@
 <div class="row">
     <div class="large-6 small-12 column">
         <h3>Choose a picture</h3>
+        {{ form_start(form) }}
         <div class="image-editor">
-            <input type="file" class="cropit-image-input button secondary"/>
+            {{ form_widget(form.picture, {attr: {class:'cropit-image-input button secondary'}}) }}
             <div class="cropit-image-preview"></div>
             <div class="image-size-label">
                 Resize image
             </div>
             <input type="range" class="cropit-image-zoom-input"/>
         </div>
+        {{ form_end(form) }}
     </div>
     <div class="large-6 small-12 column">
         <h3>Use your camera</h3>

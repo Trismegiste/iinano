@@ -29,20 +29,22 @@ class AvatarRepository
     public function updateAvatar(AuthorInterface $author, Profile $profile, UploadedFile $fch = null)
     {
         // @todo need to injected from config as a map : (with default)
-        $abstracted = $profile->gender == 'xx' ? "00.jpg" : '01.jpg';
+        // @todo this line below is the job of the Netizen repo, not Avatar repo
+        // therefore remove the default "= null" for $fch
+        $avatarName = $profile->gender == 'xx' ? "00.jpg" : '01.jpg';
 
         if (!is_null($fch) && ($fch->getMimeType() == 'image/jpeg')) {
             try {
-                $abstracted = $this->getAvatarName($author->getNickname()) . '.jpg';
-                $fch->move($this->storage, $abstracted);
-                $source = $this->storage . $abstracted;
+                $avatarName = $this->getAvatarName($author->getNickname()) . '.jpg';
+                $fch->move($this->storage, $avatarName);
+                $source = $this->storage . $avatarName;
                 $this->imageTool->makeThumbnailFrom($source, $source, 300);
             } catch (\Exception $e) {
                 // @todo throw something (what ?)
             }
         }
 
-        $author->setAvatar($abstracted);
+        $author->setAvatar($avatarName);
     }
 
     protected function getAvatarName($nick)
