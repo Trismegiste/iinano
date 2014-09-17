@@ -37,6 +37,12 @@
         <default key="_controller">TrismegisteSocialBundle:Netizen:sendAvatar</default>
         <requirement key="filename">[\da-f]+\.jpg</requirement>
     </route>        
+    <route id="netizen_profile_edit" pattern="/profile/myself/edit">
+        <default key="_controller">TrismegisteSocialBundle:Netizen:editProfile</default>
+    </route>
+    <route id="netizen_avatar_edit" pattern="/profile/myself/avatar">
+        <default key="_controller">TrismegisteSocialBundle:Netizen:editAvatar</default>
+    </route>
     
     <import resource="@TrismegisteSocialBundle/Resources/config/wall.xml" 
             prefix="/wall/{wallNick}/{wallFilter}">

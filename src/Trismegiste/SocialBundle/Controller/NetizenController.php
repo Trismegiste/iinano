@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Controller;
 
 use Trismegiste\SocialBundle\Controller\Template;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * NetizenController is a controller for the user : profile, stats...
@@ -97,6 +98,11 @@ class NetizenController extends Template
         $this->pushFlash('notice', $message . $following->getAuthor()->getNickname());
 
         return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter]);
+    }
+
+    public function editAvatarAction(Request $request)
+    {
+        return $this->render('TrismegisteSocialBundle:Netizen:avatar_edit.html.twig');
     }
 
 }
