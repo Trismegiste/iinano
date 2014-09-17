@@ -63,8 +63,7 @@ interface NetizenRepositoryInterface
      * Update a Netizen with an uploaded image
      * 
      * @param \Trismegiste\SocialBundle\Security\Netizen $user
-     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $fch
+     * @param resource $imageResource a GD image resource
      */
-    // @todo update interface
-  //  public function updateAvatar(Netizen $user, UploadedFile $fch = null);
+    public function updateAvatar(Netizen $user, $imageResource);
 }

@@ -103,7 +103,10 @@ class NetizenController extends Template
     public function editAvatarAction(Request $request)
     {
         if ($request->getMethod() == 'POST') {
-            $img = imagecreatefromstring(base64_decode(preg_replace('#data:image/(jpg|jpeg);base64,#', '', $request->request->get('content'))));
+            $img = imagecreatefromstring(
+                    base64_decode(
+                            preg_replace(
+                                    '#data:image/(jpg|jpeg);base64,#', '', $request->request->get('content'), 1)));
             $repo = $this->get('social.netizen.repository');
             $repo->updateAvatar($this->getUser(), $img);
         }
