@@ -1,22 +1,25 @@
 {% extends 'TrismegisteSocialBundle::layout.html.twig' %}
 
+{% block page_title %}
+{{ parent() }} | My profile | My Avatar
+{% endblock %}
+
 {% block content %}
 <div class="row">
     <div class="large-6 small-12 column">
-        <h3>Choose a picture</h3>
+        <h3>Pick or take a picture</h3>
         {{ form_start(form) }}
-        <div class="image-editor">
-            {{ form_widget(form.picture, {attr: {class:'cropit-image-input button secondary'}}) }}
+        <div id="image-cropper">
+            <div class="select-image-btn button secondary">Select new image</div>
+            {{ form_widget(form.picture, {attr: {class:'cropit-image-input'}}) }}
             <div class="cropit-image-preview"></div>
-            <div class="image-size-label">
-                Resize image
-            </div>
-            <input type="range" class="cropit-image-zoom-input"/>
+            <div class="image-size-label">Resize image</div>
+            <input type="range" class="cropit-image-zoom-input" />
         </div>
         {{ form_end(form) }}
     </div>
     <div class="large-6 small-12 column">
-        <h3>Use your camera</h3>
+        <h3>or take a shot with your webcam</h3>
     </div>
 </div>
 {% endblock content %}
@@ -26,10 +29,9 @@
 <script src="{{ asset('bundles/trismegistesocial/js/jquery.cropit.min.js') }}"></script>
 <script>
     $(function() {
-        $('.image-editor').cropit({
-            imageState: {
-                src: 'http://lorempixel.com/500/400/'
-            }
+        $('#image-cropper').cropit();
+        $('.select-image-btn').click(function() {
+            $('.cropit-image-input').click();
         });
     });
 </script>
@@ -39,19 +41,19 @@
     {{ parent() }}
     <style>
         .cropit-image-preview {
+            width: 300px;
+            height: 300px;
             background-color: #f8f8f8;
             background-size: cover;
             border: 1px solid #ccc;
             border-radius: 3px;
             margin-top: 7px;
-            width: 300px;
-            height: 300px;
             cursor: move;
-        }
+        }            
 
-        .cropit-image-background {
-            opacity: .2;
-            cursor: auto;
+        input.cropit-image-input {
+            visibility: hidden;
+            display: none;
         }
 
         .image-size-label {

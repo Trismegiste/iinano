@@ -1,5 +1,9 @@
 {% extends 'TrismegisteSocialBundle::layout.html.twig' %}
 
+{% block page_title %}
+{{ parent() }} | {{ wallNick }}'s wall
+{% endblock %}
+
 {% block feed %}
 {% for content in listing %}
     {% include 'TrismegisteSocialBundle:Content:simplepost_show.html.twig' %}
