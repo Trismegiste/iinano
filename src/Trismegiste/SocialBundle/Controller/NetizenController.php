@@ -102,21 +102,13 @@ class NetizenController extends Template
 
     public function editAvatarAction(Request $request)
     {
-        $form = $this->createForm(new \Trismegiste\SocialBundle\Form\AvatarType());
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
+        if ($request->getMethod() == 'POST') {
+            $img = imagecreatefromstring(base64_decode(preg_replace('#data:image/(jpg|jpeg);base64,#', '', $request->request->get('content'))));
             $repo = $this->get('social.netizen.repository');
-            $picture = $form->getData()['picture'];
-            $repo->updateAvatar($this->getUser(), $picture);
-
-            return $this->redirectRouteOk('netizen_show', ['author' => $this->getUser()->getUsername()]);
+            $repo->updateAvatar($this->getUser(), $img);
         }
 
-        return $this->render('TrismegisteSocialBundle:Netizen:avatar_edit.html.twig', [
-                    'form' => $form->createView()
-        ]);
+        return $this->render('TrismegisteSocialBundle:Netizen:avatar_edit.html.twig');
     }
 
 }

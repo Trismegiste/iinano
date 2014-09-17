@@ -65,5 +65,6 @@ interface NetizenRepositoryInterface
      * @param \Trismegiste\SocialBundle\Security\Netizen $user
      * @param \Symfony\Component\HttpFoundation\File\UploadedFile $fch
      */
-    public function updateAvatar(Netizen $user, UploadedFile $fch = null);
+    // @todo update interface
+  //  public function updateAvatar(Netizen $user, UploadedFile $fch = null);
 }

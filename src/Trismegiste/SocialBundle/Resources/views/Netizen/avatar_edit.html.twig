@@ -8,15 +8,14 @@
 <div class="row">
     <div class="large-6 small-12 column">
         <h3>Pick or take a picture</h3>
-        {{ form_start(form) }}
         <div id="image-cropper">
             <div class="select-image-btn button secondary">Select new image</div>
-            {{ form_widget(form.picture, {attr: {class:'cropit-image-input'}}) }}
+            <input type="file" class="cropit-image-input"/>
             <div class="cropit-image-preview"></div>
             <div class="image-size-label">Resize image</div>
             <input type="range" class="cropit-image-zoom-input" />
         </div>
-        {{ form_end(form) }}
+        <button id="send-crop" class="button">Send</button>
     </div>
     <div class="large-6 small-12 column">
         <h3>or take a shot with your webcam</h3>
@@ -29,9 +28,27 @@
 <script src="{{ asset('bundles/trismegistesocial/js/jquery.cropit.min.js') }}"></script>
 <script>
     $(function() {
-        $('#image-cropper').cropit();
+        $('#image-cropper').cropit({
+            width: 300,
+            height: 300
+        });
         $('.select-image-btn').click(function() {
             $('.cropit-image-input').click();
+        });
+        $('#send-crop').on('click', function() {
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('netizen_avatar_edit') }}',
+                data: {content: $('#image-cropper').cropit('export', {
+                    type: 'image/jpeg',
+                    quality: .9,
+                    originalSize: true  // the resize is made on the server
+                })}
+            }).done(function() {
+                window.location.replace('{{ path('netizen_show', {author: app.user.username}) }}');
+            }).fail(function() {
+                alert('Your browser does not support this feature');
+            });
         });
     });
 </script>
@@ -41,13 +58,10 @@
     {{ parent() }}
     <style>
         .cropit-image-preview {
-            width: 300px;
-            height: 300px;
             background-color: #f8f8f8;
             background-size: cover;
             border: 1px solid #ccc;
             border-radius: 3px;
-            margin-top: 7px;
             cursor: move;
         }            
 

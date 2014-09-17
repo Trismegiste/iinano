@@ -63,6 +63,12 @@ class NetizenRepository implements NetizenRepositoryInterface
 
     public function persist(Netizen $obj)
     {
+        // pre-persist :
+        if (is_null($obj->getAuthor()->getAvatar())) {
+            $avatarName = $obj->getProfile()->gender == 'xx' ? "00.jpg" : '01.jpg';
+            $obj->getAuthor()->setAvatar($avatarName);
+        }
+
         $this->repository->persist($obj);
     }
 
@@ -71,10 +77,10 @@ class NetizenRepository implements NetizenRepositoryInterface
         return $this->repository->findByPk($id);
     }
 
-    public function updateAvatar(Netizen $user, UploadedFile $fch = null)
+    public function updateAvatar(Netizen $user, $imageResource)
     {
         // @todo à faire dans un try catch   
-        $this->storage->updateAvatar($user->getAuthor(), $user->getProfile(), $fch);
+        $this->storage->updateAvatar($user->getAuthor(), $imageResource);
         $this->persist($user);
     }
 
