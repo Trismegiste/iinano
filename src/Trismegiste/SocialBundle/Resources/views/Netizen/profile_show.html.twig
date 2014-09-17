@@ -2,16 +2,20 @@
 
 {% block content %}
 <div class="row">
-    {% if app.user.username == author.nickname %} 
-    <ul class="button-group">
-        <li><a href="#" class="button secondary">Edit my profile</a></li>
-        <li><a href="#" class="button secondary">Change my password</a></li>
-        <li><a href="#" class="button secondary">Change my avatar</a></li>
-    </ul>
-    {% endif %}
     <div class="large-4 small-12 column">
         <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
-        <h2>{{ author.nickname }}</h2>
+    </div>
+    <div class="large-8 column">
+        {% if app.user.username == author.nickname %} 
+        <div class="button-bar">
+            <ul class="button-group">
+                <li><a href="#" class="button secondary small">Edit my profile</a></li>
+                <li><a href="#" class="button secondary small">Change my password</a></li>
+                <li><a href="#" class="button secondary small">Change my avatar</a></li>
+            </ul>
+        </div>
+        {% endif %}
+        <h3>{{ author.nickname }}</h3>
         <ul class="vcard">
             <li class="fn">{{ profile.fullName }}</li>
             <li class="">{{ profile.gender }}</li>
@@ -19,17 +23,21 @@
             <li class="email">{{ profile.email }}</li>
             <li>{{ profile.dateOfBirth|date("Y/m/d") }}</li>
             <li>{{ profile.placeOfBirth }}</li>
-        </ul>
+        </ul>        
     </div>
-    <div class="large-4 column">
-        <a id="profile-follower"></a>
-        <h3>Followers</h3>
-        {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: follower} %}
-    </div>
-    <div class="large-4 column">
+</div>
+<div class="row">
+    <div class="medium-6 small-12 column">
+        <hr/>
         <a id="profile-following"></a>
         <h3>Following</h3>
         {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: following} %}
+    </div>
+    <div class="medium-6 small-12 column">
+        <hr/>
+        <a id="profile-follower"></a>
+        <h3>Followers</h3>
+        {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: follower} %}
     </div>
 </div>
 {% endblock content %}
