@@ -7,8 +7,6 @@
 namespace Trismegiste\SocialBundle\Repository;
 
 use Trismegiste\Socialist\AuthorInterface;
-use Trismegiste\SocialBundle\Security\Profile;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Trismegiste\SocialBundle\Utils\ImageRefiner;
 
 /**
@@ -33,7 +31,7 @@ class AvatarRepository
             $destination = $this->getAvatarAbsolutePath($avatarName);
             $this->imageTool->makeSquareThumbnailFrom($imageResource, $destination, 300);
         } catch (\Exception $e) {
-            // @todo throw something (what ?)
+            throw new \RuntimeException('Unable to save avatar');
         }
 
         $author->setAvatar($avatarName);

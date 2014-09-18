@@ -42,7 +42,7 @@
                 data: {content: $('#image-cropper').cropit('export', {
                     type: 'image/jpeg',
                     quality: .9,
-                    originalSize: true  // the resize is made on the server
+                    originalSize: false
                 })}
             }).done(function() {
                 window.location.replace('{{ path('netizen_show', {author: app.user.username}) }}');
