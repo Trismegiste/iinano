@@ -6,19 +6,18 @@
 
 {% block content %}
 <div class="row">
-    <div class="large-6 small-12 column">
+    <div class="large-6 medium-8 small-10 column">
         <h3>Pick or take a picture</h3>
         <div id="image-cropper">
-            <div class="select-image-btn button secondary">Select new image</div>
-            <input type="file" class="cropit-image-input"/>
+            <div class="select-image-btn button secondary justify-cropper"><i class="fi-photo"></i> Select new image</div>
+            <input type="file" class="cropit-image-input" capture="camera"/>
             <div class="cropit-image-preview"></div>
-            <div class="image-size-label">Resize image</div>
-            <input type="range" class="cropit-image-zoom-input" />
+            <div class="image-size-label text-center justify-cropper">Resize image</div>
+            <input type="range" class="cropit-image-zoom-input justify-cropper" />
         </div>
-        <button id="send-crop" class="button">Send</button>
+        <button id="send-crop" class="button justify-cropper">Send</button>
     </div>
-    <div class="large-6 small-12 column">
-        <h3>or take a shot with your webcam</h3>
+    <div class="large-6 medium-4 small-2 column">
     </div>
 </div>
 {% endblock content %}
@@ -30,7 +29,15 @@
     $(function() {
         $('#image-cropper').cropit({
             width: 300,
-            height: 300
+            height: 300,
+            onImageLoaded: function() {
+                // center image on load
+                var imageCropper = $('#image-cropper');
+                var dimension = imageCropper.cropit('imageSize');
+                var lessLarge = Math.min(dimension.width, dimension.height);
+                var ratio = imageCropper.cropit('zoom');
+                imageCropper.cropit('offset', {x: (lessLarge - dimension.width) * ratio / 2 , y: (lessLarge - dimension.height) * ratio / 2});
+            }
         });
         $('.select-image-btn').click(function() {
             $('.cropit-image-input').click();
@@ -72,6 +79,10 @@
 
         .image-size-label {
             margin-top: 0.6rem;
+        }
+        
+        .justify-cropper {
+            width: 300px;
         }
     </style>
 {% endblock %}

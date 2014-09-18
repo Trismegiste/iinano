@@ -27,14 +27,17 @@ class SimplePostController extends ContentController
             try {
                 $repo->persist($newPost);
                 $this->pushFlash('notice', 'Message saved');
-                // @todo new=> wall_index(logged) / edit=> wall_index(wallNick)
-                return $this->redirectRouteOk('content_index', [], 'anchor-' . $newPost->getId());
+
+                return $this->redirectRouteOk('wall_index', [
+                            'wallNick' => $this->getUser()->getUsername(),
+                            'wallFilter' => 'self'
+                                ], 'anchor-' . $newPost->getId());
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save message');
             }
         }
 
-        return $this->renderWall($this->getUser()->getUsername(), 'all', 'TrismegisteSocialBundle:Content:simplepost_form.html.twig', ['form' => $form->createView()]);
+        return $this->renderWall($this->getUser()->getUsername(), 'self', 'TrismegisteSocialBundle:Content:simplepost_form.html.twig', ['form' => $form->createView()]);
     }
 
     public function createAction()
