@@ -80,8 +80,10 @@ class SimplePostController extends ContentController
             $this->pushFlash('warning', 'Message not deleted');
         }
 
-        // @todo vers wall_index(wallNick)
-        return $this->redirectRouteOk('content_index');
+        return $this->redirectRouteOk('wall_index', [
+                    'wallNick' => $this->getUser()->getUsername(),
+                    'wallFilter' => 'self'
+        ]);
     }
 
 }

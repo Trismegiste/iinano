@@ -39,13 +39,12 @@ class CreateUser extends ContainerAwareCommand
         $profile = new Profile();
         $user->setProfile($profile);
 
-        // addintional info 
+        // addintional info
         $profile->fullName = $dialog->ask($output, 'Full name ', ucfirst($nickname));
         $gender = ['xy', 'xx'];
         $choice = $dialog->select($output, 'Gender', $gender, 0);
         $profile->gender = $gender[$choice];
 
-        $repository->updateAvatar($user);
         $repository->persist($user);
     }
 

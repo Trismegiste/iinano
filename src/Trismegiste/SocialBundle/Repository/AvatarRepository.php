@@ -26,6 +26,17 @@ class AvatarRepository
         $this->avatarSize = $dimension;
     }
 
+    /**
+     * Update the author's avatar with a given GD image resource
+     * Persists the image file and update the property of Author
+     * !! No persistence on Author, only edge effect !!
+     *
+     * @param AuthorInterface $author the author to update
+     * @param resource $imageResource a GD image resource
+     *
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     */
     public function updateAvatar(AuthorInterface $author, $imageResource)
     {
         if (!is_resource($imageResource)) {
@@ -43,6 +54,13 @@ class AvatarRepository
         $author->setAvatar($avatarName);
     }
 
+    /**
+     * Returns a cleaned name for the avatar file. This is a bijection
+     *
+     * @param string $nick a nickname
+     *
+     * @return string the basename of the avatar file
+     */
     protected function getAvatarName($nick)
     {
         // it is not a way to "crypt" or whatsoever, it's a way to avoid two things:
@@ -52,6 +70,13 @@ class AvatarRepository
         return bin2hex($nick);
     }
 
+    /**
+     * Returns the full pathname to an avatar with a given basename
+     * 
+     * @param string $filename the basename + extension
+     *
+     * @return string the full path to avatar
+     */
     public function getAvatarAbsolutePath($filename)
     {
         return $this->storage . $filename;

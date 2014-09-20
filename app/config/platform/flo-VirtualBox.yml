@@ -1,0 +1,4 @@
+parameters:
+    locale: en
+    secret: toto
+    mongodb_server: 'localhost:27017'

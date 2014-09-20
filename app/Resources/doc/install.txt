@@ -1,0 +1,41 @@
+    8  sudo apt-get install git
+   35  clear
+   31  sudo apt-get install apache2
+   32  sudo service apache2 stop
+   34  sudo service apache2 start 
+   11  sudo gedit /etc/apache2/sites-available/iinano.conf
+   19  sudo a2ensite iinano
+   20  sudo service apache2 restart 
+   35  clear
+   24  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+   25  echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+   26  sudo apt-get update
+   27  sudo apt-get install -y mongodb-org
+   29  mongo
+   35  clear
+   36  sudo apt-get install php5
+   40  sudo apt-get install curl
+  232  sudo apt-get install php5-gd
+  125  php --version
+  149  sudo apt-get install php5-dev
+  151  sudo apt-get install php-pear
+  234  sudo apt-get install libapache2-mod-xsendfile
+  154  sudo pecl install mongo
+  157  sudo gedit /etc/php5/mods-available/mongo.ini
+  176  sudo ln -s /etc/php5/mods-available/mongo.ini 30-mongo.ini
+  182  sudo ln -s /etc/php5/mods-available/mongo.ini 30-mongo.ini
+  185  php --ri mongo
+  189  curl -sS https://getcomposer.org/installer | php
+  190  ./composer.phar 
+  191  sudo mv composer.phar /usr/bin/
+  193  clear
+  214  git clone git@github.com:Trismegiste/iinano.git
+  217  git clone git@github.com:Trismegiste/Socialist.git
+  219  composer.phar ins
+  220  wget https://phar.phpunit.de/phpunit.phar
+  223  chmod 700 phpunit.phar 
+  233  phpunit.phar -c app/
+  247  chmod -R 777 cache/ logs/
+  252  sudo chmod -R 777 storage/
+  257  sudo a2enmod rewrite
+  258  sudo service apache2 restart

@@ -1,5 +1,5 @@
 {# avatar icon + dropdown with mini content #}
-{% if app.user.author == author %}
+{% if app.user.username == author.nickname %}
 <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
 {% else %}
 {% set avatar_dropdown_counter = author.nickname ~ random() %}
