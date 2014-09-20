@@ -1,0 +1,18 @@
+{% extends 'TrismegisteSocialBundle::layout.html.twig' %}
+
+{% block page_title %}
+    {{ parent() }} | {{ author.nickname }}'s profile
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="large-4 medium-3 small-12 column">
+            <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
+        </div>
+        <div class="large-8 medium-9 column">
+            {% include '::flashmessage.html.twig' %}
+            {% block profile_content %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock content %}

@@ -1,19 +1,10 @@
-{% extends 'TrismegisteSocialBundle::layout.html.twig' %}
+{% extends 'TrismegisteSocialBundle:Netizen:profile_layout.html.twig' %}
 
-{% block page_title %}
-{{ parent() }} | {{ author.nickname }}'s profile
-{% endblock %}
-
-{% block content %}
-<div class="row">
-    <div class="large-4 small-12 column">
-        <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
-    </div>
-    <div class="large-8 column">
-        {% if app.user.username == author.nickname %} 
+{% block profile_content %}
+        {% if app.user.username == author.nickname %}
         <div class="button-bar">
             <ul class="button-group">
-                <li><a href="#" class="button secondary small">Edit my profile</a></li>
+                <li><a href="{{ path('netizen_profile_edit') }}" class="button secondary small">Edit my profile</a></li>
                 <li><a href="#" class="button secondary small">Change my password</a></li>
                 <li><a href="{{ path('netizen_avatar_edit') }}" class="button secondary small">Change my avatar</a></li>
             </ul>
@@ -27,9 +18,11 @@
             <li class="email">{{ profile.email }}</li>
             <li>{{ profile.dateOfBirth|date("Y/m/d") }}</li>
             <li>{{ profile.placeOfBirth }}</li>
-        </ul>        
-    </div>
-</div>
+        </ul>
+{% endblock %}
+
+{% block content %}
+{{ parent() }}
 <div class="row">
     <div class="medium-6 small-12 column">
         <hr/>

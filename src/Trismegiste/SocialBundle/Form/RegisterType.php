@@ -52,14 +52,6 @@ class RegisterType extends AbstractType
                     ],
                     'mapped' => false
                 ])
-                // @todo don't put the avatar on registering (too many error), put it on profile_avatar_edit
-//                ->add('avatar', 'file', [
-//                    'required' => false,
-//                    'mapped' => false,
-//                    'constraints' => [
-//                        new Image(['minWidth' => 300, 'minHeight' => 300, 'mimeTypes' => 'image/jpeg'])
-//                    ]
-//                ])
                 ->add('gender', 'gender', ['property_path' => 'profile.gender'])
                 ->add('fullName', 'text', ['constraints' => new NotBlank(), 'property_path' => 'profile.fullName'])
                 ->add('dateOfBirth', 'date', ['property_path' => 'profile.dateOfBirth'])

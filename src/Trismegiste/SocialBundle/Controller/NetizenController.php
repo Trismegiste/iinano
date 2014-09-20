@@ -9,6 +9,7 @@ namespace Trismegiste\SocialBundle\Controller;
 use Trismegiste\SocialBundle\Controller\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Trismegiste\SocialBundle\Form\ProfileType;
 
 /**
  * NetizenController is a controller for the user : profile, stats...
@@ -100,7 +101,7 @@ class NetizenController extends Template
         return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter]);
     }
 
-    public function editAvatarAction(Request $request)
+    public function editAvatarAction()
     {
         if ($request->getMethod() == 'POST') {
             $img = imagecreatefromstring(
@@ -112,6 +113,28 @@ class NetizenController extends Template
         }
 
         return $this->render('TrismegisteSocialBundle:Netizen:avatar_edit.html.twig');
+    }
+
+    public function editProfileAction(Request $request)
+    {
+        $author = $this->getUser()->getAuthor();
+        $profile = $this->getUser()->getProfile();
+        $form = $this->createForm(new ProfileType(), $profile);
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $repo = $this->get('social.netizen.repository');
+            $user = $repo->findByPk($this->getUser()->getId());
+            $user->setProfile($form->getData());
+            $repo->persist($user);
+            $this->pushFlash('notice', 'Profile updated');
+            $this->redirectRouteOk('netizen_show', ['author' => $author->getNickname()]);
+        }
+
+        return $this->render('TrismegisteSocialBundle:Netizen:profile_edit.html.twig', [
+                    'form' => $form->createView(),
+                    'author' => $author
+        ]);
     }
 
 }
