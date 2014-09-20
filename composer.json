@@ -7,7 +7,7 @@
     "repositories": [
         {
             "type": "git",
-            "url": "c:/Users/flo/Documents/NetBeansProjects/Socialist"
+            "url": "/home/flo/Develop/Socialist"
         }
     ],
     "require": {

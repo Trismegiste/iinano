@@ -28,15 +28,14 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
 
         // building extension
         $extension = new Extension();
-        $fullConfig = array(
+        $minConfig = array(
             'nickname_regex' => '[-\\da-z]+',
             'alias' => array(
                 'user' => 'netizen',
                 'content' => array('message')
-            ),
-            'pagination' => 20,
+            )
         );
-        $extension->load(array($fullConfig), $this->container);
+        $extension->load(array($minConfig), $this->container);
         $this->container->compile();
     }
 
@@ -69,14 +68,20 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-//
-//    public function testServiceCollection()
-//    {
-//        $this->assertInstanceOf('MongoCollection', $this->container->get('dokudoki.collection'));
-//    }
-//
-//    public function testFacade()
-//    {
-//        $this->assertInstanceOf('Trismegiste\Yuurei\Facade\Provider', $this->container->get('dokudoki.facade'));
-//    }
+    public function getParameter()
+    {
+        return [
+            ['social.avatar_size', 300],
+            ['social.pagination', 20]
+        ];
+    }
+
+    /**
+     * @dataProvider getParameter
+     */
+    public function testParameterExists($paramName, $expectedValue)
+    {
+        $this->assertEquals($expectedValue, $this->container->getParameter($paramName));
+    }
+
 }

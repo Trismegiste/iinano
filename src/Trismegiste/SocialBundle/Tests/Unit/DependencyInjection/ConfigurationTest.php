@@ -36,6 +36,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'content' => array('message')
             ),
             'pagination' => 20,
+            'avatar_size' => 300
         );
         $this->assertEquals($expected, $cfg);
     }
@@ -65,9 +66,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             'pagination' => 30,
+            'avatar_size' => 299
         );
         $this->assertEquals($expected, $cfg);
     }
 
 }
-

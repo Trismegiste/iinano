@@ -27,7 +27,7 @@ class AvatarRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
         $this->tmpDir = sys_get_temp_dir();
-        $this->sut = new AvatarRepository($this->tmpDir, $this->imageTool);
+        $this->sut = new AvatarRepository($this->tmpDir, $this->imageTool, 50);
 
         $this->dummyFile = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
                 ->disableOriginalConstructor()
@@ -55,10 +55,12 @@ class AvatarRepositoryTest extends \PHPUnit_Framework_TestCase
                 ], $path_parts);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testCheckOnNull()
     {
-        $this->sut->updateAvatar($this->author, $this->profile, null);
-        $this->assertEquals('01.jpg', $this->author->getAvatar());
+        $this->sut->updateAvatar($this->author, null);
     }
 
     public function testCheckOnMime()

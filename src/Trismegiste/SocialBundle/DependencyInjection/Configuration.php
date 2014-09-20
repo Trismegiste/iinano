@@ -19,12 +19,11 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('trismegiste_social');
-        
+
         $rootNode->children()
                     ->scalarNode('nickname_regex')->end()
-                    ->scalarNode('pagination')
-                        ->defaultValue(20)
-                    ->end()
+                    ->scalarNode('pagination')->defaultValue(20)->end()
+                    ->scalarNode('avatar_size')->defaultValue(300)->end()
                     ->arrayNode('alias')
                         ->children()
                             ->scalarNode('user')->end()
@@ -35,7 +34,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end();
-        
+
         return $treeBuilder;
     }
 }
