@@ -7,8 +7,6 @@
 namespace Trismegiste\SocialBundle\Tests\Unit\Repository;
 
 use Trismegiste\SocialBundle\Repository\AvatarRepository;
-use Trismegiste\Socialist\Author;
-use Trismegiste\SocialBundle\Security\Profile;
 
 /**
  * AvatarRepositoryTest tests AvatarRepository
@@ -29,12 +27,7 @@ class AvatarRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->tmpDir = sys_get_temp_dir();
         $this->sut = new AvatarRepository($this->tmpDir, $this->imageTool, 50);
 
-        $this->dummyFile = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-                ->disableOriginalConstructor()
-                ->getMock();
-
-        $this->author = new Author('kirk');
-        $this->profile = new Profile();
+        $this->author = $this->getMock('Trismegiste\Socialist\AuthorInterface');
     }
 
     public function testConstructor()
@@ -63,28 +56,32 @@ class AvatarRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->updateAvatar($this->author, null);
     }
 
-    public function testCheckOnMime()
+    public function testCheckOnResize()
     {
-        $this->dummyFile->expects($this->once())
-                ->method('getMimeType')
-                ->will($this->returnValue('image/png'));
-        $this->dummyFile->expects($this->never())
-                ->method('move');
+        $img = \imagecreatetruecolor(50, 50);
+        $this->imageTool->expects($this->once())
+                ->method('makeSquareThumbnailFrom');
+        $this->author->expects($this->once())
+                ->method('getNickname')
+                ->will($this->returnValue('kirk'));
+        $this->author->expects($this->once())
+                ->method('setAvatar')
+                ->with($this->equalTo('6b69726b.jpg'));
 
-        $this->sut->updateAvatar($this->author, $this->profile, $this->dummyFile);
-        $this->assertEquals('01.jpg', $this->author->getAvatar());
+        $this->sut->updateAvatar($this->author, $img);
     }
 
-    public function testCheckOnMoveAndNaming()
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testCheckResizeProblem()
     {
-        $this->dummyFile->expects($this->once())
-                ->method('getMimeType')
-                ->will($this->returnValue('image/jpeg'));
-        $this->dummyFile->expects($this->once())
-                ->method('move');
+        $img = \imagecreatetruecolor(50, 50);
+        $this->imageTool->expects($this->once())
+                ->method('makeSquareThumbnailFrom')
+                ->will($this->throwException(new \Exception));
 
-        $this->sut->updateAvatar($this->author, $this->profile, $this->dummyFile);
-        $this->assertEquals('6b69726b.jpg', $this->author->getAvatar());
+        $this->sut->updateAvatar($this->author, $img);
     }
 
 }
