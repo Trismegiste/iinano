@@ -11,6 +11,8 @@ use Trismegiste\SocialBundle\Utils\ImageRefiner;
 
 /**
  * AvatarRepository is a repository for avatar
+ *
+ * @todo need for an interface FFS !
  */
 class AvatarRepository
 {
