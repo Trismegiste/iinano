@@ -96,4 +96,18 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->sut->isExistingNickname('spock'));
     }
 
+    /**
+     * @depends testUserCreation
+     * @expectedException \RuntimeException
+     */
+    public function testSomethingWentWrongForUpdatingAvatar(Netizen $user)
+    {
+        $this->storage->expects($this->once())
+                ->method('updateAvatar')
+                ->will($this->throwException(new \Exception));
+
+        $img = \imagecreatetruecolor(10, 10);
+        $this->sut->updateAvatar($user, $img);
+    }
+
 }

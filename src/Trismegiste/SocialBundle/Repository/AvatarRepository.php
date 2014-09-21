@@ -23,12 +23,15 @@ class AvatarRepository
 
     public function __construct($path, ImageRefiner $imageTool, $dimension)
     {
+        if (!is_int($dimension)) {
+            throw new \InvalidArgumentException("Dimension '$dimension' is not a valid integer");
+        }
+        if (($dimension <= 0) || ($dimension > 999)) {
+            throw new \OutOfRangeException("$dimension is not a valid dimension for an avatar picture");
+        }
         $this->storage = realpath($path) . DIRECTORY_SEPARATOR;
         $this->imageTool = $imageTool;
         $this->avatarSize = (int) $dimension;
-        if ($this->avatarSize <= 0) {
-            throw new \OutOfRangeException("'$dimension' is not a valid dimension for a picture");
-        }
     }
 
     /**

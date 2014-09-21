@@ -84,4 +84,20 @@ class AvatarRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->updateAvatar($this->author, $img);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testBadParametersCtor1()
+    {
+        new AvatarRepository($this->tmpDir, $this->imageTool, "wtf");
+    }
+
+    /**
+     * @expectedException \OutOfRangeException
+     */
+    public function testBadParametersCtor2()
+    {
+        new AvatarRepository($this->tmpDir, $this->imageTool, -273);
+    }
+
 }
