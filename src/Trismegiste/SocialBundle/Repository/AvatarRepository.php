@@ -23,7 +23,10 @@ class AvatarRepository
     {
         $this->storage = realpath($path) . DIRECTORY_SEPARATOR;
         $this->imageTool = $imageTool;
-        $this->avatarSize = $dimension;
+        $this->avatarSize = (int) $dimension;
+        if ($this->avatarSize <= 0) {
+            throw new \OutOfRangeException("'$dimension' is not a valid dimension for a picture");
+        }
     }
 
     /**
@@ -72,7 +75,7 @@ class AvatarRepository
 
     /**
      * Returns the full pathname to an avatar with a given basename
-     * 
+     *
      * @param string $filename the basename + extension
      *
      * @return string the full path to avatar

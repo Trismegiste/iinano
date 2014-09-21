@@ -101,7 +101,7 @@ class NetizenController extends Template
         return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter]);
     }
 
-    public function editAvatarAction()
+    public function editAvatarAction(Request $request)
     {
         if ($request->getMethod() == 'POST') {
             $img = imagecreatefromstring(

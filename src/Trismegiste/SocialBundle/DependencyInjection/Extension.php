@@ -33,14 +33,14 @@ class Extension extends BaseExtension
         // list of aliases for content classes :
         $container->getDefinition('social.content.repository')
                 ->addArgument($config['alias']['content']);
-        // injecting the regex for validation of nickname (dry)
+        // injecting the regex for validation of nickname (dry) :
         $container->setParameter('nickname_regex', $config['nickname_regex']);
-        // injecting how many contents inside a page
+        // injecting how many contents inside a page :
         $container->setParameter('social.pagination', $config['pagination']);
-        // avatar size
+        // avatar size :
         $container->setParameter('social.avatar_size', $config['avatar_size']);
         $container->getDefinition('social.avatar.repository')
-                ->addArgument($config['avatar_size']);
+                ->replaceArgument(2, $config['avatar_size']);
     }
 
     public function getAlias()
