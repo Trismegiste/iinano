@@ -3,8 +3,8 @@
 <routes xmlns="http://symfony.com/schema/routing"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
-   
-    
+
+
     <route id="wall_index" pattern="/">
         <default key="_controller">TrismegisteSocialBundle:Content:wall</default>
         <requirement key="_method">GET</requirement>
@@ -12,12 +12,12 @@
     <route id="ajax_content_more" pattern="/more/{offset}">
         <default key="_controller">TrismegisteSocialBundle:Content:ajaxMore</default>
         <requirement key="_method">GET</requirement>
-        <requirement key="offset">[\d]+</requirement>        
+        <requirement key="offset">[\d]+</requirement>
     </route>
 
     <route id="pub_famous" pattern="/pub/{id}/famous/{action}">
         <default key="_controller">TrismegisteSocialBundle:Famous:likePublish</default>
-        <requirement key="id">[\da-f]{24}</requirement>        
+        <requirement key="id">[\da-f]{24}</requirement>
         <requirement key="action">(add|remove)</requirement>
     </route>
     <route id="commentary_famous" pattern="/pub/{id}/commentary/{uuid}/famous/{action}">
@@ -28,16 +28,16 @@
     </route>
 
     <route id="netizen_famous" pattern="/user/{id}/like/{action}">
-        <default key="_controller">TrismegisteSocialBundle:Netizen:likeNetizen</default>
+        <default key="_controller">TrismegisteSocialBundle:Social:likeNetizen</default>
         <requirement key="id">[\da-f]{24}</requirement>
         <requirement key="action">(add|remove)</requirement>
     </route>
     <route id="netizen_follow" pattern="/user/{id}/follow/{action}">
-        <default key="_controller">TrismegisteSocialBundle:Netizen:followNetizen</default>
+        <default key="_controller">TrismegisteSocialBundle:Social:followNetizen</default>
         <requirement key="id">[\da-f]{24}</requirement>
         <requirement key="action">(add|remove)</requirement>
     </route>
-    
+
     <route id="pub_commentary_add" pattern="/pub/{id}/commentary/add">
         <default key="_controller">TrismegisteSocialBundle:Commentary:addOnPublishing</default>
         <requirement key="id">[\da-f]{24}</requirement>
@@ -51,5 +51,5 @@
         <default key="_controller">TrismegisteSocialBundle:Commentary:deleteOnPublishing</default>
         <requirement key="id">[\da-f]{24}</requirement>
         <requirement key="uuid">[\da-f]{40}</requirement>
-    </route>    
+    </route>
 </routes>
