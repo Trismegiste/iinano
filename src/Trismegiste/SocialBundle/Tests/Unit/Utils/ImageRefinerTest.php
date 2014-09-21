@@ -42,7 +42,7 @@ class ImageRefinerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getDimension
      */
-    public function testThmbnailResize($ow, $oh, $tw, $th)
+    public function testThumbnailResize($ow, $oh, $tw, $th)
     {
         $source = $this->createTmpImage($ow, $oh);
         $this->sut->makeThumbnailFrom($source, $source, 100);
@@ -50,6 +50,38 @@ class ImageRefinerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($tw, $info[0]);
         $this->assertEquals($th, $info[1]);
+    }
+
+    public function testSquareThumbnailResize()
+    {
+        $source = $this->createTmpImage(100, 100);
+        $imgResource = \imagecreatefromjpeg($source);
+        $this->sut->makeSquareThumbnailFrom($imgResource, $source, 50);
+        // test resized
+        $imgResource = \imagecreatefromjpeg($source);
+        $this->assertEquals(50, \imagesx($imgResource));
+        $this->assertEquals(50, \imagesy($imgResource));
+    }
+
+    public function testSquareThumbnailNoResize()
+    {
+        $source = $this->createTmpImage(50, 50);
+        $imgResource = \imagecreatefromjpeg($source);
+        $this->sut->makeSquareThumbnailFrom($imgResource, $source, 50);
+        // test resized
+        $imgResource = \imagecreatefromjpeg($source);
+        $this->assertEquals(50, \imagesx($imgResource));
+        $this->assertEquals(50, \imagesy($imgResource));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSquareThumbnailTooSmall()
+    {
+        $source = $this->createTmpImage(50, 50);
+        $imgResource = \imagecreatefromjpeg($source);
+        $this->sut->makeSquareThumbnailFrom($imgResource, $source, 100);
     }
 
 }
