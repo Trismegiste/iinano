@@ -14,7 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Trismegiste\SocialBundle\Validator\UniqueNickname;
-use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\Regex;
 
 /**

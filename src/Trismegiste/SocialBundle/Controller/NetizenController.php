@@ -10,6 +10,7 @@ use Trismegiste\SocialBundle\Controller\Template;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Trismegiste\SocialBundle\Form\ProfileType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * NetizenController is a controller for the user : profile, stats...
@@ -55,10 +56,15 @@ class NetizenController extends Template
     public function editAvatarAction(Request $request)
     {
         if ($request->getMethod() == 'POST') {
+            if (!$request->isXmlHttpRequest()) {
+                throw new AccessDeniedException('U haxxor');
+            }
+
             $img = imagecreatefromstring(
                     base64_decode(
                             preg_replace(
                                     '#data:image/(jpg|jpeg);base64,#', '', $request->request->get('content'), 1)));
+
             $repo = $this->get('social.netizen.repository');
             $repo->updateAvatar($this->getUser(), $img);
         }
@@ -79,7 +85,8 @@ class NetizenController extends Template
             $user->setProfile($form->getData());
             $repo->persist($user);
             $this->pushFlash('notice', 'Profile updated');
-            $this->redirectRouteOk('netizen_show', ['author' => $author->getNickname()]);
+
+            return $this->redirectRouteOk('netizen_show', ['author' => $author->getNickname()]);
         }
 
         return $this->render('TrismegisteSocialBundle:Netizen:profile_edit.html.twig', [

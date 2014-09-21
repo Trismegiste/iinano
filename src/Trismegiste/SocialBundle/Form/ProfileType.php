@@ -21,7 +21,8 @@ class ProfileType extends AbstractType
     {
         $builder->add('gender', 'gender')
                 ->add('fullName', 'text', ['constraints' => new NotBlank()])
-                ->add('dateOfBirth', 'date');
+                ->add('dateOfBirth', 'date')
+                ->add('Save', 'submit');
     }
 
     public function getName()

@@ -13,24 +13,17 @@
     </head>
     <body>
         {% block topbar %}
-        <div class="row">
-            <div class="large-12 columns">
-                <div class="panel">
-                    <h1>Feed Template</h1>
-                </div>
-            </div>
-        </div>
         {% endblock %}
 
         {% block content %}
-        <div class="row">
+        <div class="row content-full">
             <div class="large-4 medium-3 small-12 columns ">
-                <div class="panel">
+                <div class="panel content-navbar">
                     {% block navbar %}{% endblock navbar %}
                 </div>
             </div>
 
-            <div class="large-8 medium-9 columns">
+            <div class="large-8 medium-9 columns content-body">
                 {% include '::flashmessage.html.twig' %}
 
                 <a id="anchor-form"></a>

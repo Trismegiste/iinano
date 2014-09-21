@@ -5,11 +5,11 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
+    <div class="row profile-full">
         <div class="large-4 medium-3 small-12 column">
             <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
         </div>
-        <div class="large-8 medium-9 column">
+        <div class="large-8 medium-9 column profile-body">
             {% include '::flashmessage.html.twig' %}
             {% block profile_content %}
             {% endblock %}
