@@ -22,7 +22,18 @@ class StatusController extends ContentController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            print_r($form->getData());
+            $newStatus = $form->getData();
+            try {
+                $this->getRepository()->persist($newStatus);
+                $this->pushFlash('notice', 'Status saved');
+
+                return $this->redirectRouteOk('wall_index', [
+                            'wallNick' => $this->getUser()->getUsername(),
+                            'wallFilter' => 'self'
+                                ], 'anchor-' . $newStatus->getId());
+            } catch (\Exception $e) {
+                $this->pushFlash('warning', 'Status not saved');
+            }
         }
 
         return $this->renderWall($this->getUser()->getUsername(), 'self', 'TrismegisteSocialBundle:Content:status_form.html.twig', ['form' => $form->createView()]);

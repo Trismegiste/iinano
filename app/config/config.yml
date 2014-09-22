@@ -45,6 +45,7 @@ assetic:
 parameters:
     user_class_alias: netizen
     simplepost_class_alias: post
+    status_class_alias: status
 
 dokudoki:
     stage: whitemagic
@@ -58,6 +59,7 @@ dokudoki:
         comm: 'Trismegiste\Socialist\Commentary'
         intern: 'Trismegiste\SocialBundle\Security\Credential\Internal'
         profile: 'Trismegiste\SocialBundle\Security\Profile'
+        %status_class_alias%: 'Trismegiste\Socialist\Status'
 
 iinano:
     nickname_regex: "[-\da-z]+"
@@ -65,5 +67,6 @@ iinano:
         user: %user_class_alias%
         content:
             - %simplepost_class_alias%
+            - %status_class_alias%
 
         
