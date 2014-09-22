@@ -29,7 +29,7 @@ class StatusType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'Trismegiste\SocialBundle\Model\Status']);
+        $resolver->setDefaults(['data_class' => 'Trismegiste\Socialist\Status']);
     }
 
 }

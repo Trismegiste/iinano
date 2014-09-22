@@ -6,7 +6,7 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
-use Trismegiste\SocialBundle\Model\Status;
+use Trismegiste\Socialist\Status;
 use Trismegiste\SocialBundle\Form\StatusType;
 use Symfony\Component\HttpFoundation\Request;
 
