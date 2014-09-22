@@ -6,50 +6,32 @@
 
 namespace Trismegiste\SocialBundle\Tests\Unit\Form;
 
-use Symfony\Component\Form\Forms;
 use Trismegiste\SocialBundle\Form\GenderType;
 
 /**
  * GenderTypeTest tests GenderType
  */
-class GenderTypeTest extends \PHPUnit_Framework_TestCase
+class GenderTypeTest extends FormTestCase
 {
 
-    protected $sut;
-    protected $factory;
-
-    protected function setUp()
+    protected function createType()
     {
-        $this->factory = Forms::createFormFactoryBuilder()
-                ->addType(new GenderType())
-                ->getFormFactory();
-
-        $this->sut = $this->factory->create('gender');
+        return new GenderType();
     }
 
-    public function getChoices()
+    public function getInvalidInputs()
+    {
+        return [
+            ['ab', null],
+        ];
+    }
+
+    public function getValidInputs()
     {
         return [
             ['xx', 'xx'],
             ['xy', 'xy'],
-            ['ab', null],
-            [['xx', 'xy'], 'xy']
         ];
-    }
-
-    /**
-     * @dataProvider getChoices
-     */
-    public function testSubmit($submitted, $expected)
-    {
-        $this->sut->submit($submitted);
-        $this->assertEquals($expected, $this->sut->getData());
-    }
-
-    public function testView()
-    {
-        $view = $this->sut->createView();
-        $this->assertNull($view->vars['empty_value']);
     }
 
 }
