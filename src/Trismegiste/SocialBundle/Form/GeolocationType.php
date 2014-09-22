@@ -17,7 +17,8 @@ class GeolocationType extends AbstractType
     public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
         $builder->add("longitude", 'hidden')
-                ->add('latitude', 'hidden');
+                ->add('latitude', 'hidden')
+                ->add('zoom', 'hidden');
     }
 
     public function getName()
