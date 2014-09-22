@@ -19,10 +19,17 @@ class CommentaryTypeTest extends FormTestCase
         return new CommentaryType();
     }
 
-    public function getInputs()
+    public function getValidInputs()
     {
         return [
             [['message' => 'lol'], ['message' => 'lol']]
+        ];
+    }
+
+    public function getInvalidInputs()
+    {
+        return [
+            [['message' => 'gg'], ['message' => 'gg'], ['message']]
         ];
     }
 
