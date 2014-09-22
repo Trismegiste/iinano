@@ -60,13 +60,15 @@ class WebTestCasePlus extends WebTestCase
         $repo = $this->getService('social.netizen.repository');
         $user = $repo->findByNickname($nick);
 
-        $session = $this->client->getContainer()->get('session');
-        $firewall = 'secured_area';
-        $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_USER'));
-        $session->set('_security_' . $firewall, serialize($token));
-        $session->save();
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
+        if (!is_null($user)) {
+            $session = $this->client->getContainer()->get('session');
+            $firewall = 'secured_area';
+            $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_USER'));
+            $session->set('_security_' . $firewall, serialize($token));
+            $session->save();
+            $cookie = new Cookie($session->getName(), $session->getId());
+            $this->client->getCookieJar()->set($cookie);
+        }
     }
 
     protected function addUserFixture($nickname)
