@@ -18,7 +18,7 @@
         "symfony/monolog-bundle": "2.3.*",
         "sensio/distribution-bundle": "2.3.*",
         "trismegiste/dokudoki": "2.2.*",
-        "trismegiste/socialist": "0.9.*",
+        "trismegiste/socialist": "dev-master",
         "trismegiste/symfony-prelude": "1.0.*"
     },
     "scripts": {
