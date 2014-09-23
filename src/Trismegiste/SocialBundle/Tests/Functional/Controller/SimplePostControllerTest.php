@@ -9,7 +9,7 @@ namespace Trismegiste\SocialBundle\Tests\Functional\Controller;
 use Trismegiste\Socialist\Publishing;
 
 /**
- * SimplePostControllerTest tests SimplePostController
+ * SimplePostControllerTest tests PublishingController with SimplePost
  */
 class SimplePostControllerTest extends PublishingControllerTestCase
 {
