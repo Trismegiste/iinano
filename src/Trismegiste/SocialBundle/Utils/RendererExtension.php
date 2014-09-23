@@ -24,6 +24,7 @@ class RendererExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('choose_template', function($doc) {
+                // @todo remove those ugly hardcoded values
                         $map = [
                             'Trismegiste\Socialist\SimplePost' => 'simplepost_show',
                             'Trismegiste\Socialist\Status' => 'status_show'

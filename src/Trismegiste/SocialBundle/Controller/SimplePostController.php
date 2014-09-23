@@ -37,7 +37,7 @@ class SimplePostController extends ContentController
             }
         }
 
-        return $this->renderWall($this->getUser()->getUsername(), 'self', 'TrismegisteSocialBundle:Content:simplepost_form.html.twig', ['form' => $form->createView()]);
+        return $this->renderWall($this->getUser()->getUsername(), 'self', 'TrismegisteSocialBundle:Content:publishing_form.html.twig', ['form' => $form->createView()]);
     }
 
     public function createAction()
