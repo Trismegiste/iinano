@@ -12,6 +12,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+
     /**
      * {@inheritDoc}
      */
@@ -30,6 +31,16 @@ class Configuration implements ConfigurationInterface
                             ->arrayNode('content')
                                 ->requiresAtLeastOneElement()
                                 ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                    ->arrayNode('crud')
+                        ->useAttributeAsKey('key')
+                        ->prototype('array')
+                            ->children()
+                                ->scalarNode('url_param')->end()
+                                ->scalarNode('type_fqcn')->end()
+                                ->scalarNode('show')->end()
                             ->end()
                         ->end()
                     ->end()
