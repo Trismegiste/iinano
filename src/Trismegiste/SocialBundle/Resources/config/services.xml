@@ -30,7 +30,7 @@
             <argument type="service" id="social.netizen.repository"/>
         </service>
 
-        <service id="twig.humandate.renderer" class="Trismegiste\SocialBundle\Utils\HumanDateExtension">
+        <service id="twig.social.renderer" class="Trismegiste\SocialBundle\Utils\RendererExtension">
             <tag name="twig.extension"/>
             <!-- inject translation service here -->
         </service>

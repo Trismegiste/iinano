@@ -57,7 +57,7 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 
     public function testNickTooShort()
     {
-        $submitted = ['nickname' => 'daen', 'password' => 'aaaa', 'fullName' => 'Daenerys Stormborn', 'gender' => 'xx'];
+        $submitted = ['nickname' => 'dany', 'password' => 'aaaa', 'fullName' => 'Daenerys Stormborn', 'gender' => 'xx'];
         $this->sut->submit($submitted);
         $this->assertFalse($this->sut->isValid());
         $this->assertRegexp('#too short#', $this->sut->get('nickname')->getErrors()[0]->getMessage());
@@ -67,8 +67,8 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
     {
         return [
             ['illùvatar', 'Ainu Illùvatar'],
-            ['john snow', 'John Targaryan'],
-            ['john_snow', 'John Targaryan'],
+            ['john snow', 'John Targaryen'],
+            ['john_snow', 'John Targaryen'],
             ['Spock', 'Mr Spock']
         ];
     }

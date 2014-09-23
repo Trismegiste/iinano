@@ -6,7 +6,7 @@
 
 {% block feed %}
 {% for content in listing %}
-    {% include 'TrismegisteSocialBundle:Content:simplepost_show.html.twig' %}
+    {% include choose_template(content) %}
     <hr/>
 {% endfor %}
 <div id="pagination"></div>
@@ -16,18 +16,18 @@
     </div>
 </div>
 {% endblock %}
-        
+
 {% block navbar %}
 <a href="{{ path('netizen_show', {author: wallNick} ) }}"><img src="{{ path('netizen_avatar', {filename: wallUser.author.avatar} ) }}"/></a>
 <hr/>
 {% include 'TrismegisteSocialBundle:Content:index_navbar.html.twig' %}
 {% endblock navbar %}
-    
+
 {% block javascripts %}
     {{ parent() }}
 <script>
     $(document).ready(function() {
-        
+
         $('#more-button').on('click', function(event) {
             $.ajax({
                 url: event.target.href,

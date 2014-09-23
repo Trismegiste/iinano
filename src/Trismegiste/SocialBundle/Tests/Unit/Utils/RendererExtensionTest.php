@@ -6,12 +6,12 @@
 
 namespace Trismegiste\SocialBundle\Tests\Unit\Utils;
 
-use Trismegiste\SocialBundle\Utils\HumanDateExtension;
+use Trismegiste\SocialBundle\Utils\RendererExtension;
 
 /**
- * HumanDateExtensionTest tests HumanDateExtension
+ * RendererExtensionTest tests RendererExtension
  */
-class HumanDateExtensionTest extends \PHPUnit_Framework_TestCase
+class RendererExtensionTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $twig;
@@ -20,7 +20,7 @@ class HumanDateExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $loader = new \Twig_Loader_String();
         $this->twig = new \Twig_Environment($loader);
-        $this->twig->addExtension(new HumanDateExtension());
+        $this->twig->addExtension(new RendererExtension());
     }
 
     public function getPeriod()

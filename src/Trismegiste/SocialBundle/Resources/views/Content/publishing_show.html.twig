@@ -1,0 +1,31 @@
+{# Template for viewing one simple post root-entity #}
+<div class="row publishing">
+    <div class="large-2 medium-3 small-3 columns">
+        {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: content.author } %}
+    </div>
+    <div class="large-10 medium-9 columns">
+        {% set dropdown_id = 'drop' ~ content.id %}
+        <a href="#" class="right" data-options="align:left" data-dropdown="{{ dropdown_id }}"><i class="fi-widget"></i></a>
+        <ul id="{{ dropdown_id }}" class="f-dropdown" data-dropdown-content>
+            {% if is_granted('OWNER', content) %}
+            <li><a href="{{ path('simplepost_edit', {id: content.id}) }}">Edit</a></li>
+            <li><a href="{{ path('simplepost_delete', {id: content.id}) }}">Delete</a></li>
+            {% endif %}
+            <li><a href="#">Report</a></li>
+        </ul>
+        <a id="anchor-{{ content.id }}"></a>
+        <h6 class="subheader">{{ content.author.nickname }} <small>{{ content.lastEdited | timeago }}</small></h6>
+        {% block content_properties %}{% endblock %}
+
+        <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}" class="button tiny">Reply</a>
+        {% include 'TrismegisteSocialBundle:Content:simplepost_like_button.html.twig' %}
+
+        {% block commentary_create %}{% endblock %}
+        {% if content.commentary|length > 0 %}
+            <h6>{{ content.commentary|length }} Comments</h6>
+            {% for comment in content.commentary %}
+                {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
