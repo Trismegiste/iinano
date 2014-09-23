@@ -22,6 +22,8 @@ class CrudFactory
     /** @var FormFactoryInterface */
     protected $formFactory;
 
+    /* @todo inject this config from social config into the ctor */
+
     /** @var array */
     protected $config = [
         'simplepost' => [
@@ -42,10 +44,11 @@ class CrudFactory
     }
 
     /**
+     * Creates a form for creation of a new entity
      *
-     * @param string $type
+     * @param string $type the key of the entity
      * @param AuthorInterface $author
-     * @param type $postRoute
+     * @param type $postRoute the route to post the form to
      *
      * @return \Symfony\Component\Form\FormInterface
      */
@@ -60,6 +63,14 @@ class CrudFactory
                         , $publish, ['action' => $postRoute]);
     }
 
+    /**
+     * Creates a form for edition of an existing entity
+     *
+     * @param Publishing $publish the entity to edit
+     * @param type $postRoute the route to post the form to
+     *
+     * @return \Symfony\Component\Form\FormInterface
+     */
     public function createEditForm(Publishing $publish, $postRoute)
     {
         return $this->formFactory->create($this->createTypeFromPublishing($publish)
@@ -67,6 +78,15 @@ class CrudFactory
         );
     }
 
+    /**
+     * Gets the fqcn of the AbstractType subclass from a Publishing subclass
+     *
+     * @param Publishing $pub the entity
+     *
+     * @return string FQCN of type
+     *
+     * @throws \InvalidArgumentException if the entity is not registered
+     */
     private function getTypeFromPublishing(Publishing $pub)
     {
         foreach ($this->config as $choice) {
@@ -74,6 +94,8 @@ class CrudFactory
                 return $choice['form'];
             }
         }
+
+        throw new \LogicException(get_class($pub) . " is not registered");
     }
 
     protected function createTypeFromPublishing(Publishing $pub)

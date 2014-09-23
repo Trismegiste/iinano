@@ -23,48 +23,51 @@ class RendererExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('choose_template', function($doc) {
-                // @todo remove those ugly hardcoded values
-                        $map = [
-                            'Trismegiste\Socialist\SimplePost' => 'simplepost_show',
-                            'Trismegiste\Socialist\Status' => 'status_show'
-                        ];
+            new \Twig_SimpleFunction('choose_template', [$this, 'chooseTemplateFunction'])
+        ];
+    }
 
-                        return 'TrismegisteSocialBundle:Content:' . $map[get_class($doc)] . '.html.twig';
-                    })
-                ];
-            }
+    public function getName()
+    {
+        return 'socialrenderer_extension';
+    }
 
-            public function getName()
-            {
-                return 'socialrenderer_extension';
-            }
+    public function humanDateFilter(\DateTime $pub)
+    {
+        $now = new \DateTime();
 
-            public function humanDateFilter(\DateTime $pub)
-            {
-                $now = new \DateTime();
+        $delta = $pub->diff($now);
 
-                $delta = $pub->diff($now);
+        $mcb = ['y', 'm', 'd', 'h', 'i', 's'];
+        $unit = ['year', 'month', 'day', 'hour', 'minute', 'second'];
+        foreach ($mcb as $idx => $period) {
+            if (0 < $curr = $delta->$period) {
+                $word = $unit[$idx];
 
-                $mcb = ['y', 'm', 'd', 'h', 'i', 's'];
-                $unit = ['year', 'month', 'day', 'hour', 'minute', 'second'];
-                foreach ($mcb as $idx => $period) {
-                    if (0 < $curr = $delta->$period) {
-                        $word = $unit[$idx];
-
-                        if (($period == 'd') && ($curr >= 7)) {
-                            $word = "week";
-                            $curr /= 7;
-                        }
-
-                        $numberUnit = sprintf("%d %s%s", $curr, $word, ($curr >= 2) ? 's' : '');
-                        $sentence = ($delta->invert === 0) ? "%s ago\n" : "in %s\n";
-
-                        return sprintf($sentence, $numberUnit);
-                    }
+                if (($period == 'd') && ($curr >= 7)) {
+                    $word = "week";
+                    $curr /= 7;
                 }
 
-                return 'now';
-            }
+                $numberUnit = sprintf("%d %s%s", $curr, $word, ($curr >= 2) ? 's' : '');
+                $sentence = ($delta->invert === 0) ? "%s ago\n" : "in %s\n";
 
+                return sprintf($sentence, $numberUnit);
+            }
         }
+
+        return 'now';
+    }
+
+    public function chooseTemplateFunction(\Trismegiste\Socialist\Publishing $doc)
+    {
+        // @todo remove those ugly hardcoded values
+        $map = [
+            'Trismegiste\Socialist\SimplePost' => 'simplepost_show',
+            'Trismegiste\Socialist\Status' => 'status_show'
+        ];
+
+        return 'TrismegisteSocialBundle:Content:' . $map[get_class($doc)] . '.html.twig';
+    }
+
+}
