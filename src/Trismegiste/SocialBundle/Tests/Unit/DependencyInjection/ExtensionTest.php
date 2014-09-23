@@ -25,6 +25,7 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
         $this->container->set('dokudoki.repository', $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface'));
         $this->container->set('security.context', $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface'));
         $this->container->set('security.encoder_factory', $this->getMock('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface'));
+        $this->container->set('form.factory', $this->getMock('Symfony\Component\Form\FormFactoryInterface'));
 
         // building extension
         $extension = new Extension();
