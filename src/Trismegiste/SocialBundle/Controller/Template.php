@@ -5,10 +5,8 @@ namespace Trismegiste\SocialBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
- * Design pattern : Template Method
- *
- * This is a template for a controller for the default rendering of a 
- * twitter bootstrap layout (white w/ simple black top menu)
+ * This is a controller helper for the default rendering of a
+ * zurb foundation layout (white w/ simple black top menu)
  */
 abstract class Template extends Controller
 {
@@ -20,8 +18,8 @@ abstract class Template extends Controller
 
     /**
      * Returns the repository for published content
-     * 
-     * @return \Trismegiste\Yuurei\Persistence\RepositoryInterface
+     *
+     * @return \Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface
      */
     protected function getRepository()
     {

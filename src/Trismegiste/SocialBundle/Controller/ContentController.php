@@ -13,7 +13,7 @@ use Trismegiste\SocialBundle\Utils\SkippableIterator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * ContentController is a template for the wall/dashboard
+ * ContentController is a template for the wall/dashboard with published content
  *
  * The user NEEDS to be authenticated
  */
@@ -25,6 +25,11 @@ class ContentController extends Template
         return $this->container->getParameter('social.pagination');
     }
 
+    /**
+     * Landing page
+     *
+     * @return Response
+     */
     public function indexAction()
     {
         return $this->redirectRouteOk('wall_index', [
@@ -33,6 +38,17 @@ class ContentController extends Template
         ]);
     }
 
+    /**
+     * Pagination scroll
+     *
+     * @param int $offset the offset to start from
+     * @param string $wallNick the nickname of user to show
+     * @param string $wallFilter the filter of content from the user
+     *
+     * @return Response
+     *
+     * @throws AccessDeniedException if not called with ajax request
+     */
     public function ajaxMoreAction($offset, $wallNick, $wallFilter)
     {
         if (!$this->getRequest()->isXmlHttpRequest()) {
@@ -42,6 +58,13 @@ class ContentController extends Template
         return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:index_more.html.twig', [], $offset);
     }
 
+    /**
+     * Check if the logged user is the owner of a given content
+     *
+     * @param Content $post the content to check
+     *
+     * @throws AccessDeniedException if the user cannot
+     */
     protected function checkOwningRight(Content $post)
     {
         if (!$this->get('security.context')->isGranted('OWNER', $post)) {
@@ -49,21 +72,29 @@ class ContentController extends Template
         }
     }
 
+    /**
+     * The wall
+     *
+     * @param string $wallNick the nickname of user to show
+     * @param string $wallFilter the filter of content from the user
+     *
+     * @return Response
+     */
     public function wallAction($wallNick, $wallFilter)
     {
         return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:index.html.twig');
     }
 
     /**
-     * The rendering of index.html.twig or its subclass
-     * 
+     * The rendering of index.html.twig and its subclass
+     *
      * @param string $wallNick the nickname of the currently viewed wall
      * @param string $wallFilter the filter of the currently viewed wall
      * @param string $wallSubview the twig template
      * @param array $parameters other parameters
-     * 
+     *
      * @return Response
-     * 
+     *
      * @throws NotFoundHttpException
      */
     protected function renderWall($wallNick, $wallFilter, $wallSubview, array $parameters = [], $offset = 0)
