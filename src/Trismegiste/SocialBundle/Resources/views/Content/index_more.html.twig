@@ -1,4 +1,4 @@
 {% for content in listing %}
-    {% include 'TrismegisteSocialBundle:Content:simplepost_show.html.twig' %}
+    {% include choose_template(content) %}
     <hr/>
 {% endfor %}
