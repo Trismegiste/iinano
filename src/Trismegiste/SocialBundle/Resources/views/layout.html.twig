@@ -31,7 +31,7 @@ nav.top-bar {
         <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
     </ul>
     {% endif %}
-        
+
     <section class="top-bar-section">
 
         <ul class="left">
@@ -40,8 +40,8 @@ nav.top-bar {
                 <li class="has-dropdown">
                     <a href="#">New content</a>
                     <ul class="dropdown">
-                        <li><a href="{{ path('simplepost_create') }}">Simple Post</a></li>
-                        <li><a href="{{ path('status_create') }}">Status</a></li>
+                        <li><a href="{{ path('publishing_create', {type:"simplepost"}) }}">Simple Post</a></li>
+                        <li><a href="{{ path('publishing_create', {type:"status"}) }}">Status</a></li>
                         <li><a href="#">Pictures</a></li>
                         <li><a href="#">Video</a></li>
                         <li><a href="#">Private message</a></li>
@@ -85,13 +85,13 @@ nav.top-bar {
                     <a href="{{ path('trismegiste_logout') }}" class="button alert">
                         Sign out
                     </a>
-                </li>            
+                </li>
             {% else %}
                 <li>
                     <a href="{{ path('guest_register') }}">
                         Register
                     </a>
-                </li>            
+                </li>
                 <li class="divider"></li>
                 <li class="has-form">
                     <a href="{{ path('trismegiste_login') }}" class="button success">

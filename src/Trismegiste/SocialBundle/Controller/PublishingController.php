@@ -41,7 +41,9 @@ class PublishingController extends ContentController
     public function createAction($type)
     {
         $form = $this->get('social.form.factory')
-                ->createCreateForm($type, $this->getUser()->getAuthor(), $this->generateUrl('publishing_create'));
+                ->createCreateForm($type
+                , $this->getUser()->getAuthor()
+                , $this->generateUrl('publishing_create', ['type' => $type]));
 
         return $this->processForm($form);
     }
@@ -54,7 +56,8 @@ class PublishingController extends ContentController
         $this->checkOwningRight($post);
 
         $form = $form = $this->get('social.form.factory')
-                ->createEditForm($post, $this->generateUrl('publishing_edit', ['id' => $id]));
+                ->createEditForm($post
+                , $this->generateUrl('publishing_edit', ['id' => $id]));
 
         return $this->processForm($form);
     }

@@ -112,7 +112,7 @@ class SimplePostControllerTest extends WebTestCasePlus
         preg_match('#^anchor-([\da-f]{24})$#', $anchor, $match);
         $pk = $match[1];
         // try to get the form edit
-        $crawler = $this->getPage('simplepost_edit', ['id' => $pk]);
+        $crawler = $this->getPage('publishing_edit', ['id' => $pk]);
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
 
         return $pk;
@@ -126,7 +126,7 @@ class SimplePostControllerTest extends WebTestCasePlus
         //override user
         $this->logIn('spock');
         // try to delete
-        $crawler = $this->getPage('simplepost_delete', ['id' => $pk]);
+        $crawler = $this->getPage('publishing_delete', ['id' => $pk]);
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
 
