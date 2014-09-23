@@ -54,5 +54,9 @@
             <tag name="validator.constraint_validator" alias="unique_nickname"/>
         </service>
 
+        <service id="social.form.factory" class="Trismegiste\SocialBundle\Controller\CrudFactory">
+            <argument type="service" id="form.factory"/>
+        </service>
+
     </services>
 </container>

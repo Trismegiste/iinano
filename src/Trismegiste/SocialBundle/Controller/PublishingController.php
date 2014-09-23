@@ -38,12 +38,10 @@ class PublishingController extends ContentController
         return $this->renderWall($this->getUser()->getUsername(), 'self', 'TrismegisteSocialBundle:Content:publishing_form.html.twig', ['form' => $form->createView()]);
     }
 
-    public function createAction()
+    public function createAction($type)
     {
-        $form = $this->createForm(new SimplePostType()
-                , new SimplePost($this->getAuthor())
-                , ['action' => $this->generateUrl('simplepost_create')]
-        );
+        $form = $this->get('social.form.factory')
+                ->createCreateForm($type, $this->getUser()->getAuthor(), $this->generateUrl('publishing_create'));
 
         return $this->processForm($form);
     }
@@ -55,10 +53,8 @@ class PublishingController extends ContentController
 
         $this->checkOwningRight($post);
 
-        $form = $this->createForm(new SimplePostType()
-                , $post
-                , ['action' => $this->generateUrl('simplepost_edit', ['id' => $id])]
-        );
+        $form = $form = $this->get('social.form.factory')
+                ->createEditForm($post, $this->generateUrl('publishing_edit', ['id' => $id]));
 
         return $this->processForm($form);
     }

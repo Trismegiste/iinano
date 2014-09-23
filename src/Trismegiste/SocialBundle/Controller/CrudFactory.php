@@ -22,9 +22,6 @@ class CrudFactory
     /** @var FormFactoryInterface */
     protected $formFactory;
 
-    /** @var RouterInterface */
-    protected $router;
-
     /** @var array */
     protected $config = [
         'simplepost' => [
@@ -39,10 +36,9 @@ class CrudFactory
         ]
     ];
 
-    public function __construct(FormFactoryInterface $ff, RouterInterface $router)
+    public function __construct(FormFactoryInterface $ff)
     {
         $this->formFactory = $ff;
-        $this->router = $router;
     }
 
     /**
@@ -61,15 +57,13 @@ class CrudFactory
         $typeClass = $choice['form'];
 
         return $this->formFactory->create(new $typeClass
-                        , $publish
-                        , ['action' => $this->router->generate($postRoute)]);
+                        , $publish, ['action' => $postRoute]);
     }
 
     public function createEditForm(Publishing $publish, $postRoute)
     {
         return $this->formFactory->create($this->createTypeFromPublishing($publish)
-                        , $publish
-                        , ['action' => $this->router->generate($postRoute)]
+                        , $publish, ['action' => $postRoute]
         );
     }
 
