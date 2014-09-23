@@ -18,7 +18,7 @@
         {% block content_properties %}{% endblock %}
 
         <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}" class="button tiny">Reply</a>
-        {% include 'TrismegisteSocialBundle:Content:simplepost_like_button.html.twig' %}
+        {% include 'TrismegisteSocialBundle:Content:publishing_like_button.html.twig' %}
 
         {% block commentary_create %}{% endblock %}
         {% if content.commentary|length > 0 %}

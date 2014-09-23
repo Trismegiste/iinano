@@ -1,7 +1,7 @@
 {% extends 'TrismegisteSocialBundle:Content:index.html.twig' %}
 
 {% block crud %}
-{% embed 'TrismegisteSocialBundle:Content:simplepost_show.html.twig' with {content: publishing} %}
+{% embed choose_template(publishing) with {content: publishing} %}
     {% block commentary_create %}
         {{ form(form) }}
     {% endblock %}
