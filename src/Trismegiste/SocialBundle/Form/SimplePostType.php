@@ -9,6 +9,7 @@ namespace Trismegiste\SocialBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * SimplePostType is a form for SimplePost
@@ -31,7 +32,12 @@ class SimplePostType extends AbstractType
 
     public function getName()
     {
-        return 'simple_post';
+        return 'social_simplepost';
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(['data_class' => 'Trismegiste\Socialist\SimplePost']);
     }
 
 }

@@ -41,7 +41,7 @@ class SimplePostControllerTest extends WebTestCasePlus
         $link = $crawler->selectLink('Simple Post')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
-        $this->client->submit($form, ['simple_post' => ['title' => __CLASS__, 'body' => __METHOD__]]);
+        $this->client->submit($form, ['social_simplepost' => ['title' => __CLASS__, 'body' => __METHOD__]]);
 
         $it = $this->contentRepo->findLastEntries();
         $this->assertCount(1, $it);
@@ -65,7 +65,7 @@ class SimplePostControllerTest extends WebTestCasePlus
         $link = $crawler->filter('div.publishing')->selectLink('Edit')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
-        $this->client->submit($form, ['simple_post' => ['title' => __CLASS__, 'body' => __METHOD__]]);
+        $this->client->submit($form, ['social_simplepost' => ['title' => __CLASS__, 'body' => __METHOD__]]);
 
         $this->assertCount(1, $this->contentRepo->findLastEntries());
         $doc = $this->contentRepo->findByPk($pk);
@@ -80,7 +80,7 @@ class SimplePostControllerTest extends WebTestCasePlus
         $link = $crawler->selectLink('Simple Post')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
-        $this->client->submit($form, ['simple_post' => ['title' => __CLASS__, 'body' => __METHOD__]]);
+        $this->client->submit($form, ['social_simplepost' => ['title' => __CLASS__, 'body' => __METHOD__]]);
 
         $this->assertCount(2, $this->contentRepo->findLastEntries());
     }
