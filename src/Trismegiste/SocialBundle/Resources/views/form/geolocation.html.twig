@@ -28,7 +28,7 @@
         L.circle(e.latlng, radius).addTo(map);
     });
 
-    map.on('mousemove', function(e) {
+    map.on('mousemove locationfound', function(e) {
         $('#{{ form.longitude.vars.id }}').val(map.getCenter().lng);
         $('#{{ form.latitude.vars.id }}').val(map.getCenter().lat);
         $('#{{ form.zoom.vars.id }}').val(map.getZoom());       

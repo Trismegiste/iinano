@@ -19,6 +19,10 @@ class PublishingController extends ContentController
         $repo = $this->getRepository();
 
         $form->handleRequest($this->getRequest());
+        // remove the current edited entity from the listing
+        if (!is_null($form->getData()->getId())) {
+            $param['skipped_pub'] = $form->getData()->getId();
+        }
         if ($form->isValid()) {
             $newPost = $form->getData();
             $newPost->setLastEdited(new \DateTime());
@@ -35,7 +39,10 @@ class PublishingController extends ContentController
             }
         }
 
-        return $this->renderWall($this->getUser()->getUsername(), 'self', 'TrismegisteSocialBundle:Content:publishing_form.html.twig', ['form' => $form->createView()]);
+        $param['form'] = $form->createView();
+        return $this->renderWall($this->getUser()->getUsername()
+                        , 'self', 'TrismegisteSocialBundle:Content:publishing_form.html.twig'
+                        , $param);
     }
 
     public function createAction($type)
@@ -55,7 +62,7 @@ class PublishingController extends ContentController
 
         $this->checkOwningRight($post);
 
-        $form = $form = $this->get('social.form.factory')
+        $form = $this->get('social.form.factory')
                 ->createEditForm($post
                 , $this->generateUrl('publishing_edit', ['id' => $id]));
 
