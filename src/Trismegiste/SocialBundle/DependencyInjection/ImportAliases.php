@@ -20,28 +20,31 @@ class ImportAliases implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $aliasCfg = $container->getDefinition('dokudoki.builder.whitemagic')->getArgument(0);
-        $content = [];
+        $contentAlias = [];
+        $userAlias = [];
         foreach ($aliasCfg as $key => $fqcn) {
             if (is_subclass_of($fqcn, 'Trismegiste\Socialist\Publishing', true)) {
-                $content[] = $key;
+                $contentAlias[] = $key;
             } else if (is_subclass_of($fqcn, 'Trismegiste\Socialist\User', true)) {
-                $userAlias = $key;
+                $userAlias[] = $key;
             }
         }
-        // content
-        if (count($content)) {
+        // content :
+        if (count($contentAlias)) {
             $container->getDefinition('social.content.repository')
-                    ->replaceArgument(2, $content);
+                    ->replaceArgument(2, $contentAlias);
         } else {
             throw new InvalidConfigurationException("No alias defined in Dokudoki is a subclass of Publishing");
         }
-        // user alias
-        if (isset($userAlias)) {
+        // user alias :
+        if (1 === count($userAlias)) {
             $container->getDefinition('social.netizen.repository')
-                    ->replaceArgument(2, $userAlias);
+                    ->replaceArgument(2, $userAlias[0]);
         } else {
-            throw new InvalidConfigurationException("No alias defined in Dokudoki is a subclass of User");
+            throw new InvalidConfigurationException(count($userAlias) . " alias(es) defined in Dokudoki is(are) a subclass of User, only one is authorized");
         }
+        // url param regex for CRUD operation on Publishing :
+        $container->setParameter('crud_url_param_regex', '(' . implode('|', $contentAlias) . ')');
     }
 
 }

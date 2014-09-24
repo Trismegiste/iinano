@@ -28,7 +28,6 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('pagination')->defaultValue(20)->end()
                     ->scalarNode('avatar_size')->defaultValue(300)->end()
-                    ->scalarNode('user_alias')->end()
                 ->end();
 
         return $treeBuilder;

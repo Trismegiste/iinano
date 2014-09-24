@@ -11,7 +11,7 @@
 
     <route id="publishing_create" pattern="/pub/create/{type}">
         <default key="_controller">TrismegisteSocialBundle:Publishing:create</default>
-        <requirement key="type">(status|simplepost)</requirement>
+        <requirement key="type">%crud_url_param_regex%</requirement>
     </route>
     <route id="publishing_edit" pattern="/pub/{id}/edit">
         <default key="_controller">TrismegisteSocialBundle:Publishing:edit</default>

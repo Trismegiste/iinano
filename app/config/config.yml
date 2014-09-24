@@ -42,17 +42,14 @@ assetic:
         #yui_css:
         #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
 
-parameters:
-    user_class_alias: netizen
-
 dokudoki:
     stage: whitemagic
     server: %mongodb_server%
     database: iinano
     collection: dokudoki
     alias:
-        post: 'Trismegiste\Socialist\SimplePost'
-        %user_class_alias%: 'Trismegiste\SocialBundle\Security\Netizen'
+        simplepost: 'Trismegiste\Socialist\SimplePost'
+        netizen: 'Trismegiste\SocialBundle\Security\Netizen'
         author: 'Trismegiste\Socialist\Author'
         comm: 'Trismegiste\Socialist\Commentary'
         intern: 'Trismegiste\SocialBundle\Security\Credential\Internal'
@@ -61,5 +58,4 @@ dokudoki:
 
 iinano:
     nickname_regex: "[-\da-z]+"
-    user_alias: %user_class_alias%
 
