@@ -25,7 +25,7 @@ class ImportAliases implements CompilerPassInterface
             if (is_subclass_of($fqcn, 'Trismegiste\Socialist\Publishing', true)) {
                 $content[] = $key;
             } else if (is_subclass_of($fqcn, 'Trismegiste\Socialist\User', true)) {
-                $userAlias = $fqcn;
+                $userAlias = $key;
             }
         }
         // content
