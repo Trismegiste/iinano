@@ -25,36 +25,40 @@ class CrudFactory
     /* @todo inject this config from social config into the ctor */
 
     /** @var array */
-    protected $config = [
-        'simplepost' => [
-            'form' => 'Trismegiste\SocialBundle\Form\SimplePostType',
-            'entity' => 'Trismegiste\Socialist\SimplePost',
-            'show' => 'TrismegisteSocialBundle:Content:simplepost_show.html.twig'
-        ],
-        'status' => [
-            'form' => 'Trismegiste\SocialBundle\Form\StatusType',
-            'entity' => 'Trismegiste\Socialist\Status',
-            'show' => 'TrismegisteSocialBundle:Content:status_show.html.twig'
-        ]
-    ];
+    protected $config = [];
 
-    public function __construct(FormFactoryInterface $ff)
+    /**
+     * Ctor
+     *
+     * @param FormFactoryInterface $ff
+     * @param string $typeNamespace the namespace of form Type
+     * @param array $contentAlias an array of content aliases
+     */
+    public function __construct(FormFactoryInterface $ff, $typeNamespace, array $contentAlias)
     {
         $this->formFactory = $ff;
+        
+        foreach ($contentAlias as $key => $fqcn) {
+            preg_match('#([^\\\\]+)$#', $fqcn, $extract);
+            $this->config[$key] = [
+                'form' => $typeNamespace . '\\' . $extract[1] . 'Type',
+                'entity' => $fqcn
+            ];
+        }
     }
 
     /**
      * Creates a form for creation of a new entity
      *
-     * @param string $type the key of the entity
+     * @param string $alias the alias of the entity
      * @param AuthorInterface $author
      * @param type $postRoute the route to post the form to
      *
      * @return \Symfony\Component\Form\FormInterface
      */
-    public function createCreateForm($type, AuthorInterface $author, $postRoute)
+    public function createCreateForm($alias, AuthorInterface $author, $postRoute)
     {
-        $choice = $this->config[$type];
+        $choice = $this->config[$alias];
         $refl = new \ReflectionClass($choice['entity']);
         $publish = $refl->newInstance($author);
         $typeClass = $choice['form'];
@@ -79,7 +83,7 @@ class CrudFactory
     }
 
     /**
-     * Gets the fqcn of the AbstractType subclass from a Publishing subclass
+     * Gets the fqcn of the AbstractType subclass from a given Publishing subclass
      *
      * @param Publishing $pub the entity
      *
@@ -90,7 +94,7 @@ class CrudFactory
     private function getTypeFromPublishing(Publishing $pub)
     {
         foreach ($this->config as $choice) {
-            if ($pub instanceof $choice['entity']) {
+            if (get_class($pub) === $choice['entity']) {
                 return $choice['form'];
             }
         }

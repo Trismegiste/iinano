@@ -6,6 +6,8 @@
 
 namespace Trismegiste\SocialBundle\Utils;
 
+use Trismegiste\Socialist\Publishing;
+
 /**
  * RendererExtension is a twig extension for a human renderer and
  * social renderer for published document
@@ -13,6 +15,25 @@ namespace Trismegiste\SocialBundle\Utils;
 class RendererExtension extends \Twig_Extension
 {
 
+    protected $pathFormat;
+    protected $templateAssoc;
+
+    /**
+     * Ctor
+     *
+     * @param string $path a formatted string for the show templates of Publishing subclasses (@see sprintf)
+     * @param array $contentAlias an array of alias key => fqcn
+     */
+    public function __construct($path, array $contentAlias)
+    {
+        $this->pathFormat = $path;
+        // first time in my php programer life I used this array function :
+        $this->templateAssoc = array_flip($contentAlias);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getFilters()
     {
         return [
@@ -20,6 +41,9 @@ class RendererExtension extends \Twig_Extension
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getFunctions()
     {
         return [
@@ -27,6 +51,9 @@ class RendererExtension extends \Twig_Extension
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return 'socialrenderer_extension';
@@ -59,15 +86,9 @@ class RendererExtension extends \Twig_Extension
         return 'now';
     }
 
-    public function chooseTemplateFunction(\Trismegiste\Socialist\Publishing $doc)
+    public function chooseTemplateFunction(Publishing $doc)
     {
-        // @todo remove those ugly hardcoded values
-        $map = [
-            'Trismegiste\Socialist\SimplePost' => 'simplepost_show',
-            'Trismegiste\Socialist\Status' => 'status_show'
-        ];
-
-        return 'TrismegisteSocialBundle:Content:' . $map[get_class($doc)] . '.html.twig';
+        return sprintf($this->pathFormat, $this->templateAssoc[get_class($doc)]);
     }
 
 }

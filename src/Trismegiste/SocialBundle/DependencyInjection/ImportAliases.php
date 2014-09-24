@@ -24,27 +24,33 @@ class ImportAliases implements CompilerPassInterface
         $userAlias = [];
         foreach ($aliasCfg as $key => $fqcn) {
             if (is_subclass_of($fqcn, 'Trismegiste\Socialist\Publishing', true)) {
-                $contentAlias[] = $key;
+                $contentAlias[$key] = $fqcn;
             } else if (is_subclass_of($fqcn, 'Trismegiste\Socialist\User', true)) {
                 $userAlias[] = $key;
             }
         }
-        // content :
-        if (count($contentAlias)) {
-            $container->getDefinition('social.content.repository')
-                    ->replaceArgument(2, $contentAlias);
-        } else {
+
+        if (!count($contentAlias)) {
             throw new InvalidConfigurationException("No alias defined in Dokudoki is a subclass of Publishing");
         }
-        // user alias :
-        if (1 === count($userAlias)) {
-            $container->getDefinition('social.netizen.repository')
-                    ->replaceArgument(2, $userAlias[0]);
-        } else {
-            throw new InvalidConfigurationException(count($userAlias) . " alias(es) defined in Dokudoki is(are) a subclass of User, only one is authorized");
+        if (1 !== count($userAlias)) {
+            throw new InvalidConfigurationException("Only one alias of a subclass of User is permitted in Dokudoki configuration");
         }
+
+        // user alias fir netizen repository :
+        $container->getDefinition('social.netizen.repository')
+                ->replaceArgument(2, $userAlias[0]);
+        // content aliases for repository of publishing :
+        $container->getDefinition('social.content.repository')
+                ->replaceArgument(2, array_keys($contentAlias));
         // url param regex for CRUD operation on Publishing :
-        $container->setParameter('crud_url_param_regex', '(' . implode('|', $contentAlias) . ')');
+        $container->setParameter('crud_url_param_regex', '(' . implode('|', array_keys($contentAlias)) . ')');
+        // content aliases in twig RendererExtension
+        $container->getDefinition('twig.social.renderer')
+                ->replaceArgument(1, $contentAlias);
+        // content aliases in Crud form factory
+        $container->getDefinition('social.form.factory')
+                ->replaceArgument(2, $contentAlias);
     }
 
 }

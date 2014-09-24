@@ -20,7 +20,7 @@ class RendererExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $loader = new \Twig_Loader_String();
         $this->twig = new \Twig_Environment($loader);
-        $this->twig->addExtension(new RendererExtension());
+        $this->twig->addExtension(new RendererExtension('', []));
     }
 
     public function getPeriod()
