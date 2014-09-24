@@ -47,6 +47,8 @@
                 .addTo(map)
                 .bindPopup(item.data('socialStatusMessage'))
                 .openPopup();
+            // just to be sure this attribute will not be initialized two times
+            item.removeAttr('data-social-status-show');
         });
 
     }
