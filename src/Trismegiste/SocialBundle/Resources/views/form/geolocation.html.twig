@@ -1,46 +1,13 @@
 {% block osm_location_widget %}
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-<style>
-    #map {
-        height: 400px;
-        width: 100%;
-    }
-</style>        
- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 
- <div id="map"></div>
-
-<script type="text/javascript">
-    var map = L.map('map');
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    
-    map.locate({setView: true, maxZoom: 16});
-
-    map.on('locationfound', function(e) {
-        var radius = e.accuracy / 2;
-
-        L.marker(e.latlng).addTo(map)
-            .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-        L.circle(e.latlng, radius).addTo(map);
-    });
-
-    map.on('mousemove locationfound', function(e) {
-        $('#{{ form.longitude.vars.id }}').val(map.getCenter().lng);
-        $('#{{ form.latitude.vars.id }}').val(map.getCenter().lat);
-        $('#{{ form.zoom.vars.id }}').val(map.getZoom());       
-    });
-    
-    map.on('locationerror', function(e) {
-        alert(e.message);
-    });
-</script>
-
+<div id="status-map-form" class="status-map" 
+     data-social-status-form
+     data-social-field-lat="#{{ form.latitude.vars.id }}"
+     data-social-field-lng="#{{ form.longitude.vars.id }}"
+     data-social-field-zoom="#{{ form.zoom.vars.id }}"
+     ></div>
 {% for child in form %}
-    {{ form_widget(child, {attr: {class:''}}) }}
+    {{ form_widget(child) }}
 {% endfor %}
 
 {% endblock %}

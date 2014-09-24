@@ -25,16 +25,18 @@
 
 {% block javascripts %}
     {{ parent() }}
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script>
     jQuery.fn.leaflet = function() {
-        $('div[data-social-status-show]').each(function(item) {
+        $('div[data-social-status-show]').each(function() {
 
-            var origin = { lng: item.dataset.socialStatusLng, lat:item.dataset.socialStatusLat };
+            var item = $(this);
+            var origin = { lng: item.data('socialStatusLng'), lat:item.data('socialStatusLat') };
 
             var map = L.map(item.attr('id'), {
                     scrollWheelZoom: false,
                     center: origin,
-                    zoom: item.dataset.socialStatusZoom
+                    zoom: item.data('socialStatusZoom')
             });
 
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -43,7 +45,7 @@
 
             L.marker(origin)
                 .addTo(map)
-                .bindPopup(item.dataset.socialStatusMessage)
+                .bindPopup(item.data('socialStatusMessage'))
                 .openPopup();
         });
 
@@ -72,4 +74,16 @@
 
     })
 </script>
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<style>
+    .status-map {
+        height: 400px;
+        width: 100%;
+        margin-bottom: 1.5em;
+    }
+</style>
 {% endblock %}
