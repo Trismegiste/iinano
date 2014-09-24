@@ -62,6 +62,7 @@
                         var old = event.target.href
                         event.target.href = old.replace(/(\d+)$/, function(match, p1, offset, str) { return {{ pagination }}+Number(p1) })
                         $(document).foundation() // seems to be the right way according to #3885
+                        $(document).leaflet();
                     } else {
                         $('#more-button').hide()
                     }
