@@ -26,6 +26,29 @@
 {% block javascripts %}
     {{ parent() }}
 <script>
+    jQuery.fn.leaflet = function() {
+        $('div[data-social-status-show]').each(function(item) {
+
+            var origin = { lng: item.dataset.socialStatusLng, lat:item.dataset.socialStatusLat };
+
+            var map = L.map(item.attr('id'), {
+                    scrollWheelZoom: false,
+                    center: origin,
+                    zoom: item.dataset.socialStatusZoom
+            });
+
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            L.marker(origin)
+                .addTo(map)
+                .bindPopup(item.dataset.socialStatusMessage)
+                .openPopup();
+        });
+
+    }
+
     $(document).ready(function() {
 
         $('#more-button').on('click', function(event) {
@@ -44,6 +67,8 @@
             })
             event.preventDefault()
         })
+
+        $(document).leaflet();
 
     })
 </script>

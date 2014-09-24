@@ -1,33 +1,36 @@
 {% extends 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
 
 {% block content_properties %}
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-<style>
-    .status-map {
-        height: 400px;
-        width: 100%;
-        margin-bottom: 1.5em;
-    }
-</style>        
-<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <style>
+        .status-map {
+            height: 400px;
+            width: 100%;
+            margin-bottom: 1.5em;
+        }
+    </style>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 
-<div id="map-{{ content.id }}" class="status-map"></div>
+    <div id="map-{{ content.id }}" class="status-map"
+         data-social-status-show
+         data-social-status-lng="{{ content.longitude }}"
+         data-social-status-lat="{{ content.latitude}}"
+         data-social-status-zoom="{{ content.zoom }}"
+         data-social-status-message="{{ content.message }}"></div>
 
-<script type="text/javascript">
-    var map = L.map('map-{{ content.id }}', { 
-        scrollWheelZoom: false,
-        center: { lng:{{ content.longitude }}, lat:{{ content.latitude}} },
-        zoom: {{ content.zoom }}
-    });
+    <script type="text/javascript">
+                var map = L.map('map-{{ content.id }}', {
+                scrollWheelZoom: false,
+                        center: { lng:{{ content.longitude }}, lat:{{ content.latitude}} },
+                        zoom:{{ content.zoom }}
+                });
+                L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+                var marker = L.marker({ lng:{{ content.longitude }}, lat:{{ content.latitude}} })
+                .addTo(map)
+                .bindPopup("{{ content.message }}")
+                .openPopup();
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-    
-    var marker = L.marker({ lng:{{ content.longitude }}, lat:{{ content.latitude}} })
-            .addTo(map)
-            .bindPopup("{{ content.message }}")
-            .openPopup();
-
-</script>
+    </script>
 {% endblock %}

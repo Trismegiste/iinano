@@ -8,12 +8,10 @@ namespace Trismegiste\SocialBundle\Controller;
 
 use Trismegiste\Socialist\Publishing;
 use Trismegiste\Socialist\AuthorInterface;
-use Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
- * CrudFactory is a (abstract ?) factory for the CRUD operations
+ * CrudFactory is a factory for the CRUD operations
  * on Publishing content subclasses
  */
 class CrudFactory
@@ -21,8 +19,6 @@ class CrudFactory
 
     /** @var FormFactoryInterface */
     protected $formFactory;
-
-    /* @todo inject this config from social config into the ctor */
 
     /** @var array */
     protected $config = [];
@@ -37,7 +33,7 @@ class CrudFactory
     public function __construct(FormFactoryInterface $ff, $typeNamespace, array $contentAlias)
     {
         $this->formFactory = $ff;
-        
+
         foreach ($contentAlias as $key => $fqcn) {
             preg_match('#([^\\\\]+)$#', $fqcn, $extract);
             $this->config[$key] = [
@@ -102,6 +98,13 @@ class CrudFactory
         throw new \LogicException(get_class($pub) . " is not registered");
     }
 
+    /**
+     * Creates a new form Type with a given subclassed Publishing object
+     *
+     * @param Publishing $pub
+     *
+     * @return \Symfony\Component\Form\AbstractType
+     */
     protected function createTypeFromPublishing(Publishing $pub)
     {
         $typeClass = $this->getTypeFromPublishing($pub);

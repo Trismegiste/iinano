@@ -37,7 +37,7 @@ class ImportAliases implements CompilerPassInterface
             throw new InvalidConfigurationException("Only one alias of a subclass of User is permitted in Dokudoki configuration");
         }
 
-        // user alias fir netizen repository :
+        // user alias for netizen repository :
         $container->getDefinition('social.netizen.repository')
                 ->replaceArgument(2, $userAlias[0]);
         // content aliases for repository of publishing :
@@ -45,10 +45,10 @@ class ImportAliases implements CompilerPassInterface
                 ->replaceArgument(2, array_keys($contentAlias));
         // url param regex for CRUD operation on Publishing :
         $container->setParameter('crud_url_param_regex', '(' . implode('|', array_keys($contentAlias)) . ')');
-        // content aliases in twig RendererExtension
+        // content aliases into twig RendererExtension :
         $container->getDefinition('twig.social.renderer')
                 ->replaceArgument(1, $contentAlias);
-        // content aliases in Crud form factory
+        // content aliases into Crud form factory :
         $container->getDefinition('social.form.factory')
                 ->replaceArgument(2, $contentAlias);
     }
