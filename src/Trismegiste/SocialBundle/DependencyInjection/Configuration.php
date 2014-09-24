@@ -22,28 +22,13 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('trismegiste_social');
 
         $rootNode->children()
-                    ->scalarNode('nickname_regex')->end()
+                    ->scalarNode('nickname_regex')
+                        ->isRequired()
+                        ->cannotBeEmpty()
+                    ->end()
                     ->scalarNode('pagination')->defaultValue(20)->end()
                     ->scalarNode('avatar_size')->defaultValue(300)->end()
-                    ->arrayNode('alias')
-                        ->children()
-                            ->scalarNode('user')->end()
-                            ->arrayNode('content')
-                                ->requiresAtLeastOneElement()
-                                ->prototype('scalar')->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                    ->arrayNode('crud')
-                        ->useAttributeAsKey('key')
-                        ->prototype('array')
-                            ->children()
-                                ->scalarNode('url_param')->end()
-                                ->scalarNode('type_fqcn')->end()
-                                ->scalarNode('show')->end()
-                            ->end()
-                        ->end()
-                    ->end()
+                    ->scalarNode('user_alias')->end()
                 ->end();
 
         return $treeBuilder;

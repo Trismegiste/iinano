@@ -1,9 +1,3 @@
 nickname_regex: "[-\da-z]+"
-alias:
-    user: netizen
-    content:
-        - message
-        - tweet
-        - pull-request
 pagination: 30
 avatar_size: 299

@@ -30,11 +30,7 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
         // building extension
         $extension = new Extension();
         $minConfig = array(
-            'nickname_regex' => '[-\\da-z]+',
-            'alias' => array(
-                'user' => 'netizen',
-                'content' => array('message')
-            )
+            'nickname_regex' => '[-\\da-z]+'
         );
         $extension->load(array($minConfig), $this->container);
         $this->container->compile();

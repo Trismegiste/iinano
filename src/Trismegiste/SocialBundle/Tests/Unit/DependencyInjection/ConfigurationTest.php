@@ -31,23 +31,19 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
         $expected = array(
             'nickname_regex' => '[-\\da-z]+',
-            'alias' => array(
-                'user' => 'netizen',
-                'content' => array('message')
-            ),
             'pagination' => 20,
-            'avatar_size' => 300
+            'avatar_size' => 300,
         );
         $this->assertEquals($expected, $cfg);
     }
 
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage trismegiste_social.alias.content
+     * @expectedExceptionMessage nickname_regex
      */
-    public function testFailOnNonExistingClass()
+    public function testFailOnNonExistingContent()
     {
-        $cfg = $this->processConfig('config_fail.yml');
+        $cfg = $this->processConfig('config_fail1.yml');
     }
 
     public function testFullConfig()
@@ -55,18 +51,8 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $cfg = $this->processConfig('config_full.yml');
         $expected = array(
             'nickname_regex' => '[-\\da-z]+',
-            'alias' =>
-            array(
-                'user' => 'netizen',
-                'content' =>
-                array(
-                    0 => 'message',
-                    1 => 'tweet',
-                    2 => 'pull-request',
-                ),
-            ),
             'pagination' => 30,
-            'avatar_size' => 299
+            'avatar_size' => 299,
         );
         $this->assertEquals($expected, $cfg);
     }

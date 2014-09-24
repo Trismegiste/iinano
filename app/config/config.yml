@@ -44,10 +44,6 @@ assetic:
 
 parameters:
     user_class_alias: netizen
-    simplepost_class_alias: post
-    simplepost_fqcn: 'Trismegiste\Socialist\SimplePost'
-    status_class_alias: status
-    status_fqcn: 'Trismegiste\Socialist\Status'
 
 dokudoki:
     stage: whitemagic
@@ -55,28 +51,15 @@ dokudoki:
     database: iinano
     collection: dokudoki
     alias:
-        %simplepost_class_alias%: %simplepost_fqcn%
+        post: 'Trismegiste\Socialist\SimplePost'
         %user_class_alias%: 'Trismegiste\SocialBundle\Security\Netizen'
         author: 'Trismegiste\Socialist\Author'
         comm: 'Trismegiste\Socialist\Commentary'
         intern: 'Trismegiste\SocialBundle\Security\Credential\Internal'
         profile: 'Trismegiste\SocialBundle\Security\Profile'
-        %status_class_alias%: %status_fqcn%
+        status: 'Trismegiste\Socialist\Status'
 
 iinano:
     nickname_regex: "[-\da-z]+"
-    alias:
-        user: %user_class_alias%
-        content:
-            - %simplepost_class_alias%
-            - %status_class_alias%
-    crud:
-        %simplepost_fqcn%:
-            url_param: simplepost
-            type_fqcn: 'Trismegiste\SocialBundle\Form\SimplePostType'
-            show: simplepost_show
-        %status_fqcn%:
-            url_param: status
-            type_fqcn: 'Trismegiste\SocialBundle\Form\StatusType'
-            show: status_show
+    user_alias: %user_class_alias%
 

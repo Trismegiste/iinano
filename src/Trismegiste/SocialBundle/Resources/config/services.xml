@@ -9,6 +9,7 @@
         <service id="social.content.repository" class="Trismegiste\SocialBundle\Repository\PublishingRepository">
             <argument type="service" id="dokudoki.repository"/>
             <argument type="service" id="security.context"/>
+            <argument/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
         <service id="social.image.tool" class="Trismegiste\SocialBundle\Utils\ImageRefiner"></service>
@@ -22,7 +23,7 @@
         <service id="social.netizen.repository" class="Trismegiste\SocialBundle\Repository\NetizenRepository">
             <argument type="service" id="dokudoki.repository"/>
             <argument type="service" id="security.encoder_factory"/>
-            <argument/> <!-- injected by Extension -->
+            <argument/> <!-- injected by ImportAlias compiler pass -->
             <argument type="service" id="social.avatar.repository"/>
         </service>
 
