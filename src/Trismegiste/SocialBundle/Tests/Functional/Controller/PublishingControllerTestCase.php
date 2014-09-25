@@ -102,6 +102,15 @@ abstract class PublishingControllerTestCase extends WebTestCasePlus
         $this->assertCount(2, $this->contentRepo->findLastEntries());
     }
 
+    public function testCurrentlyEditedIsRemovedFromListing()
+    {
+        $crawler = $this->getPage('content_index');
+        $link = $crawler->filter('div.publishing')->selectLink('Edit')->link();
+        $crawler = $this->client->click($link);
+
+        $this->assertCount(1, $crawler->filter('div.publishing'));
+    }
+
     public function testDeleteFirst()
     {
         $crawler = $this->getPage('content_index');

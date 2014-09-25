@@ -1,7 +1,7 @@
 {% extends 'TrismegisteSocialBundle:Content:index.html.twig' %}
 
 {% block crud %}
-<div class="row">
+<div class="row publishing-form">
     <div class="columns">
     {{ form(form) }}
     </div>
@@ -13,7 +13,7 @@
 {{ parent() }}
 <script type="text/javascript">
     $('div[data-social-status-form]').each(function() {
-        
+
         var item = $(this);
         var map = L.map(item.attr('id'));
 
@@ -35,7 +35,7 @@
         map.on('mousemove locationfound', function(e) {
             $(item.data('socialFieldLng')).val(map.getCenter().lng);
             $(item.data('socialFieldLat')).val(map.getCenter().lat);
-            $(item.data('socialFieldZoom')).val(map.getZoom());       
+            $(item.data('socialFieldZoom')).val(map.getZoom());
         });
 
         map.on('locationerror', function(e) {
