@@ -1,8 +1,8 @@
 <ul class="inline-list">
-    {% for user in listing %}
+    {% for author in listing %}
         <li class="small-3">
-            <img src="{{ path('netizen_avatar', {filename: user.avatar}) }}"/>
-            <p class="text-center">{{ user.nickname }}</p>
+            {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' %}
+            <p class="text-center">{{ author.nickname }}</p>
         </li>
     {% endfor %}
 </ul>
