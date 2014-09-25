@@ -1,6 +1,8 @@
 {# template for viewing one commentary entity #}
 <div class="row commentary">
-    <div class="large-2 medium-2 small-3 columns"><img src="{{ path('netizen_avatar', {filename: comment.author.avatar} ) }}"/></div>
+    <div class="large-2 medium-2 small-3 columns">
+        {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: comment.author } %}
+    </div>
     <div class="large-10 medium-10 columns">
         {% set dropdown_id = 'drop' ~ content.id ~ comment.uuid %}
         <a href="#" class="right" data-options="align:left" data-dropdown="{{ dropdown_id }}"><i class="fi-widget"></i></a>

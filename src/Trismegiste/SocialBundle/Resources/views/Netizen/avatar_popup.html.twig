@@ -3,11 +3,12 @@
     <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
 {% else %}
     {% set avatar_dropdown_counter = author.nickname ~ random() %}
-    <a href="#" data-dropdown="{{ avatar_dropdown_counter }}">
+    <a href="#" data-dropdown="{{ avatar_dropdown_counter }}" data-options="align:right">
         <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
     </a>
     <ul id="{{ avatar_dropdown_counter }}" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
-        <li><a href="{{ path('wall_index', {wallNick: author.nickname, wallFilter:'self'}) }}">View wall</a></li>
+        <li><a href="{{ path('wall_index', {wallNick: author.nickname, wallFilter: 'self'}) }}">View {{author.nickname}}'s wall</a></li>
+        <li><a href="{{ path('wall_index', {wallNick: author.nickname, wallFilter: 'following'}) }}">View {{author.nickname}}'s following</a></li>
         <li><a href="{{ path('netizen_show', {author: author.nickname}) }}">View profile</a></li>
         <li><a href="#">Like/Unlike</a></li>
         <li><a href="#">Follow/Unfollow</a></li>
