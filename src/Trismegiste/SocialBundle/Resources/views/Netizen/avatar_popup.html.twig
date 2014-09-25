@@ -1,14 +1,15 @@
 {# avatar icon + dropdown with mini content #}
 {% if app.user.username == author.nickname %}
-<img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
+    <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
 {% else %}
-{% set avatar_dropdown_counter = author.nickname ~ random() %}
-<a href="#" data-dropdown="{{ avatar_dropdown_counter }}">
-    <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
-</a>
-<div id="{{ avatar_dropdown_counter }}" class="f-dropdown content medium" aria-hidden="true" tabindex="-1">
-    <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
-    <p class="text-center">{{ author.nickname }}</p>
-    AJAX : Like / Follow / View profile
-</div>
+    {% set avatar_dropdown_counter = author.nickname ~ random() %}
+    <a href="#" data-dropdown="{{ avatar_dropdown_counter }}">
+        <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
+    </a>
+    <ul id="{{ avatar_dropdown_counter }}" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
+        <li><a href="{{ path('wall_index', {wallNick: author.nickname, wallFilter:'self'}) }}">View wall</a></li>
+        <li><a href="{{ path('netizen_show', {author: author.nickname}) }}">View profile</a></li>
+        <li><a href="#">Like/Unlike</a></li>
+        <li><a href="#">Follow/Unfollow</a></li>
+    </ul>
 {% endif %}

@@ -21,7 +21,7 @@
         <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}" class="button tiny">Reply</a>
         {% include 'TrismegisteSocialBundle:Content:publishing_like_button.html.twig' %}
         </div>
-        
+
         {% block commentary_create %}{% endblock %}
         {% if content.commentary|length > 0 %}
             <h6>{{ content.commentary|length }} Comments</h6>
