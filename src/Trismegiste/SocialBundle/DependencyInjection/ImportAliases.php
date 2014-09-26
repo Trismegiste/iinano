@@ -33,6 +33,13 @@ class ImportAliases implements CompilerPassInterface
         $this->injectPrivateMessage($container, $aliasCfg);
     }
 
+    /**
+     * Inject content aliases
+     *
+     * @param ContainerBuilder $container
+     * @param array $aliasCfg
+     * @throws InvalidConfigurationException
+     */
     private function injectContent(ContainerBuilder $container, array $aliasCfg)
     {
         $contentAlias = [];
@@ -59,6 +66,13 @@ class ImportAliases implements CompilerPassInterface
                 ->replaceArgument(2, $contentAlias);
     }
 
+    /**
+     * Inject user alias
+     *
+     * @param ContainerBuilder $container
+     * @param array $aliasCfg
+     * @throws InvalidConfigurationException
+     */
     private function injectUser(ContainerBuilder $container, array $aliasCfg)
     {
         $userAlias = [];
@@ -69,7 +83,7 @@ class ImportAliases implements CompilerPassInterface
         }
 
         if (1 !== count($userAlias)) {
-            throw new InvalidConfigurationException("Only one alias of a subclass of User is permitted in Dokudoki configuration");
+            throw new InvalidConfigurationException("One alias for a subclass of User must be configured in Dokudoki, " . count($userAlias) . " defined");
         }
 
         // user alias for netizen repository :
@@ -77,6 +91,13 @@ class ImportAliases implements CompilerPassInterface
                 ->replaceArgument(2, $userAlias[0]);
     }
 
+    /**
+     * Inject PM alias
+     * 
+     * @param ContainerBuilder $container
+     * @param array $aliasCfg
+     * @throws InvalidConfigurationException
+     */
     private function injectPrivateMessage(ContainerBuilder $container, array $aliasCfg)
     {
         $pmAlias = [];
@@ -87,8 +108,7 @@ class ImportAliases implements CompilerPassInterface
         }
 
         if (1 !== count($pmAlias)) {
-            print_r($pmAlias);
-            throw new InvalidConfigurationException("Only one alias of a subclass of PrivateMessage is permitted in Dokudoki configuration");
+            throw new InvalidConfigurationException("One alias for PrivateMessage must be configured in Dokudoki, " . count($pmAlias) . " defined");
         }
 
         // private message alias for PrivateMessageRepository :
