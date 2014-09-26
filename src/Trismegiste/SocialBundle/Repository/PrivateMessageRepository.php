@@ -48,13 +48,28 @@ class PrivateMessageRepository
                 ])->offset($offset);
     }
 
+    /**
+     * Creates a new private message from the current user to a given author
+     *
+     * @param AuthorInterface $target
+     *
+     * @return PrivateMessage
+     *
+     * @throws AccessDeniedException
+     */
     public function createNewMessageTo(AuthorInterface $target)
     {
         if (!$this->security->isGranted('LISTENER', $target)) {
             throw new AccessDeniedException("Cannot send a message to a user who does not follow you");
         }
+        $source = $this->security->getToken()->getUser();
 
         return new PrivateMessage($source->getAuthor(), $target);
+    }
+
+    public function persist(PrivateMessage $msg)
+    {
+        $this->repository->persist($msg);
     }
 
 }
