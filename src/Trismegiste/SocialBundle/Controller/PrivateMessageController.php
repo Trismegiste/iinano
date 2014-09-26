@@ -36,7 +36,7 @@ class PrivateMessageController extends Template
 
         return $this->render('TrismegisteSocialBundle:PrivateMessage:create_form.html.twig', [
                     'form' => $form->createView(),
-                    'listing' => []
+                    'listing' => $repo->findAllReceived()
         ]);
     }
 

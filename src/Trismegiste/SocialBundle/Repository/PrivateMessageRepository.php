@@ -48,6 +48,20 @@ class PrivateMessageRepository
                 ])->offset($offset);
     }
 
+    public function findAllSent($offset = 0, $unread = true)
+    {
+        if (!$this->security->isGranted('ROLE_USER')) {
+            throw new AccessDeniedException('Not logged');
+        }
+
+        $target = $this->security->getToken()->getUsername();
+        return $this->repository->find([
+                    MapAlias::CLASS_KEY => $this->classKey,
+                    'source.nickname' => $target,
+                    'read' => !$unread
+                ])->offset($offset);
+    }
+
     /**
      * Creates a new private message from the current user to a given author
      *

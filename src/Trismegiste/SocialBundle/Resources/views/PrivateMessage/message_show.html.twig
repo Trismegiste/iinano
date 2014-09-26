@@ -1,0 +1,8 @@
+<div class="row private-message">
+    <div class="small-3 column">
+        <img src="{{ path('netizen_avatar', {filename: message.sender.avatar}) }}"/>
+    </div>
+    <div class="small-9 column">
+        {{ message.message }}
+    </div>
+</div>
