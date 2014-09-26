@@ -40,7 +40,10 @@ class NetizenController extends Template
                 ->getAvatarAbsolutePath($filename);
 
         $response = new Response();
-        $response->setEtag(filemtime($file)); // @todo ETag is working and not LastModified : why ?
+        $lastModif = new \DateTime();
+        $lastModif->setTimestamp(filemtime($file));
+        $response->setLastModified($lastModif);
+        $response->setEtag(filesize($file));
         $response->setPublic();
 
         if ($response->isNotModified($this->getRequest())) {
@@ -49,6 +52,7 @@ class NetizenController extends Template
 
         $response->headers->set('X-Sendfile', $file);
         $response->headers->set('Content-Type', 'image/jpeg');
+        $this->get('logger')->debug("$filename xsended");
 
         return $response;
     }
