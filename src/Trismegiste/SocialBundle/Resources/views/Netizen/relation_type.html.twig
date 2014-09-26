@@ -1,0 +1,10 @@
+<div class="text-center">
+    {% set relation = app.user.findRelationType(nickname) %}
+    {% if relation == 1 %}
+        f&nbsp;<i class="fi-arrow-right"></i>
+    {% elseif relation == 2 %}
+        <i class="fi-arrow-right"></i>f
+    {% elseif relation == 3 %}
+        <i class="fi-arrow-left"></i><i class="fi-arrow-right"></i>
+    {% endif %}
+</div>
