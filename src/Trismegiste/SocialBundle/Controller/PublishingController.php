@@ -49,7 +49,7 @@ class PublishingController extends ContentController
     {
         $form = $this->get('social.form.factory')
                 ->createCreateForm($type
-                , $this->getUser()->getAuthor()
+                , $this->getUser()->getAuthor()  // @todo replace this by injecting the securityContext and checking ROLE_USER
                 , $this->generateUrl('publishing_create', ['type' => $type]));
 
         return $this->processForm($form);
@@ -60,7 +60,7 @@ class PublishingController extends ContentController
         $repo = $this->getRepository();
         $post = $repo->findByPk($id);
 
-        $this->checkOwningRight($post);
+        $this->checkOwningRight($post);  // @todo replace with the injected security
 
         $form = $this->get('social.form.factory')
                 ->createEditForm($post

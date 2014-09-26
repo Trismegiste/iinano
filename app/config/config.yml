@@ -55,6 +55,7 @@ dokudoki:
         intern: 'Trismegiste\SocialBundle\Security\Credential\Internal'
         profile: 'Trismegiste\SocialBundle\Security\Profile'
         status: 'Trismegiste\Socialist\Status'
+        private: 'Trismegiste\Socialist\PrivateMessage'
 
 iinano:
     nickname_regex: "[-\da-z]+"

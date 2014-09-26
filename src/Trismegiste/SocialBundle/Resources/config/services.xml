@@ -40,6 +40,9 @@
         <service id="security.owner.voter" class="Trismegiste\SocialBundle\Security\OwnerVoter">
             <tag name="security.voter"/>
         </service>
+        <service id="security.listener.voter" class="Trismegiste\SocialBundle\Security\ListenerVoter">
+            <tag name="security.voter"/>
+        </service>
 
         <service id="social.type.netizen.register" class="Trismegiste\SocialBundle\Form\RegisterType">
             <argument type="service" id="social.netizen.repository"/>

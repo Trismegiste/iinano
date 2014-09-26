@@ -26,21 +26,46 @@ abstract class Template extends Controller
         return $this->get('social.content.repository');
     }
 
+    /**
+     * Gets the mongo collection for this app
+     *
+     * @return \MongoCollection
+     */
     protected function getCollection()
     {
         return $this->get('dokudoki.collection');
     }
 
-    protected function redirectRouteOk($name, $param = [], $anchor = false)
+    /**
+     * Redirects to named route with its param and an optional anchor
+     *
+     * @param string $name
+     * @param array $param
+     * @param string $anchor (without the '#')
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirectRouteOk($name, array $param = [], $anchor = false)
     {
         return $this->redirect($this->generateUrl($name, $param) . ($anchor ? '#' . $anchor : ''));
     }
 
+    /**
+     * Gets the current logged author
+     *
+     * @return \Trismegiste\Socialist\AuthorInterface
+     */
     protected function getAuthor()
     {
         return $this->getUser()->getAuthor();
     }
 
+    /**
+     * Stack a flash
+     *
+     * @param string $type (e.g 'notice', 'warning'...)
+     * @param string $msg the content of the flash
+     */
     protected function pushFlash($type, $msg)
     {
         $this->get('session')->getFlashBag()->add($type, $msg);

@@ -1,0 +1,18 @@
+{% extends 'TrismegisteSocialBundle::layout.html.twig' %}
+
+{% block page_title %}
+    {{ parent() }} | Private messages
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="medium-6 small-12 column pm-form">
+            {{ form(form) }}
+        </div>
+        <div class="medium-6 small-12 column pm-list">
+            {% for message in listing %}
+                {% include 'TrismegisteSocialBundle:PrivateMessage:message_show.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

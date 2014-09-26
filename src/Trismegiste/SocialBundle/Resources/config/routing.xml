@@ -45,6 +45,11 @@
         <default key="_controller">TrismegisteSocialBundle:Netizen:editAvatar</default>
     </route>
 
+    <route id="private_create" pattern="/private/{author}/create">
+        <default key="_controller">TrismegisteSocialBundle:PrivateMessage:create</default>
+        <requirement key="author">%nickname_regex%</requirement>
+    </route>
+
     <import resource="@TrismegisteSocialBundle/Resources/config/wall.xml"
             prefix="/wall/{wallNick}/{wallFilter}">
         <requirement key="wallNick">%nickname_regex%</requirement>
