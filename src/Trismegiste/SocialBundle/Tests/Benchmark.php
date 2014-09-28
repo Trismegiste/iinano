@@ -16,8 +16,6 @@ use Trismegiste\Socialist\Author;
 class Benchmark extends WebTestCasePlus
 {
 
-    protected $stopwatch;
-
     /** @var \Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface */
     protected $repository;
 
@@ -25,79 +23,76 @@ class Benchmark extends WebTestCasePlus
     {
         parent::setUp();
         $this->repository = $this->getService('social.netizen.repository');
-        $this->stopwatch = time();
     }
 
-    protected function tearDown()
+    protected function getFixtures()
     {
-        printf(" %ds\n", time() - $this->stopwatch);
-        parent::tearDown();
-    }
+        $small = $this->repository->create('small', 'aaaa');
 
-    public function testWriteSmall()
-    {
-        $user = $this->repository->create('small', 'aaaa');
-
-        $this->stopwatch = time();
-        for ($k = 0; $k < 10000; $k++) {
-            $this->repository->persist($user);
-        }
-    }
-
-    public function testReadSmall()
-    {
-        for ($k = 0; $k < 10000; $k++) {
-            $user = $this->repository->findByNickname('small');
-        }
-    }
-
-    public function testWriteLarge()
-    {
-        $user = $this->repository->create('large', 'aaaa');
+        $largeFan = $this->repository->create('largefan', 'aaaa');
         for ($k = 0; $k < 1000; $k++) {
-            $user->addFan(new Author("fan $k"));
+            $largeFan->addFan(new Author("fan $k"));
+        }
+
+        $largeFollower = $this->repository->create('largefollower', 'aaaa');
+        for ($k = 0; $k < 1000; $k++) {
+            $f = $this->repository->create("following $k", 'aaaa');
+            $largeFollower->follow($f);
+            $f->follow($largeFollower);
+        }
+
+        $large = $this->repository->create('large', 'aaaa');
+        for ($k = 0; $k < 1000; $k++) {
+            $large->addFan(new Author("fan $k"));
         }
         for ($k = 0; $k < 1000; $k++) {
             $f = $this->repository->create("following $k", 'aaaa');
-            $user->follow($f);
-            $f->follow($user);
+            $large->follow($f);
+            $f->follow($large);
         }
 
-        $this->stopwatch = time();
-        for ($k = 0; $k < 100; $k++) {
-            $this->repository->persist($user);
-        }
-    }
-
-    public function testReadLarge()
-    {
-        for ($k = 0; $k < 100; $k++) {
-            $user = $this->repository->findByNickname('large');
-        }
-    }
-
-    public function testWriteSuperLarge()
-    {
-        $user = $this->repository->create('superlarge', 'aaaa');
+        $superlargefan = $this->repository->create('superlargefan', 'aaaa');
         for ($k = 0; $k < 10000; $k++) {
-            $user->addFan(new Author("fan $k"));
+            $superlargefan->addFan(new Author("fan $k"));
         }
+
+        $superlargefollower = $this->repository->create('superlargefollower', 'aaaa');
         for ($k = 0; $k < 10000; $k++) {
             $f = $this->repository->create("following $k", 'aaaa');
-            $user->follow($f);
-            $f->follow($user);
+            $superlargefollower->follow($f);
+            $f->follow($superlargefollower);
         }
 
-        $this->stopwatch = time();
-        for ($k = 0; $k < 10; $k++) {
-            $this->repository->persist($user);
-        }
+        return [
+            [$small, 10000],
+            [$largeFan, 1000],
+            [$largeFollower, 100],
+            [$large, 100],
+            [$superlargefan, 100],
+            [$superlargefollower, 10]
+        ];
     }
 
-    public function testReadSuperLarge()
+    protected function benchmark(Netizen $user, $counter)
     {
-        for ($k = 0; $k < 10; $k++) {
-            $user = $this->repository->findByNickname('superlarge');
+        $key = $user->getUsername();
+        $stopwatch = microtime(true);
+        for ($k = 0; $k < $counter; $k++) {
+            $this->repository->persist($user);
+        }
+        printf(" write %s %.1f ms\n", $key, (microtime(true) - $stopwatch) * 1000 / $counter);
+
+        $stopwatch = microtime(true);
+        for ($k = 0; $k < $counter; $k++) {
+            $user = $this->repository->findByNickname($key);
+        }
+        printf(" read %s %.1f ms\n", $user->getUsername(), (microtime(true) - $stopwatch) * 1000 / $counter);
+    }
+
+    public function testBenchmark()
+    {
+        foreach ($this->getFixtures() as $param) {
+            $this->benchmark($param[0], $param[1]);
         }
     }
 
