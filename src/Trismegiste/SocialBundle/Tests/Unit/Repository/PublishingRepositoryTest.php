@@ -64,7 +64,7 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->with(['-class' => ['$in' => ['message']], 'owner.nickname' => ['$in' => ['kirk']]])
                 ->will($this->returnValue($cursor));
 
-        $this->sut->findLastEntries(0, 20, new \ArrayIterator([$this->author]));
+        $this->sut->findLastEntries(0, 20, new \ArrayIterator([$this->author->getNickname() => true]));
     }
 
     public function testPersist()

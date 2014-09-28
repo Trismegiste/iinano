@@ -1,8 +1,8 @@
 <ul class="small-block-grid-3">
-    {% for author in listing %}
+    {% for netizen in listing %}
         <li>
-            {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' %}
-            <p class="text-center">{{ author.nickname }}</p>
+            {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: netizen.author} %}
+            <p class="text-center">{{ netizen.username }}</p>
         </li>
     {% endfor %}
 </ul>
