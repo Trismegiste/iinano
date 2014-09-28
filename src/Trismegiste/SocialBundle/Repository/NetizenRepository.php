@@ -59,6 +59,19 @@ class NetizenRepository implements NetizenRepositoryInterface
     /**
      * @inheritdoc
      */
+    public function findBatchNickname(\ArrayIterator $nick)
+    {
+        $cursor = $this->repository->find([
+            MapAlias::CLASS_KEY => $this->classAlias,
+            'author.nickname' => ['$in' => array_keys(iterator_to_array($nick))]
+        ]);
+
+        return $cursor;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function create($nick, $password)
     {
         $author = new Author($nick);

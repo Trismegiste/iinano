@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Trismegiste\SocialBundle\Form\ProfileType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Trismegiste\SocialBundle\Utils\KeyIterator;
 
 /**
  * NetizenController is a controller for the user : profile, stats...
@@ -26,9 +27,14 @@ class NetizenController extends Template
             $user = $this->get('social.netizen.repository')->findByNickname($author);
         }
 
+        $follower = $this->get('social.netizen.repository')
+                ->findBatchNickname($user->getFollowerIterator());
+        $following = $this->get('social.netizen.repository')
+                ->findBatchNickname($user->getFollowingIterator());
+
         return $this->render('TrismegisteSocialBundle:Netizen:profile_show.html.twig', [
-                    'follower' => $user->getFollowerIterator(),
-                    'following' => $user->getFollowingIterator(),
+                    'follower' => $follower,
+                    'following' => $following,
                     'author' => $user->getAuthor(),
                     'profile' => $user->getProfile()
         ]);

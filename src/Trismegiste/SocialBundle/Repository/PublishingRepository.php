@@ -14,7 +14,7 @@ use Trismegiste\SocialBundle\Security\Netizen;
 
 /**
  * PublishingRepository is a business repository for subclasses of Publishing
- * 
+ *
  * This is a wrapper around a RepositoryInterface with SecurityContext
  * This is not a decorator of RepositoryInterface because we
  * try to avoid dumb repositories as well as dumb entities, only with methods
@@ -29,7 +29,7 @@ class PublishingRepository implements PublishingRepositoryInterface
 
     /**
      * Ctor
-     * 
+     *
      * @param \Trismegiste\Yuurei\Persistence\RepositoryInterface $repo
      * @param \Symfony\Component\Security\Core\SecurityContextInterface $ctx
      * @param array $aliases a list a class key for each document
@@ -48,10 +48,7 @@ class PublishingRepository implements PublishingRepositoryInterface
     {
         $docFilter = $this->aliasFilter;
         if (!is_null($author)) {
-            $filter = [];
-            foreach ($author as $obj) {
-                $filter[] = $obj->getNickname();
-            }
+            $filter = array_keys(iterator_to_array($author));
             $docFilter['owner.nickname'] = ['$in' => $filter];
         }
 
@@ -64,7 +61,7 @@ class PublishingRepository implements PublishingRepositoryInterface
 
     /**
      * Persists a published content
-     * 
+     *
      * @param \Trismegiste\Socialist\Publishing $doc
      */
     public function persist(Publishing $doc)
@@ -74,9 +71,9 @@ class PublishingRepository implements PublishingRepositoryInterface
 
     /**
      * Returns a published content by its PK
-     * 
+     *
      * @param string $pk
-     * 
+     *
      * @return \Trismegiste\Socialist\Publishing
      */
     public function findByPk($pk)
@@ -89,7 +86,7 @@ class PublishingRepository implements PublishingRepositoryInterface
         switch ($wallFilter) {
 
             case 'self':
-                $filterAuthor = new \ArrayIterator([$wallUser->getAuthor()]);
+                $filterAuthor = new \ArrayIterator([$wallUser->getUsername() => true]);
                 break;
 
             case 'following':
