@@ -36,11 +36,8 @@ class PrivateMessageRepository
 
     public function findAllReceived($offset = 0, $unread = true)
     {
-        if (!$this->security->isGranted('ROLE_USER')) {
-            throw new AccessDeniedException('Not logged');
-        }
+        $target = $this->getLoggedUser()->getUsername();
 
-        $target = $this->security->getToken()->getUsername();
         return $this->repository->find([
                     MapAlias::CLASS_KEY => $this->classKey,
                     'target.nickname' => $target,
@@ -50,14 +47,11 @@ class PrivateMessageRepository
 
     public function findAllSent($offset = 0, $unread = true)
     {
-        if (!$this->security->isGranted('ROLE_USER')) {
-            throw new AccessDeniedException('Not logged');
-        }
+        $source = $this->getLoggedUser()->getUsername();
 
-        $target = $this->security->getToken()->getUsername();
         return $this->repository->find([
                     MapAlias::CLASS_KEY => $this->classKey,
-                    'source.nickname' => $target,
+                    'source.nickname' => $source,
                     'read' => !$unread
                 ])->offset($offset);
     }
@@ -76,7 +70,7 @@ class PrivateMessageRepository
         if (!$this->security->isGranted('LISTENER', $target)) {
             throw new AccessDeniedException("Cannot send a message to a user who does not follow you");
         }
-        $source = $this->security->getToken()->getUser();
+        $source = $this->getLoggedUser();
 
         return new PrivateMessage($source->getAuthor(), $target);
     }
@@ -84,6 +78,32 @@ class PrivateMessageRepository
     public function persist(PrivateMessage $msg)
     {
         $this->repository->persist($msg);
+    }
+
+    /**
+     * Returns the current logged netizen in session
+     *
+     * @return \Trismegiste\SocialBundle\Security\Netizen
+     *
+     * @throws AccessDeniedException if not logged
+     */
+    protected function getLoggedUser()
+    {
+        if (!$this->security->isGranted('ROLE_USER')) {
+            throw new AccessDeniedException('Not logged');
+        }
+
+        return $this->security->getToken()->getUser();
+    }
+
+    /**
+     * Returns an array of nickname of possible destinations for private messages
+     *
+     * @return array
+     */
+    public function getTargetListing()
+    {
+        return $this->getLoggedUser()->getFollowerIterator();
     }
 
 }

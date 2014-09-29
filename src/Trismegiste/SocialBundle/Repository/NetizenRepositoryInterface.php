@@ -24,6 +24,15 @@ interface NetizenRepositoryInterface
     public function findByNickname($nick);
 
     /**
+     * Get a batch of users with theirs nicknames
+     *
+     * @param \ArrayIterator $nick an array of nickname as key and true as value
+     *
+     * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
+     */
+    public function findBatchNickname(\ArrayIterator $nick);
+
+    /**
      * Creates a new Netizen from mandatory datas
      *
      * @param string $nick

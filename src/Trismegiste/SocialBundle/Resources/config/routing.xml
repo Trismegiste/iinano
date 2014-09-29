@@ -45,8 +45,9 @@
         <default key="_controller">TrismegisteSocialBundle:Netizen:editAvatar</default>
     </route>
 
-    <route id="private_create" pattern="/private/{author}/create">
+    <route id="private_create" pattern="/private/{author}">
         <default key="_controller">TrismegisteSocialBundle:PrivateMessage:create</default>
+        <default key="author"></default>
         <requirement key="author">%nickname_regex%</requirement>
     </route>
 

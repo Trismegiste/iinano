@@ -6,9 +6,6 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
-use Trismegiste\Socialist\PrivateMessage;
-use Trismegiste\SocialBundle\Form\PrivateMessageType;
-
 /**
  * PrivateMessageController is a CRUD controller for Private Message
  */
@@ -19,12 +16,7 @@ class PrivateMessageController extends Template
     {
         $repo = $this->get('social.private_message.repository');
 
-        $target = $this->get('social.netizen.repository')
-                ->findByNickname($author)
-                ->getAuthor();
-
-        $newMessage = $repo->createNewMessageTo($target);
-        $form = $this->createForm(new PrivateMessageType(), $newMessage, [
+        $form = $this->createForm('social_private_message', null, [
             'action' => $this->generateUrl('private_create', ['author' => $author
             ])
         ]);

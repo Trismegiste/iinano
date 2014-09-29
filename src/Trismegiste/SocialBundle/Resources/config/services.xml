@@ -56,6 +56,12 @@
             <tag name="form.type" alias="netizen_register"/>
         </service>
 
+        <service id="social.type.private_message" class="Trismegiste\SocialBundle\Form\PrivateMessageType">
+            <argument type="service" id="social.private_message.repository"/>
+            <argument type="service" id="social.netizen.repository"/>
+            <tag name="form.type" alias="social_private_message"/>
+        </service>
+
         <service id="social.type.gender" class="Trismegiste\SocialBundle\Form\GenderType">
             <tag name="form.type" alias="gender"/>
         </service>
