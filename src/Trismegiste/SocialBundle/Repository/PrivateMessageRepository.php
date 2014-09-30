@@ -96,14 +96,4 @@ class PrivateMessageRepository
         return $this->security->getToken()->getUser();
     }
 
-    /**
-     * Returns an array of nickname of possible destinations for private messages
-     *
-     * @return array
-     */
-    public function getTargetListing()
-    {
-        return $this->getLoggedUser()->getFollowerIterator();
-    }
-
 }

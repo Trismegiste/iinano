@@ -6,13 +6,60 @@
 
 {% block content %}
     <div class="row">
-        <div class="medium-6 small-12 column pm-form">
-            {{ form(form) }}
+        <div class="small-12 column">{% include '::flashmessage.html.twig' %}</div>
+    </div>
+    <div class="row">
+        <div class="small-12 column">{{ form(form) }}</div>
+    </div>
+    <div class="row">
+        <div class="medium-6 small-12 column pm-sent">
+            <h3>Sent</h3>
+            {% for message in sent %}
+                {% include 'TrismegisteSocialBundle:PrivateMessage:message_show.html.twig' %}
+            {% endfor %}
         </div>
-        <div class="medium-6 small-12 column pm-list">
-            {% for message in listing %}
+        <div class="medium-6 small-12 column pm-received">
+            <h3>Received</h3>
+            {% for message in received %}
                 {% include 'TrismegisteSocialBundle:PrivateMessage:message_show.html.twig' %}
             {% endfor %}
         </div>
     </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/trismegistesocial/js/jquery.auto-complete-custom.js') }}"></script>
+    <script>
+        $('input[type=text][data-social-autocomplete-author]').autoComplete({
+            minChars: 2,
+            source: function (term, response) {
+                try {
+                    xhr.abort();
+                } catch (e) {
+                }
+                var xhr = $.getJSON('{{ path('private_get_follower') }}', {q: term}, function (data) {
+                    response(data);
+                });
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* autoComplete styles */
+        .autocomplete-suggestions {
+            text-align: left; cursor: default; border: 1px solid #ccc; border-top: 0; background: #fff; box-shadow: -1px 1px 3px rgba(0,0,0,.1);
+
+            /* core styles should not be changed */
+            position: absolute; display: none; z-index: 9999; max-height: 254px; overflow: hidden; overflow-y: auto; box-sizing: border-box;
+        }
+        .autocomplete-suggestion { position: relative; padding: 0 .6em; line-height: 23px; white-space: nowrap; overflow: hidden; font-size: 1.02em; color: #333; }
+        .autocomplete-suggestion b { font-weight: normal; color: #1f8dd6; }
+        .autocomplete-suggestion.selected { background: #f0f0f0; }
+        .autocomplete-suggestion img { height: 3em; margin: 0.2em 0.5em 0.2em 0; }
+    </style>
 {% endblock %}

@@ -50,6 +50,10 @@
         <default key="author"></default>
         <requirement key="author">%nickname_regex%</requirement>
     </route>
+    <route id="private_get_follower" pattern="/private/ajax/follower">
+        <default key="_controller">TrismegisteSocialBundle:PrivateMessage:ajaxFindFollower</default>
+        <requirement key="_method">GET</requirement>
+    </route>
 
     <import resource="@TrismegisteSocialBundle/Resources/config/wall.xml"
             prefix="/wall/{wallNick}/{wallFilter}">
