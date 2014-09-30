@@ -37,12 +37,6 @@ class FollowerType extends AbstractType
         $builder->addModelTransformer(new AuthorTransformer($this->repository, $user->getFollowerIterator()));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        parent::setDefaultOptions($resolver);
-        $resolver->setDefaults(['data_class' => 'Trismegiste\Socialist\Author']);
-    }
-
     public function getName()
     {
         return 'social_follower_type';
