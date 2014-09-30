@@ -11,9 +11,9 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 
 /**
- * UserTransformer is a ...
+ * AuthorTransformer is a datatransformer from Author to nickname string and vice-versa
  */
-class UserTransformer implements DataTransformerInterface
+class AuthorTransformer implements DataTransformerInterface
 {
 
     /** @var \Iterator */
@@ -43,7 +43,7 @@ class UserTransformer implements DataTransformerInterface
             throw new TransformationFailedException("$value is an unknown user");
         }
 
-        return $found;
+        return $found->getAuthor();
     }
 
     public function transform($user)
@@ -52,15 +52,15 @@ class UserTransformer implements DataTransformerInterface
             return null;
         }
 
-        if (!$user instanceof \Trismegiste\SocialBundle\Security\Netizen) {
-            throw new TransformationFailedException("Cannot transform from other class than Netizen");
+        if (!$user instanceof \Trismegiste\Socialist\AuthorInterface) {
+            throw new TransformationFailedException("Cannot transform from other class than AuthorInterface");
         }
 
-        if (!$this->existsNickname($user->getUsername())) {
-            throw new TransformationFailedException($user->getUsername() . " is not valid user");
+        if (!$this->existsNickname($user->getNickname())) {
+            throw new TransformationFailedException($user->getNickname() . " is not valid author");
         }
 
-        return $user->getUsername();
+        return $user->getNickname();
     }
 
     private function existsNickname($nick)

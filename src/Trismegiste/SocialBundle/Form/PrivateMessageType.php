@@ -30,7 +30,7 @@ class PrivateMessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('target', 'social_follower_type', ['mapped' => false])
-                ->add('message', 'textarea')
+                ->add('message', 'textarea', ['constraints' => new \Symfony\Component\Validator\Constraints\NotBlank])
                 ->add('send', 'submit');
     }
 
@@ -45,7 +45,7 @@ class PrivateMessageType extends AbstractType
         $resolver->setDefaults([
             'empty_data' => function(FormInterface $form, $data) use ($factory) {
                 $target = $form->get('target')->getData();
-                return $form->isEmpty() || is_null($target) ? null : $factory->createNewMessageTo($target->getAuthor());
+                return $form->isEmpty() || is_null($target) ? null : $factory->createNewMessageTo($target);
             },
             'data_class' => 'Trismegiste\Socialist\PrivateMessage'
         ]);

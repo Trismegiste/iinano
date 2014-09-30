@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * FollowerType is an autocomplete field for followers of logged netizen
@@ -33,7 +34,13 @@ class FollowerType extends AbstractType
     {
         parent::buildForm($builder, $options);
         $user = $this->security->getToken()->getUser();
-        $builder->addModelTransformer(new UserTransformer($this->repository, $user->getFollowerIterator()));
+        $builder->addModelTransformer(new AuthorTransformer($this->repository, $user->getFollowerIterator()));
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        parent::setDefaultOptions($resolver);
+        $resolver->setDefaults(['data_class' => 'Trismegiste\Socialist\Author']);
     }
 
     public function getName()
