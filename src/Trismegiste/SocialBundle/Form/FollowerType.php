@@ -7,13 +7,12 @@
 namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use \Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 
 /**
- * FollowerType is a choices list for follower of a Netizen
+ * FollowerType is an autocomplete field for followers of logged netizen
  */
 class FollowerType extends AbstractType
 {
@@ -30,7 +29,7 @@ class FollowerType extends AbstractType
         $this->security = $ctx;
     }
 
-    public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
         $user = $this->security->getToken()->getUser();

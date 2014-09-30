@@ -6,6 +6,8 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * PrivateMessageController is a CRUD controller for Private Message
  */
@@ -29,6 +31,19 @@ class PrivateMessageController extends Template
                     'form' => $form->createView(),
                     'listing' => $repo->findAllReceived()
         ]);
+    }
+
+    public function ajaxFindFollowerAction(Request $request)
+    {
+        $nick = $request->query->get('q');
+        $cursor = $this->get('dokudoki.repository')
+                ->find(['-class' => 'netizen', 'author.nickname' => new \MongoRegex("/$nick/")]);
+        $choice = [];
+        foreach ($cursor as $user) {
+            $choice[] = $user->getUsername();
+        }
+
+        return new \Symfony\Component\HttpFoundation\JsonResponse($choice);
     }
 
 }
