@@ -29,13 +29,15 @@ class PrivateMessageController extends Template
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
             $repo->persist($form->getData());
+            $this->pushFlash('notice', 'Message sent');
 
             return $this->redirectRouteOk('private_create');
         }
 
         return $this->render('TrismegisteSocialBundle:PrivateMessage:create_form.html.twig', [
                     'form' => $form->createView(),
-                    'listing' => $repo->findAllReceived()
+                    'received' => $repo->findAllReceived(),
+                    'sent' => $repo->findAllSent()
         ]);
     }
 

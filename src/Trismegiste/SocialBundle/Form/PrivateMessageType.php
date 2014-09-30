@@ -8,10 +8,10 @@ namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 use Trismegiste\SocialBundle\Repository\PrivateMessageRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * PrivateMessageType is a form type for private message
@@ -29,8 +29,8 @@ class PrivateMessageType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('target', 'social_follower_type', ['mapped' => false])
-                ->add('message', 'textarea', ['constraints' => new \Symfony\Component\Validator\Constraints\NotBlank])
+        $builder->add('target', 'social_follower_type', ['mapped' => false, 'constraints' => new NotBlank()])
+                ->add('message', 'textarea', ['constraints' => new NotBlank()])
                 ->add('send', 'submit');
     }
 
