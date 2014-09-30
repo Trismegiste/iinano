@@ -29,8 +29,6 @@ class PrivateMessageType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $choice = [];
-
         $builder->add('target', 'social_follower_type', ['mapped' => false])
                 ->add('message', 'textarea')
                 ->add('send', 'submit');
@@ -46,8 +44,8 @@ class PrivateMessageType extends AbstractType
         $factory = $this->pmRepo;
         $resolver->setDefaults([
             'empty_data' => function(FormInterface $form, $data) use ($factory) {
-                $target = $form->get('target')->getData()->getAuthor();
-                return $form->isEmpty() && !$form->isRequired() ? null : $factory->createNewMessageTo($target);
+                $target = $form->get('target')->getData();
+                return $form->isEmpty() || is_null($target) ? null : $factory->createNewMessageTo($target->getAuthor());
             },
             'data_class' => 'Trismegiste\Socialist\PrivateMessage'
         ]);

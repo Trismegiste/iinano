@@ -30,19 +30,11 @@ class FollowerType extends AbstractType
         $this->security = $ctx;
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
-        $choice = [];
-        /** @var \Trismegiste\SocialBundle\Security\Netizen */
+        parent::buildForm($builder, $options);
         $user = $this->security->getToken()->getUser();
-        $cursor = $this->repository->findBatchNickname($user->getFollowerIterator());
-        foreach ($cursor as $netizen) {
-            $choice[$netizen->getUsername()] = $netizen;
-        }
-
-        $resolver->setDefaults([
-            'choice_list' => new ObjectChoiceList($choice, 'profile.fullName')
-        ]);
+        $builder->addModelTransformer(new UserTransformer($this->repository, $user->getFollowerIterator()));
     }
 
     public function getName()
@@ -52,7 +44,7 @@ class FollowerType extends AbstractType
 
     public function getParent()
     {
-        return 'choice';
+        return 'text';
     }
 
 }
