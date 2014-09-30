@@ -28,7 +28,6 @@ twig:
         resources:
             - '::foundation_form.html.twig'
             - 'TrismegisteSocialBundle:form:geolocation.html.twig'
-            - 'TrismegisteSocialBundle:form:follower.html.twig'
 
 # Assetic Configuration
 assetic:

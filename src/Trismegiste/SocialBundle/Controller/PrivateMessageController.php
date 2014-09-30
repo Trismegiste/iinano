@@ -52,10 +52,14 @@ class PrivateMessageController extends Template
 //        }
 
         $iter = $this->getUser()->getFollowerIterator();
-        foreach ($iter as $key => $dummy) {
-            if (preg_match("#$nick#", $key)) {
-                $choice[] = $key;
-            }
+        $iter = new \Trismegiste\SocialBundle\Utils\KeyRegexFilter($iter, "#$nick#");
+        $cursor = $this->get('social.netizen.repository')->findBatchNickname($iter);
+        foreach ($cursor as $netizen) {
+            $choice[] = [
+                'key' => $netizen->getUsername(),
+                'value' => $netizen->getUsername() . ' (' . $netizen->getProfile()->fullName . ')',
+                'avatar' => $this->generateUrl('netizen_avatar', ['filename' => $netizen->getAuthor()->getAvatar()])
+            ];
         }
 
         return new \Symfony\Component\HttpFoundation\JsonResponse($choice);

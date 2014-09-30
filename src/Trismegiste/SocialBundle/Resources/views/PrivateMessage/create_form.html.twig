@@ -32,7 +32,7 @@
     {{ parent() }}
     <script src="{{ asset('bundles/trismegistesocial/js/jquery.auto-complete-custom.js') }}"></script>
     <script>
-        $('div[data-social-autocomplete-author] input[type=text]').autoComplete({
+        $('input[type=text][data-social-autocomplete-author]').autoComplete({
             minChars: 2,
             source: function (term, response) {
                 try {
@@ -60,5 +60,6 @@
         .autocomplete-suggestion { position: relative; padding: 0 .6em; line-height: 23px; white-space: nowrap; overflow: hidden; font-size: 1.02em; color: #333; }
         .autocomplete-suggestion b { font-weight: normal; color: #1f8dd6; }
         .autocomplete-suggestion.selected { background: #f0f0f0; }
+        .autocomplete-suggestion img { height: 3em; margin: 0.2em 0.5em 0.2em 0; }
     </style>
 {% endblock %}

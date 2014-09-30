@@ -83,8 +83,14 @@
                 that.cache[val] = data;
                 if (data.length && val.length >= o.minChars) {
                     var s = '', re = new RegExp("(" + val.split(' ').join('|') + ")", "gi");
-                    for (i=0;i<data.length;i++)
-                        s += '<div class="autocomplete-suggestion" data-val="'+data[i]+'">'+data[i].replace(re, "<b>$1</b>")+'</div>';
+                    for (i=0;i<data.length;i++) {
+                        var entry = data[i];
+                        s += '<div class="autocomplete-suggestion" data-val="'
+                                + entry.key+'">'
+                                + '<img src="' + entry.avatar + '"/>'
+                                + entry.value.replace(re, "<b>$1</b>")
+                                + '</div>';
+                    }
                     that.sb.html(s).show();
                 }
                 else

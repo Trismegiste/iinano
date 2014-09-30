@@ -47,4 +47,10 @@ class FollowerType extends AbstractType
         return 'text';
     }
 
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        parent::setDefaultOptions($resolver);
+        $resolver->setDefaults(['attr' => ['data-social-autocomplete-author' => true]]);
+    }
+
 }

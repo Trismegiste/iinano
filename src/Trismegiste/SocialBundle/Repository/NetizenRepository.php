@@ -62,7 +62,7 @@ class NetizenRepository implements NetizenRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function findBatchNickname(\ArrayIterator $nick)
+    public function findBatchNickname(\Iterator $nick)
     {
         $cursor = $this->repository->find([
             MapAlias::CLASS_KEY => $this->classAlias,
