@@ -1,3 +1,10 @@
 {% block social_follower_type_widget %}
-    {{ form(form) }}
+    <div class="row" data-social-autocomplete-author>
+        <div class="small-10 column">
+            {{ form(form) }}
+        </div>
+        <div class="small-2 column">
+            <img src="#" class="hide"/>
+        </div>
+    </div>
 {% endblock %}

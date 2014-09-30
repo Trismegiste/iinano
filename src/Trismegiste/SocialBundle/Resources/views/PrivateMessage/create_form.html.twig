@@ -13,11 +13,13 @@
     </div>
     <div class="row">
         <div class="medium-6 small-12 column pm-sent">
+            <h3>Sent</h3>
             {% for message in sent %}
                 {% include 'TrismegisteSocialBundle:PrivateMessage:message_show.html.twig' %}
             {% endfor %}
         </div>
         <div class="medium-6 small-12 column pm-received">
+            <h3>Received</h3>
             {% for message in received %}
                 {% include 'TrismegisteSocialBundle:PrivateMessage:message_show.html.twig' %}
             {% endfor %}
@@ -30,7 +32,8 @@
     {{ parent() }}
     <script src="{{ asset('bundles/trismegistesocial/js/jquery.auto-complete-custom.js') }}"></script>
     <script>
-        $('#social_private_message_target').autoComplete({
+        $('div[data-social-autocomplete-author] input[type=text]').autoComplete({
+            minChars: 2,
             source: function (term, response) {
                 try {
                     xhr.abort();
