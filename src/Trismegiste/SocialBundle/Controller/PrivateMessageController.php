@@ -17,8 +17,7 @@ class PrivateMessageController extends Template
         $repo = $this->get('social.private_message.repository');
 
         $form = $this->createForm('social_private_message', null, [
-            'action' => $this->generateUrl('private_create', ['author' => $author
-            ])
+            'action' => $this->generateUrl('private_create')
         ]);
 
         $form->handleRequest($this->getRequest());

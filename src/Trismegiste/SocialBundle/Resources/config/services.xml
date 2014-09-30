@@ -6,6 +6,8 @@
 
     <services>
 
+        <!-- REPOSITORIES -->
+
         <service id="social.content.repository" class="Trismegiste\SocialBundle\Repository\PublishingRepository">
             <argument type="service" id="dokudoki.repository"/>
             <argument type="service" id="security.context"/>
@@ -33,9 +35,7 @@
             <argument type="service" id="social.avatar.repository"/>
         </service>
 
-        <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">
-            <argument type="service" id="social.netizen.repository"/>
-        </service>
+        <!-- TWIG -->
 
         <service id="twig.social.renderer" class="Trismegiste\SocialBundle\Utils\RendererExtension">
             <tag name="twig.extension"/>
@@ -43,12 +43,21 @@
             <argument/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
+        <!-- SECURITY -->
+
+        <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">
+            <argument type="service" id="social.netizen.repository"/>
+        </service>
+
         <service id="security.owner.voter" class="Trismegiste\SocialBundle\Security\OwnerVoter">
             <tag name="security.voter"/>
         </service>
+
         <service id="security.listener.voter" class="Trismegiste\SocialBundle\Security\ListenerVoter">
             <tag name="security.voter"/>
         </service>
+
+        <!-- FORMS -->
 
         <service id="social.type.netizen.register" class="Trismegiste\SocialBundle\Form\RegisterType">
             <argument type="service" id="social.netizen.repository"/>
@@ -58,12 +67,17 @@
 
         <service id="social.type.private_message" class="Trismegiste\SocialBundle\Form\PrivateMessageType">
             <argument type="service" id="social.private_message.repository"/>
-            <argument type="service" id="social.netizen.repository"/>
             <tag name="form.type" alias="social_private_message"/>
         </service>
 
         <service id="social.type.gender" class="Trismegiste\SocialBundle\Form\GenderType">
             <tag name="form.type" alias="gender"/>
+        </service>
+
+        <service id="social.type.follower" class="Trismegiste\SocialBundle\Form\FollowerType">
+            <argument type="service" id="social.netizen.repository"/>
+            <argument type="service" id="security.context"/>
+            <tag name="form.type" alias="social_follower_type"/>
         </service>
 
         <service id="social.validator.unique_nickname" class="Trismegiste\SocialBundle\Validator\UniqueNicknameValidator">

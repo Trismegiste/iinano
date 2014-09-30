@@ -19,27 +19,19 @@ use Symfony\Component\Form\FormInterface;
 class PrivateMessageType extends AbstractType
 {
 
-    /** @var NetizenRepositoryInterface */
-    protected $netizenRepo;
-
     /** @var PrivateMessageRepository */
     protected $pmRepo;
 
-    public function __construct(PrivateMessageRepository $p, NetizenRepositoryInterface $n)
+    public function __construct(PrivateMessageRepository $p)
     {
         $this->pmRepo = $p;
-        $this->netizenRepo = $n;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choice = [];
-        $userListing = $this->netizenRepo->findBatchNickname($this->pmRepo->getTargetListing());
-        foreach ($userListing as $user) {
-            $choice[$user->getUsername()] = $user->getProfile()->fullName;
-        }
 
-        $builder->add('target', 'choice', ['choices' => $choice])
+        $builder->add('target', 'social_follower_type')
                 ->add('message', 'textarea')
                 ->add('send', 'submit');
     }
