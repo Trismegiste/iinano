@@ -22,7 +22,7 @@ class TrismegisteSocialBundleTest extends \PHPUnit_Framework_TestCase
         $this->sut = new TrismegisteSocialBundle();
     }
 
-    public function test()
+    public function testBoot()
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
@@ -32,6 +32,15 @@ class TrismegisteSocialBundleTest extends \PHPUnit_Framework_TestCase
         $this->sut->setContainer($container);
         $this->sut->getContainerExtension();
         $this->sut->registerCommands($this->getMock('Symfony\Component\Console\Application'));
+    }
+
+    public function testBuild()
+    {
+        $builder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
+                ->disableOriginalConstructor()
+                ->getMock();
+
+        $this->sut->build($builder);
     }
 
 }
