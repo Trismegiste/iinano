@@ -43,7 +43,7 @@ abstract class FormTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Override if your form needs a valid object
-     * 
+     *
      * @return mixed
      */
     protected function createData()

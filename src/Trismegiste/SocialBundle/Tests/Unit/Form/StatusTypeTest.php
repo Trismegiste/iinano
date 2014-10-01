@@ -21,18 +21,21 @@ class StatusTypeTest extends FormTestCase
 
     protected function createData()
     {
-        return new \Trismegiste\Socialist\Status(new \Trismegiste\Socialist\Author('kirk'));
+        return $this->getMockBuilder('Trismegiste\Socialist\Status')
+                        ->disableOriginalConstructor()
+                        ->getMock();
     }
 
     public function getInvalidInputs()
     {
         $validated = $this->createData();
+        $validated->setMessage('gg');
         $post = [
-            'message' => '',
+            'message' => 'gg',
             'location' => ['longitude' => '', 'latitude' => '', 'zoom' => '']
         ];
         return [
-            [$post, $validated]
+            [$post, $validated, ['message']]
         ];
     }
 
