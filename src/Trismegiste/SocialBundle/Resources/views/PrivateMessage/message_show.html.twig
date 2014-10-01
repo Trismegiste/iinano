@@ -1,8 +1,10 @@
 <div class="row private-message">
-    <div class="small-3 column">
-        <img src="{{ path('netizen_avatar', {filename: message.sender.avatar}) }}"/>
+    <div class="small-2 column">
+        <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="avatar"/>
     </div>
-    <div class="small-9 column">
+    <div class="small-10 column">
+        <h5 class="subheader">{{ author.nickname }} <small>{{ message.sentAt | timeago }}</small></h5>
         {{ message.message }}
+        <hr/>
     </div>
 </div>

@@ -13,6 +13,9 @@ nav.top-bar {
     border-top-width: 0px;
     border-bottom-width: 0px;
 }
+img.avatar {
+    margin-top: 0.5em;
+}
 </style>
 {% endblock %}
 
@@ -40,8 +43,8 @@ nav.top-bar {
                 <li class="has-dropdown">
                     <a href="#">New content</a>
                     <ul class="dropdown">
-                        <li><a href="{{ path('publishing_create', {type:"simplepost"}) }}">Simple Post</a></li>
-                        <li><a href="{{ path('publishing_create', {type:"status"}) }}">Status</a></li>
+                        <li><a href="{{ path('publishing_create', {type:"simplepost"}) }}#anchor-form">Simple Post</a></li>
+                        <li><a href="{{ path('publishing_create', {type:"status"}) }}#anchor-form">Status</a></li>
                         <li><a href="#">Pictures</a></li>
                         <li><a href="#">Video</a></li>
                         <li><a href="{{ path('private_create') }}">Private message</a></li>

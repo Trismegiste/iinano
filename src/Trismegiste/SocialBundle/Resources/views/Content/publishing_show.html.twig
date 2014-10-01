@@ -1,5 +1,6 @@
 {# Template for viewing one publishing root entity subclass #}
 <div class="row publishing">
+    <a id="anchor-{{ content.id }}"></a>
     <div class="large-2 medium-3 small-4 columns">
         {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: content.author } %}
     </div>
@@ -13,7 +14,6 @@
             {% endif %}
             <li><a href="#">Report</a></li>
         </ul>
-        <a id="anchor-{{ content.id }}"></a>
         <h6 class="subheader">{{ content.author.nickname }} <small>{{ content.lastEdited | timeago }}</small></h6>
         {% block content_properties %}{% endblock %}
 
