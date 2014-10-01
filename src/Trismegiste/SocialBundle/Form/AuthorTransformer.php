@@ -28,6 +28,11 @@ class AuthorTransformer implements DataTransformerInterface
         $this->nickname = $choice;
     }
 
+    /**
+     * From key to object
+     *
+     * {@inheritDoc}
+     */
     public function reverseTransform($value)
     {
         if (null !== $value && !is_scalar($value)) {
@@ -35,21 +40,30 @@ class AuthorTransformer implements DataTransformerInterface
         }
 
         if (!$this->existsNickname($value)) {
-            throw new TransformationFailedException("$value is not a valid user");
+            throw new TransformationFailedException("$value is an invalid choice");
         }
 
         $found = $this->repository->findByNickname($value);
         if (is_null($found)) {
-            throw new TransformationFailedException("$value is an unknown user");
+            throw new TransformationFailedException("Author $value is not found");
         }
 
         return $found->getAuthor();
     }
 
+    /**
+     * From object to key
+     *
+     * {@inheritDoc}
+     */
     public function transform($user)
     {
         if (is_null($user)) {
             return null;
+        }
+
+        if (!is_object($user)) {
+            throw new TransformationFailedException("Data value is not an object");
         }
 
         if (!$user instanceof \Trismegiste\Socialist\AuthorInterface) {
@@ -57,7 +71,7 @@ class AuthorTransformer implements DataTransformerInterface
         }
 
         if (!$this->existsNickname($user->getNickname())) {
-            throw new TransformationFailedException($user->getNickname() . " is not valid author");
+            throw new TransformationFailedException('Author ' . $user->getNickname() . " cannot be chosen");
         }
 
         return $user->getNickname();
