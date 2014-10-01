@@ -69,7 +69,7 @@ abstract class FormTestCase extends \PHPUnit_Framework_TestCase
         $this->sut->submit($submitted);
         $this->assertFalse($this->sut->isValid());
         foreach ($invalidFields as $child) {
-            $this->assertFalse($this->sut->get($child)->isValid());
+            $this->assertFalse($this->sut->get($child)->isValid(), "$child isValid");
         }
         $this->assertEquals($expected, $this->sut->getData());
     }

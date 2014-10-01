@@ -28,7 +28,7 @@ class GeolocationTypeTest extends FormTestCase
             ],
             [
                 ['longitude' => 200, 'latitude' => -100, 'zoom' => -3],
-                ['longitude' => 200, 'latitude' => -100, 'zoom' => -3],
+                ['longitude' => 200, 'latitude' => -100, 'zoom' => -3]
             ]
         ];
     }

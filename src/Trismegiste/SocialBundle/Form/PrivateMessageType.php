@@ -12,6 +12,7 @@ use Trismegiste\SocialBundle\Repository\PrivateMessageRepository;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * PrivateMessageType is a form type for private message
@@ -30,7 +31,12 @@ class PrivateMessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('target', 'social_follower_type', ['mapped' => false, 'constraints' => new NotBlank()])
-                ->add('message', 'textarea', ['constraints' => new NotBlank()])
+                ->add('message', 'textarea', [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(['min' => 3, 'max' => 280])
+                    ]
+                ])
                 ->add('send', 'submit');
     }
 
