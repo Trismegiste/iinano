@@ -110,4 +110,21 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->updateAvatar($user, $img);
     }
 
+    public function testFindBatchNickname()
+    {
+        $this->repository->expects($this->once())
+                ->method('find')
+                ->with($this->equalTo(['-class' => 'netizen', 'author.nickname' => ['$in' => ['spock']]]));
+
+        $this->sut->findBatchNickname(new \ArrayIterator(['spock' => true]));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testBadParamCtor()
+    {
+        new NetizenRepository($this->repository, $this->encoder, 123, $this->storage);
+    }
+
 }
