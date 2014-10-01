@@ -18,6 +18,8 @@ abstract class FormTestCase extends \PHPUnit_Framework_TestCase
 
     /** @var \Symfony\Component\Form\FormInterface */
     protected $sut;
+
+    /** @var \Symfony\Component\Form\FormFactoryInterface */
     protected $factory;
 
     protected function setUp()
@@ -29,7 +31,8 @@ abstract class FormTestCase extends \PHPUnit_Framework_TestCase
                 ->addType($type)
                 ->getFormFactory();
 
-        $this->sut = $this->factory->create($type->getName());
+        $data = $this->createData();
+        $this->sut = $this->factory->create($type->getName(), $data);
     }
 
     abstract protected function createType();
@@ -37,6 +40,16 @@ abstract class FormTestCase extends \PHPUnit_Framework_TestCase
     abstract public function getValidInputs();
 
     abstract public function getInvalidInputs();
+
+    /**
+     * Override if your form needs a valid object
+     * 
+     * @return mixed
+     */
+    protected function createData()
+    {
+        return null;
+    }
 
     /**
      * @dataProvider getValidInputs
