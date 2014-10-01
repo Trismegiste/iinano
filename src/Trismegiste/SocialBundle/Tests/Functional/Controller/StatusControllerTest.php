@@ -40,7 +40,8 @@ class StatusControllerTest extends PublishingControllerTestCase
         return ['social_status' => [
                 'location' => [
                     'longitude' => 160,
-                    'latitude' => 35
+                    'latitude' => 35,
+                    'zoom' => 8
                 ],
                 'message' => 'Kon nichi wa ' . static::$random
         ]];
@@ -51,7 +52,8 @@ class StatusControllerTest extends PublishingControllerTestCase
         return ['social_status' => [
                 'location' => [
                     'longitude' => 7.2,
-                    'latitude' => 43.7
+                    'latitude' => 43.7,
+                    'zoom' => 8
                 ],
                 'message' => 'Hello from ' . static::$random
         ]];
