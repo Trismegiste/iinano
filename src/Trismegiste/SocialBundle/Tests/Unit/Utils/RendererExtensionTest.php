@@ -20,7 +20,7 @@ class RendererExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $loader = new \Twig_Loader_String();
         $this->twig = new \Twig_Environment($loader);
-        $this->twig->addExtension(new RendererExtension('', []));
+        $this->twig->addExtension(new RendererExtension('%s.twig', ['sample' => 'PublishMock']));
     }
 
     public function getPeriod()
@@ -50,6 +50,17 @@ class RendererExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertStringStartsWith("It's $expected"
                 , $this->twig->render("It's {{ created|timeago }}"
                         , array('created' => $thisTime)));
+    }
+
+    public function testChooseTemplate()
+    {
+        $mock = $this->getMockBuilder('Trismegiste\Socialist\Publishing')
+                ->disableOriginalConstructor()
+                ->setMockClassName('PublishMock')
+                ->getMock();
+
+        $result = $this->twig->render("{{ choose_template(obj) }}", ['obj' => $mock]);
+        $this->assertEquals('sample.twig', $result);
     }
 
 }
