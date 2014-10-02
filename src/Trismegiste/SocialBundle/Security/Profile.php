@@ -16,9 +16,17 @@ class Profile
     public $email;
     public $gender;
     public $fullName;
-    public $city;
+    public $location;
     public $dateOfBirth;
     public $placeOfBirth;
     public $defaultWallFilter = 'self';
+    public $joinedAt;
+    public $publishingCounter = 0;
+    public $commentaryCounter = 0;
+
+    public function __construct()
+    {
+        $this->joinedAt = new \DateTime();
+    }
 
 }

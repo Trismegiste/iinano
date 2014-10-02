@@ -54,7 +54,8 @@ class RegisterType extends AbstractType
                 ->add('gender', 'gender', ['property_path' => 'profile.gender'])
                 ->add('fullName', 'text', [
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
+                        new Length(['min' => 5, 'max' => 50])
                     ],
                     'property_path' => 'profile.fullName',
                     'attr' => ['placeholder' => 'Your full name (public)']

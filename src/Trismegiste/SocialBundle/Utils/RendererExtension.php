@@ -37,7 +37,8 @@ class RendererExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('timeago', array($this, 'humanDateFilter'))
+            new \Twig_SimpleFilter('timeago', [$this, 'humanDateFilter']),
+            new \Twig_SimpleFilter('gender', [$this, 'genderFilter'], ['needs_environment' => true])
         ];
     }
 
@@ -89,6 +90,20 @@ class RendererExtension extends \Twig_Extension
     public function chooseTemplateFunction(Publishing $doc)
     {
         return sprintf($this->pathFormat, $this->templateAssoc[get_class($doc)]);
+    }
+
+    public function genderFilter(\Twig_Environment $env, $genderType)
+    {
+//        $callable = $env->getFunction('trans')->getCallable();
+        switch ($genderType) {
+            case 'xx':
+                return gettext('Female');
+                break;
+            case 'xx':
+                return 'Male';
+                break;
+            default: return '??';
+        }
     }
 
 }
