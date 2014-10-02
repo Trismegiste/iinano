@@ -94,13 +94,14 @@ class RendererExtension extends \Twig_Extension
 
     public function genderFilter(\Twig_Environment $env, $genderType)
     {
-//        $callable = $env->getFunction('trans')->getCallable();
+        $trans = $env->getFilter('trans')->getCallable();
+
         switch ($genderType) {
             case 'xx':
-                return gettext('Female');
+                return call_user_func($trans, 'Female');
                 break;
-            case 'xx':
-                return 'Male';
+            case 'xy':
+                return call_user_func($trans, 'Male');
                 break;
             default: return '??';
         }
