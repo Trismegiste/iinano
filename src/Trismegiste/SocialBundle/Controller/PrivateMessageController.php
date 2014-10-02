@@ -45,11 +45,6 @@ class PrivateMessageController extends Template
     {
         $choice = [];
         $nick = $request->query->get('q');
-//        $cursor = $this->get('dokudoki.repository')
-//                ->find(['-class' => 'netizen', 'author.nickname' => new \MongoRegex("/$nick/")]);
-//        foreach ($cursor as $user) {
-//            $choice[] = $user->getUsername();
-//        }
 
         $iter = $this->getUser()->getFollowerIterator();
         $iter = new \Trismegiste\SocialBundle\Utils\KeyRegexFilter($iter, "#$nick#");
