@@ -6,8 +6,6 @@
 
 namespace Trismegiste\SocialBundle\Tests\Functional\Controller;
 
-use Trismegiste\Socialist\SimplePost;
-use Trismegiste\Socialist\Author;
 use Trismegiste\Socialist\Commentary;
 
 /**
@@ -17,12 +15,20 @@ class FamousControllerTest extends WebTestCasePlus
 {
 
     protected $collection;
+    protected $rootFqcn;
 
     protected function setUp()
     {
         parent::setUp();
         $this->client->followRedirects();
         $this->collection = $this->getService('dokudoki.collection');
+        $this->rootFqcn = 'Trismegiste\Socialist\SimplePost';
+    }
+
+    private function createRootDocument($nick)
+    {
+        $refl = new \ReflectionClass($this->rootFqcn);
+        return $refl->newInstance($this->createAuthor($nick));
     }
 
     protected function getSelfWallCrawlerFor($nick)
@@ -37,7 +43,7 @@ class FamousControllerTest extends WebTestCasePlus
     {
         $this->collection->drop();
         $this->assertCount(0, $this->collection->find());
-        $post = new SimplePost($this->createAuthor('kirk'));
+        $post = $this->createRootDocument('kirk');
         $this->getService('dokudoki.repository')->persist($post);
         $this->assertCount(1, $this->collection->find());
         $this->addUserFixture('kirk');
@@ -60,7 +66,7 @@ class FamousControllerTest extends WebTestCasePlus
         $this->assertEquals(1, (int) $crawler->filter('.publishing span.fan-count')->text());
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
-        $this->assertInstanceOf('Trismegiste\Socialist\SimplePost', $restore);
+        $this->assertInstanceOf($this->rootFqcn, $restore);
         $this->assertEquals(1, $restore->getFanCount());
 
         return $pk;
@@ -80,7 +86,7 @@ class FamousControllerTest extends WebTestCasePlus
         $this->assertEquals(2, (int) $crawler->filter('.publishing span.fan-count')->text());
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
-        $this->assertInstanceOf('Trismegiste\Socialist\SimplePost', $restore);
+        $this->assertInstanceOf($this->rootFqcn, $restore);
         $this->assertEquals(2, $restore->getFanCount());
 
         return $pk;
@@ -100,7 +106,7 @@ class FamousControllerTest extends WebTestCasePlus
         $this->assertEquals(1, (int) $crawler->filter('.publishing span.fan-count')->text());
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
-        $this->assertInstanceOf('Trismegiste\Socialist\SimplePost', $restore);
+        $this->assertInstanceOf($this->rootFqcn, $restore);
         $this->assertEquals(1, $restore->getFanCount());
     }
 

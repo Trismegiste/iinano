@@ -7,7 +7,6 @@
 namespace Trismegiste\SocialBundle\Tests\Unit\Security;
 
 use Trismegiste\SocialBundle\Security\OwnerVoter;
-use Trismegiste\Socialist\SimplePost;
 use Trismegiste\Socialist\Author;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -20,6 +19,11 @@ class OwnerVoterTest extends \PHPUnit_Framework_TestCase
     protected $sut;
     protected $currentUser;
     protected $token;
+
+    protected function createDocument($nick)
+    {
+        return $this->getMockForAbstractClass('Trismegiste\Socialist\Content', [new Author($nick)]);
+    }
 
     protected function setUp()
     {
@@ -40,19 +44,19 @@ class OwnerVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testGranted()
     {
-        $doc = new SimplePost(new Author('kirk'));
+        $doc = $this->createDocument('kirk');
         $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->sut->vote($this->token, $doc, ['OWNER']));
     }
 
     public function testDeniedOwning()
     {
-        $doc = new SimplePost(new Author('spock'));
+        $doc = $this->createDocument('spock');
         $this->assertEquals(VoterInterface::ACCESS_DENIED, $this->sut->vote($this->token, $doc, ['OWNER']));
     }
 
     public function testDeniedUnauthenticated()
     {
-        $doc = new SimplePost(new Author('kirk'));
+        $doc = $this->createDocument('kirk');
         $anonymous = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $this->assertEquals(VoterInterface::ACCESS_DENIED, $this->sut->vote($anonymous, $doc, ['OWNER']));
     }
@@ -65,7 +69,7 @@ class OwnerVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testAbstainNonOwner()
     {
-        $doc = new SimplePost(new Author('kirk'));
+        $doc = $this->createDocument('kirk');
         $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $this->sut->vote($this->token, $doc, ['WESH']));
     }
 

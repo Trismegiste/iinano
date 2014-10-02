@@ -6,9 +6,6 @@
 
 namespace Trismegiste\SocialBundle\Tests\Functional\Controller;
 
-use Trismegiste\Socialist\SimplePost;
-use Trismegiste\Socialist\Author;
-
 /**
  * CommentaryControllerTest tests CommentaryController
  */
@@ -17,6 +14,7 @@ class CommentaryControllerTest extends WebTestCasePlus
 
     protected $collection;
     protected $wallParam;
+    protected $rootFqcn;
 
     protected function setUp()
     {
@@ -25,6 +23,13 @@ class CommentaryControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
         $this->collection = $this->getService('dokudoki.collection');
         $this->wallParam = ['wallNick' => 'kirk', 'wallFilter' => 'self'];
+        $this->rootFqcn = 'Trismegiste\Socialist\SimplePost';
+    }
+
+    private function createRootDocument($nick)
+    {
+        $refl = new \ReflectionClass($this->rootFqcn);
+        return $refl->newInstance($this->createAuthor($nick));
     }
 
     /**
@@ -34,7 +39,7 @@ class CommentaryControllerTest extends WebTestCasePlus
     {
         $this->collection->drop();
         $this->assertCount(0, $this->collection->find());
-        $post = new SimplePost($this->createAuthor('kirk'));
+        $post = $this->createRootDocument('kirk');
         $this->getService('dokudoki.repository')->persist($post);
         $this->assertCount(1, $this->collection->find());
         $this->addUserFixture('kirk');
@@ -55,7 +60,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $this->client->submit($form, ['commentary' => ['message' => __METHOD__]]);
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
-        $this->assertInstanceOf('Trismegiste\Socialist\SimplePost', $restore);
+        $this->assertInstanceOf($this->rootFqcn, $restore);
         $comment = $restore->getCommentary();
         $this->assertCount(1, $comment);
         $comment = $comment[0];
@@ -77,7 +82,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $this->client->submit($form, ['commentary' => ['message' => __METHOD__]]);
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
-        $this->assertInstanceOf('Trismegiste\Socialist\SimplePost', $restore);
+        $this->assertInstanceOf($this->rootFqcn, $restore);
         $comment = $restore->getCommentary();
         $this->assertCount(1, $comment);
         $comment = $comment[0];
@@ -97,7 +102,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $crawler = $this->client->click($link);
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
-        $this->assertInstanceOf('Trismegiste\Socialist\SimplePost', $restore);
+        $this->assertInstanceOf($this->rootFqcn, $restore);
         $comment = $restore->getCommentary();
         $this->assertCount(0, $comment);
 
@@ -117,7 +122,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $this->client->submit($form, ['commentary' => ['message' => __METHOD__]]);
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
-        $this->assertInstanceOf('Trismegiste\Socialist\SimplePost', $restore);
+        $this->assertInstanceOf($this->rootFqcn, $restore);
         $comment = $restore->getCommentary();
         $this->assertCount(1, $comment);
         $comment = $comment[0];
