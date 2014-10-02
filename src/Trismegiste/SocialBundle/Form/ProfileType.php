@@ -21,7 +21,10 @@ class ProfileType extends AbstractType
     {
         $builder->add('gender', 'gender')
                 ->add('fullName', 'text', ['constraints' => new NotBlank()])
-                ->add('dateOfBirth', 'date')
+                ->add('dateOfBirth', 'date', [
+                    'years' => range(date('Y') - 100, date('Y') - 6),
+                    'empty_value' => 'Select'
+                ])
                 ->add('Save', 'submit');
     }
 

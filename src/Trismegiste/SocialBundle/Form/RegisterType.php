@@ -52,10 +52,20 @@ class RegisterType extends AbstractType
                     'mapped' => false
                 ])
                 ->add('gender', 'gender', ['property_path' => 'profile.gender'])
-                ->add('fullName', 'text', ['constraints' => new NotBlank(), 'property_path' => 'profile.fullName'])
-                ->add('dateOfBirth', 'date', ['property_path' => 'profile.dateOfBirth'])
+                ->add('fullName', 'text', [
+                    'constraints' => [
+                        new NotBlank()
+                    ],
+                    'property_path' => 'profile.fullName',
+                    'attr' => ['placeholder' => 'Your full name (public)']
+                ])
+                ->add('dateOfBirth', 'date', [
+                    'property_path' => 'profile.dateOfBirth',
+                    'years' => range(date('Y') - 100, date('Y') - 6),
+                    'empty_value' => 'Select'
+                ])
                 ->add('email', 'email', [
-                    'attr' => ['placeholder' => "Optional : a valid email used only if you've lost your password"],
+                    'attr' => ['placeholder' => "Optional : a valid email used only if you've lost your password (not public)"],
                     'property_path' => 'profile.email',
                     'required' => false
                 ])
@@ -72,11 +82,11 @@ class RegisterType extends AbstractType
         $factory = $this->repository;
 
         $emptyData = function (FormInterface $form, $data) use ($factory) {
-                    $nickname = $form->get('nickname')->getData();
-                    $password = $form->get('password')->getData();
+            $nickname = $form->get('nickname')->getData();
+            $password = $form->get('password')->getData();
 
-                    return $form->isEmpty() && !$form->isRequired() ? null : $factory->create($nickname, $password);
-                };
+            return $form->isEmpty() && !$form->isRequired() ? null : $factory->create($nickname, $password);
+        };
 
         $resolver->setDefaults([
             'empty_data' => $emptyData,
