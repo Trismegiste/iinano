@@ -49,9 +49,58 @@ class ImportAliasesTest extends \PHPUnit_Framework_TestCase
         $this->sut->process($this->containerBuilder);
     }
 
-    public function testInvalidAliases()
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage Publishing
+     */
+    public function testMissingContent()
     {
-        $this->markTestIncomplete();
+        $aliasMap = [
+            'sample' => 'stdClass', // note this config should be rejected by dokudoki (not Persistable)
+            'netizen' => 'Trismegiste\SocialBundle\Security\Netizen',
+            'private' => 'Trismegiste\Socialist\PrivateMessage'
+        ];
+        $this->containerBuilder->setDefinition(
+                'dokudoki.builder.whitemagic', new Definition(null, [$aliasMap])
+        );
+
+        $this->sut->process($this->containerBuilder);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage User
+     */
+    public function testMissingUser()
+    {
+        $aliasMap = [
+            'sample' => 'Trismegiste\Socialist\Status',
+            'netizen' => 'Trismegiste\Socialist\User',
+            'netizen2' => 'Trismegiste\Socialist\User',
+            'private' => 'Trismegiste\Socialist\PrivateMessage'
+        ];
+        $this->containerBuilder->setDefinition(
+                'dokudoki.builder.whitemagic', new Definition(null, [$aliasMap])
+        );
+
+        $this->sut->process($this->containerBuilder);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage PrivateMessage
+     */
+    public function testPm()
+    {
+        $aliasMap = [
+            'sample' => 'Trismegiste\Socialist\Status',
+            'netizen' => 'Trismegiste\SocialBundle\Security\Netizen'
+        ];
+        $this->containerBuilder->setDefinition(
+                'dokudoki.builder.whitemagic', new Definition(null, [$aliasMap])
+        );
+
+        $this->sut->process($this->containerBuilder);
     }
 
 }
