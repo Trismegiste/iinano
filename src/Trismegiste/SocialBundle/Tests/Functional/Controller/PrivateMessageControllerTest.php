@@ -64,4 +64,21 @@ class PrivateMessageControllerTest extends WebTestCasePlus
         $this->assertCount(1, $crawler->filter("div.pm-received:contains('$expected')"));
     }
 
+    public function testAutoCompleteOnlyAjax()
+    {
+        $route = $this->generateUrl('private_get_follower', ['q' => 'toto']);
+        $this->client->request('GET', $route);
+        $response = $this->client->getResponse();
+        $this->assertEquals(403, $response->getStatusCode());
+    }
+
+    public function testAutoCompleteResponse()
+    {
+        $route = $this->generateUrl('private_get_follower', ['q' => 'spock']);
+        $this->client->request('GET', $route, [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('spock (Spock)', json_decode($response->getContent())[0]->value);
+    }
+
 }

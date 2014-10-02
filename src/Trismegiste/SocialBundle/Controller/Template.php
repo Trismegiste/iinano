@@ -3,6 +3,7 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * This is a controller helper for the default rendering of a
@@ -69,6 +70,18 @@ abstract class Template extends Controller
     protected function pushFlash($type, $msg)
     {
         $this->get('session')->getFlashBag()->add($type, $msg);
+    }
+
+    /**
+     * Block all requests if they are not AJAX
+     *
+     * @throws AccessDeniedException
+     */
+    protected function onlyAjaxRequest()
+    {
+        if (!$this->getRequest()->isXmlHttpRequest()) {
+            throw new AccessDeniedException('U haxxor');
+        }
     }
 
 }

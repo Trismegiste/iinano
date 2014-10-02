@@ -51,9 +51,7 @@ class ContentController extends Template
      */
     public function ajaxMoreAction($offset, $wallNick, $wallFilter)
     {
-        if (!$this->getRequest()->isXmlHttpRequest()) {
-            throw new AccessDeniedException('U haxxor');
-        }
+        $this->onlyAjaxRequest();
 
         return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:index_more.html.twig', [], $offset);
     }

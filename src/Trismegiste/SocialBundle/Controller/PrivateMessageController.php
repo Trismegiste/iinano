@@ -43,6 +43,7 @@ class PrivateMessageController extends Template
 
     public function ajaxFindFollowerAction(Request $request)
     {
+        $this->onlyAjaxRequest();
         $choice = [];
         $nick = $request->query->get('q');
 
