@@ -18,7 +18,8 @@ class AbusiveController extends ContentController
         switch ($action) {
             case 'add':
                 $doc->report($this->getAuthor());
-                $this->pushFlash('notice', 'You have reported this content as abusive');
+                // @todo this falsh must replace the original content
+                //$this->pushFlash('notice', 'You have reported this content as abusive');
                 break;
             default:
                 $this->createNotFoundException("Action $action");
@@ -31,8 +32,10 @@ class AbusiveController extends ContentController
 
     public function listingAction()
     {
+        $listing = $this->getRepository()->findAbusiveReport();
+
         return $this->render('TrismegisteSocialBundle:Abusive:dashboard.html.twig', [
-                    'listing' => []
+                    'listing' => $listing
         ]);
     }
 

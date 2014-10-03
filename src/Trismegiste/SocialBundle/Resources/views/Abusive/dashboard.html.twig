@@ -6,6 +6,23 @@
 
 {% block content %}
     <div class="row">
-        <div class="small-12 column">toto</div>
+        <div class="small-12 column">
+            <table>
+                <tr>
+                    <th>User</th>
+                    <th>Content</th>
+                    <th>Report counter</th>
+                    <th>Action</th>
+                </tr>
+                {% for content in listing %}
+                    <tr>
+                        <td>{{ content.author.nickname }}</td>
+                        <td>{{ content.message }}</td>
+                        <td>{{ 0 }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 {% endblock %}
