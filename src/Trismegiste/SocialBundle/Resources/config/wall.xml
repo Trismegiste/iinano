@@ -27,6 +27,12 @@
         <requirement key="action">(add|remove)</requirement>
     </route>
 
+    <route id="pub_abusivereport" pattern="/pub/{id}/abusive/{action}">
+        <default key="_controller">TrismegisteSocialBundle:Abusive:reportPublish</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="action">(add)</requirement>
+    </route>
+
     <route id="netizen_famous" pattern="/user/{id}/like/{action}">
         <default key="_controller">TrismegisteSocialBundle:Social:likeNetizen</default>
         <requirement key="id">[\da-f]{24}</requirement>
