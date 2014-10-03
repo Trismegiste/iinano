@@ -21,6 +21,7 @@ class RendererExtensionTest extends \PHPUnit_Framework_TestCase
         $loader = new \Twig_Loader_String();
         $this->twig = new \Twig_Environment($loader);
         $this->twig->addExtension(new RendererExtension('%s.twig', ['sample' => 'PublishMock']));
+        $this->twig->addExtension(new \Twig_Extensions_Extension_I18n());
     }
 
     public function getPeriod()
@@ -61,6 +62,24 @@ class RendererExtensionTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->twig->render("{{ choose_template(obj) }}", ['obj' => $mock]);
         $this->assertEquals('sample.twig', $result);
+    }
+
+    public function getGender()
+    {
+        return [
+            ['xx', 'Female'],
+            ['xy', 'Male'],
+            ['wz', '??']
+        ];
+    }
+
+    /**
+     * @dataProvider getGender
+     */
+    public function testGenderRender($type, $render)
+    {
+        $result = $this->twig->render("{{ '$type'|gender }}");
+        $this->assertEquals($render, $result);
     }
 
 }

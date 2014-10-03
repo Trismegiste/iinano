@@ -95,6 +95,7 @@ class RendererExtension extends \Twig_Extension
     public function genderFilter(\Twig_Environment $env, $genderType)
     {
         // @todo is this the right way to do translation ?
+        // Is it better to do it in the twig itself with "|trans()" ?
         $trans = $env->getFilter('trans')->getCallable();
 
         switch ($genderType) {
