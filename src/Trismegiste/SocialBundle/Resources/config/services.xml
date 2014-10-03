@@ -39,7 +39,7 @@
 
         <service id="twig.social.renderer" class="Trismegiste\SocialBundle\Utils\RendererExtension">
             <tag name="twig.extension"/>
-            <argument>TrismegisteSocialBundle:Content:show/%s.html.twig</argument>
+            <argument>show/%s.html.twig</argument>
             <argument/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
