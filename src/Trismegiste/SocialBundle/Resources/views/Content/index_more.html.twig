@@ -1,4 +1,4 @@
 {% for content in listing %}
-    {% include choose_template(content) %}
+    {% include 'TrismegisteSocialBundle:Content:' ~ choose_template(content) %}
     <hr/>
 {% endfor %}
