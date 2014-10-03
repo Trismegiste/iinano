@@ -22,7 +22,7 @@ class FamousControllerTest extends WebTestCasePlus
         parent::setUp();
         $this->client->followRedirects();
         $this->collection = $this->getService('dokudoki.collection');
-        $this->rootFqcn = 'Trismegiste\Socialist\SimplePost';
+        $this->rootFqcn = 'Trismegiste\Socialist\SmallTalk';
     }
 
     private function createPublishing($nick)
