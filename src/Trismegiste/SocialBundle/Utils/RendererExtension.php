@@ -60,8 +60,15 @@ class RendererExtension extends \Twig_Extension
         return 'socialrenderer_extension';
     }
 
-    public function humanDateFilter(\DateTime $pub)
+    public function humanDateFilter(/* \DateTime */ $pub)
     {
+        // accepting all types but filtering only DateTime.
+        // Twig is rather tolerant about variables and formatting
+        // so I choose to keep consistency.
+        if (!$pub instanceof \DateTime) {
+            return $pub;
+        }
+
         $now = new \DateTime();
 
         $delta = $pub->diff($now);
@@ -95,7 +102,7 @@ class RendererExtension extends \Twig_Extension
     public function genderFilter(\Twig_Environment $env, $genderType)
     {
         // @todo is this the right way to do translation ?
-        // Is it better to do it in the twig itself with "|trans()" ?
+        // Is it better to do it in the twig itself with "|gender|trans()" ?
         $trans = $env->getFilter('trans')->getCallable();
 
         switch ($genderType) {

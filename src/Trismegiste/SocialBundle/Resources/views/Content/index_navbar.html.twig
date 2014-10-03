@@ -5,7 +5,7 @@
             <i class="fi-like"></i>
             {{ fanCount }}
         </span>
-        <h4 class="title"><a href="{{ path('netizen_show', {author: wallNick} ) }}">{{ wallUser.profile.fullName }}</a></h4>
+        <h4 class="title"><a href="{{ path('wall_index', { wallNick: wallNick, wallFilter: 'self' }) }}">{{ wallUser.profile.fullName }}</a></h4>
         {% if app.user != wallUser %}
             {% include 'TrismegisteSocialBundle:Netizen:social_network_action.html.twig' %}
         {% endif %}

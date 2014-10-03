@@ -53,6 +53,24 @@ class RendererExtensionTest extends \PHPUnit_Framework_TestCase
                         , array('created' => $thisTime)));
     }
 
+    public function getNawak()
+    {
+        return [
+            [null, ''],
+            [123, 123],
+            ['1999-06-06', '1999-06-06']
+        ];
+    }
+
+    /**
+     * @dataProvider getNawak
+     */
+    public function testBadDateTime($nawak, $expected)
+    {
+        $this->assertEquals($expected
+                , $this->twig->render("{{ created|timeago }}", ['created' => $nawak]));
+    }
+
     public function testChooseTemplate()
     {
         $mock = $this->getMockBuilder('Trismegiste\Socialist\Publishing')

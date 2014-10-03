@@ -21,7 +21,7 @@
         </div>
         <div class="medium-6 small-12 column">
             Email (not public): {{ profile.email }}<br/>
-            Registered at: {{ profile.joinedAt|date("Y/m/d") }}<br/>
+            Registered at: {{ profile.joinedAt|timeago }}<br/>
             Content counter: {{ profile.publishingCounter }}<br/>
             Commentary counter: {{ profile.commentaryCounter }}
         </div>
