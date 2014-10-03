@@ -54,6 +54,7 @@ dokudoki:
         comm: 'Trismegiste\Socialist\Commentary'
         intern: 'Trismegiste\SocialBundle\Security\Credential\Internal'
         profile: 'Trismegiste\SocialBundle\Security\Profile'
+        small: 'Trismegiste\Socialist\SmallTalk'
         status: 'Trismegiste\Socialist\Status'
         private: 'Trismegiste\Socialist\PrivateMessage'
 
