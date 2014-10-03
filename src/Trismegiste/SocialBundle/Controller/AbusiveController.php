@@ -29,9 +29,11 @@ class AbusiveController extends ContentController
         return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
     }
 
-    public function reportListingAction()
+    public function listingAction()
     {
-        //$this->render($view, $parameters)
+        return $this->render('TrismegisteSocialBundle:Abusive:dashboard.html.twig', [
+                    'listing' => []
+        ]);
     }
 
 }

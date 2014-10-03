@@ -60,4 +60,8 @@
         <requirement key="wallNick">%nickname_regex%</requirement>
         <requirement key="wallFilter">(self|follower|following|friend|all)</requirement>
     </import>
+
+    <import resource="@TrismegisteSocialBundle/Resources/config/admin.xml"
+            prefix="/admin">
+    </import>
 </routes>
