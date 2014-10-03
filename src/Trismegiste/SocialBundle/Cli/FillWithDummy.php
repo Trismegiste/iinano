@@ -23,7 +23,7 @@ class FillWithDummy extends ContainerAwareCommand
         $this->setName('social:fill:dummy')
                 ->setDescription('Fill with dummy data')
                 ->addArgument('nickname', InputArgument::REQUIRED)
-                ->addArgument('count', InputArgument::OPTIONAL, 'how many', 120);
+                ->addArgument('count', InputArgument::OPTIONAL, 'how many', 20);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -41,9 +41,8 @@ class FillWithDummy extends ContainerAwareCommand
         }
 
         for ($k = 0; $k < $cardinal; $k++) {
-            $doc = new \Trismegiste\Socialist\SimplePost($user->getAuthor());
-            $doc->setTitle("Un titre $k");
-            $doc->setBody("Un content $k");
+            $doc = new \Trismegiste\Socialist\SmallTalk($user->getAuthor());
+            $doc->setMessage("One small talk $k for iinano, one giant doc for mongo");
             $contentRepo->persist($doc);
             sleep(1);
         }

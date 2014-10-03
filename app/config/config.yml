@@ -48,7 +48,6 @@ dokudoki:
     database: iinano
     collection: dokudoki
     alias:
-        simplepost: 'Trismegiste\Socialist\SimplePost'
         netizen: 'Trismegiste\SocialBundle\Security\Netizen'
         author: 'Trismegiste\Socialist\Author'
         comm: 'Trismegiste\Socialist\Commentary'

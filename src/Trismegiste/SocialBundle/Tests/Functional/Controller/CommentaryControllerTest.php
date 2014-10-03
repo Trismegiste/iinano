@@ -23,7 +23,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
         $this->collection = $this->getService('dokudoki.collection');
         $this->wallParam = ['wallNick' => 'kirk', 'wallFilter' => 'self'];
-        $this->rootFqcn = 'Trismegiste\Socialist\SimplePost';
+        $this->rootFqcn = 'Trismegiste\Socialist\SmallTalk';
     }
 
     private function createPublishing($nick)
