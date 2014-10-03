@@ -26,7 +26,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $this->rootFqcn = 'Trismegiste\Socialist\SimplePost';
     }
 
-    private function createRootDocument($nick)
+    private function createPublishing($nick)
     {
         $refl = new \ReflectionClass($this->rootFqcn);
         return $refl->newInstance($this->createAuthor($nick));
@@ -39,7 +39,7 @@ class CommentaryControllerTest extends WebTestCasePlus
     {
         $this->collection->drop();
         $this->assertCount(0, $this->collection->find());
-        $post = $this->createRootDocument('kirk');
+        $post = $this->createPublishing('kirk');
         $this->getService('dokudoki.repository')->persist($post);
         $this->assertCount(1, $this->collection->find());
         $this->addUserFixture('kirk');

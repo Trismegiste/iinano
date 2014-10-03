@@ -25,7 +25,7 @@ class FamousControllerTest extends WebTestCasePlus
         $this->rootFqcn = 'Trismegiste\Socialist\SimplePost';
     }
 
-    private function createRootDocument($nick)
+    private function createPublishing($nick)
     {
         $refl = new \ReflectionClass($this->rootFqcn);
         return $refl->newInstance($this->createAuthor($nick));
@@ -43,7 +43,7 @@ class FamousControllerTest extends WebTestCasePlus
     {
         $this->collection->drop();
         $this->assertCount(0, $this->collection->find());
-        $post = $this->createRootDocument('kirk');
+        $post = $this->createPublishing('kirk');
         $this->getService('dokudoki.repository')->persist($post);
         $this->assertCount(1, $this->collection->find());
         $this->addUserFixture('kirk');
@@ -55,7 +55,7 @@ class FamousControllerTest extends WebTestCasePlus
     /**
      * @depends initialize
      */
-    public function testLikeSimplePost($pk)
+    public function testLikePublishing($pk)
     {
         $this->logIn('kirk');
 
@@ -73,9 +73,9 @@ class FamousControllerTest extends WebTestCasePlus
     }
 
     /**
-     * @depends testLikeSimplePost
+     * @depends testLikePublishing
      */
-    public function testLikeSimplePostWithOther($pk)
+    public function testLikePublishingWithOther($pk)
     {
         $this->logIn('spock');
 
@@ -93,9 +93,9 @@ class FamousControllerTest extends WebTestCasePlus
     }
 
     /**
-     * @depends testLikeSimplePostWithOther
+     * @depends testLikePublishingWithOther
      */
-    public function testUnlikeSimplePost($pk)
+    public function testUnlikePublishing($pk)
     {
         $this->logIn('kirk');
 
