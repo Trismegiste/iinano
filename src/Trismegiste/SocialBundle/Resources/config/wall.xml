@@ -32,6 +32,12 @@
         <requirement key="id">[\da-f]{24}</requirement>
         <requirement key="action">(add)</requirement>
     </route>
+    <route id="commentary_abusivereport" pattern="/pub/{id}/commentary/{uuid}/abusive/{action}">
+        <default key="_controller">TrismegisteSocialBundle:Abusive:reportCommentary</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="uuid">[\da-f]{40}</requirement>
+        <requirement key="action">(add)</requirement>
+    </route>
 
     <route id="netizen_famous" pattern="/user/{id}/like/{action}">
         <default key="_controller">TrismegisteSocialBundle:Social:likeNetizen</default>

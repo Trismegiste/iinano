@@ -39,4 +39,24 @@ class AbusiveController extends ContentController
         ]);
     }
 
+    public function reportCommentaryAction($id, $uuid, $action, $wallNick, $wallFilter)
+    {
+        $doc = $this->getRepository()->findByPk($id);
+        $commentary = $doc->getCommentaryByUuid($uuid);
+
+        switch ($action) {
+            case 'add':
+                $commentary->report($this->getAuthor());
+                // @todo this falsh must replace the original content
+                //$this->pushFlash('notice', 'You have reported this content as abusive');
+                break;
+            default:
+                $this->createNotFoundException("Action $action");
+        }
+
+        $this->getRepository()->persist($doc);
+
+        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
+    }
+
 }
