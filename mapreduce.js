@@ -1,14 +1,20 @@
 
 var mapfunc = function () {
-    for (var key in this.abusive) {
-        emit({id: this._id, type: 'root'}, 1)
-    }
-    for (var idx = 0; idx < this.commentary.length; idx++) {
-        var comment = this.commentary[idx]
-        for (var key in comment.abusive) {
-            emit({id: this._id, type: 'commentary', uuid: comment.uuid}, 1)
+    var pk = this._id
+    // root entity
+    if (isObject(this.abusive)) {
+        for (var key in this.abusive) {
+            emit({id: pk, type: 'root'}, 1)
         }
     }
+    // commentaries
+    this.commentary.forEach(function (comment) {
+        if (isObject(comment.abusive)) {
+            for (var key in comment.abusive) {
+                emit({id: pk, type: 'commentary', uuid: comment.uuid}, 1)
+            }
+        }
+    })
 }
 
 var redfunc = function (key, values) {
@@ -16,6 +22,6 @@ var redfunc = function (key, values) {
 }
 
 db.dokudoki.mapReduce(mapfunc, redfunc, {
-    out: 'essai',
-    query: {'-class': {'$in': ['small', 'status']}, abusive: {$ne: []}}
+    out: 'abusivereport',
+    query: {'-class': {'$in': ['small', 'status']}}
 })
