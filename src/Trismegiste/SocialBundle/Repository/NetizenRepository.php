@@ -110,7 +110,12 @@ class NetizenRepository implements NetizenRepositoryInterface
      */
     public function findByPk($id)
     {
-        return $this->repository->findByPk($id);
+        $doc = $this->repository->findByPk($id);
+        if (!$doc instanceof Netizen) {
+            throw new \LogicException("$id is type of " . get_class($doc));
+        }
+
+        return $doc;
     }
 
     /**

@@ -39,10 +39,12 @@ class PrivateMessageRepository
         $target = $this->getLoggedUser()->getUsername();
 
         return $this->repository->find([
-                    MapAlias::CLASS_KEY => $this->classKey,
-                    'target.nickname' => $target,
-                    'read' => !$unread
-                ])->offset($offset);
+                            MapAlias::CLASS_KEY => $this->classKey,
+                            'target.nickname' => $target,
+                            'read' => !$unread
+                        ])
+                        ->offset($offset)
+                        ->sort(['sentAt' => -1]);
     }
 
     public function findAllSent($offset = 0, $unread = true)
@@ -50,10 +52,12 @@ class PrivateMessageRepository
         $source = $this->getLoggedUser()->getUsername();
 
         return $this->repository->find([
-                    MapAlias::CLASS_KEY => $this->classKey,
-                    'source.nickname' => $source,
-                    'read' => !$unread
-                ])->offset($offset);
+                            MapAlias::CLASS_KEY => $this->classKey,
+                            'source.nickname' => $source,
+                            'read' => !$unread
+                        ])
+                        ->offset($offset)
+                        ->sort(['sentAt' => -1]);
     }
 
     /**
@@ -94,6 +98,21 @@ class PrivateMessageRepository
         }
 
         return $this->security->getToken()->getUser();
+    }
+
+    public function persistAsRead($pk)
+    {
+        $pm = $this->repository->findByPk($pk);
+        if (!$pm instanceof PrivateMessage) {
+            throw new \LogicException("$pk is not a Private message");
+        }
+
+        if ($pm->getTarget() != $this->getLoggedUser()->getAuthor()) {
+            throw new AccessDeniedException("You are not the receipient of this message");
+        }
+
+        $pm->markAsRead();
+        $this->repository->persist($pm);
     }
 
 }

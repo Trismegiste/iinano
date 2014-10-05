@@ -15,13 +15,13 @@
         <div class="medium-6 small-12 column pm-sent">
             <h3>Sent</h3>
             {% for message in sent %}
-                {% include 'TrismegisteSocialBundle:PrivateMessage:message_show.html.twig' with {author: message.target} %}
+                {% include 'TrismegisteSocialBundle:PrivateMessage:sent_message_show.html.twig' with {author: message.target} %}
             {% endfor %}
         </div>
         <div class="medium-6 small-12 column pm-received">
             <h3>Received</h3>
             {% for message in received %}
-                {% include 'TrismegisteSocialBundle:PrivateMessage:message_show.html.twig' with {author: message.sender} %}
+                {% include 'TrismegisteSocialBundle:PrivateMessage:received_message_show.html.twig' with {author: message.sender} %}
             {% endfor %}
         </div>
     </div>

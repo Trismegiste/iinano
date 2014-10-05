@@ -61,4 +61,13 @@ class PrivateMessageController extends Template
         return new \Symfony\Component\HttpFoundation\JsonResponse($choice);
     }
 
+    public function markAsReadAction($id)
+    {
+        $repo = $this->get('social.private_message.repository');
+        $repo->persistAsRead($id);
+        $this->pushFlash('notice', 'PM marked as read');
+
+        return $this->redirectRouteOk('private_create');
+    }
+
 }

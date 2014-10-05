@@ -54,6 +54,11 @@
         <default key="_controller">TrismegisteSocialBundle:PrivateMessage:ajaxFindFollower</default>
         <requirement key="_method">GET</requirement>
     </route>
+    <route id="private_markasread" pattern="/private/pm/{id}/markread">
+        <default key="_controller">TrismegisteSocialBundle:PrivateMessage:markAsRead</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="_method">GET</requirement>
+    </route>
 
     <import resource="@TrismegisteSocialBundle/Resources/config/wall.xml"
             prefix="/wall/{wallNick}/{wallFilter}">

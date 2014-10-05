@@ -3,8 +3,15 @@
         <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="avatar"/>
     </div>
     <div class="small-10 column">
-        <h5 class="subheader">{{ author.nickname }} <small>{{ message.sentAt | timeago }}</small></h5>
-        {{ message.message }}
+        <div clas="row">
+            <div class="small-10 column">
+                <h5 class="subheader">{{ author.nickname }} <small>{{ message.sentAt | timeago }}</small></h5>
+                <h5>{{ message.message }}</h5>
+            </div>
+            <div class="small-2 column">
+                {% block pm_action %}{% endblock %}
+            </div>
+        </div>
         <hr/>
     </div>
 </div>

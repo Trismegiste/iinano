@@ -78,7 +78,12 @@ class PublishingRepository implements PublishingRepositoryInterface
      */
     public function findByPk($pk)
     {
-        return $this->repository->findByPk($pk);
+        $doc = $this->repository->findByPk($pk);
+        if (!$doc instanceof Publishing) {
+            throw new \LogicException("$pk is type of " . get_class($doc));
+        }
+
+        return $doc;
     }
 
     public function findWallEntries(Netizen $wallUser, $wallFilter, $offset = 0, $limit = 20)

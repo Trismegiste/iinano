@@ -1,0 +1,5 @@
+{% extends "TrismegisteSocialBundle:PrivateMessage:message_show.html.twig" %}
+
+{% block pm_action %}
+    <a href="{{ path('private_markasread', {id: message.id}) }}" class="button tiny">X</a>
+{% endblock %}
