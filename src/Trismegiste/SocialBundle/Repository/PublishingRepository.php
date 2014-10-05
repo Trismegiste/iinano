@@ -113,10 +113,4 @@ class PublishingRepository implements PublishingRepositoryInterface
         return $this->findLastEntries($offset, $limit, $filterAuthor);
     }
 
-    public function findAbusiveReport()
-    {
-        // @todo make a query with aggregation
-        return $this->findLastEntries();
-    }
-
 }

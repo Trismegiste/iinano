@@ -64,6 +64,9 @@ class ImportAliases implements CompilerPassInterface
         // content aliases into Crud form factory :
         $container->getDefinition('social.form.factory')
                 ->replaceArgument(2, $contentAlias);
+        // content aliases into AbuseReport repository :
+        $container->getDefinition('social.abusereport.repository')
+                ->replaceArgument(2, array_keys($contentAlias));
     }
 
     /**
@@ -93,7 +96,7 @@ class ImportAliases implements CompilerPassInterface
 
     /**
      * Inject PM alias
-     * 
+     *
      * @param ContainerBuilder $container
      * @param array $aliasCfg
      * @throws InvalidConfigurationException

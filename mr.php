@@ -1,50 +1,35 @@
 <?php
 
-$map = <<<MAPFUNC
-function () {
-    var pk = this._id
-    // root entity
-    if (isObject(this.abusive)) {
-        for (var key in this.abusive) {
-            emit({id: pk, type: 'root'}, 1)
-        }
-    }
-    // commentaries
-    this.commentary.forEach(function (comment) {
-        if (isObject(comment.abusive)) {
-            for (var key in comment.abusive) {
-                emit({id: pk, type: 'commentary', uuid: comment.uuid}, 1)
-            }
-        }
-    })
-}
-MAPFUNC;
+require_once __DIR__ . '/app/bootstrap.php.cache';
+require_once __DIR__ . '/app/AppKernel.php';
 
-$reduce = <<<REDFUNC
-        function (key, values) {
-    return Array.sum(values)
-}
-REDFUNC;
+use Symfony\Component\Debug\Debug;
 
-$cnx = new MongoClient();
-$db = $cnx->selectDB('iinano_flo');
+Debug::enable();
 
-$result = $db->command(
-        [
-            'mapreduce' => 'dokudoki',
-            'map' => new MongoCode($map),
-            'reduce' => new MongoCode($reduce),
-            'query' => ['-class' => ['$in' => ['small', 'status']]],
-            'out' => ['inline' => 1] // 'abusivereport'
-        ]
-);
+$kernel = new AppKernel('dev', true);
+$kernel->boot();
+/* @var $container Symfony\Component\DependencyInjection\Container */
+$container = $kernel->getContainer();
 
+/* @var $repo \Trismegiste\SocialBundle\Repository\AbuseReport */
+$repo = $container->get('social.abusereport.repository');
+$result = $repo->compileReport();
 print_r($result);
-/*
-$cursor = $db->selectCollection('abusivereport')->find()->sort(['value' => -1]);
+
+$cursor = $repo->findMostReported(0, 3);
 foreach ($cursor as $doc) {
     print_r($doc);
 }
+
+/*
+$cnx = new MongoClient();
+$db = $cnx->selectDB('iinano_flo');
+
+
+
+$cursor = $db->selectCollection('abusivereport')->find()->sort(['value' => -1]);
+
 
 $coll = $db->selectCollection('abusivereport');
 print_r($coll->db);

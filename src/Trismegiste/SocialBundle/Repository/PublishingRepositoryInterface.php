@@ -41,6 +41,4 @@ interface PublishingRepositoryInterface
      * @return \Trismegiste\Socialist\Publishing
      */
     public function findByPk($pk);
-
-    public function findAbusiveReport();
 }
