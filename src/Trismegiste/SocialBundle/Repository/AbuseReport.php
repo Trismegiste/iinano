@@ -37,16 +37,12 @@ function () {
     var pk = this._id
     // root entity
     if (isObject(this.abusive)) {
-        for (var key in this.abusive) {
-            emit({id: pk, type: 'root'}, 1)
-        }
+        emit({id: pk, type: 'root'}, Object.keys(this.abusive).length)
     }
     // commentaries
     this.commentary.forEach(function (comment) {
         if (isObject(comment.abusive)) {
-            for (var key in comment.abusive) {
-                emit({id: pk, type: 'commentary', uuid: comment.uuid}, 1)
-            }
+            emit({id: pk, type: 'commentary', uuid: comment.uuid}, Object.keys(comment.abusive).length)
         }
     })
 }
