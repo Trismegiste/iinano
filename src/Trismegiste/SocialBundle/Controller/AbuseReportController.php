@@ -32,8 +32,15 @@ class AbuseReportController extends ContentController
 
     public function listingAction()
     {
-        $listing = $this->getRepository()->findAbusiveReport();
+        $reportRepo = $this->get('social.abusereport.repository');
+        $reportRepo->compileReport();
+        $iterator = $reportRepo->findMostReported(0,30);
 
+        $listing = [];
+        foreach ($iterator as $report) {
+            $report['content'] = $this->getRepository()->findByPk($report['_id']['id']);
+            $listing[] = $report;
+        }
         return $this->render('TrismegisteSocialBundle:AbuseReport:dashboard.html.twig', [
                     'listing' => $listing
         ]);

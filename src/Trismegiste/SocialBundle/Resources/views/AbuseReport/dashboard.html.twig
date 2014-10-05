@@ -9,17 +9,17 @@
         <div class="small-12 column">
             <table>
                 <tr>
-                    <th>User</th>
+                    <th style="width: 3em;"></th>
+                    <th style="width: 8em;">Type</th>
                     <th>Content</th>
-                    <th>Report counter</th>
-                    <th>Action</th>
+                    <th style="width: 8em;">Reported</th>
                 </tr>
-                {% for content in listing %}
+                {% for report in listing %}
                     <tr>
-                        <td><a href="{{ path('netizen_show', {author: content.author.nickname}) }}">{{ content.author.nickname }}</a></td>
-                        <td>{% include 'TrismegisteSocialBundle:Abusive:' ~ choose_template(content) %}</td>
-                        <td>{{ 0 }}</td>
-                        <td></td>
+                        <td><input type="checkbox" class="action-selection"/></td>
+                        <td>{{ report._id.type }}</td>
+                        <td>{% include 'TrismegisteSocialBundle:AbuseReport:show/' ~ report._id.type ~ '.html.twig' %}</td>
+                        <td class="text-center">{{ report.value }}</td>
                     </tr>
                 {% endfor %}
             </table>
