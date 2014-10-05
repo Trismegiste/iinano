@@ -34,15 +34,15 @@ class AbuseReport
 
         $map = <<<MAPFUNC
 function () {
-    var pk = this._id
+    var pk = this._id.str
     // root entity
     if (isObject(this.abusive)) {
-        emit({id: pk, type: 'root'}, Object.keys(this.abusive).length)
+        emit({type: this['-class'], id: pk}, Object.keys(this.abusive).length)
     }
     // commentaries
     this.commentary.forEach(function (comment) {
         if (isObject(comment.abusive)) {
-            emit({id: pk, type: 'commentary', uuid: comment.uuid}, Object.keys(comment.abusive).length)
+            emit({type: 'commentary', id: pk, uuid: comment.uuid}, Object.keys(comment.abusive).length)
         }
     })
 }

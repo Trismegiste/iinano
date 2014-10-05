@@ -19,7 +19,7 @@ $repo = $container->get('social.abusereport.repository');
 $result = $repo->compileReport();
 print_r($result);
 
-$cursor = $repo->findMostReported(0, 3);
+$cursor = $repo->findMostReported(0, 6);
 foreach ($cursor as $doc) {
     print_r($doc);
 }
