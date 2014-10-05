@@ -7,12 +7,12 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 /**
- * AbusiveController is a controller for managing abusive content repoorts
+ * AbuseReportController is a controller for managing abusive/spam content reports
  */
-class AbusiveController extends ContentController
+class AbuseReportController extends ContentController
 {
 
-    public function reportPublishAction($id, $action, $wallNick, $wallFilter)
+    public function sendOnPublishingAction($id, $action, $wallNick, $wallFilter)
     {
         $doc = $this->getRepository()->findByPk($id);
         switch ($action) {
@@ -34,12 +34,12 @@ class AbusiveController extends ContentController
     {
         $listing = $this->getRepository()->findAbusiveReport();
 
-        return $this->render('TrismegisteSocialBundle:Abusive:dashboard.html.twig', [
+        return $this->render('TrismegisteSocialBundle:AbuseReport:dashboard.html.twig', [
                     'listing' => $listing
         ]);
     }
 
-    public function reportCommentaryAction($id, $uuid, $action, $wallNick, $wallFilter)
+    public function sendOnCommentaryAction($id, $uuid, $action, $wallNick, $wallFilter)
     {
         $doc = $this->getRepository()->findByPk($id);
         $commentary = $doc->getCommentaryByUuid($uuid);

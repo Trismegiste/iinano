@@ -12,7 +12,7 @@
             <li><a href="{{ path('publishing_edit', {id: content.id}) }}">Edit</a></li>
             <li><a href="{{ path('publishing_delete', {id: content.id}) }}">Delete</a></li>
             {% endif %}
-            <li><a href="{{ path('pub_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">Report as abusive content</a></li>
+            <li><a href="{{ path('pub_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">Report abuse or spam</a></li>
         </ul>
         <h6 class="subheader">{{ content.author.nickname }} <small>{{ content.lastEdited | timeago }}</small></h6>
         {% block content_properties %}{% endblock %}

@@ -11,7 +11,7 @@
             <li><a href="{{ path('pub_commentary_edit', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Edit</a></li>
             <li><a href="{{ path('pub_commentary_delete', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Delete</a></li>
             {% endif %}
-            <li><a href="{{ path('commentary_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Report as abusive content</a></li>
+            <li><a href="{{ path('commentary_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Report abuse or spam</a></li>
         </ul>
         <a id="anchor-{{ content.id }}-{{ comment.uuid }}"></a>
         <h6 class="subheader">

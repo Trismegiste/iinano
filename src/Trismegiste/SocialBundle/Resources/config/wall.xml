@@ -28,12 +28,12 @@
     </route>
 
     <route id="pub_abusivereport" pattern="/pub/{id}/abusive/{action}">
-        <default key="_controller">TrismegisteSocialBundle:Abusive:reportPublish</default>
+        <default key="_controller">TrismegisteSocialBundle:AbuseReport:sendOnPublishing</default>
         <requirement key="id">[\da-f]{24}</requirement>
         <requirement key="action">(add)</requirement>
     </route>
     <route id="commentary_abusivereport" pattern="/pub/{id}/commentary/{uuid}/abusive/{action}">
-        <default key="_controller">TrismegisteSocialBundle:Abusive:reportCommentary</default>
+        <default key="_controller">TrismegisteSocialBundle:AbuseReport:sendOnCommentary</default>
         <requirement key="id">[\da-f]{24}</requirement>
         <requirement key="uuid">[\da-f]{40}</requirement>
         <requirement key="action">(add)</requirement>
