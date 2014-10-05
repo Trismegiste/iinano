@@ -23,9 +23,10 @@
         </div>
 
         {% block commentary_create %}{% endblock %}
-        {% if content.commentary|length > 0 %}
-            <h6>{{ content.commentary|length }} Comments</h6>
-            {% for comment in content.commentary %}
+        {% set commIt = content.commentaryIterator %}
+        {% if commIt.count > 0 %}
+            <h6>{{ commIt.count }} Comments</h6>
+            {% for comment in commIt %}
                 {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
             {% endfor %}
         {% endif %}
