@@ -34,7 +34,7 @@ class AbuseReport
         $result = $this->compiledReport->db
                 ->execute(new \MongoCode(file_get_contents(__DIR__ . '/v8/abusereport.js')));
 
-        if ($result['ok'] != 1) {  // mongodb returns this value as a double ?!?
+        if (!$result['ok']) {
             throw new \RuntimeException($result['errmsg']);
         }
     }
