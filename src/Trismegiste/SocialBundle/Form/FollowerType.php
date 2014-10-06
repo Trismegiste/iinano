@@ -50,7 +50,10 @@ class FollowerType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
-        $resolver->setDefaults(['attr' => ['data-social-autocomplete-author' => true]]);
+        $resolver->setDefaults(['attr' => [
+                'data-social-autocomplete-author' => true,
+                'placeholder' => 'Type at least 2 characters of one of your follower/friend'
+        ]]);
     }
 
 }
