@@ -90,4 +90,9 @@ class Netizen extends User implements UserInterface
         }
     }
 
+    public function setGroup($str)
+    {
+        $this->roles = [$str];
+    }
+
 }

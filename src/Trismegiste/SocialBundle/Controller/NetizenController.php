@@ -105,4 +105,11 @@ class NetizenController extends Template
         ]);
     }
 
+    public function listingAction()
+    {
+        $repo = $this->get('social.netizen.repository');
+
+        return new Response('here');
+    }
+
 }

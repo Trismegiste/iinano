@@ -4,8 +4,13 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="abusive_listing" pattern="/">
+    <route id="abusive_listing" pattern="/abusereport/list">
         <default key="_controller">TrismegisteSocialBundle:AbuseReport:listing</default>
+        <requirement key="_method">GET</requirement>
+    </route>
+
+    <route id="netizen_listing" pattern="/netizen/list">
+        <default key="_controller">TrismegisteSocialBundle:Netizen:listing</default>
         <requirement key="_method">GET</requirement>
     </route>
 
