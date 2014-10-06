@@ -3,8 +3,10 @@ security:
         Trismegiste\SocialBundle\Security\Netizen: sha1
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_MODERATOR:     ROLE_USER
+        ROLE_MARKETING:     ROLE_USER
+        ROLE_ADMIN:         [ROLE_MODERATOR, ROLE_MARKETING]
+        ROLE_SUPER_ADMIN:   [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     providers:
         proprietary:
@@ -29,5 +31,5 @@ security:
 
     access_control:
         - { path: ^/guest/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-       # - { path: ^/admin/, roles: ROLE_ADMIN }
+        - { path: ^/admin/, roles: ROLE_MODERATOR }
         - { path: ^/, roles: ROLE_USER }

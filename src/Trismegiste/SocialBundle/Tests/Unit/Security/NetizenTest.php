@@ -37,8 +37,8 @@ class NetizenTest extends \PHPUnit_Framework_TestCase
 
     public function testRoles()
     {
+        $this->sut->addRole('ROLE_USER');
         $this->assertEquals(['ROLE_USER'], $this->sut->getRoles());
-        $this->sut->eraseCredentials(); // for CC
     }
 
     public function testProfile()
@@ -61,6 +61,7 @@ class NetizenTest extends \PHPUnit_Framework_TestCase
         $this->sut->getSalt();
 
         $this->assertEquals(get_class($strat), $this->sut->getCredentialType());
+        $this->sut->eraseCredentials(); // for CC
     }
 
 }

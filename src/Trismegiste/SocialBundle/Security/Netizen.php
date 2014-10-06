@@ -8,10 +8,9 @@ namespace Trismegiste\SocialBundle\Security;
 
 use Trismegiste\Socialist\User;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Trismegiste\Socialist\AuthorInterface;
 
 /**
- * Netizen is a User with features of login, security 
+ * Netizen is a User with features of login, security
  * and connection stuff with external provider
  */
 class Netizen extends User implements UserInterface
@@ -19,7 +18,7 @@ class Netizen extends User implements UserInterface
 
     /**
      * A strategy for authentication
-     * @var Credential\Strategy 
+     * @var Credential\Strategy
      */
     protected $cred;
 
@@ -28,9 +27,14 @@ class Netizen extends User implements UserInterface
      */
     protected $profile;
 
+    /**
+     * @var array of roles
+     */
+    protected $roles = [];
+
     public function eraseCredentials()
     {
-        
+
     }
 
     public function getPassword()
@@ -40,8 +44,7 @@ class Netizen extends User implements UserInterface
 
     public function getRoles()
     {
-        // @todo not implemented yet
-        return ['ROLE_USER'];
+        return $this->roles;
     }
 
     public function getSalt()
@@ -61,7 +64,7 @@ class Netizen extends User implements UserInterface
 
     /**
      * For further support in authenticationProvider or security listener
-     * 
+     *
      * @return string fqcn
      */
     public function getCredentialType()
@@ -78,6 +81,13 @@ class Netizen extends User implements UserInterface
     public function setProfile(Profile $pr)
     {
         $this->profile = $pr;
+    }
+
+    public function addRole($str)
+    {
+        if (!in_array($str, $this->roles)) {
+            $this->roles[] = $str;
+        }
     }
 
 }

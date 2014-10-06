@@ -86,6 +86,7 @@ class NetizenRepository implements NetizenRepositoryInterface
                 ->encodePassword($password, $salt);
         $user->setCredential(new Internal($encoded, $salt));
         $user->setProfile(new Profile());
+        $user->addRole('ROLE_USER');
 
         return $user;
     }
