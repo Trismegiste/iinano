@@ -38,11 +38,26 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->findByNickname('kirk');
     }
 
-    public function testFindByPk()
+    /**
+     * @expectedException \LogicException
+     */
+    public function testInvalidTypeFindByPk()
     {
         $this->repository->expects($this->once())
                 ->method('findByPk')
                 ->with($this->equalTo(123));
+        $this->sut->findByPk(123);
+    }
+
+    public function testFindByPk()
+    {
+        $userMock = $this->getMockBuilder('Trismegiste\SocialBundle\Security\Netizen')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo(123))
+                ->will($this->returnValue($userMock));
         $this->sut->findByPk(123);
     }
 

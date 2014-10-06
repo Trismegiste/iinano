@@ -30,7 +30,8 @@ class ImportAliasesTest extends \PHPUnit_Framework_TestCase
             'twig.social.renderer' => new Definition(null, [0, 1]),
             'social.form.factory' => new Definition(null, [0, 1, 2]),
             'social.netizen.repository' => new Definition(null, [0, 1, 2]),
-            'social.private_message.repository' => new Definition(null, [0, 1, 2])
+            'social.private_message.repository' => new Definition(null, [0, 1, 2]),
+            'social.abusereport.repository' => new Definition(null, [0, 1, 2])
         ]);
         $this->sut = new ImportAliases();
     }

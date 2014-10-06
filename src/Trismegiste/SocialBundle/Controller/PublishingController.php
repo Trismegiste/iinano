@@ -77,6 +77,8 @@ class PublishingController extends ContentController
 
             $this->checkOwningRight($post);
 
+            // @todo this below sux alot : add a delete method in repository :
+            // check rights and content class in the process
             $coll = $this->getCollection();
             $coll->remove(['_id' => new \MongoId($id)]);
             $this->pushFlash('notice', 'Message deleted');

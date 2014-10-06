@@ -36,11 +36,24 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
     }
 
-    public function testGetByPk()
+    /**
+     * @expectedException \LogicException
+     */
+    public function testInvalidTypeGetByPk()
     {
         $this->repository->expects($this->once())
                 ->method('findByPk')
                 ->with($this->equalTo(123));
+
+        $this->sut->findByPk(123);
+    }
+
+    public function testGetByPk()
+    {
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo(123))
+                ->will($this->returnValue($this->document));
 
         $this->sut->findByPk(123);
     }
