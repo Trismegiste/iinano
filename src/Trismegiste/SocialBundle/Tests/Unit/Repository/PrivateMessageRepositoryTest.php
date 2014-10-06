@@ -140,4 +140,52 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->persist($this->document);
     }
 
+    /**
+     * @expectedException \LogicException
+     */
+    public function testInvalidPkPersistAsRead()
+    {
+        $this->sut->persistAsRead(123);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedExceptionMessage receipient
+     */
+    public function testOnlyReceipientCanPersistAsRead()
+    {
+        $this->security->expects($this->once())
+                ->method('isGranted')
+                ->with($this->equalTo('ROLE_USER'))
+                ->will($this->returnValue(true));
+
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo(123))
+                ->will($this->returnValue($this->document));
+
+        $this->sut->persistAsRead(123);
+    }
+
+    public function testPersistAsRead()
+    {
+        $received = new \Trismegiste\Socialist\PrivateMessage($this->target, $this->source);
+
+        $this->security->expects($this->once())
+                ->method('isGranted')
+                ->with($this->equalTo('ROLE_USER'))
+                ->will($this->returnValue(true));
+
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo(123))
+                ->will($this->returnValue($received));
+
+        $this->repository->expects($this->once())
+                ->method('persist')
+                ->with($this->attributeEqualTo('read', true));
+
+        $this->sut->persistAsRead(123);
+    }
+
 }

@@ -1,5 +1,1 @@
 {% extends "TrismegisteSocialBundle:PrivateMessage:message_show.html.twig" %}
-
-{% block pm_action %}
-    <a href="{{ path('private_delete', {id: message.id}) }}" class="alert button tiny">X</a>
-{% endblock %}

@@ -37,7 +37,7 @@ class PrivateMessageController extends Template
         return $this->render('TrismegisteSocialBundle:PrivateMessage:create_form.html.twig', [
                     'form' => $form->createView(),
                     'received' => $repo->findAllReceived(),
-                    'sent' => $repo->findAllSent()
+                    'sent' => $repo->findAllSent()->limit(10)
         ]);
     }
 
@@ -66,15 +66,6 @@ class PrivateMessageController extends Template
         $repo = $this->get('social.private_message.repository');
         $repo->persistAsRead($id);
         $this->pushFlash('notice', 'PM marked as read');
-
-        return $this->redirectRouteOk('private_create');
-    }
-
-    public function deleteAction($id)
-    {
-        $repo = $this->get('social.private_message.repository');
-        $repo->delete($id);
-        $this->pushFlash('notice', 'PM deleted');
 
         return $this->redirectRouteOk('private_create');
     }
