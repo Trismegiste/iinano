@@ -140,6 +140,9 @@ class NetizenRepository implements NetizenRepositoryInterface
         return !is_null($this->findByNickname($nick));
     }
 
+    /**
+     * @inheritdoc
+     */
     public function search($filter = null)
     {
         $query = [ MapAlias::CLASS_KEY => $this->classAlias];

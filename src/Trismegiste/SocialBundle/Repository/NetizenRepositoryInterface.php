@@ -74,4 +74,11 @@ interface NetizenRepositoryInterface
      * @param resource $imageResource a GD image resource
      */
     public function updateAvatar(Netizen $user, $imageResource);
+
+    /**
+     * Search for a user
+     * 
+     * @param string $filter the start of the nickname
+     */
+    public function search($filter = null);
 }
