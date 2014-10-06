@@ -70,4 +70,13 @@ class PrivateMessageController extends Template
         return $this->redirectRouteOk('private_create');
     }
 
+    public function deleteAction($id)
+    {
+        $repo = $this->get('social.private_message.repository');
+        $repo->delete($id);
+        $this->pushFlash('notice', 'PM deleted');
+
+        return $this->redirectRouteOk('private_create');
+    }
+
 }

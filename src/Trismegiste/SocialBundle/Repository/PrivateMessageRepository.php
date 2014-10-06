@@ -115,4 +115,19 @@ class PrivateMessageRepository
         $this->repository->persist($pm);
     }
 
+    public function delete($pk)
+    {
+        $pm = $this->repository->findByPk($pk);
+        if (!$pm instanceof PrivateMessage) {
+            throw new \LogicException("$pk is not a Private message");
+        }
+
+        if ($pm->getSender() != $this->getLoggedUser()->getAuthor()) {
+            throw new AccessDeniedException("You are not the sender of this message");
+        }
+
+        $pm->markAsRead(); // @todo the message is only mark as read: perhaps deleting is a better idea ?
+        $this->repository->persist($pm);
+    }
+
 }
