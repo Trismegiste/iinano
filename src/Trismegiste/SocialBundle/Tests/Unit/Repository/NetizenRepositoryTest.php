@@ -142,4 +142,13 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
         new NetizenRepository($this->repository, $this->encoder, 123, $this->storage);
     }
 
+    public function testSearchUser()
+    {
+        $this->repository->expects($this->once())
+                ->method('find')
+                ->with($this->equalTo(['-class' => 'netizen', 'author.nickname' => new \MongoRegex('/^user/')]));
+
+        $this->sut->search('user');
+    }
+
 }
