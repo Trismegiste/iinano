@@ -1,0 +1,24 @@
+{% extends 'TrismegisteSocialBundle::layout.html.twig' %}
+
+{% block page_title %}
+    {{ parent() }} | User admininstration
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="small-12 column">
+            <table>
+                <tr>
+                    <th style="width: 3em;"></th>
+                    <th>Content</th>
+                </tr>
+                {% for netizen in listing %}
+                    <tr>
+                        <td><input type="checkbox" class="action-selection"/></td>
+                        <td>{{ netizen.author.nickname }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

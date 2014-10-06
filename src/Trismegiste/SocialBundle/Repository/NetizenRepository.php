@@ -140,4 +140,15 @@ class NetizenRepository implements NetizenRepositoryInterface
         return !is_null($this->findByNickname($nick));
     }
 
+    public function search($filter = null)
+    {
+        $query = [ MapAlias::CLASS_KEY => $this->classAlias];
+
+        if (!is_null($filter)) {
+            $query['author.nickname'] = new \MongoRegex('#^' . $filter . '#');
+        }
+
+        return $this->repository->find($query);
+    }
+
 }
