@@ -40,20 +40,27 @@ class AbuseReportTest extends WebTestCase
             $author[] = new Author($nick);
         }
 
-        $doc = new SmallTalk($author[0]);
-        $doc->report($author[1]);
-        $doc->report($author[2]);
+        $doc0 = new SmallTalk($author[0]);
+        $doc1 = clone $doc0;
+        $doc1->report($author[1]);
+        $doc2 = clone $doc1;
+        $doc2->report($author[2]);
         $comm = new Commentary($author[1]);
         $comm->report($author[0]);
-        $doc->attachCommentary($comm);
+        $doc2->attachCommentary($comm);
+        $doc3 = clone $doc0;
+        $doc3->attachCommentary($comm);
 
         return [
-            [$doc,
+            [$doc0, []],
+            [$doc1, [['type' => 'small', 'counter' => 1]]],
+            [$doc2,
                 [
                     ['type' => 'small', 'counter' => 2],
                     ['type' => 'commentary', 'counter' => 1]
                 ]
-            ]
+            ],
+            [$doc3, [['type' => 'commentary', 'counter' => 1]]]
         ];
     }
 
@@ -67,6 +74,7 @@ class AbuseReportTest extends WebTestCase
         $this->sut->compileReport();
 
         $result = iterator_to_array($this->sut->findMostReported(), false);
+        $this->assertCount(count($assertion), $result);
         foreach ($assertion as $idx => $check) {
             $this->assertEquals($check['type'], $result[$idx]['type']);
             $this->assertEquals($check['counter'], $result[$idx]['counter']);
