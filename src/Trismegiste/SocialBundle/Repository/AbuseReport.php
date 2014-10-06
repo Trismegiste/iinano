@@ -14,7 +14,7 @@ class AbuseReport
 {
 
     /** @var \MongoCollection */
-    protected $mapReducedReport;
+    protected $compiledReport;
 
     /** @var \Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface */
     protected $publishRepo;
@@ -25,56 +25,24 @@ class AbuseReport
     public function __construct(PublishingRepositoryInterface $content, \MongoCollection $siblingColl, array $aliases, $collName)
     {
         $this->publishRepo = $content;
-        $this->mapReducedReport = $siblingColl->db->selectCollection($collName);
+        $this->compiledReport = $siblingColl->db->selectCollection($collName);
         $this->pubAlias = $aliases;
     }
 
     public function compileReport()
     {
-
-        $map = <<<MAPFUNC
-function () {
-    var pk = this._id.str
-    // root entity
-    if (isObject(this.abusive)) {
-        emit({type: this['-class'], id: pk}, Object.keys(this.abusive).length)
-    }
-    // commentaries
-    this.commentary.forEach(function (comment) {
-        if (isObject(comment.abusive)) {
-            emit({type: 'commentary', id: pk, uuid: comment.uuid}, Object.keys(comment.abusive).length)
-        }
-    })
-}
-MAPFUNC;
-
-        $reduce = <<<REDFUNC
-        function (key, values) {
-    return Array.sum(values)
-}
-REDFUNC;
-
-        $result = $this->mapReducedReport->db->command(
-                [
-                    'mapreduce' => 'dokudoki',
-                    'map' => new \MongoCode($map),
-                    'reduce' => new \MongoCode($reduce),
-                    'query' => ['-class' => ['$in' => $this->pubAlias]],
-                    'out' => $this->mapReducedReport->getName()
-                ]
-        );
+        $result = $this->compiledReport->db
+                ->execute(new \MongoCode(file_get_contents(__DIR__ . '/v8/abusereport.js')));
 
         if ($result['ok'] != 1) {  // mongodb returns this value as a double ?!?
             throw new \RuntimeException($result['errmsg']);
         }
-
-        return $result['counts'];
     }
 
     public function findMostReported($offset = 0, $limit = 20)
     {
-        return $this->mapReducedReport->find()
-                        ->sort(['value' => -1])
+        return $this->compiledReport->find()
+                        ->sort(['counter' => -1])
                         ->skip($offset)
                         ->limit($limit);
     }

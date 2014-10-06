@@ -17,9 +17,9 @@
                 {% for report in listing %}
                     <tr>
                         <td><input type="checkbox" class="action-selection"/></td>
-                        <td>{{ report._id.type }}</td>
-                        <td>{% include 'TrismegisteSocialBundle:AbuseReport:show/' ~ report._id.type ~ '.html.twig' %}</td>
-                        <td class="text-center">{{ report.value }}</td>
+                        <td>{{ report.type }}</td>
+                        <td>{% include 'TrismegisteSocialBundle:AbuseReport:show/' ~ report.type ~ '.html.twig' %}</td>
+                        <td class="text-center">{{ report.counter }}</td>
                     </tr>
                 {% endfor %}
             </table>
