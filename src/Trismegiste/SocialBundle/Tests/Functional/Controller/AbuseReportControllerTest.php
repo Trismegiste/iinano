@@ -6,10 +6,8 @@
 
 namespace Trismegiste\SocialBundle\Tests\Functional\Controller;
 
-use Trismegiste\SocialBundle\Controller\AbuseReportController;
 use Trismegiste\SocialBundle\Tests\Functional\Controller\WebTestCasePlus;
 use Trismegiste\Socialist\SmallTalk;
-use Trismegiste\Socialist\Author;
 
 /**
  * AbuseReportControllerTest is a functional test for AbuseReportController
@@ -27,13 +25,6 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $this->addUserFixture('spock');
     }
 
-    public function testLogBadRole()
-    {
-        $this->logIn('kirk');
-        $this->getPage('abusive_listing');
-        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
-    }
-
     public function testReportPublish()
     {
         $spock = $this->getService('social.netizen.repository')
@@ -48,6 +39,31 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $this->client->click($link);
     }
 
+    public function testReportCommentary()
+    {
+        $repo = $this->getService('social.content.repository');
+        $spock = $this->getService('social.netizen.repository')
+                ->findByNickname('spock')
+                ->getAuthor();
+        /* @var $post SmallTalk  */
+        $post = iterator_to_array($repo->findLastEntries(), false)[0];
+        $post->attachCommentary(new \Trismegiste\Socialist\Commentary($spock));
+        $repo->persist($post);
+
+        $this->logIn('kirk');
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
+        $this->assertCount(1, $crawler->filter('div.commentary'));
+        $link = $crawler->filter('div.commentary')->selectLink('Report abuse or spam')->link();
+        $this->client->click($link);
+    }
+
+    public function testLogBadRole()
+    {
+        $this->logIn('kirk');
+        $this->getPage('abusive_listing');
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+    }
+
     public function testLogWithModerator()
     {
         $repo = $this->getService('social.netizen.repository');
@@ -60,9 +76,11 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $crawler = $this->getPage('abusive_listing');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $lineSet = $crawler->filter('table.abuse-listing tr');
-        $this->assertCount(2, $lineSet);
+        $this->assertCount(3, $lineSet);
         $this->assertEquals('small', $lineSet->eq(1)->filter('td')->eq(1)->text());
         $this->assertEquals(1, (int) $lineSet->eq(1)->filter('td')->eq(3)->text());
+        $this->assertEquals('comm', $lineSet->eq(2)->filter('td')->eq(1)->text());
+        $this->assertEquals(1, (int) $lineSet->eq(2)->filter('td')->eq(3)->text());
     }
 
 }
