@@ -55,6 +55,9 @@ class WebTestCasePlus extends WebTestCase
         return $this->client->request('GET', $this->generateUrl($route, $param));
     }
 
+    /**
+     * Do not use this method in dataProvider since they are called before setUp !
+     */
     protected function logIn($nick)
     {
         $repo = $this->getService('social.netizen.repository');
@@ -63,7 +66,7 @@ class WebTestCasePlus extends WebTestCase
         if (!is_null($user)) {
             $session = $this->client->getContainer()->get('session');
             $firewall = 'secured_area';
-            $token = new UsernamePasswordToken($user, null, $firewall, array('ROLE_USER'));
+            $token = new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
             $session->set('_security_' . $firewall, serialize($token));
             $session->save();
             $cookie = new Cookie($session->getName(), $session->getId());
