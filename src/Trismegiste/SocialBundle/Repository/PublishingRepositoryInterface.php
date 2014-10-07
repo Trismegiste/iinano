@@ -7,6 +7,7 @@
 namespace Trismegiste\SocialBundle\Repository;
 
 use Trismegiste\Socialist\Publishing;
+use Trismegiste\Socialist\Follower;
 
 /**
  * PublishingRepositoryInterface is a contract for a repository of published content
@@ -41,4 +42,17 @@ interface PublishingRepositoryInterface
      * @return \Trismegiste\Socialist\Publishing
      */
     public function findByPk($pk);
+
+    /**
+     * Retrieves an iterator on the last published entries for a given wall & filter
+     * @see PublishingRepositoryInterface::findLastEntries()
+     *
+     * @param Follower $wallUser
+     * @param string $wallFilter a filter key from ['all', 'self' 'following', 'follower', 'friend']
+     * @param int $offset @see MongoCursor::skip()
+     * @param int $limit @see MongoCursor::limit()
+     *
+     * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
+     */
+    public function findWallEntries(Follower $wallUser, $wallFilter, $offset = 0, $limit = 20);
 }

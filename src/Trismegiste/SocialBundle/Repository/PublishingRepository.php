@@ -10,7 +10,7 @@ use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 use Trismegiste\Socialist\Publishing;
-use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\Socialist\Follower;
 
 /**
  * PublishingRepository is a business repository for subclasses of Publishing
@@ -34,7 +34,7 @@ class PublishingRepository implements PublishingRepositoryInterface
      * @param \Symfony\Component\Security\Core\SecurityContextInterface $ctx
      * @param array $aliases a list a class key for each document
      */
-    public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx, $aliases)
+    public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx, array $aliases)
     {
         $this->security = $ctx;
         $this->repository = $repo;
@@ -60,9 +60,7 @@ class PublishingRepository implements PublishingRepositoryInterface
     }
 
     /**
-     * Persists a published content
-     *
-     * @param \Trismegiste\Socialist\Publishing $doc
+     * @inheritdoc
      */
     public function persist(Publishing $doc)
     {
@@ -70,11 +68,7 @@ class PublishingRepository implements PublishingRepositoryInterface
     }
 
     /**
-     * Returns a published content by its PK
-     *
-     * @param string $pk
-     *
-     * @return \Trismegiste\Socialist\Publishing
+     * @inheritdoc
      */
     public function findByPk($pk)
     {
@@ -86,17 +80,19 @@ class PublishingRepository implements PublishingRepositoryInterface
         return $doc;
     }
 
-    public function findWallEntries(Netizen $wallUser, $wallFilter, $offset = 0, $limit = 20)
+    /**
+     * @inheritdoc
+     */
+    public function findWallEntries(Follower $wallUser, $wallFilter, $offset = 0, $limit = 20)
     {
         switch ($wallFilter) {
 
             case 'self':
-                $filterAuthor = new \ArrayIterator([$wallUser->getUsername() => true]);
+                $filterAuthor = new \ArrayIterator([$wallUser->getUniqueId() => true]);
                 break;
 
             case 'following':
                 $filterAuthor = $wallUser->getFollowingIterator();
-                // @todo adding self to the list like twitter ?
                 break;
 
             case 'follower':

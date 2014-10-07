@@ -156,4 +156,11 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->findWallEntries($this->createNetizen('kirk'), 'sdsdqs');
     }
 
+    public function testInterfaceInSync()
+    {
+        $fqcn = 'Trismegiste\Yuurei\Persistence\Repository';
+        $fqin = $fqcn . 'Interface';
+        $this->assertCount(1 + count(get_class_methods($fqin)), get_class_methods($fqcn));
+    }
+
 }

@@ -24,6 +24,13 @@ class AbuseReport
     /** @var \MongoDB */
     protected $database;
 
+    /**
+     * Ctor
+     *
+     * @param \MongoCollection $sourceCollection the source collection of Content
+     * @param string $targetName the target collection's name (in the same db as $sourceCollection
+     * @param array $aliases an array of aliases for Publishing subclasses
+     */
     public function __construct(\MongoCollection $sourceCollection, $targetName, array $aliases)
     {
         $this->database = $sourceCollection->db;
@@ -32,9 +39,13 @@ class AbuseReport
         $this->pubAlias = $aliases;
     }
 
+    /**
+     * Runs a script in MongoDB
+     *
+     * @throws \RuntimeException
+     */
     public function compileReport()
     {
-        // @todo remove all hardcoded value in JS by passing argument
         $result = $this->database
                 ->execute(new \MongoCode(file_get_contents(__DIR__ . '/v8/abusereport.js'), [
             'aliases' => $this->pubAlias,
@@ -48,6 +59,14 @@ class AbuseReport
         }
     }
 
+    /**
+     * Retrieves a cursor on a compiled list on abuse reports
+     *
+     * @param int $offset
+     * @param int $limit
+     *
+     * @return \MongoCursor
+     */
     public function findMostReported($offset = 0, $limit = 20)
     {
         return $this->compiledReport->find()
