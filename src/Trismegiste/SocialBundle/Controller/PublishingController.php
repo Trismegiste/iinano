@@ -25,7 +25,7 @@ class PublishingController extends ContentController
         }
         if ($form->isValid()) {
             $newPost = $form->getData();
-            $newPost->setLastEdited(new \DateTime());
+            $newPost->setLastEdited(new \DateTime());  // @todo Model in Controller : bad, not SRP
             try {
                 $repo->persist($newPost);
                 $this->pushFlash('notice', 'Message saved');

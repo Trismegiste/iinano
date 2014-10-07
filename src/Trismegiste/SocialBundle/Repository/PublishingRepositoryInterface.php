@@ -11,7 +11,6 @@ use Trismegiste\Socialist\Follower;
 
 /**
  * PublishingRepositoryInterface is a contract for a repository of published content
- * @todo the concrete class is not in sync => add a test
  */
 interface PublishingRepositoryInterface
 {

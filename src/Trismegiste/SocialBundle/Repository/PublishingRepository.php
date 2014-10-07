@@ -17,7 +17,7 @@ use Trismegiste\Socialist\Follower;
  *
  * This is a wrapper around a RepositoryInterface with SecurityContext
  * This is not a decorator of RepositoryInterface because we
- * try to avoid dumb repositories as well as dumb entities, only with methods
+ * try to avoid dumb repositories (as well as dumb entities), so only methods
  * with business relevance. Plus, security concerns will break Liskov principle
  */
 class PublishingRepository implements PublishingRepositoryInterface
