@@ -16,31 +16,22 @@ use \Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * PrivateMessageRepository is a repository for PrivateMessage
  */
-class PrivateMessageRepository
+class PrivateMessageRepository extends SecuredContentProvider
 {
 
     protected $classKey;
 
-    /** @var Trismegiste\Yuurei\Persistence\RepositoryInterface */
-    protected $repository;
-
-    /** \Symfony\Component\Security\Core\SecurityContextInterface */
-    protected $security;
-
     public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx, $alias)
     {
-        $this->repository = $repo;
-        $this->security = $ctx;
+        parent::__construct($repo, $ctx);
         $this->classKey = $alias;
     }
 
     public function findAllReceived($offset = 0, $unread = true)
     {
-        $target = $this->getLoggedUser()->getUsername();
-
         return $this->repository->find([
                             MapAlias::CLASS_KEY => $this->classKey,
-                            'target.nickname' => $target,
+                            'target.nickname' => $this->getNickname(),
                             'read' => !$unread
                         ])
                         ->offset($offset)
@@ -49,11 +40,9 @@ class PrivateMessageRepository
 
     public function findAllSent($offset = 0, $unread = true)
     {
-        $source = $this->getLoggedUser()->getUsername();
-
         return $this->repository->find([
                             MapAlias::CLASS_KEY => $this->classKey,
-                            'source.nickname' => $source,
+                            'source.nickname' => $this->getNickname(),
                             'read' => !$unread
                         ])
                         ->offset($offset)
@@ -74,30 +63,13 @@ class PrivateMessageRepository
         if (!$this->security->isGranted('LISTENER', $target)) {
             throw new AccessDeniedException("Cannot send a message to a user who does not follow you");
         }
-        $source = $this->getLoggedUser();
 
-        return new PrivateMessage($source->getAuthor(), $target);
+        return new PrivateMessage($this->getAuthor(), $target);
     }
 
     public function persist(PrivateMessage $msg)
     {
         $this->repository->persist($msg);
-    }
-
-    /**
-     * Returns the current logged netizen in session
-     *
-     * @return \Trismegiste\SocialBundle\Security\Netizen
-     *
-     * @throws AccessDeniedException if not logged
-     */
-    protected function getLoggedUser()
-    {
-        if (!$this->security->isGranted('ROLE_USER')) {
-            throw new AccessDeniedException('Not logged');
-        }
-
-        return $this->security->getToken()->getUser();
     }
 
     public function persistAsRead($pk)
@@ -107,7 +79,7 @@ class PrivateMessageRepository
             throw new \LogicException("$pk is not a Private message");
         }
 
-        if ($pm->getTarget() != $this->getLoggedUser()->getAuthor()) {
+        if ($pm->getTarget() != $this->getAuthor()) {
             throw new AccessDeniedException("You are not the receipient of this message");
         }
 
