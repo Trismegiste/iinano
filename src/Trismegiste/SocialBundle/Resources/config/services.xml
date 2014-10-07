@@ -36,10 +36,9 @@
         </service>
 
         <service id="social.abusereport.repository" class="Trismegiste\SocialBundle\Repository\AbuseReport">
-            <argument type="service" id="social.content.repository"/>
             <argument type="service" id="dokudoki.collection"/>
-            <argument/> <!-- injected by ImportAlias compiler pass -->
             <argument>abusereport</argument>
+            <argument/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
         <!-- TWIG -->

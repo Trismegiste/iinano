@@ -57,10 +57,10 @@ class AbuseReportTest extends WebTestCase
             [$doc2,
                 [
                     ['type' => 'small', 'counter' => 2],
-                    ['type' => 'commentary', 'counter' => 1]
+                    ['type' => 'comm', 'counter' => 1]
                 ]
             ],
-            [$doc3, [['type' => 'commentary', 'counter' => 1]]]
+            [$doc3, [['type' => 'comm', 'counter' => 1]]]
         ];
     }
 

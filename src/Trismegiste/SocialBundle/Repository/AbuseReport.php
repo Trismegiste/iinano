@@ -13,26 +13,35 @@ namespace Trismegiste\SocialBundle\Repository;
 class AbuseReport
 {
 
+    protected $sourceName;
+
     /** @var \MongoCollection */
     protected $compiledReport;
-
-    /** @var \Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface */
-    protected $publishRepo;
 
     /** @var array */
     protected $pubAlias;
 
-    public function __construct(PublishingRepositoryInterface $content, \MongoCollection $siblingColl, array $aliases, $collName)
+    /** @var \MongoDB */
+    protected $database;
+
+    public function __construct(\MongoCollection $sourceCollection, $targetName, array $aliases)
     {
-        $this->publishRepo = $content;
-        $this->compiledReport = $siblingColl->db->selectCollection($collName);
+        $this->database = $sourceCollection->db;
+        $this->sourceName = $sourceCollection->getName();
+        $this->compiledReport = $this->database->selectCollection($targetName);
         $this->pubAlias = $aliases;
     }
 
     public function compileReport()
     {
-        $result = $this->compiledReport->db
-                ->execute(new \MongoCode(file_get_contents(__DIR__ . '/v8/abusereport.js')));
+        // @todo remove all hardcoded value in JS by passing argument
+        $result = $this->database
+                ->execute(new \MongoCode(file_get_contents(__DIR__ . '/v8/abusereport.js'), [
+            'aliases' => $this->pubAlias,
+            'sourceName' => $this->sourceName,
+            'targetName' => $this->compiledReport->getName(),
+            'classAliasKey' => \Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias::CLASS_KEY
+        ]));
 
         if (!$result['ok']) {
             throw new \RuntimeException($result['errmsg']);
