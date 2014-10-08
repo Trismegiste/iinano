@@ -1,0 +1,8 @@
+{% extends 'TrismegisteSocialBundle:Content:' ~ choose_template(content.embedded) %}
+
+{% block content_properties %}
+    {{ content.message }}
+    {{ content.embedded.author.nickname }} has said :
+    {% set content = content.embedded %}
+    {{ parent() }}
+{% endblock %}
