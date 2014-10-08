@@ -1,10 +1,6 @@
-{% extends 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
-
-{% block content_properties %}
-    <div id="map-{{ content.id }}" class="status-map"
-         data-social-status-show
-         data-social-status-lng="{{ content.longitude }}"
-         data-social-status-lat="{{ content.latitude}}"
-         data-social-status-zoom="{{ content.zoom }}"
-         data-social-status-message="{{ content.message }}"></div>
-{% endblock %}
+<div id="map-{{ content.id }}" class="status-map"
+     data-social-status-show
+     data-social-status-lng="{{ content.longitude }}"
+     data-social-status-lat="{{ content.latitude}}"
+     data-social-status-zoom="{{ content.zoom }}"
+     data-social-status-message="{{ content.message }}"></div>

@@ -6,7 +6,7 @@
 
 {% block feed %}
 {% for content in listing %}
-    {% include 'TrismegisteSocialBundle:Content:' ~ choose_template(content) %}
+    {% include 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
     <hr/>
 {% endfor %}
 <div id="pagination"></div>

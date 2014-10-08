@@ -44,7 +44,10 @@ class PictureType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'Trismegiste\Socialist\Picture']);
+        $resolver->setDefaults([
+            'data_class' => 'Trismegiste\Socialist\Picture',
+            'block_name' => 'social_picture'
+        ]);
     }
 
 }
