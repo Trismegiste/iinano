@@ -15,7 +15,7 @@
             <li><a href="{{ path('pub_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">Report abuse or spam</a></li>
         </ul>
         <h6 class="subheader">{{ content.author.nickname }} <small>{{ content.lastEdited | timeago }}</small></h6>
-        {% block content_properties %}{% endblock %}
+        {% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content) %}
 
         <div>
         <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}" class="button tiny secondary">Reply</a>

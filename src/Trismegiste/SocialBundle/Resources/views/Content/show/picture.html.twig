@@ -1,6 +1,2 @@
-{% extends 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
-
-{% block content_properties %}
-    <img src="{{ path('picture_get', {id: content.id}) }}"/>
-    <h5>{{ content.message }}</h5>
-{% endblock %}
+<img src="{{ path('picture_get', {id: content.id}) }}"/>
+<h5>{{ content.message }}</h5>

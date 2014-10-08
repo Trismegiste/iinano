@@ -1,0 +1,37 @@
+{% extends 'TrismegisteSocialBundle:Content:publishing_form.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $('div[data-social-status-form]').each(function () {
+
+            var item = $(this);
+            var map = L.map(item.attr('id'));
+
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            map.locate({setView: true, maxZoom: 16});
+
+            map.on('locationfound', function (e) {
+                var radius = e.accuracy / 2;
+
+                L.marker(e.latlng).addTo(map)
+                        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+                L.circle(e.latlng, radius).addTo(map);
+            });
+
+            map.on('mousemove locationfound', function (e) {
+                $(item.data('socialFieldLng')).val(map.getCenter().lng);
+                $(item.data('socialFieldLat')).val(map.getCenter().lat);
+                $(item.data('socialFieldZoom')).val(map.getZoom());
+            });
+
+            map.on('locationerror', function (e) {
+                alert(e.message);
+            });
+        });
+    </script>
+{% endblock %}
