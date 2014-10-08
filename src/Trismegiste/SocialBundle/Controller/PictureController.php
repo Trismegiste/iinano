@@ -46,7 +46,14 @@ class PictureController extends Template
     {
         $this->onlyAjaxRequest();
 
-        return new Response('', 201);
+        $img = imagecreatefromstring(
+                base64_decode(
+                        preg_replace(
+                                '#data:image/(jpg|jpeg);base64,#', '', $request->request->get('picture'), 1)));
+
+        $ret = \imagejpeg($img, $this->container->getParameter('kernel.root_dir') . '/../storage/essai.jpg');
+
+        return new Response('', $ret ? 201 : 500);
     }
 
 }

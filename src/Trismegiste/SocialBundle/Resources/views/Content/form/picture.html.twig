@@ -1,7 +1,7 @@
 {% extends 'TrismegisteSocialBundle:Content:publishing_form.html.twig' %}
 
 {% block crud %}
-    <input type="file" id="first-stage-upload"/>
+    <input type="file" id="first-stage-upload" accept="image/*;capture=camera"/>
     <img id="upload-preview"/>
     {{ parent() }}
 {% endblock %}
@@ -9,7 +9,9 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript">
+        var tmpFile;
 
+        // preview
         $('#first-stage-upload').on('change', function (event) {
             var input = event.target;
 
@@ -27,6 +29,7 @@
             }
         })
 
+        // handling the two-stage post
         $('#{{ form.save.vars.id }}').on('click', function (event) {
             event.stopPropagation()
             event.preventDefault()
@@ -35,10 +38,10 @@
                 type: 'POST',
                 url: '{{ path('picture_upload') }}',
                 data: {
-                    picture: 'toto'
+                    picture: $('#upload-preview').attr('src')
                 }
             }).done(function () {
-                alert('ok')
+                $(event.target).parents('form').submit()
             }).fail(function () {
                 alert('Your browser does not support this feature')
             });
