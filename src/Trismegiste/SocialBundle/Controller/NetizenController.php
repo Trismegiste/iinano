@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Trismegiste\SocialBundle\Form\ProfileType;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Trismegiste\SocialBundle\Utils\KeyIterator;
 
 /**
  * NetizenController is a controller for the user : profile, stats...

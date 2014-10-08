@@ -69,4 +69,10 @@
     <import resource="@TrismegisteSocialBundle/Resources/config/admin.xml"
             prefix="/admin">
     </import>
+
+    <route id="picture_get" pattern="picture/{id}">
+        <default key="_controller">TrismegisteSocialBundle:Picture:get</default>
+        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="_method">GET</requirement>
+    </route>
 </routes>

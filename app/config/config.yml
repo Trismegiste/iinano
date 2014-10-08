@@ -56,6 +56,7 @@ dokudoki:
         small: 'Trismegiste\Socialist\SmallTalk'
         status: 'Trismegiste\Socialist\Status'
         private: 'Trismegiste\Socialist\PrivateMessage'
+        picture: 'Trismegiste\Socialist\Picture'
 
 iinano:
     nickname_regex: "[-\da-z]+"
