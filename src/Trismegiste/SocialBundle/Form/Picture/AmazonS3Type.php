@@ -11,23 +11,20 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Image;
 
 /**
- * LocalStorageType is the binary part of picture uploading to local storage
+ * AmazonS3Type is the binary part of picture uploading to Amazon S3
  */
-class LocalStorageType extends AbstractType
+class AmazonS3Type extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('picture', 'file', [
-                    'constraints' => [new Image()],
-                    'attr' => ['accept' => 'image/*;capture=camera']
-                ])
+        $builder->add('picture', 'file', ['constraints' => [new Image()]])
                 ->add('save', 'submit');
     }
 
     public function getName()
     {
-        return 'social_picture_binarypart_localstorage';
+        return 'social_picture_binarypart_s3';
     }
 
 }
