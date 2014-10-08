@@ -40,8 +40,10 @@ class PublishingController extends ContentController
         }
 
         $param['form'] = $form->createView();
+        $subTemplate = $this->get('twig.social.renderer')->chooseTemplateFunction($form->getData());
+        $template = 'TrismegisteSocialBundle:Content:form/' . $subTemplate;
         return $this->renderWall($this->getUser()->getUsername()
-                        , 'self', 'TrismegisteSocialBundle:Content:publishing_form.html.twig'
+                        , 'self', $template
                         , $param);
     }
 
