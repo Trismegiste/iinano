@@ -61,7 +61,7 @@ class CommentaryController extends ContentController
                 $this->getRepository()->persist($pub);
                 $this->pushFlash('notice', 'Commentary saved');
 
-                return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
+                return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], "anchor-$id-$uuid");
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save message');
             }

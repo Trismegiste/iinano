@@ -31,7 +31,7 @@ class FamousController extends Template
 
         $this->getRepository()->persist($pub);
 
-        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
+        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], "anchor-$id-$uuid");
     }
 
     public function likePublishAction($id, $action, $wallNick, $wallFilter)
