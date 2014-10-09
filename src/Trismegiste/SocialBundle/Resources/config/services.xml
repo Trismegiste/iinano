@@ -41,6 +41,11 @@
             <argument/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
+        <service id="social.publishing.repository" class="Trismegiste\SocialBundle\Repository\NewPublishingRepository">
+            <argument type="service" id="dokudoki.repository"/>
+            <argument type="service" id="security.context"/>
+            <argument type="collection"/> <!-- injected by ImportAlias compiler pass -->
+        </service>
         <!-- TWIG -->
 
         <service id="twig.social.renderer" class="Trismegiste\SocialBundle\Utils\RendererExtension">
@@ -95,6 +100,15 @@
             <argument type="service" id="form.factory"/>
             <argument>Trismegiste\SocialBundle\Form</argument>
             <argument/> <!-- injected by ImportAlias compiler pass -->
+        </service>
+
+        <service id="social.type.publishing" class="Trismegiste\SocialBundle\Form\PublishingType">
+            <argument type="service" id="social.publishing.repository"/>
+            <tag name="form.type" alias="social_publishing"/>
+        </service>
+
+        <service id="social.type.smalltalk" class="Trismegiste\SocialBundle\Form\NewSmallTalkType">
+            <tag name="form.type" alias="social_small"/>
         </service>
 
     </services>
