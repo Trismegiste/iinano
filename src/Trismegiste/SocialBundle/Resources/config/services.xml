@@ -96,18 +96,12 @@
             <tag name="validator.constraint_validator" alias="unique_nickname"/>
         </service>
 
-        <service id="social.form.factory" class="Trismegiste\SocialBundle\Controller\CrudFactory">
-            <argument type="service" id="form.factory"/>
-            <argument>Trismegiste\SocialBundle\Form</argument>
-            <argument/> <!-- injected by ImportAlias compiler pass -->
-        </service>
-
         <service id="social.type.publishing" class="Trismegiste\SocialBundle\Form\PublishingType">
             <argument type="service" id="social.publishing.repository"/>
             <tag name="form.type" alias="social_publishing"/>
         </service>
 
-        <service id="social.type.smalltalk" class="Trismegiste\SocialBundle\Form\NewSmallTalkType">
+        <service id="social.type.smalltalk" class="Trismegiste\SocialBundle\Form\SmallTalkType">
             <tag name="form.type" alias="social_small"/>
         </service>
 

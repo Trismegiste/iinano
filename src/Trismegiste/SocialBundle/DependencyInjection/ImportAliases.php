@@ -61,9 +61,6 @@ class ImportAliases implements CompilerPassInterface
         // content aliases into twig RendererExtension :
         $container->getDefinition('twig.social.renderer')
                 ->replaceArgument(1, $contentAlias);
-        // content aliases into Crud form factory :
-        $container->getDefinition('social.form.factory')
-                ->replaceArgument(2, $contentAlias);
         // content aliases into AbuseReport repository :
         $container->getDefinition('social.abusereport.repository')
                 ->replaceArgument(2, array_keys($contentAlias));

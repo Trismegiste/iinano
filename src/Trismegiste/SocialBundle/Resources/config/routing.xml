@@ -10,15 +10,15 @@
     </route>
 
     <route id="publishing_create" pattern="/pub/create/{type}">
-        <default key="_controller">TrismegisteSocialBundle:NewPublishing:create</default>
+        <default key="_controller">TrismegisteSocialBundle:Publishing:create</default>
         <requirement key="type">%crud_url_param_regex%</requirement>
     </route>
     <route id="publishing_edit" pattern="/pub/{id}/edit">
-        <default key="_controller">TrismegisteSocialBundle:NewPublishing:edit</default>
+        <default key="_controller">TrismegisteSocialBundle:Publishing:edit</default>
         <requirement key="id">[\da-f]{24}</requirement>
     </route>
     <route id="publishing_delete" pattern="/pub/{id}/delete">
-        <default key="_controller">TrismegisteSocialBundle:NewPublishing:delete</default>
+        <default key="_controller">TrismegisteSocialBundle:Publishing:delete</default>
         <requirement key="id">[\da-f]{24}</requirement>
     </route>
 

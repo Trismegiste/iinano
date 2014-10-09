@@ -33,7 +33,12 @@ class SmallTalkType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'Trismegiste\Socialist\SmallTalk']);
+        $resolver->setDefaults(['alias' => 'small']);
+    }
+
+    public function getParent()
+    {
+        return 'social_publishing';
     }
 
 }
