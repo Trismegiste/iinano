@@ -6,7 +6,7 @@
 
 namespace Trismegiste\SocialBundle\Repository;
 
-use Trismegiste\Socialist\Repeat;
+use Trismegiste\Socialist\Publishing;
 use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
@@ -46,9 +46,10 @@ class NewPublishingRepository extends SecuredContentProvider implements Publishi
         return $refl->newInstance($this->getAuthor());
     }
 
-    public function persist(Repeat $pub)
+    public function persist(Publishing $pub)
     {
         $this->assertOwningRight($pub);
+        $pub->setLastEdited(new \DateTime());
 
         $this->repository->persist($pub);
     }
@@ -57,7 +58,7 @@ class NewPublishingRepository extends SecuredContentProvider implements Publishi
     {
         $doc = $this->repository->findByPk($pk);
         if (!$doc instanceof Publishing) {
-            throw new \DomainException("$pk is type of " . get_class($doc));
+            throw new \DomainException("$pk must be a Publishing subclass, " . get_class($doc) . ' instead');
         }
 
         return $doc;
@@ -111,7 +112,15 @@ class NewPublishingRepository extends SecuredContentProvider implements Publishi
 
     public function delete($pk)
     {
+        $pub = $this->findByPk($pk);
+        $this->assertOwningRight($pub);
+
         throw new \LogicException('Not yet implemented');
+    }
+
+    public function getClassAlias(Publishing $pub)
+    {
+        return array_search(get_class($pub), $this->classAlias);
     }
 
 }

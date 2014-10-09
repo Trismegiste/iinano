@@ -14,18 +14,17 @@ use Symfony\Component\Form\Form;
 class PublishingController extends ContentController
 {
 
-    protected function processForm(Form $form)
+    protected function processForm($type, Form $form)
     {
-        $repo = $this->getRepository();
+        $repo = $this->get('social.publishing.repository');
 
         $form->handleRequest($this->getRequest());
         // remove the current edited entity from the listing
-        if (!is_null($form->getData()->getId())) {
+        if (!is_null($form->getData())) {
             $param['skipped_pub'] = $form->getData()->getId();
         }
         if ($form->isValid()) {
             $newPost = $form->getData();
-            $newPost->setLastEdited(new \DateTime());  // @todo Model in Controller : bad, not SRP
             try {
                 $repo->persist($newPost);
                 $this->pushFlash('notice', 'Message saved');
@@ -40,8 +39,7 @@ class PublishingController extends ContentController
         }
 
         $param['form'] = $form->createView();
-        $subTemplate = $this->get('twig.social.renderer')->chooseTemplateFunction($form->getData());
-        $template = 'TrismegisteSocialBundle:Content:form/' . $subTemplate;
+        $template = "TrismegisteSocialBundle:Content:form/$type.html.twig";
         return $this->renderWall($this->getUser()->getUsername()
                         , 'self', $template
                         , $param);
@@ -49,26 +47,24 @@ class PublishingController extends ContentController
 
     public function createAction($type)
     {
-        $form = $this->get('social.form.factory')
-                ->createCreateForm($type
-                , $this->getUser()->getAuthor()  // @todo replace this by injecting the securityContext and checking ROLE_USER
-                , $this->generateUrl('publishing_create', ['type' => $type]));
+        $form = $this->createForm('social_' . $type, null, [
+            'action' => $this->generateUrl('publishing_create', ['type' => $type])
+        ]);
 
-        return $this->processForm($form);
+        return $this->processForm($type, $form);
     }
 
     public function editAction($id)
     {
-        $repo = $this->getRepository();
+        $repo = $this->get('social.publishing.repository');
         $post = $repo->findByPk($id);
+        $type = $repo->getClassAlias($post);
 
-        $this->checkOwningRight($post);  // @todo replace with the injected security
+        $form = $this->createForm('social_' . $type, $post, [
+            'action' => $this->generateUrl('publishing_edit', ['id' => $id])
+        ]);
 
-        $form = $this->get('social.form.factory')
-                ->createEditForm($post
-                , $this->generateUrl('publishing_edit', ['id' => $id]));
-
-        return $this->processForm($form);
+        return $this->processForm($type, $form);
     }
 
     public function deleteAction($id)

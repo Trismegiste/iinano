@@ -28,7 +28,7 @@ class ImportAliasesTest extends \PHPUnit_Framework_TestCase
         $this->containerBuilder->setDefinitions([
             'social.content.repository' => new Definition(null, [0, 1, 2]),
             'twig.social.renderer' => new Definition(null, [0, 1]),
-            'social.form.factory' => new Definition(null, [0, 1, 2]),
+            'social.publishing.repository' => new Definition(null, [0, 1, 2]),
             'social.netizen.repository' => new Definition(null, [0, 1, 2]),
             'social.private_message.repository' => new Definition(null, [0, 1, 2]),
             'social.abusereport.repository' => new Definition(null, [0, 1, 2])

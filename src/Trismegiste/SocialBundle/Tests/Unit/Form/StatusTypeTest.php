@@ -11,7 +11,7 @@ use Trismegiste\SocialBundle\Form\StatusType;
 /**
  * StatusTypeTest tests StatusType
  */
-class StatusTypeTest extends FormTestCase
+class StatusTypeTest extends PublishingTestCase
 {
 
     protected function createType()
@@ -19,11 +19,9 @@ class StatusTypeTest extends FormTestCase
         return new StatusType();
     }
 
-    protected function createData()
+    protected function getModelFqcn()
     {
-        return $this->getMockBuilder('Trismegiste\Socialist\Status')
-                        ->disableOriginalConstructor()
-                        ->getMock();
+        return 'Trismegiste\Socialist\Status';
     }
 
     public function getInvalidInputs()
@@ -42,13 +40,13 @@ class StatusTypeTest extends FormTestCase
     public function getValidInputs()
     {
         $validated = $this->createData();
-        $validated->setLatitude(43.7);
-        $validated->setLongitude(7.3);
-        $validated->setZoom(15);
+        $validated->setLatitude('43');  // @todo force a float conversion in the setter of Status
+        $validated->setLongitude('7');
+        $validated->setZoom('15');
         $validated->setMessage('Nissa la Bella');
         $post = [
             'message' => 'Nissa la Bella',
-            'location' => ['longitude' => 7.3, 'latitude' => 43.7, 'zoom' => 15]
+            'location' => ['longitude' => 7, 'latitude' => 43, 'zoom' => 15]
         ];
         return [
             [$post, $validated]

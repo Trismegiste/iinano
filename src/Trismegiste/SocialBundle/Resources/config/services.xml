@@ -41,6 +41,11 @@
             <argument/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
+        <service id="social.publishing.repository" class="Trismegiste\SocialBundle\Repository\NewPublishingRepository">
+            <argument type="service" id="dokudoki.repository"/>
+            <argument type="service" id="security.context"/>
+            <argument type="collection"/> <!-- injected by ImportAlias compiler pass -->
+        </service>
         <!-- TWIG -->
 
         <service id="twig.social.renderer" class="Trismegiste\SocialBundle\Utils\RendererExtension">
@@ -91,10 +96,21 @@
             <tag name="validator.constraint_validator" alias="unique_nickname"/>
         </service>
 
-        <service id="social.form.factory" class="Trismegiste\SocialBundle\Controller\CrudFactory">
-            <argument type="service" id="form.factory"/>
-            <argument>Trismegiste\SocialBundle\Form</argument>
-            <argument/> <!-- injected by ImportAlias compiler pass -->
+        <service id="social.type.publishing" class="Trismegiste\SocialBundle\Form\PublishingType">
+            <argument type="service" id="social.publishing.repository"/>
+            <tag name="form.type" alias="social_publishing"/>
+        </service>
+
+        <service id="social.type.smalltalk" class="Trismegiste\SocialBundle\Form\SmallTalkType">
+            <tag name="form.type" alias="social_small"/>
+        </service>
+
+        <service id="social.type.status" class="Trismegiste\SocialBundle\Form\StatusType">
+            <tag name="form.type" alias="social_status"/>
+        </service>
+
+        <service id="social.type.picture" class="Trismegiste\SocialBundle\Form\PictureType">
+            <tag name="form.type" alias="social_picture"/>
         </service>
 
     </services>
