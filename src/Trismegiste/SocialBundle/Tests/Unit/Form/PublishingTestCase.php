@@ -53,6 +53,8 @@ abstract class PublishingTestCase extends \PHPUnit_Framework_TestCase
 
     abstract public function getInvalidInputs();
 
+    abstract protected function getModelFqcn();
+
     /**
      * Create a new instance of the object manage by the form
      *
@@ -66,8 +68,6 @@ abstract class PublishingTestCase extends \PHPUnit_Framework_TestCase
                         ->getMock();
     }
 
-    abstract protected function getModelFqcn();
-
     /**
      * @dataProvider getValidInputs
      */
@@ -76,7 +76,6 @@ abstract class PublishingTestCase extends \PHPUnit_Framework_TestCase
         $this->sut->submit($submitted);
         $this->assertTrue($this->sut->isValid());
         $this->assertEquals($expected, $this->sut->getData());
-        print_r($this->sut->getData());
     }
 
     /**
