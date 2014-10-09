@@ -30,7 +30,12 @@ class StatusType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'Trismegiste\Socialist\Status']);
+        $resolver->setDefaults(['alias' => 'status']);
+    }
+
+    public function getParent()
+    {
+        return 'social_publishing';
     }
 
 }

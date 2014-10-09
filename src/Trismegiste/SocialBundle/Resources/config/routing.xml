@@ -18,7 +18,7 @@
         <requirement key="id">[\da-f]{24}</requirement>
     </route>
     <route id="publishing_delete" pattern="/pub/{id}/delete">
-        <default key="_controller">TrismegisteSocialBundle:Publishing:delete</default>
+        <default key="_controller">TrismegisteSocialBundle:NewPublishing:delete</default>
         <requirement key="id">[\da-f]{24}</requirement>
     </route>
 

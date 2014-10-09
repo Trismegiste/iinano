@@ -111,5 +111,13 @@
             <tag name="form.type" alias="social_small"/>
         </service>
 
+        <service id="social.type.status" class="Trismegiste\SocialBundle\Form\StatusType">
+            <tag name="form.type" alias="social_status"/>
+        </service>
+
+        <service id="social.type.picture" class="Trismegiste\SocialBundle\Form\PictureType">
+            <tag name="form.type" alias="social_picture"/>
+        </service>
+
     </services>
 </container>
