@@ -49,7 +49,8 @@ class PictureController extends Template
         $img = imagecreatefromstring(
                 base64_decode(
                         preg_replace(
-                                '#data:image/(jpg|jpeg);base64,#', '', $request->request->get('picture'), 1)));
+                                '#data:image/(png|jpeg|jpg|gif);base64,#', ''
+                                , $request->request->get('picture'), 1)));
 
         $ret = \imagejpeg($img, $this->container->getParameter('kernel.root_dir') . '/../storage/essai.jpg');
 
