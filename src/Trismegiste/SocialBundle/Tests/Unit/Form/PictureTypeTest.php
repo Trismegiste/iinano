@@ -28,12 +28,15 @@ class PictureTypeTest extends PublishingTestCase
     {
         $validated = $this->createData();
         $validated->setMessage('gg');
-        $validated->setMimeType('adobe/pdf');
-        $post = [
-            'message' => 'gg', 'mimeType' => 'adobe/pdf'
-        ];
+        $validated->setMimeType('image/png');
+
+        $badMime = $this->createData();
+        $badMime->setMessage('lol');
+        $badMime->setMimeType('adobe/pdf');
+
         return [
-            [$post, $validated, ['message', 'mimeType', 'storageKey']]
+            [['message' => 'gg', 'mimeType' => 'image/png'], $validated, ['message']],
+            [['message' => 'lol', 'mimeType' => 'adobe/pdf'], $badMime, []]
         ];
     }
 
