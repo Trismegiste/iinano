@@ -3,7 +3,7 @@
 {% block crud %}
     {% if form.vars.value is null %}
         {{ render(controller('TrismegisteSocialBundle:Picture:renderForm')) }}
-        <img id="upload-preview"/>
+        <img id="upload-preview" class="picture-view"/>
     {% else %}
         <img src="{{ path('picture_get', {storageKey: form.vars.value.storageKey}) }}"/>
         {{ parent() }}
