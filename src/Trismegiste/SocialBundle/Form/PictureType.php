@@ -29,11 +29,7 @@ class PictureType extends AbstractType
                 ->add('mimeType', 'hidden', [
                     'constraints' => new Regex(['pattern' => '#^image/(png|jpeg|jpg|gif)$#'])
                 ])
-                ->add('message', 'text', ['constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 3, 'max' => 140])
-                    ]
-                ])
+                ->add('message', 'text')
                 ->add('save', 'submit');
     }
 

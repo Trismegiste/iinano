@@ -54,7 +54,8 @@ class PictureController extends Template
             /* @var $picture \Symfony\Component\HttpFoundation\File\UploadedFile */
             $picture = $form->getData()['picture'];
             $targetDir = $this->container->getParameter('kernel.root_dir') . '/../storage/';
-            $picture->move($targetDir);
+            $name = bin2hex($this->getAuthor()->getNickname()) . '-' . time();
+            $picture->move($targetDir, $name);
 
             return new Response('', 201);
         }
