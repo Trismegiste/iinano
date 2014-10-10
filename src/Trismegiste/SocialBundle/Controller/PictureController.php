@@ -8,7 +8,7 @@ namespace Trismegiste\SocialBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Trismegiste\SocialBundle\Form\Picture\LocalStorageType;
+use Trismegiste\SocialBundle\Form\PictureAutoUploaderType;
 
 /**
  * PictureController is a controller for local storage of picture
@@ -47,14 +47,15 @@ class PictureController extends Template
     {
         $this->onlyAjaxRequest();
 
-        $form = $this->createForm(new LocalStorageType());
+        $form = $this->createForm(new PictureAutoUploaderType());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             /* @var $picture \Symfony\Component\HttpFoundation\File\UploadedFile */
             $picture = $form->getData()['picture'];
             $targetDir = $this->container->getParameter('kernel.root_dir') . '/../storage/';
-            $name = bin2hex($this->getAuthor()->getNickname()) . '-' . time();
+            preg_match('#^image/(jpg|jpeg|gif|png)$#', $picture->getMimeType(), $extension);
+            $name = bin2hex($this->getAuthor()->getNickname()) . '-' . time() . '.' . $extension[1];
             $picture->move($targetDir, $name);
 
             return new Response('', 201);
@@ -65,9 +66,9 @@ class PictureController extends Template
 
     public function renderFormAction()
     {
-        $form = $this->createForm(new LocalStorageType());
+        $form = $this->createForm(new PictureAutoUploaderType());
 
-        return $this->render('TrismegisteSocialBundle:Picture:localstorage.html.twig'
+        return $this->render('TrismegisteSocialBundle:Picture:autoupload.html.twig'
                         , ['form' => $form->createView()]);
     }
 

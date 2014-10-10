@@ -3,37 +3,12 @@
 {% block crud %}
     {{ render(controller('TrismegisteSocialBundle:Picture:renderForm')) }}
     <img id="upload-preview"/>
-    {{ parent() }}
+    {# parent() en fait c'est ou l'un ou l'autre #}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('bundles/trismegistesocial/js/jquery.liteuploader.min.js') }}"></script>
     <script type="text/javascript">
-
-        $(document).ready(function () {
-
-            $('form[data-liteuploader]').each(function (idx, formElem) {
-
-                // config for lite uploader
-                var formParam = {}
-
-                // read additional parameters of the form
-                $(formElem).find('input[type=hidden]').each(function (idx, field) {
-                    formParam[$(field).attr('name')] = $(field).attr('value')
-                })
-
-                // init liteuploader with valid param
-                $('form[data-liteuploader] input[type=file]').liteUploader({
-                    script: '{{ path('picture_upload') }}',
-                    params: formParam
-                }).on('lu:success', function (e, response) {
-                    console.log('Uploaded!');
-                })
-
-            })
-
-        })
 
         // can also be from a drag-from-desktop drop
         //  $('dropZone')[0].ondrop = function(e) {
@@ -42,7 +17,7 @@
         //  };
 
         // preview
-        $('#weshfirst-stage-upload').on('change', function (event) {
+        $('form[data-autouploader] input[type=file]').on('change', function (event) {
             var input = event.target;
 
             if (input.files && input.files[0]) {
@@ -54,30 +29,45 @@
                     $('#upload-preview').attr('src', event.target.result)
                 }
                 reader.readAsDataURL(selectFile)
-                $('#{{ form.storageKey.vars.id }}').val(selectFile.name)
-                $('#{{ form.mimeType.vars.id }}').val(selectFile.type)
 
-                sendFile(this.files[0]);
+                sendFile(selectFile);
             }
         })
 
-        // handling the two-stage post
-        $('#{{ form.save.vars.id }}').on('click', function (event) {
-            event.stopPropagation()
-            event.preventDefault()
+
+        function sendFile(file) {
+
+            var formParam = new FormData()
+            $('form[data-autouploader] input[type=hidden]').each(function (idx, field) {
+                formParam.append($(field).attr('name'), $(field).attr('value'))
+            })
+            formParam.append($('form[data-autouploader] input[type=file]').attr('name'), file)
+
 
             $.ajax({
-                type: 'POST',
+                type: 'post',
                 url: '{{ path('picture_upload') }}',
-                data: {
-                    picture: $('#upload-preview').attr('src')
-                }
-            }).done(function () {
-                $(event.target).parents('form').submit()
-            }).fail(function () {
-                alert('Your browser does not support this feature')
+                data: formParam,
+                success: function () {
+                    console.log('ok')
+                },
+                xhrFields: {
+                    // add listener to XMLHTTPRequest object directly for progress (jquery doesn't have this yet)
+                    onprogress: function (progress) {
+                        // calculate upload progress
+                        var percentage = Math.floor((progress.total / progress.totalSize) * 100);
+                        // log upload progress to console
+                        console.log('progress', percentage);
+                        if (percentage === 100) {
+                            console.log('DONE!');
+                        }
+                    }
+                },
+                processData: false,
+                contentType: false
             });
-        })
+        }
+
 
     </script>
 {% endblock %}
