@@ -1,70 +1,83 @@
 {% extends 'TrismegisteSocialBundle:Content:publishing_form.html.twig' %}
 
 {% block crud %}
-<input type="file" name="fileUpload" id="fileUpload" accept="image/*;capture=camera"/>
-<img id="upload-preview"/>
+    {{ render(controller('TrismegisteSocialBundle:Picture:renderForm')) }}
+    <img id="upload-preview"/>
     {{ parent() }}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-<script src="{{ asset('bundles/trismegistesocial/js/jquery.liteuploader.min.js') }}"></script> 
-<script type="text/javascript">
+    <script src="{{ asset('bundles/trismegistesocial/js/jquery.liteuploader.min.js') }}"></script>
+    <script type="text/javascript">
 
-    $(document).ready(function() {
-        $('#fileUpload').liteUploader({
-            script: '{{ path('picture_upload') }}',
-            params: {
-                wesh: 'toto'
+        $(document).ready(function () {
+
+            $('form[data-liteuploader]').each(function (idx, formElem) {
+
+                // config for lite uploader
+                var formParam = {}
+
+                // read additional parameters of the form
+                $(formElem).find('input[type=hidden]').each(function (idx, field) {
+                    formParam[$(field).attr('name')] = $(field).attr('value')
+                })
+
+                // init liteuploader with valid param
+                $('form[data-liteuploader] input[type=file]').liteUploader({
+                    script: '{{ path('picture_upload') }}',
+                    params: formParam
+                }).on('lu:success', function (e, response) {
+                    console.log('Uploaded!');
+                })
+
+            })
+
+        })
+
+        // can also be from a drag-from-desktop drop
+        //  $('dropZone')[0].ondrop = function(e) {
+        //      e.preventDefault();
+        //      sendFile(e.dataTransfer.files[0]);
+        //  };
+
+        // preview
+        $('#weshfirst-stage-upload').on('change', function (event) {
+            var input = event.target;
+
+            if (input.files && input.files[0]) {
+                var selectFile = input.files[0]
+                console.log(selectFile)
+                var reader = new FileReader();
+
+                reader.onload = function (event) {
+                    $('#upload-preview').attr('src', event.target.result)
+                }
+                reader.readAsDataURL(selectFile)
+                $('#{{ form.storageKey.vars.id }}').val(selectFile.name)
+                $('#{{ form.mimeType.vars.id }}').val(selectFile.type)
+
+                sendFile(this.files[0]);
             }
-        }).on('lu:success', function(e, response) {
-            console.log('Uploaded!');
-        });
-    })
+        })
 
-// can also be from a drag-from-desktop drop
-    //  $('dropZone')[0].ondrop = function(e) {
-    //      e.preventDefault();
-    //      sendFile(e.dataTransfer.files[0]);
-    //  };
+        // handling the two-stage post
+        $('#{{ form.save.vars.id }}').on('click', function (event) {
+            event.stopPropagation()
+            event.preventDefault()
 
-    // preview
-    $('#weshfirst-stage-upload').on('change', function(event) {
-        var input = event.target;
-
-        if (input.files && input.files[0]) {
-            var selectFile = input.files[0]
-            console.log(selectFile)
-            var reader = new FileReader();
-
-            reader.onload = function(event) {
-                $('#upload-preview').attr('src', event.target.result)
-            }
-            reader.readAsDataURL(selectFile)
-            $('#{{ form.storageKey.vars.id }}').val(selectFile.name)
-            $('#{{ form.mimeType.vars.id }}').val(selectFile.type)
-
-            sendFile(this.files[0]);
-        }
-    })
-
-    // handling the two-stage post
-    $('#{{ form.save.vars.id }}').on('click', function(event) {
-        event.stopPropagation()
-        event.preventDefault()
-
-        $.ajax({
-            type: 'POST',
-            url: '{{ path('picture_upload') }}',
-            data: {
-                picture: $('#upload-preview').attr('src')
-            }
-        }).done(function() {
-            $(event.target).parents('form').submit()
-        }).fail(function() {
-            alert('Your browser does not support this feature')
-        });
-    })
+            $.ajax({
+                type: 'POST',
+                url: '{{ path('picture_upload') }}',
+                data: {
+                    picture: $('#upload-preview').attr('src')
+                }
+            }).done(function () {
+                $(event.target).parents('form').submit()
+            }).fail(function () {
+                alert('Your browser does not support this feature')
+            });
+        })
 
     </script>
 {% endblock %}

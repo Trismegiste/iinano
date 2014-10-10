@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Trismegiste\SocialBundle\Form\Picture\LocalStorageType;
 
 /**
  * PictureController is a controller for local storage of picture
@@ -46,10 +47,27 @@ class PictureController extends Template
     {
         $this->onlyAjaxRequest();
 
-        move_uploaded_file($_FILES['fileUpload']['tmp_name']
-                , $this->container->getParameter('kernel.root_dir').'/../storage/'
-                . $_FILES["fileUpload"]["name"]);
-        return new Response('', 201);
+        $form = $this->createForm(new LocalStorageType());
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            /* @var $picture \Symfony\Component\HttpFoundation\File\UploadedFile */
+            $picture = $form->getData()['picture'];
+            $targetDir = $this->container->getParameter('kernel.root_dir') . '/../storage/';
+            $picture->move($targetDir);
+
+            return new Response('', 201);
+        }
+
+        return new Response(json_encode($form->getErrors()), 500);
+    }
+
+    public function renderFormAction()
+    {
+        $form = $this->createForm(new LocalStorageType());
+
+        return $this->render('TrismegisteSocialBundle:Picture:localstorage.html.twig'
+                        , ['form' => $form->createView()]);
     }
 
 }
