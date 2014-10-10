@@ -9,6 +9,7 @@ namespace Trismegiste\SocialBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Trismegiste\SocialBundle\Form\PictureAutoUploaderType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * PictureController is a controller for local storage of picture
@@ -16,32 +17,34 @@ use Trismegiste\SocialBundle\Form\PictureAutoUploaderType;
 class PictureController extends Template
 {
 
-    public function getAction($id)
+    /**
+     * Thumbnailing à la volée
+     */
+    public function getAction($storageKey)
     {
-        $doc = $this->getRepository()->findByPk($id);
+        $file = $this->get('social.avatar.repository')
+                ->getAvatarAbsolutePath($storageKey);
 
-        $response = new \Symfony\Component\HttpFoundation\Response();
-        $response->setLastModified($doc->getLastEdited());
+        $response = new Response();
+        $lastModif = new \DateTime();
+        $lastModif->setTimestamp(filemtime($file));
+        $response->setLastModified($lastModif);
+        $response->setEtag(filesize($file));
         $response->setPublic();
-        $response->headers->set('Content-type', 'image/jpeg');
 
-        if (!$response->isNotModified($this->getRequest())) {
-            $response->setContent($doc->getStorageKey()->bin);
+        if ($response->isNotModified($this->getRequest())) {
+            return $response;
         }
+
+        $response->headers->set('X-Sendfile', $file);
+        $response->headers->set('Content-Type', 'image/' . pathinfo($storageKey, PATHINFO_EXTENSION));
+        $this->get('logger')->debug("$storageKey xsended");
 
         return $response;
     }
 
     /**
-     * The "two-stage upload" : first part, binary
-     * Why this ?
-     * For two reasons :
-     * 1. direct upload using Amazon S3 POST system need 2 post requests
-     * 2. managing the uploadedFile in another action keeps the PublishingController unaware of
-     *    specific treatment for the Picture entity persistence.
-     *
-     * So even for local storage, I use the "two-stage upload".
-     * The second part, the metadatas are handled by the publishing controller
+     * Create and upload action for a picture
      */
     public function uploadAction(Request $request)
     {
@@ -54,14 +57,21 @@ class PictureController extends Template
             /* @var $picture \Symfony\Component\HttpFoundation\File\UploadedFile */
             $picture = $form->getData()['picture'];
             $targetDir = $this->container->getParameter('kernel.root_dir') . '/../storage/';
+            $extension = [];
             preg_match('#^image/(jpg|jpeg|gif|png)$#', $picture->getMimeType(), $extension);
             $name = bin2hex($this->getAuthor()->getNickname()) . '-' . time() . '.' . $extension[1];
-            $picture->move($targetDir, $name);
 
-            return new Response('', 201);
+            $repo = $this->get('social.publishing.repository');
+            $doc = $repo->create('picture');
+            $doc->setMimeType($picture->getMimeType());
+            $doc->setStorageKey($name);
+            $picture->move($targetDir, $name);
+            $repo->persist($doc);
+
+            return new JsonResponse(['id' => (string) $doc->getId()], 201);
         }
 
-        return new Response(json_encode($form->getErrors()), 500);
+        return new JsonResponse($form->getErrors(), 500);
     }
 
     public function renderFormAction()

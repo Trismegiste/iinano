@@ -1,9 +1,13 @@
 {% extends 'TrismegisteSocialBundle:Content:publishing_form.html.twig' %}
 
 {% block crud %}
-    {{ render(controller('TrismegisteSocialBundle:Picture:renderForm')) }}
-    <img id="upload-preview"/>
-    {# parent() en fait c'est ou l'un ou l'autre #}
+    {% if form.vars.value is null %}
+        {{ render(controller('TrismegisteSocialBundle:Picture:renderForm')) }}
+        <img id="upload-preview"/>
+    {% else %}
+        <img src="{{ path('picture_get', {storageKey: form.vars.value.storageKey}) }}"/>
+        {{ parent() }}
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
@@ -22,52 +26,47 @@
 
             if (input.files && input.files[0]) {
                 var selectFile = input.files[0]
-                console.log(selectFile)
-                var reader = new FileReader();
 
+                // preview :
+                var reader = new FileReader();
                 reader.onload = function (event) {
                     $('#upload-preview').attr('src', event.target.result)
                 }
                 reader.readAsDataURL(selectFile)
 
-                sendFile(selectFile);
+                // preparing autosubmit :
+                var formParam = new FormData()
+                $('form[data-autouploader] input[type=hidden]').each(function (idx, field) {
+                    formParam.append($(field).attr('name'), $(field).attr('value'))
+                })
+                formParam.append($('form[data-autouploader] input[type=file]').attr('name'), selectFile)
+
+                // post the form through ajax
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('picture_upload') }}',
+                    data: formParam,
+                    xhrFields: {
+                        // add listener to XMLHTTPRequest object directly for progress (jquery doesn't have this yet)
+                        onprogress: function (progress) {
+                            // calculate upload progress
+                            var percentage = Math.floor((progress.total / progress.totalSize) * 100);
+                            // log upload progress to console
+                            console.log('progress', percentage);
+                            if (percentage === 100) {
+                                console.log('DONE!');
+                            }
+                        }
+                    },
+                    processData: false,
+                    contentType: false
+                }).done(function (response) {
+                    window.location.replace('/app_dev.php/pub/' + response.id + '/edit');
+                }).fail(function (response) {
+                    alert('Your browser does not support this feature');
+                })
             }
         })
-
-
-        function sendFile(file) {
-
-            var formParam = new FormData()
-            $('form[data-autouploader] input[type=hidden]').each(function (idx, field) {
-                formParam.append($(field).attr('name'), $(field).attr('value'))
-            })
-            formParam.append($('form[data-autouploader] input[type=file]').attr('name'), file)
-
-
-            $.ajax({
-                type: 'post',
-                url: '{{ path('picture_upload') }}',
-                data: formParam,
-                success: function () {
-                    console.log('ok')
-                },
-                xhrFields: {
-                    // add listener to XMLHTTPRequest object directly for progress (jquery doesn't have this yet)
-                    onprogress: function (progress) {
-                        // calculate upload progress
-                        var percentage = Math.floor((progress.total / progress.totalSize) * 100);
-                        // log upload progress to console
-                        console.log('progress', percentage);
-                        if (percentage === 100) {
-                            console.log('DONE!');
-                        }
-                    }
-                },
-                processData: false,
-                contentType: false
-            });
-        }
-
 
     </script>
 {% endblock %}
