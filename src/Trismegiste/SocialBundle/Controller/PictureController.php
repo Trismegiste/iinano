@@ -67,8 +67,11 @@ class PictureController extends Template
             $doc->setStorageKey($name);
             $picture->move($targetDir, $name);
             $repo->persist($doc);
-
-            return new JsonResponse(['id' => (string) $doc->getId()], 201);
+sleep(5);
+            return new JsonResponse([
+                'redirect' => $this->generateUrl('publishing_edit', ['id' => (string) $doc->getId()])
+                    ], 201
+            );
         }
 
         return new JsonResponse($form->getErrors(), 500);

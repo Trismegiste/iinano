@@ -2,7 +2,13 @@
 
 {% block crud %}
     {% if form.vars.value is null %}
-        {{ render(controller('TrismegisteSocialBundle:Picture:renderForm')) }}
+        <div class="hidden-form">
+            {{ render(controller('TrismegisteSocialBundle:Picture:renderForm')) }}
+        </div>
+        <div id="megabutton-autoupload" class="text-center">
+            <h1><i class="fi-camera"></i></h1>
+            <p>Click / Touch / Drop<br/>to upload a picture</p>
+        </div>
         <img id="upload-preview" class="picture-view"/>
     {% else %}
         <img src="{{ path('picture_get', {storageKey: form.vars.value.storageKey}) }}"/>
@@ -14,11 +20,9 @@
     {{ parent() }}
     <script type="text/javascript">
 
-        // can also be from a drag-from-desktop drop
-        //  $('dropZone')[0].ondrop = function(e) {
-        //      e.preventDefault();
-        //      sendFile(e.dataTransfer.files[0]);
-        //  };
+        $('#megabutton-autoupload').on('click', function (event) {
+            $('form[data-autouploader] input[type=file]').trigger('click');
+        })
 
         // preview
         $('form[data-autouploader] input[type=file]').on('change', function (event) {
@@ -32,6 +36,8 @@
                 reader.onload = function (event) {
                     $('#upload-preview').attr('src', event.target.result)
                 }
+                $('#megabutton-autoupload').toggle('hidden-form');
+
                 reader.readAsDataURL(selectFile)
 
                 // preparing autosubmit :
@@ -61,7 +67,7 @@
                     processData: false,
                     contentType: false
                 }).done(function (response) {
-                    window.location.replace('/app_dev.php/pub/' + response.id + '/edit');
+                    window.location.replace(response.redirect);
                 }).fail(function (response) {
                     alert('Your browser does not support this feature');
                 })
@@ -69,4 +75,21 @@
         })
 
     </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #megabutton-autoupload {
+            background-color: #f8f8f8;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .hidden-form {
+            visibility: hidden;
+            display: none;
+        }
+    </style>
 {% endblock %}
