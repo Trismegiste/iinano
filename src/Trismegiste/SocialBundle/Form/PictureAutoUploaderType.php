@@ -4,7 +4,7 @@
  * iinano
  */
 
-namespace Trismegiste\SocialBundle\Form\Picture;
+namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,9 +12,10 @@ use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * LocalStorageType is the binary part of picture uploading to local storage
+ * PictureAutoUploaderType is the binary part of picture uploading
+ *
  */
-class LocalStorageType extends AbstractType
+class PictureAutoUploaderType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -27,12 +28,12 @@ class LocalStorageType extends AbstractType
 
     public function getName()
     {
-        return 'social_picture_binarypart_localstorage';
+        return 'social_picture_autouploader';
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(['attr' => ['data-liteuploader' => null]]);
+        $resolver->setDefaults(['attr' => ['data-autouploader' => null]]);
     }
 
 }

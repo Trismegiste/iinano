@@ -7,11 +7,9 @@
 namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * PictureType is a form for Picture : contains all data except binaries
@@ -25,11 +23,11 @@ class PictureType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('storageKey', 'hidden', ['constraints' => new NotBlank()])
-                ->add('mimeType', 'hidden', [
-                    'constraints' => new Regex(['pattern' => '#^image/(png|jpeg|jpg|gif)$#'])
+        $builder->add('message', 'text', [
+                    'required' => false,
+                    'attr' => ['placeholder' => 'Optional: add a title on this picture'],
+                    'constraints' => new Length(['max' => 80])
                 ])
-                ->add('message', 'text')
                 ->add('save', 'submit');
     }
 

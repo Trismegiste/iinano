@@ -1,39 +1,18 @@
 {% extends 'TrismegisteSocialBundle:Content:publishing_form.html.twig' %}
 
 {% block crud %}
-    {{ render(controller('TrismegisteSocialBundle:Picture:renderForm')) }}
-    <img id="upload-preview"/>
-    {{ parent() }}
+    {% if form.vars.value is null %}
+        {{ render(controller('TrismegisteSocialBundle:Picture:renderForm')) }}
+        <img id="upload-preview" class="picture-view"/>
+    {% else %}
+        <img src="{{ path('picture_get', {storageKey: form.vars.value.storageKey}) }}"/>
+        {{ parent() }}
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('bundles/trismegistesocial/js/jquery.liteuploader.min.js') }}"></script>
     <script type="text/javascript">
-
-        $(document).ready(function () {
-
-            $('form[data-liteuploader]').each(function (idx, formElem) {
-
-                // config for lite uploader
-                var formParam = {}
-
-                // read additional parameters of the form
-                $(formElem).find('input[type=hidden]').each(function (idx, field) {
-                    formParam[$(field).attr('name')] = $(field).attr('value')
-                })
-
-                // init liteuploader with valid param
-                $('form[data-liteuploader] input[type=file]').liteUploader({
-                    script: '{{ path('picture_upload') }}',
-                    params: formParam
-                }).on('lu:success', function (e, response) {
-                    console.log('Uploaded!');
-                })
-
-            })
-
-        })
 
         // can also be from a drag-from-desktop drop
         //  $('dropZone')[0].ondrop = function(e) {
@@ -42,41 +21,51 @@
         //  };
 
         // preview
-        $('#weshfirst-stage-upload').on('change', function (event) {
+        $('form[data-autouploader] input[type=file]').on('change', function (event) {
             var input = event.target;
 
             if (input.files && input.files[0]) {
                 var selectFile = input.files[0]
-                console.log(selectFile)
-                var reader = new FileReader();
 
+                // preview :
+                var reader = new FileReader();
                 reader.onload = function (event) {
                     $('#upload-preview').attr('src', event.target.result)
                 }
                 reader.readAsDataURL(selectFile)
-                $('#{{ form.storageKey.vars.id }}').val(selectFile.name)
-                $('#{{ form.mimeType.vars.id }}').val(selectFile.type)
 
-                sendFile(this.files[0]);
+                // preparing autosubmit :
+                var formParam = new FormData()
+                $('form[data-autouploader] input[type=hidden]').each(function (idx, field) {
+                    formParam.append($(field).attr('name'), $(field).attr('value'))
+                })
+                formParam.append($('form[data-autouploader] input[type=file]').attr('name'), selectFile)
+
+                // post the form through ajax
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('picture_upload') }}',
+                    data: formParam,
+                    xhrFields: {
+                        // add listener to XMLHTTPRequest object directly for progress (jquery doesn't have this yet)
+                        onprogress: function (progress) {
+                            // calculate upload progress
+                            var percentage = Math.floor((progress.total / progress.totalSize) * 100);
+                            // log upload progress to console
+                            console.log('progress', percentage);
+                            if (percentage === 100) {
+                                console.log('DONE!');
+                            }
+                        }
+                    },
+                    processData: false,
+                    contentType: false
+                }).done(function (response) {
+                    window.location.replace('/app_dev.php/pub/' + response.id + '/edit');
+                }).fail(function (response) {
+                    alert('Your browser does not support this feature');
+                })
             }
-        })
-
-        // handling the two-stage post
-        $('#{{ form.save.vars.id }}').on('click', function (event) {
-            event.stopPropagation()
-            event.preventDefault()
-
-            $.ajax({
-                type: 'POST',
-                url: '{{ path('picture_upload') }}',
-                data: {
-                    picture: $('#upload-preview').attr('src')
-                }
-            }).done(function () {
-                $(event.target).parents('form').submit()
-            }).fail(function () {
-                alert('Your browser does not support this feature')
-            });
         })
 
     </script>
