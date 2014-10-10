@@ -24,7 +24,7 @@ class AmazonS3Type extends AbstractType
 
     public function getName()
     {
-        return 'social_picture_binarypart_s3';
+        return 'social_picture_binarypart_amazons3';
     }
 
 }

@@ -1,51 +1,70 @@
 {% extends 'TrismegisteSocialBundle:Content:publishing_form.html.twig' %}
 
 {% block crud %}
-    <input type="file" id="first-stage-upload" accept="image/*;capture=camera"/>
-    <img id="upload-preview"/>
+<input type="file" name="fileUpload" id="fileUpload" accept="image/*;capture=camera"/>
+<img id="upload-preview"/>
     {{ parent() }}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript">
-        var tmpFile;
+<script src="{{ asset('bundles/trismegistesocial/js/jquery.liteuploader.min.js') }}"></script> 
+<script type="text/javascript">
 
-        // preview
-        $('#first-stage-upload').on('change', function (event) {
-            var input = event.target;
-
-            if (input.files && input.files[0]) {
-                var selectFile = input.files[0]
-                console.log(selectFile)
-                var reader = new FileReader();
-
-                reader.onload = function (event) {
-                    $('#upload-preview').attr('src', event.target.result)
-                }
-                reader.readAsDataURL(selectFile)
-                $('#{{ form.storageKey.vars.id }}').val(selectFile.name)
-                $('#{{ form.mimeType.vars.id }}').val(selectFile.type)
+    $(document).ready(function() {
+        $('#fileUpload').liteUploader({
+            script: '{{ path('picture_upload') }}',
+            params: {
+                wesh: 'toto'
             }
-        })
+        }).on('lu:success', function(e, response) {
+            console.log('Uploaded!');
+        });
+    })
 
-        // handling the two-stage post
-        $('#{{ form.save.vars.id }}').on('click', function (event) {
-            event.stopPropagation()
-            event.preventDefault()
+// can also be from a drag-from-desktop drop
+    //  $('dropZone')[0].ondrop = function(e) {
+    //      e.preventDefault();
+    //      sendFile(e.dataTransfer.files[0]);
+    //  };
 
-            $.ajax({
-                type: 'POST',
-                url: '{{ path('picture_upload') }}',
-                data: {
-                    picture: $('#upload-preview').attr('src')
-                }
-            }).done(function () {
-                $(event.target).parents('form').submit()
-            }).fail(function () {
-                alert('Your browser does not support this feature')
-            });
-        })
+    // preview
+    $('#weshfirst-stage-upload').on('change', function(event) {
+        var input = event.target;
+
+        if (input.files && input.files[0]) {
+            var selectFile = input.files[0]
+            console.log(selectFile)
+            var reader = new FileReader();
+
+            reader.onload = function(event) {
+                $('#upload-preview').attr('src', event.target.result)
+            }
+            reader.readAsDataURL(selectFile)
+            $('#{{ form.storageKey.vars.id }}').val(selectFile.name)
+            $('#{{ form.mimeType.vars.id }}').val(selectFile.type)
+
+            sendFile(this.files[0]);
+        }
+    })
+
+    // handling the two-stage post
+    $('#{{ form.save.vars.id }}').on('click', function(event) {
+        event.stopPropagation()
+        event.preventDefault()
+
+        $.ajax({
+            type: 'POST',
+            url: '{{ path('picture_upload') }}',
+            data: {
+                picture: $('#upload-preview').attr('src')
+            }
+        }).done(function() {
+            $(event.target).parents('form').submit()
+        }).fail(function() {
+            alert('Your browser does not support this feature')
+        });
+    })
 
     </script>
 {% endblock %}

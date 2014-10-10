@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * PictureController is an example with MognoDb storage for picture
+ * PictureController is a controller for local storage of picture
  */
 class PictureController extends Template
 {
@@ -46,15 +46,10 @@ class PictureController extends Template
     {
         $this->onlyAjaxRequest();
 
-        $img = imagecreatefromstring(
-                base64_decode(
-                        preg_replace(
-                                '#data:image/(png|jpeg|jpg|gif);base64,#', ''
-                                , $request->request->get('picture'), 1)));
-
-        $ret = \imagejpeg($img, $this->container->getParameter('kernel.root_dir') . '/../storage/essai.jpg');
-
-        return new Response('', $ret ? 201 : 500);
+        move_uploaded_file($_FILES['fileUpload']['tmp_name']
+                , $this->container->getParameter('kernel.root_dir').'/../storage/'
+                . $_FILES["fileUpload"]["name"]);
+        return new Response('', 201);
     }
 
 }
