@@ -7,9 +7,9 @@
         </div>
         <div id="megabutton-autoupload" class="text-center">
             <h1><i class="fi-camera"></i></h1>
-            <p>Click / Touch / Drop<br/>to upload a picture</p>
+            <p>Click / Touch<br/>to upload a picture</p>
         </div>
-        <img id="upload-preview" class="picture-view"/>
+        <img id="upload-preview" class="picture-view hidden-form"/>
     {% else %}
         <img src="{{ path('picture_get', {storageKey: form.vars.value.storageKey}) }}"/>
         {{ parent() }}
@@ -36,7 +36,8 @@
                 reader.onload = function (event) {
                     $('#upload-preview').attr('src', event.target.result)
                 }
-                $('#megabutton-autoupload').toggle('hidden-form');
+                $('#megabutton-autoupload').toggleClass('hidden-form')
+                $('#upload-preview').toggleClass('hidden-form')
 
                 reader.readAsDataURL(selectFile)
 
