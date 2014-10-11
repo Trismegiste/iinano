@@ -51,7 +51,7 @@ class CommentaryRepository extends SecuredContentProvider
         $this->repository->persist($pub);
     }
 
-    public function iLikeCommentary($id, $uuid)
+    public function iLikeThat($id, $uuid)
     {
         $pub = $this->repository->findByPk($id);
         $comm = $pub->getCommentaryByUuid($uuid);
@@ -60,7 +60,7 @@ class CommentaryRepository extends SecuredContentProvider
         $this->repository->persist($pub);
     }
 
-    public function iUnlikeCommentary($id, $uuid)
+    public function iUnlikeThat($id, $uuid)
     {
         $pub = $this->repository->findByPk($id);
         $comm = $pub->getCommentaryByUuid($uuid);

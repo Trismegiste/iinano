@@ -54,12 +54,17 @@ class NewPublishingRepository extends SecuredContentProvider implements Publishi
         $this->repository->persist($pub);
     }
 
-    public function findByPk($pk)
+    protected function assertPublishing($doc)
     {
-        $doc = $this->repository->findByPk($pk);
         if (!$doc instanceof Publishing) {
             throw new \DomainException("$pk must be a Publishing subclass, " . get_class($doc) . ' instead');
         }
+    }
+
+    public function findByPk($pk)
+    {
+        $doc = $this->repository->findByPk($pk);
+        $this->assertPublishing($doc);
 
         return $doc;
     }
@@ -121,6 +126,24 @@ class NewPublishingRepository extends SecuredContentProvider implements Publishi
     public function getClassAlias(Publishing $pub)
     {
         return array_search(get_class($pub), $this->classAlias);
+    }
+
+    public function iLikeThat($id)
+    {
+        $pub = $this->repository->findByPk($id);
+        $this->assertPublishing($pub);
+        $pub->addFan($this->getAuthor());
+
+        $this->repository->persist($pub);
+    }
+
+    public function iUnlikeThat($id)
+    {
+        $pub = $this->repository->findByPk($id);
+        $this->assertPublishing($pub);
+        $pub->removeFan($this->getAuthor());
+
+        $this->repository->persist($pub);
     }
 
 }

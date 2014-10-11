@@ -19,6 +19,8 @@ use Trismegiste\Socialist\Follower;
  * This is not a decorator of RepositoryInterface because we
  * try to avoid dumb repositories (as well as dumb entities), so only methods
  * with business relevance. Plus, security concerns will break Liskov principle
+ *
+ * @deprecated
  */
 class PublishingRepository implements PublishingRepositoryInterface
 {

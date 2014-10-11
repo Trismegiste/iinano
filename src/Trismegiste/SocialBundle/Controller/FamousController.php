@@ -16,39 +16,36 @@ class FamousController extends Template
 
     public function likeCommentaryAction($id, $uuid, $action, $wallNick, $wallFilter)
     {
-        $pub = $this->getRepository()->findByPk($id);
-        $commentary = $pub->getCommentaryByUuid($uuid);
+        $repo = $this->get('social.commentary.repository');
+
         switch ($action) {
             case 'add':
-                $commentary->addFan($this->getAuthor());
+                $repo->iLikeThat($id, $uuid);
                 break;
             case 'remove':
-                $commentary->removeFan($this->getAuthor());
+                $repo->iUnlikeThat($id, $uuid);
                 break;
             default:
                 $this->createNotFoundException("Action $action");
         }
-
-        $this->getRepository()->persist($pub);
 
         return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], "anchor-$id-$uuid");
     }
 
     public function likePublishAction($id, $action, $wallNick, $wallFilter)
     {
-        $doc = $this->getRepository()->findByPk($id);
+        $repo = $this->get('social.publishing.repository');
+
         switch ($action) {
             case 'add':
-                $doc->addFan($this->getAuthor());
+                $repo->iLikeThat($id);
                 break;
             case 'remove':
-                $doc->removeFan($this->getAuthor());
+                $repo->iUnlikeThat($id);
                 break;
             default:
                 $this->createNotFoundException("Action $action");
         }
-
-        $this->getRepository()->persist($doc);
 
         return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
     }
