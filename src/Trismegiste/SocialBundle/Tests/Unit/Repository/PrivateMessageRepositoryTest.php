@@ -132,12 +132,35 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Trismegiste\Socialist\PrivateMessage', $this->sut->createNewMessageTo($this->target));
     }
 
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedExceptionMessage sender
+     */
+    public function testOnlySenderCanPersist()
+    {
+        $this->security->expects($this->once())
+                ->method('isGranted')
+                ->with($this->equalTo('ROLE_USER'))
+                ->will($this->returnValue(true));
+
+        $msg = new \Trismegiste\Socialist\PrivateMessage($this->target, $this->source);
+
+        $this->sut->persist($msg);
+    }
+
     public function testPersist()
     {
+        $this->security->expects($this->once())
+                ->method('isGranted')
+                ->with($this->equalTo('ROLE_USER'))
+                ->will($this->returnValue(true));
+
         $this->repository->expects($this->once())
                 ->method('persist');
 
-        $this->sut->persist($this->document);
+        $msg = new \Trismegiste\Socialist\PrivateMessage($this->source, $this->target);
+
+        $this->sut->persist($msg);
     }
 
     /**

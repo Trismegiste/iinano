@@ -69,6 +69,10 @@ class PrivateMessageRepository extends SecuredContentProvider
 
     public function persist(PrivateMessage $msg)
     {
+        if ($msg->getSender()->getNickname() !== $this->getAuthor()->getNickname()) {
+            throw new AccessDeniedException("You cannot save this message because you're not the sender");
+        }
+
         $this->repository->persist($msg);
     }
 
