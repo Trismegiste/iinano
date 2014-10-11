@@ -176,11 +176,16 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->findWallEntries($this->createNetizen('kirk'), 'sdsdqs');
     }
 
+    /**
+     * This because I don't want to forget new method in the interface
+     */
     public function testInterfaceInSync()
     {
-        $fqcn = 'Trismegiste\SocialBundle\Repository\PublishingRepository';
-        $fqin = $fqcn . 'Interface';
-        $this->assertCount(1 + count(get_class_methods($fqin)), get_class_methods($fqcn));
+        $this->assertEquals(count(get_class_methods('Trismegiste\SocialBundle\Repository\PublishingRepository'))
+                , count(get_class_methods('Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface')) +
+                count(get_class_methods('Trismegiste\SocialBundle\Repository\PublishingFactory')) +
+                1
+        );
     }
 
     /**

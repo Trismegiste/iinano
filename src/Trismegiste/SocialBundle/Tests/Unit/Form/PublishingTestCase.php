@@ -23,12 +23,12 @@ abstract class PublishingTestCase extends \PHPUnit_Framework_TestCase
     /** @var \Symfony\Component\Form\FormFactoryInterface */
     protected $factory;
 
-    /** @var \Trismegiste\SocialBundle\Repository\NewPublishingRepository */
+    /** @var \Trismegiste\SocialBundle\Repository\PublishingRepository */
     protected $repository;
 
     protected function setUp()
     {
-        $this->repository = $this->getMockBuilder('Trismegiste\SocialBundle\Repository\NewPublishingRepository')
+        $this->repository = $this->getMockBuilder('Trismegiste\SocialBundle\Repository\PublishingRepository')
                 ->disableOriginalConstructor()
                 ->getMock();
 

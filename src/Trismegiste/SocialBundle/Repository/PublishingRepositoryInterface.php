@@ -54,4 +54,42 @@ interface PublishingRepositoryInterface
      * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
      */
     public function findWallEntries(Follower $wallUser, $wallFilter, $offset = 0, $limit = 20);
+
+    /**
+     * Delete a published content (with the help of the underliying mongo collection)
+     *
+     * @param string $pk
+     * @param \MongoCollection $coll
+     */
+    public function delete($pk, \MongoCollection $coll);
+
+    /**
+     * Get the class alias key for a Publishing subclass managed by this repository
+     *
+     * @return string
+     */
+    public function getClassAlias(Publishing $pub);
+
+    /**
+     * Add the current logged user to the list of fan of Publishing given by its id
+     * and persistig it
+     *
+     * @param string $id primary key
+     */
+    public function iLikeThat($id);
+
+    /**
+     * Remove the current logged user to the list of fan of Publishing given by its id
+     * and persistig it
+     *
+     * @param string $id primary key
+     */
+    public function iUnlikeThat($id);
+
+    /**
+     * The current is reporting a Publishing as abuse or spam and persitence
+     *
+     * @param string $id
+     */
+    public function iReportThat($id);
 }

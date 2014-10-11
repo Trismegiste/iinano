@@ -119,6 +119,9 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
         return $this->findLastEntries($offset, $limit, $filterAuthor);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function delete($pk, \MongoCollection $coll)
     {
         $pub = $this->findByPk($pk);
@@ -126,11 +129,17 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
         $coll->remove(['_id' => new \MongoId($pk)]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getClassAlias(Publishing $pub)
     {
         return array_search(get_class($pub), $this->classAlias);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function iLikeThat($id)
     {
         $pub = $this->findByPk($id);
@@ -139,6 +148,9 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
         $this->repository->persist($pub);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function iUnlikeThat($id)
     {
         $pub = $this->findByPk($id);
@@ -147,6 +159,9 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
         $this->repository->persist($pub);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function iReportThat($id)
     {
         $pub = $this->findByPk($id);
