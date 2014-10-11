@@ -53,9 +53,6 @@ class ImportAliases implements CompilerPassInterface
             throw new InvalidConfigurationException("No alias defined in Dokudoki is a subclass of Publishing");
         }
 
-        // content aliases for repository of publishing :
-        $container->getDefinition('social.content.repository')
-                ->replaceArgument(2, array_keys($contentAlias));
         // url param regex for CRUD operation on Publishing :
         $container->setParameter('crud_url_param_regex', '(' . implode('|', array_keys($contentAlias)) . ')');
         // content aliases into twig RendererExtension :

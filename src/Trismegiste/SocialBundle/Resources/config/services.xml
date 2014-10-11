@@ -8,12 +8,6 @@
 
         <!-- REPOSITORIES -->
 
-        <service id="social.content.repository" class="Trismegiste\SocialBundle\Repository\PublishingRepository">
-            <argument type="service" id="dokudoki.repository"/>
-            <argument type="service" id="security.context"/>
-            <argument type="collection"/> <!-- injected by ImportAlias compiler pass -->
-        </service>
-
         <service id="social.private_message.repository" class="Trismegiste\SocialBundle\Repository\PrivateMessageRepository">
             <argument type="service" id="dokudoki.repository"/>
             <argument type="service" id="security.context"/>
