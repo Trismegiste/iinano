@@ -1,51 +1,78 @@
 <?php
 
 /*
- * Iinano
+ * iinano
  */
 
 namespace Trismegiste\SocialBundle\Repository;
 
+use Trismegiste\Socialist\Publishing;
 use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
-use Trismegiste\Socialist\Publishing;
 use Trismegiste\Socialist\Follower;
+use Trismegiste\Yuurei\Persistence\Persistable;
 
 /**
  * PublishingRepository is a business repository for subclasses of Publishing
- *
- * This is a wrapper around a RepositoryInterface with SecurityContext
- * This is not a decorator of RepositoryInterface because we
- * try to avoid dumb repositories (as well as dumb entities), so only methods
- * with business relevance. Plus, security concerns will break Liskov principle
- *
- * @deprecated
  */
-class PublishingRepository implements PublishingRepositoryInterface
+class PublishingRepository extends SecuredContentProvider implements PublishingRepositoryInterface, PublishingFactory
 {
 
-    protected $repository;
-    protected $security;
     protected $aliasFilter;
+    protected $classAlias;
 
     /**
      * Ctor
      *
      * @param \Trismegiste\Yuurei\Persistence\RepositoryInterface $repo
      * @param \Symfony\Component\Security\Core\SecurityContextInterface $ctx
-     * @param array $aliases a list a class key for each document
+     * @param array $aliases a list a class key => FQCN for each document
      */
     public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx, array $aliases)
     {
-        $this->security = $ctx;
-        $this->repository = $repo;
-        $this->aliasFilter = [MapAlias::CLASS_KEY => ['$in' => $aliases]];
+        parent::__construct($repo, $ctx);
+        $this->aliasFilter = [MapAlias::CLASS_KEY => ['$in' => array_keys($aliases)]];
+        $this->classAlias = $aliases;
     }
 
-    /**
-     * @inheritdoc
-     */
+    public function create($alias)
+    {
+        if (!array_key_exists($alias, $this->classAlias)) {
+            throw new \DomainException("$alias is not a valid alias");
+        }
+
+        $refl = new \ReflectionClass($this->classAlias[$alias]);
+
+        return $refl->newInstance($this->getAuthor());
+    }
+
+    public function persist(Publishing $pub)
+    {
+        $this->assertOwningRight($pub);
+        $pub->setLastEdited(new \DateTime());
+
+        $this->repository->persist($pub);
+    }
+
+    protected function assertPublishing(Persistable $doc)
+    {
+        if (!$doc instanceof Publishing) {
+            throw new \DomainException($doc->getId() . " must be a Publishing subclass, " . get_class($doc) . ' instead');
+        }
+    }
+
+    public function findByPk($pk)
+    {
+        $doc = $this->repository->findByPk($pk);
+        if (is_null($doc)) {
+            throw new \RuntimeException("$pk is not found");
+        }
+        $this->assertPublishing($doc);
+
+        return $doc;
+    }
+
     public function findLastEntries($offset = 0, $limit = 20, \ArrayIterator $author = null)
     {
         $docFilter = $this->aliasFilter;
@@ -61,30 +88,6 @@ class PublishingRepository implements PublishingRepositoryInterface
                         ->sort(['createdAt' => -1]);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function persist(Publishing $doc)
-    {
-        $this->repository->persist($doc);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function findByPk($pk)
-    {
-        $doc = $this->repository->findByPk($pk);
-        if (!$doc instanceof Publishing) {
-            throw new \LogicException("$pk is type of " . get_class($doc));
-        }
-
-        return $doc;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function findWallEntries(Follower $wallUser, $wallFilter, $offset = 0, $limit = 20)
     {
         switch ($wallFilter) {
@@ -114,6 +117,42 @@ class PublishingRepository implements PublishingRepositoryInterface
         }
 
         return $this->findLastEntries($offset, $limit, $filterAuthor);
+    }
+
+    public function delete($pk, \MongoCollection $coll)
+    {
+        $pub = $this->findByPk($pk);
+        $this->assertOwningRight($pub);
+        $coll->remove(['_id' => new \MongoId($pk)]);
+    }
+
+    public function getClassAlias(Publishing $pub)
+    {
+        return array_search(get_class($pub), $this->classAlias);
+    }
+
+    public function iLikeThat($id)
+    {
+        $pub = $this->findByPk($id);
+        $pub->addFan($this->getAuthor());
+
+        $this->repository->persist($pub);
+    }
+
+    public function iUnlikeThat($id)
+    {
+        $pub = $this->findByPk($id);
+        $pub->removeFan($this->getAuthor());
+
+        $this->repository->persist($pub);
+    }
+
+    public function iReportThat($id)
+    {
+        $pub = $this->findByPk($id);
+        $pub->report($this->getAuthor());
+
+        $this->repository->persist($pub);
     }
 
 }

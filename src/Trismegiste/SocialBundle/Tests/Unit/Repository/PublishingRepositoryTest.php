@@ -17,19 +17,24 @@ use Trismegiste\SocialBundle\Security\Netizen;
 class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
 {
 
+    use \Trismegiste\SocialBundle\Tests\Helper\SecurityContextMock;
+
     /** @var PublishingRepository */
     protected $sut;
     protected $repository;
-    protected $security;
     protected $author;
     protected $document;
+    protected $security;
 
     protected function setUp()
     {
-        $this->repository = $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface');
-        $this->security = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $this->sut = new PublishingRepository($this->repository, $this->security, ['message']);
         $this->author = new Author('kirk');
+        $this->repository = $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface');
+        $this->security = $this->createSecurityContextMock($this->author);
+        $this->security->expects($this->any())
+                ->method('isGranted')
+                ->will($this->returnValue(true));
+        $this->sut = new PublishingRepository($this->repository, $this->security, ['message' => 'AbstractMessage']);
         $this->document = $this->getMockBuilder('Trismegiste\Socialist\Publishing')
                 ->setConstructorArgs([$this->author])
                 ->setMethods([])
@@ -37,13 +42,28 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage not found
+     */
+    public function testNotFoundGetByPk()
+    {
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo(123));
+
+        $this->sut->findByPk(123);
+    }
+
+    /**
+     * @expectedException \DomainException
+     * @expectedExceptionMessage subclass
      */
     public function testInvalidTypeGetByPk()
     {
         $this->repository->expects($this->once())
                 ->method('findByPk')
-                ->with($this->equalTo(123));
+                ->with($this->equalTo(123))
+                ->will($this->returnValue($this->getMock('Trismegiste\Yuurei\Persistence\Persistable')));
 
         $this->sut->findByPk(123);
     }
