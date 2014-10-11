@@ -12,7 +12,7 @@ use Trismegiste\Socialist\Publishing;
 /**
  * CommentaryRepository is a repository for Commentary
  */
-class CommentaryRepository extends SecuredContentProvider
+class CommentaryRepository extends SecuredContentProvider implements CommentaryFactory
 {
 
     public function create()

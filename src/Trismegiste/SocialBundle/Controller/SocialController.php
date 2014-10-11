@@ -22,6 +22,7 @@ class SocialController extends Template
 
         switch ($action) {
             case 'add':
+                // @todo put this in netizen repository
                 $target->addFan($me->getAuthor());
                 $message = "You like ";
                 break;
@@ -55,6 +56,8 @@ class SocialController extends Template
                 break;
         }
 
+        // @todo put this into netizen repo: $repo->IFollow($securityContext, $following)
+        // $following is external because we need his name for flash message
         $repo->persist($me);
         $repo->persist($following);
 

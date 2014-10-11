@@ -9,7 +9,7 @@ namespace Trismegiste\SocialBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
-use Trismegiste\SocialBundle\Repository\CommentaryRepository;
+use Trismegiste\SocialBundle\Repository\CommentaryFactory;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormInterface;
@@ -21,10 +21,10 @@ use Symfony\Component\OptionsResolver\Options;
 class CommentaryType extends AbstractType
 {
 
-    /** @var CommentaryRepository */
+    /** @var CommentaryFactory */
     protected $repository;
 
-    public function __construct(CommentaryRepository $p)
+    public function __construct(CommentaryFactory $p)
     {
         $this->repository = $p;
     }

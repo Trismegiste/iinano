@@ -28,8 +28,8 @@ class NetizenProviderTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
         $this->concreteUser = new Netizen(new Author('kirk')); // mainly because supportsClass break Liskov
-        $this->repository = $this->getMock('Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface');
-        $this->sut = new NetizenProvider($this->repository);
+        $this->repository = $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface');
+        $this->sut = new NetizenProvider($this->repository, 'netizen');
     }
 
     public function testSupportedClass()
@@ -40,8 +40,11 @@ class NetizenProviderTest extends \PHPUnit_Framework_TestCase
     public function testloadUserFound()
     {
         $this->repository->expects($this->once())
-                ->method('findByNickname')
-                ->with($this->equalTo('kirk'))
+                ->method('findOne')
+                ->with($this->equalTo([
+                            'author.nickname' => 'kirk',
+                            '-class' => 'netizen'
+                ]))
                 ->will($this->returnValue($this->concreteUser));
 
         $this->assertEquals($this->concreteUser, $this->sut->loadUserByUsername('kirk'));
@@ -53,8 +56,11 @@ class NetizenProviderTest extends \PHPUnit_Framework_TestCase
     public function testloadUserNotFound()
     {
         $this->repository->expects($this->once())
-                ->method('findByNickname')
-                ->with($this->equalTo('kirk'))
+                ->method('findOne')
+                ->with($this->equalTo([
+                            'author.nickname' => 'kirk',
+                            '-class' => 'netizen'
+                ]))
                 ->will($this->returnValue(null));
 
         $this->sut->loadUserByUsername('kirk');

@@ -15,7 +15,7 @@ use Trismegiste\Socialist\Follower;
 /**
  * PublishingRepository is a business repository for subclasses of Publishing
  */
-class NewPublishingRepository extends SecuredContentProvider implements PublishingRepositoryInterface
+class NewPublishingRepository extends SecuredContentProvider implements PublishingRepositoryInterface, PublishingFactory
 {
 
     protected $aliasFilter;

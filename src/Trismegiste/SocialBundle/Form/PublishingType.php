@@ -7,7 +7,7 @@
 namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Trismegiste\SocialBundle\Repository\NewPublishingRepository;
+use Trismegiste\SocialBundle\Repository\PublishingFactory;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -18,10 +18,10 @@ use Symfony\Component\OptionsResolver\Options;
 class PublishingType extends AbstractType
 {
 
-    /** @var NewPublishingRepository */
+    /** @var PublishingFactory */
     protected $repository;
 
-    public function __construct(NewPublishingRepository $p)
+    public function __construct(PublishingFactory $p)
     {
         $this->repository = $p;
     }
