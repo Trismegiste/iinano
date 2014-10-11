@@ -34,11 +34,11 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->security->expects($this->any())
                 ->method('isGranted')
                 ->will($this->returnValue(true));
-        $this->sut = new PublishingRepository($this->repository, $this->security, ['message' => 'AbstractMessage']);
         $this->document = $this->getMockBuilder('Trismegiste\Socialist\Publishing')
                 ->setConstructorArgs([$this->author])
-                ->setMethods([])
+                ->setMethods(null)
                 ->getMock();
+        $this->sut = new PublishingRepository($this->repository, $this->security, ['message' => get_class($this->document)]);
     }
 
     /**
@@ -178,9 +178,76 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testInterfaceInSync()
     {
-        $fqcn = 'Trismegiste\Yuurei\Persistence\Repository';
+        $fqcn = 'Trismegiste\SocialBundle\Repository\PublishingRepository';
         $fqin = $fqcn . 'Interface';
         $this->assertCount(1 + count(get_class_methods($fqin)), get_class_methods($fqcn));
+    }
+
+    /**
+     * @expectedException \DomainException
+     * @expectedExceptionMessage desu
+     */
+    public function testInvalidCreate()
+    {
+        $this->sut->create('desu');
+    }
+
+    public function testCreate()
+    {
+        $this->sut->create('message');
+    }
+
+    public function testDeleteByPk()
+    {
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo('54390582e3f43405428b4568'))
+                ->will($this->returnValue($this->document));
+
+        $this->sut->delete('54390582e3f43405428b4568', $this->getMock('MongoCollection', [], [], '', false));
+    }
+
+    public function testGetClassAlias()
+    {
+        $this->assertEquals('message', $this->sut->getClassAlias($this->document));
+    }
+
+    public function testILikeThat()
+    {
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo('54390582e3f43405428b4568'))
+                ->will($this->returnValue($this->document));
+
+        $this->sut->iLikeThat('54390582e3f43405428b4568');
+        $this->assertEquals(1, $this->document->getFanCount());
+    }
+
+    public function testIUnlikeThat()
+    {
+        $this->document->addFan($this->author);
+        $this->assertEquals(1, $this->document->getFanCount());
+
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo('54390582e3f43405428b4568'))
+                ->will($this->returnValue($this->document));
+
+        $this->sut->iUnlikeThat('54390582e3f43405428b4568');
+        $this->assertEquals(0, $this->document->getFanCount());
+    }
+
+    public function testIReportThat()
+    {
+        $this->assertAttributeCount(0, 'abusive', $this->document);
+
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo('54390582e3f43405428b4568'))
+                ->will($this->returnValue($this->document));
+
+        $this->sut->iReportThat('54390582e3f43405428b4568');
+        $this->assertAttributeCount(1, 'abusive', $this->document);
     }
 
 }
