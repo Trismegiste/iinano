@@ -57,7 +57,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $link = $crawler->selectLink('Reply')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
-        $this->client->submit($form, ['commentary' => ['message' => __METHOD__]]);
+        $this->client->submit($form, ['social_commentary' => ['message' => __METHOD__]]);
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
@@ -79,7 +79,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $link = $crawler->filter('div.commentary')->selectLink('Edit')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
-        $this->client->submit($form, ['commentary' => ['message' => __METHOD__]]);
+        $this->client->submit($form, ['social_commentary' => ['message' => __METHOD__]]);
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
@@ -119,7 +119,7 @@ class CommentaryControllerTest extends WebTestCasePlus
         $link = $crawler->filter('.publishing')->selectLink('Reply')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
-        $this->client->submit($form, ['commentary' => ['message' => __METHOD__]]);
+        $this->client->submit($form, ['social_commentary' => ['message' => __METHOD__]]);
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
@@ -153,6 +153,11 @@ class CommentaryControllerTest extends WebTestCasePlus
         $pk = array_merge(['id' => $match[1], 'uuid' => $match[2]], $this->wallParam);
         // try to get the form edit
         $crawler = $this->getPage('pub_commentary_edit', $pk);
+        // we see the form...
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        // ...but we cannot post
+        $form = $crawler->selectButton('Save')->form();
+        $this->client->submit($form, ['social_commentary' => ['message' => 'hacked']]);
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
 
         return $pk;

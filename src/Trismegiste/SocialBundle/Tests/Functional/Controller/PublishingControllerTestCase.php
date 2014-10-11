@@ -137,9 +137,16 @@ abstract class PublishingControllerTestCase extends WebTestCasePlus
                         ->eq(0)->attr('id');
         preg_match('#^anchor-([\da-f]{24})$#', $anchor, $match);
         $pk = $match[1];
+
         // try to get the form edit
         $crawler = $this->getPage('publishing_edit', ['id' => $pk]);
+        // we see the form...
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        // ...but we cannot post
+        $form = $crawler->selectButton('Save')->form();
+        $this->client->submit($form);
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+
 
         return $pk;
     }

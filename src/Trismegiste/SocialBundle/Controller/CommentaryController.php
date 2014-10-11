@@ -6,9 +6,6 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
-use Trismegiste\SocialBundle\Form\CommentaryType;
-use Trismegiste\Socialist\Commentary;
-
 /**
  * CommentaryController is a controller for managing Commentary
  */
@@ -17,17 +14,14 @@ class CommentaryController extends ContentController
 
     public function addOnPublishingAction($id, $wallNick, $wallFilter)
     {
-        $pub = $this->getRepository()->findByPk($id);
-        $form = $this->createForm(new CommentaryType(), new Commentary($this->getAuthor()));
+        $pub = $this->get('social.publishing.repository')->findByPk($id);
+        $form = $this->createForm('social_commentary');
 
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
-
             $newPost = $form->getData();
-            $pub->attachCommentary($newPost);
-
             try {
-                $this->getRepository()->persist($pub);
+                $this->get('social.commentary.repository')->attachAndPersist($pub, $newPost);
                 $this->pushFlash('notice', 'Commentary saved');
 
                 return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
@@ -47,18 +41,15 @@ class CommentaryController extends ContentController
 
     public function editOnPublishingAction($id, $uuid, $wallNick, $wallFilter)
     {
-        $pub = $this->getRepository()->findByPk($id);
-        $commentary = $pub->getCommentaryByUuid($uuid);
+        $pub = $this->get('social.publishing.repository')->findByPk($id);
+        $commentary = $this->get('social.commentary.repository')->findByUuid($pub, $uuid);
 
-        $this->checkOwningRight($commentary);
-
-        $form = $this->createForm(new CommentaryType(), $commentary);
+        $form = $this->createForm('social_commentary', $commentary);
 
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
             try {
-                $commentary->setLastEdited(new \DateTime());
-                $this->getRepository()->persist($pub);
+                $this->get('social.commentary.repository')->persist($pub, $commentary);
                 $this->pushFlash('notice', 'Commentary saved');
 
                 return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], "anchor-$id-$uuid");
@@ -78,14 +69,10 @@ class CommentaryController extends ContentController
 
     public function deleteOnPublishingAction($id, $uuid, $wallNick, $wallFilter)
     {
-        $pub = $this->getRepository()->findByPk($id);
-        $commentary = $pub->getCommentaryByUuid($uuid);
+        $pub = $this->get('social.publishing.repository')->findByPk($id);
 
-        $this->checkOwningRight($commentary);
-
-        $pub->detachCommentary($commentary);
         try {
-            $this->getRepository()->persist($pub);
+            $this->get('social.commentary.repository')->detachAndPersist($pub, $uuid);
             $this->pushFlash('notice', 'Commentary deleted');
         } catch (\MongoException $e) {
             $this->pushFlash('warning', 'Cannot delete commentary');

@@ -16,20 +16,40 @@ class CommentaryTypeTest extends FormTestCase
 
     protected function createType()
     {
-        return new CommentaryType();
+        $repository = $this->getMockBuilder('Trismegiste\SocialBundle\Repository\CommentaryRepository')
+                ->disableOriginalConstructor()
+                ->getMock();
+
+        $repository->expects($this->any())
+                ->method('create')
+                ->will($this->returnValue($this->createCommentary()));
+
+        return new CommentaryType($repository);
+    }
+
+    protected function createCommentary()
+    {
+        return $this->getMockBuilder('Trismegiste\Socialist\Commentary')
+                        ->disableOriginalConstructor()
+                        ->setMethods(null)
+                        ->getMock();
     }
 
     public function getValidInputs()
     {
+        $result = $this->createCommentary();
+        $result->setMessage('lol');
         return [
-            [['message' => 'lol'], ['message' => 'lol']]
+            [['message' => 'lol'], $result]
         ];
     }
 
     public function getInvalidInputs()
     {
+        $result = $this->createCommentary();
+        $result->setMessage('gg');
         return [
-            [['message' => 'gg'], ['message' => 'gg'], ['message']]
+            [['message' => 'gg'], $result]
         ];
     }
 

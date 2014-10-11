@@ -27,16 +27,10 @@ class PictureTypeTest extends PublishingTestCase
     public function getInvalidInputs()
     {
         $validated = $this->createData();
-        $validated->setMessage('gg');
-        $validated->setMimeType('image/png');
-
-        $badMime = $this->createData();
-        $badMime->setMessage('lol');
-        $badMime->setMimeType('adobe/pdf');
+        $validated->setMessage(str_repeat('m', 100));
 
         return [
-            [['message' => 'gg', 'mimeType' => 'image/png'], $validated, ['message']],
-            [['message' => 'lol', 'mimeType' => 'adobe/pdf'], $badMime, []]
+            [['message' => str_repeat('m', 100)], $validated, ['message']],
         ];
     }
 
@@ -44,12 +38,8 @@ class PictureTypeTest extends PublishingTestCase
     {
         $validated = $this->createData();
         $validated->setMessage('A small message above 10 chars');
-        $validated->setStorageKey('photo.jpg');
-        $validated->setMimeType('image/jpeg');
         $post = [
-            'message' => 'A small message above 10 chars',
-            'mimeType' => 'image/jpeg',
-            'storageKey' => 'photo.jpg'
+            'message' => 'A small message above 10 chars'
         ];
         return [
             [$post, $validated]
