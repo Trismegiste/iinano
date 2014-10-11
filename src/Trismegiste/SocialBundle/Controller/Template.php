@@ -19,6 +19,7 @@ abstract class Template extends Controller
 
     /**
      * Returns the repository for published content
+     * @deprecated
      *
      * @return \Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface
      */

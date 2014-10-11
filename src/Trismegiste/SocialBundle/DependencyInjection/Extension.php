@@ -25,6 +25,7 @@ class Extension extends BaseExtension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.xml');
+        $loader->load('forms.xml');
 
         // injecting the regex for validation of nickname (dry) :
         $container->setParameter('nickname_regex', $config['nickname_regex']);
