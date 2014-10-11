@@ -31,7 +31,8 @@ class ImportAliasesTest extends \PHPUnit_Framework_TestCase
             'social.publishing.repository' => new Definition(null, [0, 1, 2]),
             'social.netizen.repository' => new Definition(null, [0, 1, 2]),
             'social.private_message.repository' => new Definition(null, [0, 1, 2]),
-            'social.abusereport.repository' => new Definition(null, [0, 1, 2])
+            'social.abusereport.repository' => new Definition(null, [0, 1, 2]),
+            'security.netizen.provider' => new Definition(null, [0, 1])
         ]);
         $this->sut = new ImportAliases();
     }

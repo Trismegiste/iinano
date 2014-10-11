@@ -63,7 +63,8 @@
         <!-- SECURITY -->
 
         <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">
-            <argument type="service" id="social.netizen.repository"/>
+            <argument type="service" id="dokudoki.repository"/>
+            <argument/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
         <service id="security.owner.voter" class="Trismegiste\SocialBundle\Security\OwnerVoter">
