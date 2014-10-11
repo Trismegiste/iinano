@@ -36,7 +36,10 @@ class NetizenRepository implements NetizenRepositoryInterface
      * @param string $alias the class key alias for the Netizen objects stored with Dokudoki
      * @param \Trismegiste\SocialBundle\Repository\AvatarRepository $storage a repository for storing avatar pictures
      *
-     * @todo this service does too many thing : split into a factory (anonymous user), read only access and social action
+     * @todo this service does too many thing, split into :
+     *  - a factory (anonymous user)
+     *  - read only access
+     *  - social action (follow/like)
      */
     public function __construct(RepositoryInterface $repo, EncoderFactoryInterface $encoderFactory, $alias, AvatarRepository $storage)
     {

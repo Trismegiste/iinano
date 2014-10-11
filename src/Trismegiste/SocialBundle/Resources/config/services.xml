@@ -22,6 +22,11 @@
             <argument/> <!-- injected by Extension -->
         </service>
 
+        <service id="social.picture.storage" class="Trismegiste\SocialBundle\Repository\PictureRepository">
+            <argument type="service" id="social.publishing.repository"/>
+            <argument type="string">%kernel.root_dir%/../storage/</argument>
+        </service>
+
         <service id="social.netizen.repository" class="Trismegiste\SocialBundle\Repository\NetizenRepository">
             <argument type="service" id="dokudoki.repository"/>
             <argument type="service" id="security.encoder_factory"/>

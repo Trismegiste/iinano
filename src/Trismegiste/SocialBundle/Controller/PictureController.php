@@ -20,7 +20,7 @@ class PictureController extends Template
     /**
      * Thumbnailing à la volée
      */
-    public function getAction($storageKey)
+    public function getAction($storageKey, $size = 'full')
     {
         $file = $this->get('social.avatar.repository')
                 ->getAvatarAbsolutePath($storageKey);
@@ -45,6 +45,8 @@ class PictureController extends Template
 
     /**
      * Create and upload action for a picture
+     *
+     * @todo refactor this crap with a storage repository
      */
     public function uploadAction(Request $request)
     {
@@ -56,20 +58,11 @@ class PictureController extends Template
         if ($form->isValid()) {
             /* @var $picture \Symfony\Component\HttpFoundation\File\UploadedFile */
             $picture = $form->getData()['picture'];
-            $targetDir = $this->container->getParameter('kernel.root_dir') . '/../storage/';
-            $extension = [];
-            preg_match('#^image/(jpg|jpeg|gif|png)$#', $picture->getMimeType(), $extension);
-            $name = bin2hex($this->getAuthor()->getNickname()) . '-' . time() . '.' . $extension[1];
-
-            $repo = $this->get('social.publishing.repository');
-            $doc = $repo->create('picture');
-            $doc->setMimeType($picture->getMimeType());
-            $doc->setStorageKey($name);
-            $picture->move($targetDir, $name);
-            $repo->persist($doc);
+            $pub = $this->get('social.picture.storage')->store($picture);
+            $this->get('social.publishing.repository')->persist($pub);
 
             return new JsonResponse([
-                'redirect' => $this->generateUrl('publishing_edit', ['id' => (string) $doc->getId()])
+                'redirect' => $this->generateUrl('publishing_edit', ['id' => $pub->getId()])
                     ], 201
             );
         }

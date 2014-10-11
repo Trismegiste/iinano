@@ -57,21 +57,6 @@ class ContentController extends Template
     }
 
     /**
-     * Check if the logged user is the owner of a given content
-     *
-     * @param Content $post the content to check
-     *
-     * @throws AccessDeniedException if the user cannot
-     * @deprecated 
-     */
-    protected function checkOwningRight(Content $post)
-    {
-        if (!$this->get('security.context')->isGranted('OWNER', $post)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
-    }
-
-    /**
      * The wall
      *
      * @param string $wallNick the nickname of user to show

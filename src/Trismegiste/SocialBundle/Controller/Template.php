@@ -6,8 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * This is a controller helper for the default rendering of a
- * zurb foundation layout (white w/ simple black top menu)
+ * This is a controller helper
  */
 abstract class Template extends Controller
 {
@@ -39,16 +38,6 @@ abstract class Template extends Controller
     protected function redirectRouteOk($name, array $param = [], $anchor = false)
     {
         return $this->redirect($this->generateUrl($name, $param) . ($anchor ? '#' . $anchor : ''));
-    }
-
-    /**
-     * Gets the current logged author
-     *
-     * @return \Trismegiste\Socialist\AuthorInterface
-     */
-    protected function getAuthor()
-    {
-        return $this->getUser()->getAuthor();
     }
 
     /**
