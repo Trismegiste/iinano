@@ -37,6 +37,7 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $this->assertCount(1, $crawler->filter('div.publishing'));
         $link = $crawler->filter('div.publishing')->selectLink('Report abuse or spam')->link();
         $this->client->click($link);
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
     }
 
     public function testReportCommentary()
@@ -55,6 +56,7 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $this->assertCount(1, $crawler->filter('div.commentary'));
         $link = $crawler->filter('div.commentary')->selectLink('Report abuse or spam')->link();
         $this->client->click($link);
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
     }
 
     public function testLogBadRole()

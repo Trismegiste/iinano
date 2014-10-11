@@ -69,4 +69,13 @@ class CommentaryRepository extends SecuredContentProvider
         $this->repository->persist($pub);
     }
 
+    public function IReportThat($id, $uuid)
+    {
+        $pub = $this->repository->findByPk($id);
+        $commentary = $pub->getCommentaryByUuid($uuid);
+        $commentary->report($this->getAuthor());
+
+        $this->repository->persist($pub);
+    }
+
 }

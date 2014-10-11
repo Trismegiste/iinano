@@ -114,7 +114,7 @@ class ContentController extends Template
         $parameters['wallFilter'] = $wallFilter;
 
         // filling feed entries and skipping one if in CRUD
-        $repo = $this->getRepository();
+        $repo = $this->get('social.publishing.repository');
         $it = $repo->findWallEntries($parameters['wallUser'], $wallFilter, $offset, $this->getPagination());
 
         // do we need to skip a record because it is currently edited ?
