@@ -115,12 +115,11 @@ class NewPublishingRepository extends SecuredContentProvider implements Publishi
         return $this->findLastEntries($offset, $limit, $filterAuthor);
     }
 
-    public function delete($pk)
+    public function delete($pk, \MongoCollection $coll)
     {
         $pub = $this->findByPk($pk);
         $this->assertOwningRight($pub);
-
-        throw new \LogicException('Not yet implemented');
+        $coll->remove(['_id' => new \MongoId($pk)]);
     }
 
     public function getClassAlias(Publishing $pub)
@@ -130,8 +129,7 @@ class NewPublishingRepository extends SecuredContentProvider implements Publishi
 
     public function iLikeThat($id)
     {
-        $pub = $this->repository->findByPk($id);
-        $this->assertPublishing($pub);
+        $pub = $this->findByPk($id);
         $pub->addFan($this->getAuthor());
 
         $this->repository->persist($pub);
@@ -139,9 +137,16 @@ class NewPublishingRepository extends SecuredContentProvider implements Publishi
 
     public function iUnlikeThat($id)
     {
-        $pub = $this->repository->findByPk($id);
-        $this->assertPublishing($pub);
+        $pub = $this->findByPk($id);
         $pub->removeFan($this->getAuthor());
+
+        $this->repository->persist($pub);
+    }
+
+    public function iReportThat($id)
+    {
+        $pub = $this->findByPk($id);
+        $pub->report($this->getAuthor());
 
         $this->repository->persist($pub);
     }

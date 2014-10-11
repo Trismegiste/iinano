@@ -18,17 +18,6 @@ abstract class Template extends Controller
     }
 
     /**
-     * Returns the repository for published content
-     * @deprecated
-     *
-     * @return \Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface
-     */
-    protected function getRepository()
-    {
-        return $this->get('social.content.repository');
-    }
-
-    /**
      * Gets the mongo collection for this app
      *
      * @return \MongoCollection

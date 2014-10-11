@@ -33,7 +33,7 @@ class FillWithDummy extends ContainerAwareCommand
         $nickname = $input->getArgument('nickname');
 
         $userRepo = $this->getContainer()->get('social.netizen.repository');
-        $contentRepo = $this->getContainer()->get('social.content.repository');
+        $contentRepo = $this->getContainer()->get('dokudoki.repository');
 
         $user = $userRepo->findByNickname($nickname);
         if (is_null($user)) {

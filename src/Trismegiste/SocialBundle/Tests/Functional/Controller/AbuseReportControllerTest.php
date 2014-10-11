@@ -27,11 +27,10 @@ class AbuseReportControllerTest extends WebTestCasePlus
 
     public function testReportPublish()
     {
-        $spock = $this->getService('social.netizen.repository')
-                ->findByNickname('spock')
-                ->getAuthor();
-        $repo = $this->getService('social.content.repository');
-        $repo->persist(new SmallTalk($spock));
+        $this->logIn('spock');
+        $repo = $this->getService('social.publishing.repository');
+        $doc = $repo->create('small');
+        $repo->persist($doc);
         $this->logIn('kirk');
         $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
         $this->assertCount(1, $crawler->filter('div.publishing'));
@@ -42,14 +41,14 @@ class AbuseReportControllerTest extends WebTestCasePlus
 
     public function testReportCommentary()
     {
-        $repo = $this->getService('social.content.repository');
-        $spock = $this->getService('social.netizen.repository')
-                ->findByNickname('spock')
-                ->getAuthor();
+        $this->logIn('spock');
         /* @var $post SmallTalk  */
-        $post = iterator_to_array($repo->findLastEntries(), false)[0];
-        $post->attachCommentary(new \Trismegiste\Socialist\Commentary($spock));
-        $repo->persist($post);
+        $post = iterator_to_array($this->getService('social.publishing.repository')
+                                ->findLastEntries(), false)[0];
+
+        $repo = $this->getService('social.commentary.repository');
+        $comm = $repo->create();
+        $repo->attachAndPersist($post, $comm);
 
         $this->logIn('kirk');
         $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);

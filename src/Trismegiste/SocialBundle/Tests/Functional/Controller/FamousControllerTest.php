@@ -114,7 +114,7 @@ class FamousControllerTest extends WebTestCasePlus
     {
         $this->logIn('kirk');
         // add a commentary
-        $repo = $this->getService('social.content.repository');
+        $repo = $this->getService('social.publishing.repository');
         $it = $repo->findLastEntries(0, 1);
         $it->rewind();
         $doc = $it->current();

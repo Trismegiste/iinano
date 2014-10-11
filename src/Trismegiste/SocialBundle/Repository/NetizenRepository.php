@@ -13,6 +13,7 @@ use Trismegiste\Socialist\Author;
 use Trismegiste\SocialBundle\Security\Credential\Internal;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Trismegiste\SocialBundle\Security\Profile;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * NetizenRepository is a repository for Netizen (and also Author)
@@ -34,6 +35,8 @@ class NetizenRepository implements NetizenRepositoryInterface
      * @param EncoderFactoryInterface $encoderFactory the Security component factory which manages encoders for password
      * @param string $alias the class key alias for the Netizen objects stored with Dokudoki
      * @param \Trismegiste\SocialBundle\Repository\AvatarRepository $storage a repository for storing avatar pictures
+     *
+     * @todo this service does too many thing : split into a factory (anonymous user), read only access and social action
      */
     public function __construct(RepositoryInterface $repo, EncoderFactoryInterface $encoderFactory, $alias, AvatarRepository $storage)
     {

@@ -70,15 +70,8 @@ class PublishingController extends ContentController
     public function deleteAction($id)
     {
         try {
-            $repo = $this->getRepository();
-            $post = $repo->findByPk($id);
-
-            $this->checkOwningRight($post);
-
-            // @todo this below sux alot : add a delete method in repository :
-            // check rights and content class in the process
-            $coll = $this->getCollection();
-            $coll->remove(['_id' => new \MongoId($id)]);
+            $repo = $this->get('social.publishing.repository');
+            $repo->delete($id, $this->getCollection());
             $this->pushFlash('notice', 'Message deleted');
         } catch (\MongoException $e) {
             $this->pushFlash('warning', 'Message not deleted');

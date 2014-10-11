@@ -64,7 +64,8 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
             ['social.netizen.repository', 'Trismegiste\SocialBundle\Repository\NetizenRepository'],
             ['social.content.repository', 'Trismegiste\SocialBundle\Repository\PublishingRepository'],
             ['security.netizen.provider', 'Trismegiste\SocialBundle\Security\NetizenProvider'],
-            ["security.owner.voter", "Trismegiste\SocialBundle\Security\OwnerVoter"]
+            ["security.owner.voter", "Trismegiste\SocialBundle\Security\OwnerVoter"],
+            ['social.publishing.repository', 'Trismegiste\SocialBundle\Repository\NewPublishingRepository']
         ];
     }
 

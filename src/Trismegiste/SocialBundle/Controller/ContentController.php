@@ -62,6 +62,7 @@ class ContentController extends Template
      * @param Content $post the content to check
      *
      * @throws AccessDeniedException if the user cannot
+     * @deprecated 
      */
     protected function checkOwningRight(Content $post)
     {

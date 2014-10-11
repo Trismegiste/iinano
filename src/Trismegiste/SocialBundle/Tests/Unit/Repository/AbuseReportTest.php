@@ -70,7 +70,7 @@ class AbuseReportTest extends WebTestCase
     public function testCompileReport(Publishing $doc, array $assertion)
     {
         $this->container->get('dokudoki.collection')->drop();
-        $this->container->get('social.content.repository')->persist($doc);
+        $this->container->get('dokudoki.repository')->persist($doc);
         $this->sut->compileReport();
 
         $result = iterator_to_array($this->sut->findMostReported(), false);

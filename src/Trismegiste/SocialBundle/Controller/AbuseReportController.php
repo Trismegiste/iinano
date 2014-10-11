@@ -14,19 +14,17 @@ class AbuseReportController extends ContentController
 
     public function sendOnPublishingAction($id, $action, $wallNick, $wallFilter)
     {
-        // @todo idem sendOnCommentaryAction : delegates to the new repository of Publishing
-        $doc = $this->getRepository()->findByPk($id);
+        $repo = $this->get('social.publishing.repository');
+
         switch ($action) {
             case 'add':
-                $doc->report($this->getAuthor());
+                $repo->iReportThat($id);
                 // @todo this falsh must replace the original content
                 //$this->pushFlash('notice', 'You have reported this content as abusive');
                 break;
             default:
                 $this->createNotFoundException("Action $action");
         }
-
-        $this->getRepository()->persist($doc);
 
         return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
     }
@@ -48,7 +46,7 @@ class AbuseReportController extends ContentController
 
         switch ($action) {
             case 'add':
-                $repo->IReportThat($id, $uuid);
+                $repo->iReportThat($id, $uuid);
                 // @todo this falsh must replace the original content
                 //$this->pushFlash('notice', 'You have reported this content as abusive');
                 break;

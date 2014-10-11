@@ -71,6 +71,8 @@ class WebTestCasePlus extends WebTestCase
             $session->save();
             $cookie = new Cookie($session->getName(), $session->getId());
             $this->client->getCookieJar()->set($cookie);
+            // @todo is this redundant with the lines above ?
+            $this->getService('security.context')->setToken($token);
         }
     }
 
