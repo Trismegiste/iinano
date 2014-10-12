@@ -1,8 +1,4 @@
-{% if content.hasFan(app.user.author) %}
-    <a href="{{ path('pub_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, action: 'remove'}) }}" class="button tiny secondary">Unlike</a>
-{% else %}
-    <a href="{{ path('pub_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, action: 'add'}) }}" class="button tiny secondary">Like</a>
-{% endif %}
+{% include 'TrismegisteSocialBundle:Content:ajax/publishing_like_button.html.twig' %}
 {% set fanCount = content.fanCount %}
 <span data-tooltip class="label right secondary has-tip fan-count" title="{{ fanCount }} persons like this">
     <i class="fi-like"></i>

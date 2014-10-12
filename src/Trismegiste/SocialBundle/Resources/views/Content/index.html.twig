@@ -1,96 +1,117 @@
 {% extends 'TrismegisteSocialBundle::layout.html.twig' %}
 
 {% block page_title %}
-{{ parent() }} | {{ wallNick }}'s wall
+    {{ parent() }} | {{ wallNick }}'s wall
 {% endblock %}
 
 {% block feed %}
-{% for content in listing %}
-    {% include 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
-    <hr/>
-{% endfor %}
-<div id="pagination"></div>
-<div class="row">
-    <div class="small-12 column">
-        <a id="more-button" href="{{ path('ajax_content_more', {wallNick: wallNick, wallFilter: wallFilter, offset: pagination}) }}" class="button expand secondary">More</a>
+    {% for content in listing %}
+        {% include 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
+        <hr/>
+    {% endfor %}
+    <div id="pagination"></div>
+    <div class="row">
+        <div class="small-12 column">
+            <a id="more-button" href="{{ path('ajax_content_more', {wallNick: wallNick, wallFilter: wallFilter, offset: pagination}) }}" class="button expand secondary">More</a>
+        </div>
     </div>
-</div>
 {% endblock %}
 
 {% block navbar %}
-<a href="{{ path('netizen_show', {author: wallNick} ) }}"><img src="{{ path('netizen_avatar', {filename: wallUser.author.avatar} ) }}"/></a>
-<hr/>
-{% include 'TrismegisteSocialBundle:Content:index_navbar.html.twig' %}
+    <a href="{{ path('netizen_show', {author: wallNick} ) }}"><img src="{{ path('netizen_avatar', {filename: wallUser.author.avatar} ) }}"/></a>
+    <hr/>
+    {% include 'TrismegisteSocialBundle:Content:index_navbar.html.twig' %}
 {% endblock navbar %}
 
 {% block javascripts %}
     {{ parent() }}
-<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-<script>
-    jQuery.fn.leaflet = function() {
-        $('div[data-social-status-show]').each(function() {
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script>
+        jQuery.fn.leaflet = function () {
+            $('div[data-social-status-show]').each(function () {
 
-            var item = $(this);
-            var origin = { lng: item.data('socialStatusLng'), lat:item.data('socialStatusLat') };
+                var item = $(this);
+                var origin = {lng: item.data('socialStatusLng'), lat: item.data('socialStatusLat')};
 
-            var map = L.map(item.attr('id'), {
+                var map = L.map(item.attr('id'), {
                     scrollWheelZoom: false,
                     center: origin,
                     zoom: item.data('socialStatusZoom')
+                });
+
+                L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                L.marker(origin)
+                        .addTo(map)
+                        .bindPopup(item.data('socialStatusMessage'))
+                        .openPopup();
+                // just to be sure this attribute will not be initialized two times
+                item.removeAttr('data-social-status-show');
             });
 
-            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+        }
 
-            L.marker(origin)
-                .addTo(map)
-                .bindPopup(item.data('socialStatusMessage'))
-                .openPopup();
-            // just to be sure this attribute will not be initialized two times
-            item.removeAttr('data-social-status-show');
-        });
+        jQuery.fn.transformLinkToAjax = function ()
+        {
 
-    }
+            var ajaxedLinkClick = function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                $.ajax({
+                    url: event.target.href,
+                    type: 'POST'
+                }).done(function (response) {
+                    $(event.target).replaceWith(response);
+                    $(event.target).on('click', ajaxedLinkClick);
+                });
+            };
 
-    $(document).ready(function() {
+            $('a[data-social-ajaxed]').on('click', ajaxedLinkClick);
+        };
 
-        $('#more-button').on('click', function(event) {
-            $.ajax({
-                url: event.target.href,
-                success: function(data) {
-                    if ('' != data) {
-                        $('#pagination').append(data)
-                        var old = event.target.href
-                        event.target.href = old.replace(/(\d+)$/, function(match, p1, offset, str) { return {{ pagination }}+Number(p1) })
-                        $(document).foundation() // seems to be the right way according to #3885
-                        $(document).leaflet();
-                    } else {
-                        $('#more-button').hide()
+        $(document).ready(function () {
+
+            $('#more-button').on('click', function (event) {
+                $.ajax({
+                    url: event.target.href,
+                    success: function (data) {
+                        if ('' != data) {
+                            $('#pagination').append(data)
+                            var old = event.target.href
+                            event.target.href = old.replace(/(\d+)$/, function (match, p1, offset, str) {
+                                return {{ pagination }}+Number(p1)
+                            })
+                            $(document).foundation() // seems to be the right way according to #3885
+                            $(document).leaflet();
+                        } else {
+                            $('#more-button').hide()
+                        }
                     }
-                }
+                })
+                event.preventDefault()
             })
-            event.preventDefault()
+
+            $(document).leaflet();
+            $(document).transformLinkToAjax();
+
         })
-
-        $(document).leaflet();
-
-    })
-</script>
+    </script>
 {% endblock %}
 
 {% block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-<style>
-    .status-map {
-        height: 400px;
-        width: 100%;
-        margin-bottom: 1.5em;
-    }
-    img.picture-view {
-        max-height: 400px;
-        margin-bottom: 1.5em;
-    }
-</style>
+    {{ parent() }}
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <style>
+        .status-map {
+            height: 400px;
+            width: 100%;
+            margin-bottom: 1.5em;
+        }
+        img.picture-view {
+            max-height: 400px;
+            margin-bottom: 1.5em;
+        }
+    </style>
 {% endblock %}

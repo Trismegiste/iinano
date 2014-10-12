@@ -1,0 +1,5 @@
+{% if content.hasFan(app.user.author) %}
+    <a data-social-ajaxed href="{{ path('pub_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, action: 'remove'}) }}" class="button tiny secondary">Unlike</a>
+{% else %}
+    <a data-social-ajaxed href="{{ path('pub_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, action: 'add'}) }}" class="button tiny secondary">Like</a>
+{% endif %}
