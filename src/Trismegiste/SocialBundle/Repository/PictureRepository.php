@@ -32,7 +32,7 @@ class PictureRepository
     }
 
     /**
-     * Store an uploaded file to the storage and create a Picture document for this picture
+     * Stores an uploaded file to the storage and returns a Picture document for this picture
      *
      * @param UploadedFile $picFile
      *

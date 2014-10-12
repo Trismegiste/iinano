@@ -17,51 +17,51 @@
 
     <route id="pub_famous" pattern="/pub/{id}/famous/{action}">
         <default key="_controller">TrismegisteSocialBundle:Famous:likePublish</default>
-        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="action">(add|remove)</requirement>
     </route>
     <route id="commentary_famous" pattern="/pub/{id}/commentary/{uuid}/famous/{action}">
         <default key="_controller">TrismegisteSocialBundle:Famous:likeCommentary</default>
-        <requirement key="id">[\da-f]{24}</requirement>
-        <requirement key="uuid">[\da-f]{40}</requirement>
+        <requirement key="id">%mongoid_regex%</requirement>
+        <requirement key="uuid">%mongoid_regex%</requirement>
         <requirement key="action">(add|remove)</requirement>
     </route>
 
     <route id="pub_abusivereport" pattern="/pub/{id}/abusive/{action}">
         <default key="_controller">TrismegisteSocialBundle:AbuseReport:sendOnPublishing</default>
-        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="action">(add)</requirement>
     </route>
     <route id="commentary_abusivereport" pattern="/pub/{id}/commentary/{uuid}/abusive/{action}">
         <default key="_controller">TrismegisteSocialBundle:AbuseReport:sendOnCommentary</default>
-        <requirement key="id">[\da-f]{24}</requirement>
-        <requirement key="uuid">[\da-f]{40}</requirement>
+        <requirement key="id">%mongoid_regex%</requirement>
+        <requirement key="uuid">%mongoid_regex%</requirement>
         <requirement key="action">(add)</requirement>
     </route>
 
     <route id="netizen_famous" pattern="/user/{id}/like/{action}">
         <default key="_controller">TrismegisteSocialBundle:Social:likeNetizen</default>
-        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="action">(add|remove)</requirement>
     </route>
     <route id="netizen_follow" pattern="/user/{id}/follow/{action}">
         <default key="_controller">TrismegisteSocialBundle:Social:followNetizen</default>
-        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="action">(add|remove)</requirement>
     </route>
 
     <route id="pub_commentary_add" pattern="/pub/{id}/commentary/add">
         <default key="_controller">TrismegisteSocialBundle:Commentary:addOnPublishing</default>
-        <requirement key="id">[\da-f]{24}</requirement>
+        <requirement key="id">%mongoid_regex%</requirement>
     </route>
     <route id="pub_commentary_edit" pattern="/pub/{id}/commentary/{uuid}/edit">
         <default key="_controller">TrismegisteSocialBundle:Commentary:editOnPublishing</default>
-        <requirement key="id">[\da-f]{24}</requirement>
-        <requirement key="uuid">[\da-f]{40}</requirement>
+        <requirement key="id">%mongoid_regex%</requirement>
+        <requirement key="uuid">%mongoid_regex%</requirement>
     </route>
     <route id="pub_commentary_delete" pattern="/pub/{id}/commentary/{uuid}/delete">
         <default key="_controller">TrismegisteSocialBundle:Commentary:deleteOnPublishing</default>
-        <requirement key="id">[\da-f]{24}</requirement>
-        <requirement key="uuid">[\da-f]{40}</requirement>
+        <requirement key="id">%mongoid_regex%</requirement>
+        <requirement key="uuid">%mongoid_regex%</requirement>
     </route>
 </routes>

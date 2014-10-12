@@ -45,8 +45,6 @@ class PictureController extends Template
 
     /**
      * Create and upload action for a picture
-     *
-     * @todo refactor this crap with a storage repository
      */
     public function uploadAction(Request $request)
     {
@@ -70,6 +68,7 @@ class PictureController extends Template
         return new JsonResponse($form->getErrors(), 500);
     }
 
+    // @todo is it possible to eliminate this fragment with a custom image formtype ?
     public function renderFormAction()
     {
         $form = $this->createForm(new PictureAutoUploaderType());
