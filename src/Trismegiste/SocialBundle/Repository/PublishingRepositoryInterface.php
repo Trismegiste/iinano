@@ -71,20 +71,24 @@ interface PublishingRepositoryInterface
     public function getClassAlias(Publishing $pub);
 
     /**
-     * Add the current logged user to the list of fan into a given Publishing
+     * Add the current logged user to the list of fan of Publishing given by its id
      * and persistig it
      *
-     * @param Publishing $pub an instance of Publishing subclass
+     * @param string $id primary key
+     *
+     * @return Publishing
      */
-    public function persistLikeThat(Publishing $pub);
+    public function iLikeThat($id);
 
     /**
-     * Remove the current logged user to the list of fan into a given Publishing
+     * Remove the current logged user to the list of fan of Publishing given by its id
      * and persistig it
      *
-     * @param Publishing $pub an instance of Publishing subclass
+     * @param string $id primary key
+     * 
+     * @return Publishing
      */
-    public function persistUnlikeThat(Publishing $pub);
+    public function iUnlikeThat($id);
 
     /**
      * The current is reporting a Publishing as abuse or spam and persitence

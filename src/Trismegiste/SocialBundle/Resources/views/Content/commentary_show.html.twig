@@ -6,12 +6,11 @@
     </div>
     <div class="large-10 medium-10 columns">
         {% set dropdown_id = 'drop' ~ content.id ~ comment.uuid %}
-        <a href="#" class="right" data-options="align:left" data-dropdown="{{ dropdown_id }}"><i class="fi-widget"></i></a>
         <ul id="{{ dropdown_id }}" class="f-dropdown" data-dropdown-content>
             {% if is_granted('OWNER', comment) %}
-            <li><a href="{{ path('pub_commentary_edit', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Edit</a></li>
-            <li><a href="{{ path('pub_commentary_delete', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Delete</a></li>
-            {% endif %}
+                <li><a href="{{ path('pub_commentary_edit', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Edit</a></li>
+                <li><a href="{{ path('pub_commentary_delete', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Delete</a></li>
+                {% endif %}
             <li><a href="{{ path('commentary_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Report abuse or spam</a></li>
         </ul>
         <h6 class="subheader">
@@ -19,6 +18,10 @@
             <small>{{ comment.lastEdited | timeago }}</small>
         </h6>
         <p>{{ comment.message }}</p>
-        {% include 'TrismegisteSocialBundle:Content:commentary_like_button.html.twig' %}
-    </div>
+        <h4 class="publishing-actions-footer">
+            {% include 'TrismegisteSocialBundle:Content:ajax/commentary_like_button.html.twig' %}
+            <a href="#" title="More..." data-dropdown="{{ dropdown_id }}">
+                <i class="fi-widget"></i>
+            </a>
+        </h4>    </div>
 </div>

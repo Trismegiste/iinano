@@ -1,0 +1,14 @@
+{% if comment.hasFan(app.user.author) %}
+    {% set like_action = 'remove' %}
+    {% set like_text = 'Unlike' %}
+{% else %}
+    {% set like_action = 'add' %}
+    {% set like_text = 'Like' %}
+{% endif %}
+<a data-social-ajaxed
+   href="{{ path('commentary_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid, action: like_action}) }}"
+   class="like-button"
+   title="{{ like_text }}">
+    <i class="fi-heart"></i>
+    {{ comment.fanCount }}
+</a>

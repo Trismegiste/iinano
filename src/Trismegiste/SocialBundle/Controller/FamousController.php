@@ -14,36 +14,41 @@ use Trismegiste\SocialBundle\Controller\Template;
 class FamousController extends Template
 {
 
-    public function likeCommentaryAction($id, $uuid, $action, $wallNick, $wallFilter)
+    public function ajaxLikeCommentaryAction($id, $uuid, $action, $wallNick, $wallFilter)
     {
+        $this->onlyAjaxRequest();
         $repo = $this->get('social.commentary.repository');
 
         switch ($action) {
             case 'add':
-                $repo->iLikeThat($id, $uuid);
+                $pub = $repo->iLikeThat($id, $uuid);
                 break;
             case 'remove':
-                $repo->iUnlikeThat($id, $uuid);
+                $pub = $repo->iUnlikeThat($id, $uuid);
                 break;
             default:
                 $this->createNotFoundException("Action $action");
         }
 
-        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], "anchor-$id-$uuid");
+        return $this->render('TrismegisteSocialBundle:Content:ajax/commentary_like_button.html.twig', [
+                    'wallNick' => $wallNick, // to keep the more stateless as possible
+                    'wallFilter' => $wallFilter,
+                    'content' => $pub,
+                    'comment' => $pub->getCommentaryByUuid($uuid)
+        ]);
     }
 
     public function ajaxLikePublishAction($id, $action, $wallNick, $wallFilter)
     {
         $this->onlyAjaxRequest();
         $repo = $this->get('social.publishing.repository');
-        $pub = $repo->findByPk($id);
 
         switch ($action) {
             case 'add':
-                $repo->persistLikeThat($pub);
+                $pub = $repo->iLikeThat($id);
                 break;
             case 'remove':
-                $repo->persistUnlikeThat($pub);
+                $pub = $repo->iUnlikeThat($id);
                 break;
             default:
                 $this->createNotFoundException("Action $action");

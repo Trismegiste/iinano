@@ -140,19 +140,25 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
     /**
      * @inheritdoc
      */
-    public function persistlikeThat(Publishing $pub)
+    public function iLikeThat($id)
     {
+        $pub = $this->findByPk($id);
         $pub->addFan($this->getAuthor());
         $this->repository->persist($pub);
+
+        return $pub;
     }
 
     /**
      * @inheritdoc
      */
-    public function persistUnlikeThat(Publishing $pub)
+    public function iUnlikeThat($id)
     {
+        $pub = $this->findByPk($id);
         $pub->removeFan($this->getAuthor());
         $this->repository->persist($pub);
+
+        return $pub;
     }
 
     /**

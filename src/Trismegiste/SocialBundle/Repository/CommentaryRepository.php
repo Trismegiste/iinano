@@ -56,8 +56,9 @@ class CommentaryRepository extends SecuredContentProvider implements CommentaryF
         $pub = $this->repository->findByPk($id);
         $comm = $pub->getCommentaryByUuid($uuid);
         $comm->addFan($this->getAuthor());
-
         $this->repository->persist($pub);
+
+        return $pub;
     }
 
     public function iUnlikeThat($id, $uuid)
@@ -65,8 +66,9 @@ class CommentaryRepository extends SecuredContentProvider implements CommentaryF
         $pub = $this->repository->findByPk($id);
         $comm = $pub->getCommentaryByUuid($uuid);
         $comm->removeFan($this->getAuthor());
-
         $this->repository->persist($pub);
+
+        return $pub;
     }
 
     public function iReportThat($id, $uuid)
