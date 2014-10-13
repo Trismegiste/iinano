@@ -71,7 +71,7 @@ class WebTestCasePlus extends WebTestCase
             $session->save();
             $cookie = new Cookie($session->getName(), $session->getId());
             $this->client->getCookieJar()->set($cookie);
-            // @todo is this redundant with the lines above ?
+// @todo is this redundant with the lines above ?
             $this->getService('security.context')->setToken($token);
         }
     }
@@ -93,6 +93,15 @@ class WebTestCasePlus extends WebTestCase
         $author->setAvatar('00.jpg');
 
         return $author;
+    }
+
+    /**
+     * @return \Symfony\Component\DomCrawler\Crawler
+     */
+    protected function ajaxPost($uri)
+    {
+        return $this->client->request('POST', $uri, [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+
     }
 
 }

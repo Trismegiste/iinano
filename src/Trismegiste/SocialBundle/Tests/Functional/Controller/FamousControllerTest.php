@@ -60,11 +60,9 @@ class FamousControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
 
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.publishing')->selectLink('Like 0')->link();
-        echo $link;
-        $crawler = $this->client->click($link);
-        $this->assertCount(1, $crawler->filter('.publishing')->selectLink('Unlike'));
-        $this->assertEquals(1, (int) $crawler->filter('.publishing span.fan-count')->text());
+        $link = $crawler->filter('.publishing')->selectLink('Like 0')->link()->getUri();
+        $crawler = $this->ajaxPost($link);
+        $this->assertCount(1, $crawler->selectLink('Unlike 1'));
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
@@ -81,10 +79,10 @@ class FamousControllerTest extends WebTestCasePlus
         $this->logIn('spock');
 
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.publishing')->selectLink('Like')->link();
-        $crawler = $this->client->click($link);
-        $this->assertCount(1, $crawler->filter('.publishing')->selectLink('Unlike'));
-        $this->assertEquals(2, (int) $crawler->filter('.publishing span.fan-count')->text());
+        $link = $crawler->filter('.publishing')->selectLink('Like 1')->link()->getUri();
+
+        $crawler = $this->ajaxPost($link);
+        $this->assertCount(1, $crawler->selectLink('Unlike 2'));
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
@@ -101,10 +99,10 @@ class FamousControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
 
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.publishing')->selectLink('Unlike')->link();
-        $crawler = $this->client->click($link);
-        $this->assertCount(1, $crawler->filter('.publishing')->selectLink('Like'));
-        $this->assertEquals(1, (int) $crawler->filter('.publishing span.fan-count')->text());
+        $link = $crawler->filter('.publishing')->selectLink('Unlike 2')->link()->getUri();
+
+        $crawler = $this->ajaxPost($link);
+        $this->assertCount(1, $crawler->selectLink('Like 1'));
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
