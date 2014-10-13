@@ -217,14 +217,13 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('message', $this->sut->getClassAlias($this->document));
     }
 
-    public function testILikeThat()
+    public function testPersistLikeThat()
     {
         $this->repository->expects($this->once())
-                ->method('findByPk')
-                ->with($this->equalTo('54390582e3f43405428b4568'))
-                ->will($this->returnValue($this->document));
+                ->method('persist')
+                ->with($this->equalTo($this->document));
 
-        $this->sut->iLikeThat('54390582e3f43405428b4568');
+        $this->sut->persistLikeThat($this->document);
         $this->assertEquals(1, $this->document->getFanCount());
     }
 
@@ -234,11 +233,10 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->document->getFanCount());
 
         $this->repository->expects($this->once())
-                ->method('findByPk')
-                ->with($this->equalTo('54390582e3f43405428b4568'))
-                ->will($this->returnValue($this->document));
+                ->method('persist')
+                ->with($this->equalTo($this->document));
 
-        $this->sut->iUnlikeThat('54390582e3f43405428b4568');
+        $this->sut->persistUnlikeThat($this->document);
         $this->assertEquals(0, $this->document->getFanCount());
     }
 
