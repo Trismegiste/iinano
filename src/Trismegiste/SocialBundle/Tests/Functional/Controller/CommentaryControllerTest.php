@@ -54,14 +54,14 @@ class CommentaryControllerTest extends WebTestCasePlus
     public function testAddCommentary($pk)
     {
         $crawler = $this->getPage('wall_index', $this->wallParam);
-        $link = $crawler->selectLink('Reply')->link();
+        $link = $crawler->filter('.publishing a[title=Reply]')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
         $this->client->submit($form, ['social_commentary' => ['message' => __METHOD__]]);
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
-        $comment = $restore->getCommentary();
+        $comment = iterator_to_array($restore->getCommentaryIterator());
         $this->assertCount(1, $comment);
         $comment = $comment[0];
         $this->assertEquals(__METHOD__, $comment->getMessage());
@@ -83,7 +83,7 @@ class CommentaryControllerTest extends WebTestCasePlus
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
-        $comment = $restore->getCommentary();
+        $comment = iterator_to_array($restore->getCommentaryIterator());
         $this->assertCount(1, $comment);
         $comment = $comment[0];
         $this->assertEquals(__METHOD__, $comment->getMessage());
@@ -103,8 +103,7 @@ class CommentaryControllerTest extends WebTestCasePlus
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
-        $comment = $restore->getCommentary();
-        $this->assertCount(0, $comment);
+        $this->assertEquals(0, $restore->getCommentaryCount());
 
         return $pk;
     }
@@ -116,14 +115,14 @@ class CommentaryControllerTest extends WebTestCasePlus
     {
         $this->login('spock');
         $crawler = $this->getPage('wall_index', $this->wallParam);
-        $link = $crawler->filter('.publishing')->selectLink('Reply')->link();
+        $link = $crawler->filter('.publishing a[title=Reply]')->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
         $this->client->submit($form, ['social_commentary' => ['message' => __METHOD__]]);
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
-        $comment = $restore->getCommentary();
+        $comment = iterator_to_array($restore->getCommentaryIterator());
         $this->assertCount(1, $comment);
         $comment = $comment[0];
         $this->assertEquals(__METHOD__, $comment->getMessage());

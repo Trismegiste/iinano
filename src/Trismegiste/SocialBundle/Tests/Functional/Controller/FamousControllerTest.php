@@ -60,9 +60,10 @@ class FamousControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
 
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.publishing')->selectLink('Like 0')->link()->getUri();
+        $link = $crawler->filter('.publishing .content-actions-footer a[title=Like]')->link()->getUri();
         $crawler = $this->ajaxPost($link);
-        $this->assertCount(1, $crawler->selectLink('Unlike 1'));
+        $this->assertCount(1, $crawler->filter('a[title=Unlike]'));
+        $this->assertEquals(1, (int) $crawler->filter('a[title=Unlike]')->text());
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
@@ -79,10 +80,11 @@ class FamousControllerTest extends WebTestCasePlus
         $this->logIn('spock');
 
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.publishing')->selectLink('Like 1')->link()->getUri();
+        $link = $crawler->filter('.publishing .content-actions-footer a[title=Like]')->link()->getUri();
 
         $crawler = $this->ajaxPost($link);
-        $this->assertCount(1, $crawler->selectLink('Unlike 2'));
+        $this->assertCount(1, $crawler->filter('a[title=Unlike]'));
+        $this->assertEquals(2, (int) $crawler->filter('a[title=Unlike]')->text());
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
@@ -99,10 +101,11 @@ class FamousControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
 
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.publishing')->selectLink('Unlike 2')->link()->getUri();
+        $link = $crawler->filter('.publishing .content-actions-footer a[title=Unlike]')->link()->getUri();
 
         $crawler = $this->ajaxPost($link);
-        $this->assertCount(1, $crawler->selectLink('Like 1'));
+        $this->assertCount(1, $crawler->filter('a[title=Like]'));
+        $this->assertEquals(1, (int) $crawler->filter('a[title=Like]')->text());
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
@@ -121,22 +124,23 @@ class FamousControllerTest extends WebTestCasePlus
         $repo->persist($doc);
         // click on the 'like' on the commentary
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.publishing .commentary')->selectLink('Like')->link();
-        $crawler = $this->client->click($link);
+        $link = $crawler->filter('.commentary .content-actions-footer a[title=Like]')->link();
+        $crawler = $this->ajaxPost($link->getUri());
         // check we have 'unlike' button
-        $unlikeIter = $crawler->filter('.publishing .commentary')->selectLink('Unlike');
-        $this->assertCount(1, $unlikeIter);
+        $unlikeButton = $crawler->filter('a[title=Unlike]');
+        $this->assertCount(1, $unlikeButton);
         //check the info counter
-        $this->assertEquals(1, (int) $crawler->filter('.publishing .commentary span.fan-count')->text());
+        $this->assertEquals(1, (int) $unlikeButton->text());
+
         // click on the unlike
-        $crawler = $this->client->click($unlikeIter->link());
-        $this->assertEquals(0, (int) $crawler->filter('.publishing .commentary span.fan-count')->text());
+        $crawler = $this->ajaxPost($unlikeButton->link()->getUri());
+        $this->assertEquals(0, (int) $crawler->filter('a[title=Like]')->text());
         // check the database
         $it = $repo->findLastEntries(0, 1);
         $it->rewind();
         $doc = $it->current();
         $comments = iterator_to_array($doc->getCommentaryIterator());
-        $this->assertEquals(1, $comments);
+        $this->assertCount(1, $comments);
         $this->assertEquals(0, $comments[0]->getFanCount());
     }
 

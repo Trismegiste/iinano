@@ -16,7 +16,7 @@
         <h6 class="subheader">{{ content.author.nickname }} <small>{{ content.lastEdited | timeago }}</small></h6>
         {% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content) %}
 
-        <h4 class="publishing-actions-footer">
+        <h4 class="content-actions-footer">
             <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}" title="Reply">
                 <i class="fi-comment-quotes"></i>
                 {{ content.commentaryCount }}
