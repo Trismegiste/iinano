@@ -10,20 +10,34 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\Options;
+use Trismegiste\SocialBundle\Repository\PictureRepository;
 
 /**
- * PictureType is a form for Picture : contains all data except binaries
+ * PictureType is a form for Picture
  */
 class PictureType extends AbstractType
 {
 
-    /**
-     * As you can see, this form cannot be valid unless there is some JS to fill
-     * the hidden field
-     */
+    /** @var PictureRepository */
+    protected $repository;
+
+    public function __construct(PictureRepository $p)
+    {
+        $this->repository = $p;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('message', 'text', [
+        $builder->add('picture', 'file', [
+                    'constraints' => [new Image()],
+                    'attr' => ['accept' => 'image/*;capture=camera'],
+                    'label' => 'Picture',
+                    'mapped' => false
+                ])
+                ->add('message', 'text', [
                     'required' => false,
                     'attr' => ['placeholder' => 'Optional: add a title on this picture'],
                     'constraints' => new Length(['max' => 80])
@@ -38,12 +52,30 @@ class PictureType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(['alias' => 'picture']);
+        $factory = $this->repository;
+        $emptyData = function (Options $options) use ($factory) {
+
+            return function (FormInterface $form) use ($factory) {
+                if ($form->isEmpty() && !$form->isRequired()) {
+                    return null;
+                } else {
+                    $picFile = $form->get('picture')->getData();
+                    $pub = $factory->store($picFile);
+
+                    return $pub;
+                }
+            };
+        };
+
+        $resolver->setDefaults([
+            'empty_data' => $emptyData,
+            'data_class' => 'Trismegiste\Socialist\Picture'
+        ]);
     }
 
     public function getParent()
     {
-        return 'social_publishing';
+        return 'form';
     }
 
 }

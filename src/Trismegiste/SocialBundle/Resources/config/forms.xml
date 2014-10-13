@@ -46,6 +46,7 @@
         </service>
 
         <service id="social.type.picture" class="Trismegiste\SocialBundle\Form\PictureType">
+            <argument type="service" id="social.picture.storage"/>
             <tag name="form.type" alias="social_picture"/>
         </service>
 

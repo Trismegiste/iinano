@@ -52,7 +52,7 @@ class PictureRepository
         $syntheticName = sha1($nick . microtime(false) . rand()) . '.' . $extension[1];
         $pub->setMimeType($picFile->getMimeType());
         $pub->setStorageKey($syntheticName);
-        $picFile->move($this->storage, $syntheticName);
+        copy($picFile->getPathname(), $this->storage . '/' . $syntheticName);
 
         return $pub;
     }

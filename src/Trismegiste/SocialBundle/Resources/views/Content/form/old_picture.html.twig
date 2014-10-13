@@ -1,0 +1,96 @@
+{% extends 'TrismegisteSocialBundle:Content:publishing_form.html.twig' %}
+
+{% block crud %}
+    {% if form.vars.value is null %}
+        <div class="hidden-form">
+            {{ render(controller('TrismegisteSocialBundle:Picture:renderForm')) }}
+        </div>
+        <div id="megabutton-autoupload" class="text-center">
+            <h1><i class="fi-camera"></i></h1>
+            <p>Click / Touch<br/>to upload a picture</p>
+        </div>
+        <img id="upload-preview" class="picture-view hidden-form"/>
+    {% else %}
+        <img src="{{ path('picture_get', {storageKey: form.vars.value.storageKey}) }}"/>
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+
+        $('#megabutton-autoupload').on('click', function (event) {
+            $('form[data-autouploader] input[type=file]').trigger('click');
+        })
+
+        // preview
+        $('form[data-autouploader] input[type=file]').on('change', function (event) {
+            var input = event.target;
+
+            if (input.files && input.files[0]) {
+                var selectFile = input.files[0]
+
+                // preview :
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    $('#upload-preview').attr('src', event.target.result)
+                }
+                $('#megabutton-autoupload').toggleClass('hidden-form')
+                $('#upload-preview').toggleClass('hidden-form')
+
+                reader.readAsDataURL(selectFile)
+
+                // preparing autosubmit :
+                var formParam = new FormData()
+                $('form[data-autouploader] input[type=hidden]').each(function (idx, field) {
+                    formParam.append($(field).attr('name'), $(field).attr('value'))
+                })
+                formParam.append($('form[data-autouploader] input[type=file]').attr('name'), selectFile)
+
+                // post the form through ajax
+                $.ajax({
+                    type: 'post',
+                    url: '{{ path('picture_upload') }}',
+                    data: formParam,
+                    xhrFields: {
+                        // add listener to XMLHTTPRequest object directly for progress (jquery doesn't have this yet)
+                        onprogress: function (progress) {
+                            // calculate upload progress
+                            var percentage = Math.floor((progress.total / progress.totalSize) * 100);
+                            // log upload progress to console
+                            console.log('progress', percentage);
+                            if (percentage === 100) {
+                                console.log('DONE!');
+                            }
+                        }
+                    },
+                    processData: false,
+                    contentType: false
+                }).done(function (response) {
+                    window.location.replace(response.redirect);
+                }).fail(function (response) {
+                    alert('Your browser does not support this feature');
+                })
+            }
+        })
+
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #megabutton-autoupload {
+            background-color: #f8f8f8;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .hidden-form {
+            visibility: hidden;
+            display: none;
+        }
+    </style>
+{% endblock %}

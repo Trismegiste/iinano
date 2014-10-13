@@ -43,38 +43,4 @@ class PictureController extends Template
         return $response;
     }
 
-    /**
-     * Create and upload action for a picture
-     */
-    public function uploadAction(Request $request)
-    {
-        $this->onlyAjaxRequest();
-
-        $form = $this->createForm(new PictureAutoUploaderType());
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            /* @var $picture \Symfony\Component\HttpFoundation\File\UploadedFile */
-            $picture = $form->getData()['picture'];
-            $pub = $this->get('social.picture.storage')->store($picture);
-            $this->get('social.publishing.repository')->persist($pub);
-
-            return new JsonResponse([
-                'redirect' => $this->generateUrl('publishing_edit', ['id' => $pub->getId()])
-                    ], 201
-            );
-        }
-
-        return new JsonResponse($form->getErrors(), 500);
-    }
-
-    // @todo is it possible to eliminate this fragment with a custom image formtype ?
-    public function renderFormAction()
-    {
-        $form = $this->createForm(new PictureAutoUploaderType());
-
-        return $this->render('TrismegisteSocialBundle:Picture:autoupload.html.twig'
-                        , ['form' => $form->createView()]);
-    }
-
 }
