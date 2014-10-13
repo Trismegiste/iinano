@@ -64,11 +64,10 @@
                     type: 'POST'
                 }).done(function (response) {
                     $(event.target).replaceWith(response);
-                    $(event.target).on('click', ajaxedLinkClick);
                 });
             };
 
-            $('a[data-social-ajaxed]').on('click', ajaxedLinkClick);
+            $(document).on('click', 'a[data-social-ajaxed]', ajaxedLinkClick);
         };
 
         $(document).ready(function () {
