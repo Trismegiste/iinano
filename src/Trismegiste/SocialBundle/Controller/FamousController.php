@@ -34,42 +34,26 @@ class FamousController extends Template
 
     public function ajaxLikePublishAction($id, $action, $wallNick, $wallFilter)
     {
+        $this->onlyAjaxRequest();
         $repo = $this->get('social.publishing.repository');
+        $pub = $repo->findByPk($id);
 
         switch ($action) {
             case 'add':
-                $repo->iLikeThat($id);
+                $repo->persistLikeThat($pub);
                 break;
             case 'remove':
-                $repo->iUnlikeThat($id);
+                $repo->persistUnlikeThat($pub);
                 break;
             default:
                 $this->createNotFoundException("Action $action");
         }
 
         return $this->render('TrismegisteSocialBundle:Content:ajax/publishing_like_button.html.twig', [
-                    'wallNick' => $wallNick,
+                    'wallNick' => $wallNick, // to keep the more stateless as possible
                     'wallFilter' => $wallFilter,
-                    'content' => $repo->findByPk($id)
+                    'content' => $pub
         ]);
-    }
-
-    public function likePublishAction($id, $action, $wallNick, $wallFilter)
-    {
-        $repo = $this->get('social.publishing.repository');
-
-        switch ($action) {
-            case 'add':
-                $repo->iLikeThat($id);
-                break;
-            case 'remove':
-                $repo->iUnlikeThat($id);
-                break;
-            default:
-                $this->createNotFoundException("Action $action");
-        }
-
-        return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
     }
 
 }

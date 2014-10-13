@@ -60,7 +60,8 @@ class FamousControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
 
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.publishing')->selectLink('Like')->link();
+        $link = $crawler->filter('.publishing')->selectLink('Like 0')->link();
+        echo $link;
         $crawler = $this->client->click($link);
         $this->assertCount(1, $crawler->filter('.publishing')->selectLink('Unlike'));
         $this->assertEquals(1, (int) $crawler->filter('.publishing span.fan-count')->text());
