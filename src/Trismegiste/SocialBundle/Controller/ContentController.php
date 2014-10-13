@@ -53,7 +53,7 @@ class ContentController extends Template
     {
         $this->onlyAjaxRequest();
 
-        return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:index_more.html.twig', [], $offset);
+        return $this->renderWall($wallNick, $wallFilter, 'TrismegisteSocialBundle:Content:ajax/index_more.html.twig', [], $offset);
     }
 
     /**
