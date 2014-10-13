@@ -60,10 +60,10 @@
                 event.stopPropagation();
                 event.preventDefault();
                 $.ajax({
-                    url: event.target.href,
+                    url: this.href,
                     type: 'POST'
                 }).done(function (response) {
-                    $(event.target).replaceWith(response);
+                    $(event.currentTarget).replaceWith(response);
                 });
             };
 
@@ -111,6 +111,9 @@
         img.picture-view {
             max-height: 400px;
             margin-bottom: 1.5em;
+        }
+        .publish-actions-footer a {
+            margin-right: 3em;
         }
     </style>
 {% endblock %}

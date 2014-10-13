@@ -1,10 +1,10 @@
 {# Template for viewing one publishing root entity subclass #}
 <div class="row publishing">
     <a id="anchor-{{ content.id }}"></a>
-    <div class="large-2 medium-3 small-4 columns">
+    <div class="large-2 medium-2 small-4 columns">
         {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: content.author } %}
     </div>
-    <div class="large-10 medium-9 columns">
+    <div class="large-10 medium-10 columns">
         {% set dropdown_id = 'drop' ~ content.id %}
         <a href="#" class="right" data-options="align:left" data-dropdown="{{ dropdown_id }}"><i class="fi-widget"></i></a>
         <ul id="{{ dropdown_id }}" class="f-dropdown" data-dropdown-content>
@@ -17,12 +17,20 @@
         <h6 class="subheader">{{ content.author.nickname }} <small>{{ content.lastEdited | timeago }}</small></h6>
         {% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content) %}
 
-        <div>
-        <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}" class="button tiny secondary">Reply</a>
-        <a href="{{ path('pub_repeat_create', {id: content.id} ) }}" class="button tiny secondary">Repeat</a>
-        {% include 'TrismegisteSocialBundle:Content:ajax/publishing_like_button.html.twig' %}
-        <a href="#" class="button tiny secondary">Permalink</a>
-        </div>
+        <h4 class="publish-actions-footer">
+            <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">
+                <i class="fi-comment-quotes"></i>
+                {{ content.commentaryCount }}
+            </a>
+            <a href="{{ path('pub_repeat_create', {id: content.id} ) }}" title="Retweet">
+                <i class="fi-loop"></i>
+                10
+            </a>
+            {% include 'TrismegisteSocialBundle:Content:ajax/publishing_like_button.html.twig' %}
+            <a href="#">
+                <i class="fi-widget"></i>
+            </a>
+        </h4>
 
         {% block commentary_create %}{% endblock %}
         {% set commIt = content.commentaryIterator %}
