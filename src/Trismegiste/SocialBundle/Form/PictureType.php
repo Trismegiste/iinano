@@ -14,6 +14,8 @@ use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Trismegiste\SocialBundle\Repository\PictureRepository;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 /**
  * PictureType is a form for Picture
@@ -36,13 +38,30 @@ class PictureType extends AbstractType
                     'attr' => ['accept' => 'image/*;capture=camera'],
                     'label' => 'Picture',
                     'mapped' => false
-                ])
-                ->add('message', 'text', [
+                ])->add('message', 'text', [
                     'required' => false,
                     'attr' => ['placeholder' => 'Optional: add a title on this picture'],
                     'constraints' => new Length(['max' => 80])
                 ])
                 ->add('save', 'submit');
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $pub = $event->getData();
+            $form = $event->getForm();
+
+            if ($pub && !is_null($pub->getId())) {
+                $form->remove('picture');
+            }
+        });
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
+            $form = $event->getForm();
+
+            print_r($event->getData());
+//            print_r($form->getData());
+//            print_r($form->getExtraData());
+            die();
+        });
     }
 
     public function getName()
