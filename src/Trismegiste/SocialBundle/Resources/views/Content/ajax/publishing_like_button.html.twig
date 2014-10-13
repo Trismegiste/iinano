@@ -1,11 +1,14 @@
 {% if content.hasFan(app.user.author) %}
-    <a data-social-ajaxed href="{{ path('pub_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, action: 'remove'}) }}">
-        <i class="fi-heart"></i>
-        {{ content.fanCount }}
-    </a>
+    {% set like_action = 'remove' %}
+    {% set like_text = 'Unlike' %}
 {% else %}
-    <a data-social-ajaxed href="{{ path('pub_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, action: 'add'}) }}">
-        <i class="fi-heart"></i>
-        {{ content.fanCount }}
-    </a>
+    {% set like_action = 'add' %}
+    {% set like_text = 'Like' %}
 {% endif %}
+<a data-social-ajaxed
+   href="{{ path('pub_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, action: like_action}) }}"
+   class="like-button"
+   title="{{ like_text }}">
+    <i class="fi-heart"></i>
+    {{ content.fanCount }}
+</a>

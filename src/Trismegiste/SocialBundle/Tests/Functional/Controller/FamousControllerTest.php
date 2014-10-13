@@ -135,8 +135,8 @@ class FamousControllerTest extends WebTestCasePlus
         $it = $repo->findLastEntries(0, 1);
         $it->rewind();
         $doc = $it->current();
-        $comments = $doc->getCommentary();
-        $this->assertCount(1, $comments);
+        $comments = iterator_to_array($doc->getCommentaryIterator());
+        $this->assertEquals(1, $comments);
         $this->assertEquals(0, $comments[0]->getFanCount());
     }
 

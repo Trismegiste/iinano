@@ -6,7 +6,6 @@
     </div>
     <div class="large-10 medium-10 columns">
         {% set dropdown_id = 'drop' ~ content.id %}
-        <a href="#" class="right" data-options="align:left" data-dropdown="{{ dropdown_id }}"><i class="fi-widget"></i></a>
         <ul id="{{ dropdown_id }}" class="f-dropdown" data-dropdown-content>
             {% if is_granted('OWNER', content) %}
             <li><a href="{{ path('publishing_edit', {id: content.id}) }}">Edit</a></li>
@@ -17,8 +16,8 @@
         <h6 class="subheader">{{ content.author.nickname }} <small>{{ content.lastEdited | timeago }}</small></h6>
         {% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content) %}
 
-        <h4 class="publish-actions-footer">
-            <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">
+        <h4 class="publishing-actions-footer">
+            <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}" title="Reply">
                 <i class="fi-comment-quotes"></i>
                 {{ content.commentaryCount }}
             </a>
@@ -27,7 +26,7 @@
                 10
             </a>
             {% include 'TrismegisteSocialBundle:Content:ajax/publishing_like_button.html.twig' %}
-            <a href="#">
+            <a href="#" title="More..." data-dropdown="{{ dropdown_id }}">
                 <i class="fi-widget"></i>
             </a>
         </h4>
@@ -35,7 +34,6 @@
         {% block commentary_create %}{% endblock %}
         {% set commIt = content.commentaryIterator %}
         {% if commIt.count > 0 %}
-            <h6>{{ commIt.count }} Comments</h6>
             {% for comment in commIt %}
                 {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
             {% endfor %}
