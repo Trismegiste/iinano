@@ -19,7 +19,7 @@
 
         <div>
         <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}" class="button tiny secondary">Reply</a>
-        <a href="#" class="button tiny secondary">Repost</a>
+        <a href="{{ path('pub_repeat_create', {id: content.id} ) }}" class="button tiny secondary">Repeat</a>
         {% include 'TrismegisteSocialBundle:Content:publishing_like_button.html.twig' %}
         <a href="#" class="button tiny secondary">Permalink</a>
         </div>

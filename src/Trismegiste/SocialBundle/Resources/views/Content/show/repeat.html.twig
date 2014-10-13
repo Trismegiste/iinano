@@ -1,3 +1,10 @@
-{{ content.message }}
 {{ content.embedded.author.nickname }} has said :
-{% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content.embedded) with {content: content.embedded} %}
+{# template for viewing one repeat entity #}
+<div class="row repeat">
+    <div class="large-2 medium-2 small-3 columns">
+        {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: content.embedded.author } %}
+    </div>
+    <div class="large-10 medium-10 columns">
+        {% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content.embedded) with {content: content.embedded} %}
+    </div>
+</div>
