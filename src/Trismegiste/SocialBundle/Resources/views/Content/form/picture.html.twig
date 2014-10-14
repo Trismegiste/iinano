@@ -1,5 +1,18 @@
 {% extends 'TrismegisteSocialBundle:Content:publishing_form.html.twig' %}
 
+{% form_theme form _self %}
+
+{% block _social_picture_picture_row %}
+    <div id="megabutton-fired" class="hidden-form">
+        {{ form_widget(form) }}
+    </div>
+    <div id="megabutton-upload" class="text-center">
+        <h1><i class="fi-camera"></i></h1>
+        <p>Click / Touch to upload a picture</p>
+    </div>
+    <img id="upload-preview" class="picture-view hidden-form"/>
+{% endblock %}
+
 {% block crud %}
     {% if form.vars.value is not null %}
         <img src="{{ path('picture_get', {storageKey: form.vars.value.storageKey}) }}" class="picture-view"/>
@@ -7,4 +20,49 @@
     {{ parent() }}
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
 
+        $('#megabutton-upload').on('click', function (event) {
+            $('#megabutton-fired input[type=file]').trigger('click');
+        })
+
+        // preview
+        $('#megabutton-fired input[type=file]').on('change', function (event) {
+            var input = event.target;
+
+            if (input.files && input.files[0]) {
+                var selectFile = input.files[0];
+
+                // preview :
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    $('#upload-preview').attr('src', event.target.result);
+                };
+                $('#megabutton-upload').toggleClass('hidden-form');
+                $('#upload-preview').toggleClass('hidden-form');
+
+                reader.readAsDataURL(selectFile);
+            }
+        });
+
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #megabutton-upload {
+            background-color: #f8f8f8;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .hidden-form {
+            visibility: hidden;
+            display: none;
+        }
+    </style>
+{% endblock %}
