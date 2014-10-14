@@ -7,6 +7,7 @@
 namespace Trismegiste\SocialBundle\Repository;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Trismegiste\Socialist\Picture;
 
 /**
  * PictureRepository is a storage repository for managing picture and thumbnail
@@ -43,6 +44,7 @@ class PictureRepository
     public function store(UploadedFile $picFile)
     {
         $pub = $this->repository->create('picture');
+
         $nick = $pub->getAuthor()->getNickname();
         $extension = [];
         if (!preg_match(self::MIMETYPE_REGEX, $picFile->getMimeType(), $extension)) {
