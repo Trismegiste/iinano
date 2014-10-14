@@ -38,7 +38,10 @@ class PictureType extends AbstractType
                     'attr' => ['accept' => 'image/*;capture=camera'],
                     'label' => 'Picture',
                     'mapped' => false
-                ])->add('message', 'text', [
+                ])
+                ->add('storageKey', 'hidden')
+                ->add('mimeType', 'hidden')
+                ->add('message', 'text', [
                     'required' => false,
                     'attr' => ['placeholder' => 'Optional: add a title on this picture'],
                     'constraints' => new Length(['max' => 80])
@@ -54,13 +57,18 @@ class PictureType extends AbstractType
             }
         });
 
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
-            $form = $event->getForm();
+        $storage = $this->repository;
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($storage) {
+            $submitted = $event->getData();
 
-            print_r($event->getData());
-//            print_r($form->getData());
-//            print_r($form->getExtraData());
-            die();
+            if (array_key_exists('picture', $submitted)) {
+                $picFile = $submitted['picture'];
+                $pub = $storage->store($picFile);
+                $submitted['storageKey'] = $pub->getStorageKey();
+                $submitted['mimeType'] = $pub->getMimeType();
+                unset($submitted['picture']);
+                $event->setData($submitted);
+            }
         });
     }
 
@@ -71,30 +79,12 @@ class PictureType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $factory = $this->repository;
-        $emptyData = function (Options $options) use ($factory) {
-
-            return function (FormInterface $form) use ($factory) {
-                if ($form->isEmpty() && !$form->isRequired()) {
-                    return null;
-                } else {
-                    $picFile = $form->get('picture')->getData();
-                    $pub = $factory->store($picFile);
-
-                    return $pub;
-                }
-            };
-        };
-
-        $resolver->setDefaults([
-            'empty_data' => $emptyData,
-            'data_class' => 'Trismegiste\Socialist\Picture'
-        ]);
+        $resolver->setDefaults(['alias' => 'picture']);
     }
 
     public function getParent()
     {
-        return 'form';
+        return 'social_publishing';
     }
 
 }
