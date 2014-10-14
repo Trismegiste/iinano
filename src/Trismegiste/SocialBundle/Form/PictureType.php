@@ -11,8 +11,6 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Image;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\Options;
 use Trismegiste\SocialBundle\Repository\PictureRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -54,6 +52,8 @@ class PictureType extends AbstractType
 
             if ($pub && !is_null($pub->getId())) {
                 $form->remove('picture');
+                $form->remove('storageKey');
+                $form->remove('mimeType');
             }
         });
 

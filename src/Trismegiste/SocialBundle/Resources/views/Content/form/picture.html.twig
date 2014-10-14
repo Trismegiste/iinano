@@ -1,1 +1,10 @@
 {% extends 'TrismegisteSocialBundle:Content:publishing_form.html.twig' %}
+
+{% block crud %}
+    {% if form.vars.value is not null %}
+        <img src="{{ path('picture_get', {storageKey: form.vars.value.storageKey}) }}" class="picture-view"/>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+
