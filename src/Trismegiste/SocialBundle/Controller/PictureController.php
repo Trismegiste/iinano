@@ -6,10 +6,7 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Trismegiste\SocialBundle\Form\PictureAutoUploaderType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * PictureController is a controller for local storage of picture

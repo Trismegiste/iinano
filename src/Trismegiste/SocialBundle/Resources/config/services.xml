@@ -8,9 +8,14 @@
 
         <!-- REPOSITORIES -->
 
-        <service id="social.private_message.repository" class="Trismegiste\SocialBundle\Repository\PrivateMessageRepository">
+        <service id="social.securedcontent.template" abstract="true">
             <argument type="service" id="dokudoki.repository"/>
             <argument type="service" id="security.context"/>
+        </service>
+
+        <service id="social.private_message.repository"
+                 class="Trismegiste\SocialBundle\Repository\PrivateMessageRepository"
+                 parent="social.securedcontent.template">
             <argument/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
@@ -40,15 +45,15 @@
             <argument/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
-        <service id="social.publishing.repository" class="Trismegiste\SocialBundle\Repository\PublishingRepository">
-            <argument type="service" id="dokudoki.repository"/>
-            <argument type="service" id="security.context"/>
+        <service id="social.publishing.repository"
+                 class="Trismegiste\SocialBundle\Repository\PublishingRepository"
+                 parent="social.securedcontent.template">
             <argument type="collection"/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
-        <service id="social.commentary.repository" class="Trismegiste\SocialBundle\Repository\CommentaryRepository">
-            <argument type="service" id="dokudoki.repository"/>
-            <argument type="service" id="security.context"/>
+        <service id="social.commentary.repository"
+                 class="Trismegiste\SocialBundle\Repository\CommentaryRepository"
+                 parent="social.securedcontent.template">
         </service>
 
         <!-- TWIG -->

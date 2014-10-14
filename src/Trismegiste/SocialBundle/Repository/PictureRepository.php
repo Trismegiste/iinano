@@ -43,16 +43,17 @@ class PictureRepository
      */
     public function store(UploadedFile $picFile)
     {
+        $serverMimeType = $picFile->getMimeType();
         $pub = $this->repository->create('picture');
 
         $nick = $pub->getAuthor()->getNickname();
         $extension = [];
-        if (!preg_match(self::MIMETYPE_REGEX, $picFile->getMimeType(), $extension)) {
-            throw new \InvalidArgumentException($picFile->getMimeType() . ' is not a valid mime type');
+        if (!preg_match(self::MIMETYPE_REGEX, $serverMimeType, $extension)) {
+            throw new \InvalidArgumentException($serverMimeType . ' is not a valid mime type');
         }
 
         $syntheticName = sha1($nick . microtime(false) . rand()) . '.' . $extension[1];
-        $pub->setMimeType($picFile->getMimeType());
+        $pub->setMimeType($serverMimeType);
         $pub->setStorageKey($syntheticName);
         $picFile->move($this->storage, $syntheticName);
 
