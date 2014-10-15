@@ -58,16 +58,13 @@ class PictureType extends AbstractType
         });
 
         $storage = $this->repository;
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($storage) {
-            $submitted = $event->getData();
-
-            if (array_key_exists('picture', $submitted)) {
-                $picFile = $submitted['picture'];
-                $pub = $storage->store($picFile);
-                $submitted['storageKey'] = $pub->getStorageKey();
-                $submitted['mimeType'] = $pub->getMimeType();
-                unset($submitted['picture']);
-                $event->setData($submitted);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($storage) {
+            $form = $event->getForm();
+            if ($form->has('picture')) {
+                $picFile = $form->get('picture')->getViewData();
+                $pub = $event->getData();
+                $storage->store($pub, $picFile);
+                $event->setData($pub);
             }
         });
     }

@@ -9,16 +9,12 @@ namespace Trismegiste\SocialBundle\Repository;
 use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 use Trismegiste\SocialBundle\Security\Netizen;
-use Trismegiste\Socialist\Author;
-use Trismegiste\SocialBundle\Security\Credential\Internal;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Trismegiste\SocialBundle\Security\Profile;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * NetizenRepository is a repository for Netizen (and also Author)
  *
- * @todo Is this a decorator ( ie implementing RepositoryInterface ) ?
+ * @todo Subclass of SecuredContentProvider ?
  */
 class NetizenRepository implements NetizenRepositoryInterface
 {
@@ -34,10 +30,6 @@ class NetizenRepository implements NetizenRepositoryInterface
      * @param string $alias the class key alias for the Netizen objects stored with Dokudoki
      * @param \Trismegiste\SocialBundle\Repository\AvatarRepository $storage a repository for storing avatar pictures
      *
-     * @todo this service does too many thing, split into :
-     *  - a factory (anonymous user)
-     *  - read only access
-     *  - social action (follow/like)
      */
     public function __construct(RepositoryInterface $repo, $alias, AvatarRepository $storage)
     {

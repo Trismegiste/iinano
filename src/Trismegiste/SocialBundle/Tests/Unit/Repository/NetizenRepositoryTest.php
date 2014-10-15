@@ -98,7 +98,7 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testUserCreation
+     * @depends testPersist
      * @expectedException \RuntimeException
      */
     public function testSomethingWentWrongForUpdatingAvatar(Netizen $user)

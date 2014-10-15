@@ -41,10 +41,9 @@ class PictureRepository
      *
      * @throws \InvalidArgumentException Bad mimetype
      */
-    public function store(UploadedFile $picFile)
+    public function store(Picture $pub, UploadedFile $picFile)
     {
         $serverMimeType = $picFile->getMimeType();
-        $pub = $this->repository->create('picture');
 
         $nick = $pub->getAuthor()->getNickname();
         $extension = [];
@@ -56,8 +55,6 @@ class PictureRepository
         $pub->setMimeType($serverMimeType);
         $pub->setStorageKey($syntheticName);
         $picFile->move($this->storage, $syntheticName);
-
-        return $pub;
     }
 
 }

@@ -65,9 +65,7 @@ class NetizenController extends Template
     public function editAvatarAction(Request $request)
     {
         if ($request->getMethod() == 'POST') {
-            if (!$request->isXmlHttpRequest()) {
-                throw new AccessDeniedException('U haxxor');
-            }
+            $this->onlyAjaxRequest();
 
             $img = imagecreatefromstring(
                     base64_decode(
