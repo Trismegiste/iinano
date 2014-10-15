@@ -24,7 +24,7 @@ class PictureTypeTest extends PublishingTestCase
                 ->setConstructorArgs([sys_get_temp_dir()])
                 ->getMock();
 
-        $this->storage->expects($this->once())
+        $this->storage->expects($this->any())
                 ->method('store')
                 ->will($this->returnCallback([$this, 'mockStore']));
 
@@ -40,23 +40,36 @@ class PictureTypeTest extends PublishingTestCase
     {
         $validated = $this->createData();
         $validated->setMessage(str_repeat('m', 100));
+        $validated->setMimeType(null);
 
         return [
-            [['message' => str_repeat('m', 100)], $validated, ['message']],
+            [['message' => str_repeat('m', 100)], $validated, ['message', 'picture']],
         ];
     }
 
     public function getValidInputs()
     {
-        $upload = '/home/flo/Develop/iinano/src/Trismegiste/SocialBundle/Resources/public/img/mascot.png';
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $file->expects($this->any())
+                ->method('getPathname')
+                ->will($this->returnValue(__FILE__)); // the file nedds to exist
+        $file->expects($this->any())
+                ->method('getMimeType')
+                ->will($this->returnValue('image/png'));
+        $file->expects($this->any())
+                ->method('isValid')
+                ->will($this->returnValue(true));
+
         $validated = $this->createData();
         $validated->setMessage('A small message above 10 chars');
-        $validated->setStorageKey('123.jpg');
+        $validated->setStorageKey('123.jpg');  // filled by the mockStore below
         $validated->setMimeType('image/jpeg');
 
         $post = [
             'message' => 'A small message above 10 chars',
-            'picture' => new \Symfony\Component\HttpFoundation\File\UploadedFile($upload, 'dummy.jpg')
+            'picture' => $file
         ];
         return [
             [$post, $validated]
@@ -67,6 +80,18 @@ class PictureTypeTest extends PublishingTestCase
     {
         $pic->setStorageKey('123.jpg');
         $pic->setMimeType('image/jpeg');
+    }
+
+    public function testEditBehavior()
+    {
+        $pub = $this->createData();
+        $pub->setId(new \MongoId());
+        $pub->setMessage('original');
+        $this->sut->setData($pub); // we edit a picture
+
+        $this->sut->submit(['message' => 'edited']);
+        $this->assertTrue($this->sut->isValid());
+        $this->assertEquals('edited', $pub->getMessage());
     }
 
 }
