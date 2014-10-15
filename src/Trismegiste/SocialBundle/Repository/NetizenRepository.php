@@ -31,7 +31,6 @@ class NetizenRepository implements NetizenRepositoryInterface
      * Ctor
      *
      * @param RepositoryInterface $repo the repository for MongoCollection
-     * @param EncoderFactoryInterface $encoderFactory the Security component factory which manages encoders for password
      * @param string $alias the class key alias for the Netizen objects stored with Dokudoki
      * @param \Trismegiste\SocialBundle\Repository\AvatarRepository $storage a repository for storing avatar pictures
      *

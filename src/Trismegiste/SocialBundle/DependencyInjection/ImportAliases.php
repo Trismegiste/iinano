@@ -88,7 +88,7 @@ class ImportAliases implements CompilerPassInterface
 
         // user alias for netizen repository :
         $container->getDefinition('social.netizen.repository')
-                ->replaceArgument(2, $userAlias[0]);
+                ->replaceArgument(1, $userAlias[0]);
         // user alias for netizen provider :
         $container->getDefinition('security.netizen.provider')
                 ->replaceArgument(1, $userAlias[0]);

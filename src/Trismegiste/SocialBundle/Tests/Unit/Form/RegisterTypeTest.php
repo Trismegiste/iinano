@@ -15,7 +15,7 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
     /** @var \Symfony\Component\Form\FormInterface */
     protected $sut;
 
-    /** @var Symfony\Component\Form\FormFactoryInterface */
+    /** @var \Trismegiste\SocialBundle\Security\NetizenFactory */
     protected $factory;
 
     /** @var \MongoCollection */
@@ -28,10 +28,11 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
     {
         $kernel = static::createKernel();
         $kernel->boot();
-        $this->factory = $kernel->getContainer()->get('form.factory');
+        $formFactory = $kernel->getContainer()->get('form.factory');
         $this->collection = $kernel->getContainer()->get('dokudoki.collection');
+        $this->factory = $kernel->getContainer()->get('security.netizen.factory');
         $this->repository = $kernel->getContainer()->get('social.netizen.repository');
-        $this->sut = $this->factory->create('netizen_register', null, ['csrf_protection' => false]);
+        $this->sut = $formFactory->create('netizen_register', null, ['csrf_protection' => false]);
     }
 
     /**
@@ -86,7 +87,7 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 
     public function testAlreadyExisting()
     {
-        $obj = $this->repository->create('mcleod', 'aaaa');
+        $obj = $this->factory->create('mcleod', 'aaaa');
         $this->repository->persist($obj);
 
         $submitted = ['nickname' => 'mcleod', 'fullName' => 'McLeod', 'gender' => 'xy', 'password' => 'aaaa'];
