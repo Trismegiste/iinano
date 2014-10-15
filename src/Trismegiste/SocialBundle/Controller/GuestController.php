@@ -55,7 +55,7 @@ class GuestController extends Template
 
                 return $this->redirectRouteOk('content_index');
             } else {
-                
+
             }
         }
 

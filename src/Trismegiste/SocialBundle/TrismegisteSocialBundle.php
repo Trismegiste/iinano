@@ -4,6 +4,7 @@ namespace Trismegiste\SocialBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\Console\Application;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class TrismegisteSocialBundle extends Bundle
 {
@@ -31,9 +32,8 @@ class TrismegisteSocialBundle extends Bundle
         }
     }
 
-    public function build(\Symfony\Component\DependencyInjection\ContainerBuilder $container)
+    public function build(ContainerBuilder $container)
     {
-        parent::build($container);
         $container->addCompilerPass(new DependencyInjection\ImportAliases());
     }
 
