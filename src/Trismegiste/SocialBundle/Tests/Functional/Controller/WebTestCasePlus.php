@@ -78,13 +78,12 @@ class WebTestCasePlus extends WebTestCase
 
     protected function addUserFixture($nickname)
     {
-        $repo = $this->getService('social.netizen.repository');
-        $user = $repo->create($nickname, 'mellon');
+        $user = $this->getService('security.netizen.factory')->create($nickname, 'mellon');
         $user->getAuthor()->setAvatar('00.jpg');
         $prof = new Profile();
         $prof->fullName = ucfirst($nickname);
         $user->setProfile($prof);
-        $repo->persist($user);
+        $this->getService('social.netizen.repository')->persist($user);
     }
 
     protected function createAuthor($name)
@@ -101,7 +100,6 @@ class WebTestCasePlus extends WebTestCase
     protected function ajaxPost($uri)
     {
         return $this->client->request('POST', $uri, [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
-
     }
 
 }

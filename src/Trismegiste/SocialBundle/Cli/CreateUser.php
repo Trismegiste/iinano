@@ -35,7 +35,9 @@ class CreateUser extends ContainerAwareCommand
         $output->writeln("Creating user $nickname...");
 
         $repository = $this->getContainer()->get('social.netizen.repository');
-        $user = $repository->create($nickname, $password);
+        $factory = $this->getContainer()->get('security.netizen.factory');
+
+        $user = $factory->create($nickname, $password);
         $profile = $user->getProfile();
 
         // additional info

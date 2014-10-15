@@ -27,18 +27,22 @@ class PrivateMessageTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTes
     protected $repository;
 
     /** @var \Symfony\Component\Form\FormFactoryInterface */
-    protected $factory;
+    protected $formFactory;
+
+    /** @var \Trismegiste\SocialBundle\Security\NetizenFactory */
+    protected $netizenFactory;
 
     protected function setUp()
     {
         $kernel = static::createKernel();
         $kernel->boot();
         $container = $kernel->getContainer();
-        $this->factory = $container->get('form.factory');
+        $this->formFactory = $container->get('form.factory');
         $this->collection = $container->get('dokudoki.collection');
         $this->repository = $container->get('social.netizen.repository');
+        $this->netizenFactory = $container->get('security.netizen.factory');
 
-        $this->netizen = $this->repository->create('kirk', 'aaaa');
+        $this->netizen = $this->netizenFactory->create('kirk', 'aaaa');
         $token = new UsernamePasswordToken($this->netizen, null, 'secured_area', array('ROLE_USER'));
         $container->get('security.context')->setToken($token);
     }
@@ -53,10 +57,10 @@ class PrivateMessageTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTes
 
     public function testValidSubmit()
     {
-        $follower = $this->repository->create('spock', 'aaaa');
+        $follower = $this->netizenFactory->create('spock', 'aaaa');
         $follower->follow($this->netizen);
         $this->repository->persist($follower);
-        $this->sut = $this->factory->create('social_private_message', null, ['csrf_protection' => false]);
+        $this->sut = $this->formFactory->create('social_private_message', null, ['csrf_protection' => false]);
 
         $this->sut->submit([
             'target' => 'spock',
@@ -75,7 +79,7 @@ class PrivateMessageTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTes
     {
         $follower = $this->repository->findByNickname('spock');
         $follower->follow($this->netizen);
-        $this->sut = $this->factory->create('social_private_message', null, ['csrf_protection' => false]);
+        $this->sut = $this->formFactory->create('social_private_message', null, ['csrf_protection' => false]);
 
         $this->sut->submit([
             'target' => 'spock',
