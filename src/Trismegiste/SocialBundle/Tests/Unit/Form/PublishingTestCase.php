@@ -74,7 +74,16 @@ abstract class PublishingTestCase extends \PHPUnit_Framework_TestCase
     public function testSubmit($submitted, $expected)
     {
         $this->sut->submit($submitted);
-        $this->assertTrue($this->sut->isValid());
+
+        $msg = '';
+        if (!$this->sut->isValid()) {
+            $msg = print_r($this->sut->getErrors(), true);
+            foreach ($this->sut->all() as $child) {
+                $msg .= "\n" . print_r($child->getErrors(), true);
+            }
+        }
+
+        $this->assertTrue($this->sut->isValid(), $msg);
         $this->assertEquals($expected, $this->sut->getData());
     }
 

@@ -7,6 +7,7 @@
 namespace Trismegiste\SocialBundle\Tests\Unit\Form;
 
 use Trismegiste\SocialBundle\Form\PictureType;
+use Trismegiste\Socialist\Picture;
 
 /**
  * PictureTypeTest tests PictureType
@@ -14,9 +15,20 @@ use Trismegiste\SocialBundle\Form\PictureType;
 class PictureTypeTest extends PublishingTestCase
 {
 
+    protected $storage;
+
     protected function createType()
     {
-        return new PictureType();
+        $this->storage = $this->getMockBuilder('Trismegiste\SocialBundle\Repository\PictureRepository')
+                ->setMethods(['store'])
+                ->setConstructorArgs([sys_get_temp_dir()])
+                ->getMock();
+
+        $this->storage->expects($this->once())
+                ->method('store')
+                ->will($this->returnCallback([$this, 'mockStore']));
+
+        return new PictureType($this->storage);
     }
 
     protected function getModelFqcn()
@@ -36,14 +48,25 @@ class PictureTypeTest extends PublishingTestCase
 
     public function getValidInputs()
     {
+        $upload = '/home/flo/Develop/iinano/src/Trismegiste/SocialBundle/Resources/public/img/mascot.png';
         $validated = $this->createData();
         $validated->setMessage('A small message above 10 chars');
+        $validated->setStorageKey('123.jpg');
+        $validated->setMimeType('image/jpeg');
+
         $post = [
-            'message' => 'A small message above 10 chars'
+            'message' => 'A small message above 10 chars',
+            'picture' => new \Symfony\Component\HttpFoundation\File\UploadedFile($upload, 'dummy.jpg')
         ];
         return [
             [$post, $validated]
         ];
+    }
+
+    public function mockStore(Picture $pic, $dummy)
+    {
+        $pic->setStorageKey('123.jpg');
+        $pic->setMimeType('image/jpeg');
     }
 
 }

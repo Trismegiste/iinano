@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints\Image;
 use Trismegiste\SocialBundle\Repository\PictureRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * PictureType is a form for Picture
@@ -32,10 +33,11 @@ class PictureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('picture', 'file', [
-                    'constraints' => [new Image()],
+                    'constraints' => [new NotBlank(), new Image()],
                     'attr' => ['accept' => 'image/*;capture=camera'],
                     'label' => 'Picture',
-                    'mapped' => false
+                    'mapped' => false,
+                    'required' => true
                 ])
                 ->add('storageKey', 'hidden')
                 ->add('mimeType', 'hidden')
@@ -62,9 +64,11 @@ class PictureType extends AbstractType
             $form = $event->getForm();
             if ($form->has('picture')) {
                 $picFile = $form->get('picture')->getViewData();
-                $pub = $event->getData();
-                $storage->store($pub, $picFile);
-                $event->setData($pub);
+                if ($picFile instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
+                    $pub = $event->getData();
+                    $storage->store($pub, $picFile);
+                    $event->setData($pub);
+                }
             }
         });
     }
