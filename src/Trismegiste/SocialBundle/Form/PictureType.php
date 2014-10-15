@@ -48,29 +48,8 @@ class PictureType extends AbstractType
                 ])
                 ->add('save', 'submit');
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $pub = $event->getData();
-            $form = $event->getForm();
-
-            if ($pub && !is_null($pub->getId())) {
-                $form->remove('picture');
-                $form->remove('storageKey');
-                $form->remove('mimeType');
-            }
-        });
-
-        $storage = $this->repository;
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($storage) {
-            $form = $event->getForm();
-            if ($form->has('picture')) {
-                $picFile = $form->get('picture')->getViewData();
-                if ($picFile instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
-                    $pub = $event->getData();
-                    $storage->store($pub, $picFile);
-                    $event->setData($pub);
-                }
-            }
-        });
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'callbackPreSetData']);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'callbackPostSubmit']);
     }
 
     public function getName()
@@ -86,6 +65,31 @@ class PictureType extends AbstractType
     public function getParent()
     {
         return 'social_publishing';
+    }
+
+    public function callbackPreSetData(FormEvent $event)
+    {
+        $pub = $event->getData();
+        $form = $event->getForm();
+
+        if ($pub && !is_null($pub->getId())) {
+            $form->remove('picture');
+            $form->remove('storageKey');
+            $form->remove('mimeType');
+        }
+    }
+
+    public function callbackPostSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        if ($form->has('picture')) {
+            $picFile = $form->get('picture')->getViewData();
+            if ($picFile instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
+                $pub = $event->getData();
+                $this->repository->store($pub, $picFile);
+                $event->setData($pub);
+            }
+        }
     }
 
 }
