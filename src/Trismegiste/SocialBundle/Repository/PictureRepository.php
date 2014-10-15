@@ -19,17 +19,14 @@ class PictureRepository
 
     protected $storage;
 
-    /** @var \Trismegiste\SocialBundle\Repository\PublishingFactory */
-    protected $repository;
-
-    public function __construct(PublishingFactory $repo, $storageDir)
+    public function __construct($storageDir)
     {
-        $this->repository = $repo;
         $this->storage = realpath($storageDir);
 
         if (!$this->storage) {
             throw new \InvalidArgumentException("$storageDir is not a valid directory");
         }
+        $this->storage .= DIRECTORY_SEPARATOR;
     }
 
     /**

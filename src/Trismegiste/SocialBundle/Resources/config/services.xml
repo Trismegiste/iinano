@@ -28,7 +28,6 @@
         </service>
 
         <service id="social.picture.storage" class="Trismegiste\SocialBundle\Repository\PictureRepository">
-            <argument type="service" id="social.publishing.repository"/>
             <argument type="string">%kernel.root_dir%/../storage/</argument>
         </service>
 
