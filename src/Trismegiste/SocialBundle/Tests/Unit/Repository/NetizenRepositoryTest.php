@@ -8,6 +8,8 @@ namespace Trismegiste\SocialBundle\Tests\Unit\Repository;
 
 use Trismegiste\SocialBundle\Repository\NetizenRepository;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\Socialist\Author;
+use Trismegiste\SocialBundle\Security\Profile;
 
 /**
  * NetizenRepositoryTest tests NetizenRepository
@@ -18,16 +20,14 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
     /** @var NetizenRepository */
     protected $sut;
     protected $repository;
-    protected $encoder;
     protected $storage;
 
     protected function setUp()
     {
-        $this->encoder = $this->getMock('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface');
         $this->repository = $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface');
         $this->storage = $this->getMock('Trismegiste\SocialBundle\Repository\AvatarRepository', [], [], '', false);
 
-        $this->sut = new NetizenRepository($this->repository, $this->encoder, 'netizen', $this->storage);
+        $this->sut = new NetizenRepository($this->repository, 'netizen', $this->storage);
     }
 
     public function testFindByNickname()
@@ -61,32 +61,18 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->findByPk(123);
     }
 
-    public function testUserCreation()
+    public function testPersist()
     {
-        $this->encoder->expects($this->once())
-                ->method('getEncoder')
-                ->will($this->returnValue($this->getMock('Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface')));
-
-        $user = $this->sut->create('kirk', 'ncc1701');
-
-        $this->assertInstanceOf('Trismegiste\Socialist\Author', $user->getAuthor());
-        $this->assertInstanceOf('Trismegiste\SocialBundle\Security\Profile', $user->getProfile());
-        $this->assertTrue(class_exists($user->getCredentialType()));
+        $user = new Netizen(new Author('kirk'));
+        $user->setProfile(new Profile());
+        $this->sut->persist($user);
+        $this->assertNotNull($user->getAuthor()->getAvatar());
 
         return $user;
     }
 
     /**
-     * @depends testUserCreation
-     */
-    public function testPersist(Netizen $user)
-    {
-        $this->sut->persist($user);
-        $this->assertNotNull($user->getAuthor()->getAvatar());
-    }
-
-    /**
-     * @depends testUserCreation
+     * @depends testPersist
      */
     public function testUpdateAvatar(Netizen $user)
     {
@@ -139,7 +125,7 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testBadParamCtor()
     {
-        new NetizenRepository($this->repository, $this->encoder, 123, $this->storage);
+        new NetizenRepository($this->repository, 123, $this->storage);
     }
 
     public function testSearchUser()

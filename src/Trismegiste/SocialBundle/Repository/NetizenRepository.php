@@ -25,7 +25,6 @@ class NetizenRepository implements NetizenRepositoryInterface
 
     protected $repository;
     protected $classAlias;
-    protected $encoderFactory;
     protected $storage;
 
     /**
@@ -41,14 +40,13 @@ class NetizenRepository implements NetizenRepositoryInterface
      *  - read only access
      *  - social action (follow/like)
      */
-    public function __construct(RepositoryInterface $repo, EncoderFactoryInterface $encoderFactory, $alias, AvatarRepository $storage)
+    public function __construct(RepositoryInterface $repo, $alias, AvatarRepository $storage)
     {
         if (!is_string($alias)) {
             throw new \InvalidArgumentException('Alias for Netizen is not a string');
         }
         $this->repository = $repo;
         $this->classAlias = $alias;
-        $this->encoderFactory = $encoderFactory;
         $this->storage = $storage;
     }
 
@@ -76,25 +74,6 @@ class NetizenRepository implements NetizenRepositoryInterface
         ]);
 
         return $cursor;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function create($nick, $password)
-    {
-        $author = new Author($nick);
-        $user = new Netizen($author);
-
-        $salt = \rand(100, 999);
-        $encoded = $this->encoderFactory
-                ->getEncoder($user) // @todo Demeter's law violation : inject encoder as a service with a factory ?
-                ->encodePassword($password, $salt);
-        $user->setCredential(new Internal($encoded, $salt));
-        $user->setProfile(new Profile());
-        $user->setGroup('ROLE_USER');
-
-        return $user;
     }
 
     /**

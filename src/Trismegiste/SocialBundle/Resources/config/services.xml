@@ -34,7 +34,6 @@
 
         <service id="social.netizen.repository" class="Trismegiste\SocialBundle\Repository\NetizenRepository">
             <argument type="service" id="dokudoki.repository"/>
-            <argument type="service" id="security.encoder_factory"/>
             <argument/> <!-- injected by ImportAlias compiler pass -->
             <argument type="service" id="social.avatar.repository"/>
         </service>
@@ -65,6 +64,10 @@
         </service>
 
         <!-- SECURITY -->
+
+        <service id="security.netizen.factory" class="Trismegiste\SocialBundle\Security\NetizenFactory">
+            <argument type="service" id="security.encoder_factory"/>
+        </service>
 
         <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">
             <argument type="service" id="dokudoki.repository"/>

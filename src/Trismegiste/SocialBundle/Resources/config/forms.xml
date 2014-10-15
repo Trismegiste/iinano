@@ -7,7 +7,7 @@
     <services>
 
         <service id="social.type.netizen.register" class="Trismegiste\SocialBundle\Form\RegisterType">
-            <argument type="service" id="social.netizen.repository"/>
+            <argument type="service" id="security.netizen.factory"/>
             <argument>%nickname_regex%</argument>
             <tag name="form.type" alias="netizen_register"/>
         </service>

@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
+use Trismegiste\SocialBundle\Security\NetizenFactory;
 use Symfony\Component\Form\FormInterface;
 use Trismegiste\SocialBundle\Validator\UniqueNickname;
 use Symfony\Component\Validator\Constraints\Regex;
@@ -25,7 +25,7 @@ class RegisterType extends AbstractType
     protected $repository;
     protected $nicknameRegex;
 
-    public function __construct(NetizenRepositoryInterface $repo, $regex)
+    public function __construct(NetizenFactory $repo, $regex)
     {
         $this->repository = $repo;
         $this->nicknameRegex = $regex;
