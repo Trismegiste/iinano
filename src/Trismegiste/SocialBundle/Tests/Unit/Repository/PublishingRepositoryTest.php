@@ -199,7 +199,8 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreate()
     {
-        $this->sut->create('message');
+        $pub = $this->sut->create('message');
+        $this->assertEquals($this->author, $pub->getAuthor());
     }
 
     public function testDeleteByPk()
