@@ -54,7 +54,7 @@ class PictureTypeTest extends PublishingTestCase
                 ->getMock();
         $file->expects($this->any())
                 ->method('getPathname')
-                ->will($this->returnValue(__FILE__)); // the file nedds to exist
+                ->will($this->returnValue(__FILE__)); // the file needs to exist
         $file->expects($this->any())
                 ->method('getMimeType')
                 ->will($this->returnValue('image/png'));

@@ -40,6 +40,9 @@ class PictureRepository
      */
     public function store(Picture $pub, UploadedFile $picFile)
     {
+        if (!$picFile->isValid()) {
+            throw new \RuntimeException('Upload was incomplete');
+        }
         $serverMimeType = $picFile->getMimeType();
 
         $nick = $pub->getAuthor()->getNickname();
