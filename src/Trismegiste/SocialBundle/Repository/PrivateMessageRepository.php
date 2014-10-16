@@ -69,6 +69,9 @@ class PrivateMessageRepository extends SecuredContentProvider
 
     public function persist(PrivateMessage $msg)
     {
+        // @todo Common behavior with OWNER voter => common interface "Ownable" with "::getOwnerAuthor()" ?
+        // not critical because users don't see this access right within a browser
+        // (unlike Edit/Delete for example)
         if ($msg->getSender()->getNickname() !== $this->getAuthor()->getNickname()) {
             throw new AccessDeniedException("You cannot save this message because you're not the sender");
         }

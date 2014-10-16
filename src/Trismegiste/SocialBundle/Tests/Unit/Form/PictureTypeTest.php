@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Tests\Unit\Form;
 
 use Trismegiste\SocialBundle\Form\PictureType;
 use Trismegiste\Socialist\Picture;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * PictureTypeTest tests PictureType
@@ -36,18 +37,7 @@ class PictureTypeTest extends PublishingTestCase
         return 'Trismegiste\Socialist\Picture';
     }
 
-    public function getInvalidInputs()
-    {
-        $validated = $this->createData();
-        $validated->setMessage(str_repeat('m', 100));
-        $validated->setMimeType(null);
-
-        return [
-            [['message' => str_repeat('m', 100)], $validated, ['message', 'picture']],
-        ];
-    }
-
-    public function getValidInputs()
+    protected function createMockUpload($mime)
     {
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
                 ->disableOriginalConstructor()
@@ -57,15 +47,39 @@ class PictureTypeTest extends PublishingTestCase
                 ->will($this->returnValue(__FILE__)); // the file needs to exist
         $file->expects($this->any())
                 ->method('getMimeType')
-                ->will($this->returnValue('image/png'));
+                ->will($this->returnValue($mime));
         $file->expects($this->any())
                 ->method('isValid')
                 ->will($this->returnValue(true));
 
+        return $file;
+    }
+
+    public function getInvalidInputs()
+    {
+        $msgTooLong = $this->createData();
+        $msgTooLong->setMessage(str_repeat('m', 100));
+        $msgTooLong->setMimeType(null);
+
+        $badMimeType = $this->createData();
+        $badMimeType->setMessage('hello');
+        $badMimeType->setMimeType(null);
+        $badMimeType->setStorageKey(null);
+        $file = $this->createMockUpload('application/pdf');
+
+        return [
+            [['message' => str_repeat('m', 100)], $msgTooLong, ['message', 'picture']],
+            [['message' => 'hello', 'picture' => $file], $badMimeType, ['picture']]
+        ];
+    }
+
+    public function getValidInputs()
+    {
+        $file = $this->createMockUpload('image/png');
         $validated = $this->createData();
         $validated->setMessage('A small message above 10 chars');
         $validated->setStorageKey('123.jpg');  // filled by the mockStore below
-        $validated->setMimeType('image/jpeg');
+        $validated->setMimeType('image/png');
 
         $post = [
             'message' => 'A small message above 10 chars',
@@ -76,10 +90,13 @@ class PictureTypeTest extends PublishingTestCase
         ];
     }
 
-    public function mockStore(Picture $pic, $dummy)
+    public function mockStore(Picture $pic, UploadedFile $dummy)
     {
+        if ($dummy->getMimeType() != 'image/png') {
+            throw new \Exception('fail');
+        }
         $pic->setStorageKey('123.jpg');
-        $pic->setMimeType('image/jpeg');
+        $pic->setMimeType($dummy->getMimeType());
     }
 
     public function testEditBehavior()
