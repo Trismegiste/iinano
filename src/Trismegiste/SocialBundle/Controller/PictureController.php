@@ -7,7 +7,6 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use Trismegiste\SocialBundle\Repository\PictureRepository;
 
 /**
  * PictureController is a controller for local storage of picture

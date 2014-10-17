@@ -22,7 +22,7 @@ class PictureTypeTest extends PublishingTestCase
     {
         $this->storage = $this->getMockBuilder('Trismegiste\SocialBundle\Repository\PictureRepository')
                 ->setMethods(['store'])
-                ->setConstructorArgs([sys_get_temp_dir()])
+                ->disableOriginalConstructor()
                 ->getMock();
 
         $this->storage->expects($this->any())

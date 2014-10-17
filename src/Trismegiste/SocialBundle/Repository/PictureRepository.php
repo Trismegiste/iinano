@@ -87,13 +87,22 @@ class PictureRepository
 
         $path = $this->getAbsolutePath($syntheticName);
 
+        // because diskspace is costly, I don't intend to keep orignal picture
+        // that's why I resize at a full-hd res (mobile first and I don't intend to
+        // clone Picasa)
         Image::open($picFile->getPathname())
                 ->cropResize($this->sizeConfig[self::MAX_RES], $this->sizeConfig[self::MAX_RES])
                 ->save($path);
-
-        //$picFile->move($this->storageDir, $syntheticName);
     }
 
+    /**
+     * Get the absolute of a picture with a given storageKey for a given size
+     *
+     * @param string $filename
+     * @param string $size 'full'|'medium'|'tiny'|'whatever'
+     *
+     * @return string absolute path in the filesystem
+     */
     public function getAbsolutePath($filename, $size = self::MAX_RES)
     {
         $sourceImg = $this->storageDir
@@ -111,6 +120,13 @@ class PictureRepository
         return $sourceImg;
     }
 
+    /**
+     * Get a hash for a storage key, because using client's name is Evil
+     *
+     * @param string $nick
+     *
+     * @return string
+     */
     protected function hashForNick($nick)
     {
         return sha1($nick . microtime(false) . rand());
