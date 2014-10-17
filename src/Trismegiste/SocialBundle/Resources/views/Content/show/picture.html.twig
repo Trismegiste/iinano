@@ -1,2 +1,4 @@
 <h5>{{ content.message }}</h5>
-<img src="{{ path('picture_get', {storageKey: content.storageKey}) }}" class="picture-view"/>
+<a href="{{ path('picture_get', {size:'full', storageKey: content.storageKey}) }}">
+    <img src="{{ path('picture_get', {size:'medium', storageKey: content.storageKey}) }}" class="picture-view"/>
+</a>

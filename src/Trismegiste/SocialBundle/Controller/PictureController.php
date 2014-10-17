@@ -18,7 +18,7 @@ class PictureController extends Template
     /**
      * Thumbnailing à la volée
      */
-    public function getAction($storageKey, $size = PictureRepository::MAX_RES)
+    public function getAction($storageKey, $size)
     {
         $file = $this->get('social.picture.storage')
                 ->getAbsolutePath($storageKey, $size);

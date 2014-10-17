@@ -101,10 +101,10 @@ class PictureRepository
                 . '/'
                 . $filename;
 
-        if ($size !== self::MAX_RES) {
+        if (($size !== self::MAX_RES) && array_key_exists($size, $this->sizeConfig)) {
             $sourceImg = Image::open($sourceImg)
                     ->setCacheDir($this->cacheDir)
-                    ->resize($size)
+                    ->resize($this->sizeConfig[$size])
                     ->guess();
         }
 

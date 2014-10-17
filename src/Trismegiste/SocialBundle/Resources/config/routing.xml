@@ -70,9 +70,10 @@
             prefix="/admin">
     </import>
 
-    <route id="picture_get" pattern="picture/{storageKey}">
+    <route id="picture_get" pattern="picture/{size}/{storageKey}">
         <default key="_controller">TrismegisteSocialBundle:Picture:get</default>
         <requirement key="storageKey">[-\da-f]+\.(jpeg|jpg|gif|png)</requirement>
+        <requirement key="size">[a-z]+</requirement>
         <requirement key="_method">GET</requirement>
     </route>
     <route id="picture_upload" pattern="picture/upload">

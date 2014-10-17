@@ -31,7 +31,10 @@
             <argument type="string">%kernel.root_dir%/../storage/picture</argument>
             <argument type="string">%kernel.root_dir%/../storage/cache</argument>
             <argument type="collection">
-                <argument key="full">800</argument>
+                <argument key="tiny">100</argument>
+                <argument key="small">200</argument>
+                <argument key="medium">600</argument>
+                <argument key="full">1920</argument>
             </argument>
         </service>
 
