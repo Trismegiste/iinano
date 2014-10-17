@@ -74,6 +74,10 @@ class NetizenController extends Template
 
             $repo = $this->get('social.netizen.repository');
             $repo->updateAvatar($this->getUser(), $img);
+
+            $this->pushFlash('notice', 'Avatar updated');
+
+            return new \Symfony\Component\HttpFoundation\JsonResponse(['status' => 'ok']);
         }
 
         return $this->render('TrismegisteSocialBundle:Netizen:avatar_edit.html.twig');

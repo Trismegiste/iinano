@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Repository;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Trismegiste\Socialist\Picture;
+use Gregwar\Image\Image;
 
 /**
  * PictureRepository is a storage repository for managing picture and thumbnail
@@ -54,7 +55,19 @@ class PictureRepository
         $syntheticName = sha1($nick . microtime(false) . rand()) . '.' . $extension[1];
         $pub->setMimeType($serverMimeType);
         $pub->setStorageKey($syntheticName);
-        $picFile->move($this->storage, $syntheticName);
+
+        $path = $this->getAbsolutePath($syntheticName);
+
+        Image::open($picFile->getPathname())
+                ->cropResize(1000, 1000)
+                ->save($path);
+
+        //$picFile->move($this->storage, $syntheticName);
+    }
+
+    public function getAbsolutePath($filename)
+    {
+        return $this->storage . implode('/', str_split(substr($filename, 0, 4))) . '/' . $filename;
     }
 
 }

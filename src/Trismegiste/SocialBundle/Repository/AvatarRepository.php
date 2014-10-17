@@ -13,6 +13,7 @@ use Trismegiste\SocialBundle\Utils\ImageRefiner;
  * AvatarRepository is a repository for avatar
  *
  * @todo need for an interface FFS !
+ * @todo all this stuff have a good propability to be deprecated with Gregwar/Image
  */
 class AvatarRepository
 {

@@ -19,8 +19,8 @@ class PictureController extends Template
      */
     public function getAction($storageKey, $size = 'full')
     {
-        $file = $this->get('social.avatar.repository')
-                ->getAvatarAbsolutePath($storageKey);
+        $file = $this->get('social.picture.storage')
+                        ->getAbsolutePath($storageKey);
 
         $response = new Response();
         $lastModif = new \DateTime();

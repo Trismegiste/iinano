@@ -51,7 +51,7 @@
                     quality: .9,
                     originalSize: false
                 })}
-            }).done(function() {
+            }).done(function(data) {
                 window.location.replace('{{ path('netizen_show', {author: app.user.username}) }}');
             }).fail(function() {
                 alert('Your browser does not support this feature');
@@ -70,7 +70,7 @@
             border: 1px solid #ccc;
             border-radius: 3px;
             cursor: move;
-        }            
+        }
 
         input.cropit-image-input {
             visibility: hidden;
@@ -80,7 +80,7 @@
         .image-size-label {
             margin-top: 0.6rem;
         }
-        
+
         .justify-cropper {
             width: 300px;
         }
