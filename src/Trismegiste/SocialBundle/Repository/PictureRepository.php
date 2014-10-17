@@ -11,23 +11,52 @@ use Trismegiste\Socialist\Picture;
 use Gregwar\Image\Image;
 
 /**
- * PictureRepository is a storage repository for managing picture and thumbnail
+ * PictureRepository is a storage repository for managing pictures and thumbnails
  */
 class PictureRepository
 {
 
     const MIMETYPE_REGEX = '#^image/(jpg|jpeg|gif|png)$#';
+    const SLOW_FS_CHUNK = 4; // the directory chunk for slow filesystem
+    const MAX_RES = 'full';
 
-    protected $storage;
+    /**
+     * Absolute path to directory for max resolution pictures
+     *
+     * @var string
+     */
+    protected $storageDir;
 
-    public function __construct($storageDir)
+    /**
+     * Absolute path to directory for cached & resized pictures
+     *
+     * @var string
+     */
+    protected $cacheDir;
+
+    /**
+     * Size configuration for pictures
+     */
+    protected $sizeConfig;
+
+    public function __construct($storageDir, $cacheDir, array $sizeCfg)
     {
-        $this->storage = realpath($storageDir);
-
-        if (!$this->storage) {
-            throw new \InvalidArgumentException("$storageDir is not a valid directory");
+        $this->storageDir = realpath($storageDir);
+        if (!$this->storageDir) {
+            throw new \InvalidArgumentException("$storageDir is not a valid directory for storage");
         }
-        $this->storage .= DIRECTORY_SEPARATOR;
+        $this->storageDir .= DIRECTORY_SEPARATOR;
+
+        $this->cacheDir = realpath($cacheDir);
+        if (!$this->cacheDir) {
+            throw new \InvalidArgumentException("$cacheDir is not a valid directory for cache");
+        }
+        $this->cacheDir .= DIRECTORY_SEPARATOR;
+
+        if (!array_key_exists(self::MAX_RES, $sizeCfg)) {
+            throw new \InvalidArgumentException("The size configuration for Picture is invalid");
+        }
+        $this->sizeConfig = $sizeCfg;
     }
 
     /**
@@ -52,22 +81,39 @@ class PictureRepository
             throw new \InvalidArgumentException($serverMimeType . ' is not a valid mime type');
         }
 
-        $syntheticName = sha1($nick . microtime(false) . rand()) . '.' . $extension[1];
+        $syntheticName = $this->hashForNick($nick) . '.' . $extension[1];
         $pub->setMimeType($serverMimeType);
         $pub->setStorageKey($syntheticName);
 
         $path = $this->getAbsolutePath($syntheticName);
 
         Image::open($picFile->getPathname())
-                ->cropResize(1000, 1000)
+                ->cropResize($this->sizeConfig[self::MAX_RES], $this->sizeConfig[self::MAX_RES])
                 ->save($path);
 
-        //$picFile->move($this->storage, $syntheticName);
+        //$picFile->move($this->storageDir, $syntheticName);
     }
 
-    public function getAbsolutePath($filename)
+    public function getAbsolutePath($filename, $size = self::MAX_RES)
     {
-        return $this->storage . implode('/', str_split(substr($filename, 0, 4))) . '/' . $filename;
+        $sourceImg = $this->storageDir
+                . implode('/', str_split(substr($filename, 0, self::SLOW_FS_CHUNK)))
+                . '/'
+                . $filename;
+
+        if ($size !== self::MAX_RES) {
+            $sourceImg = Image::open($sourceImg)
+                    ->setCacheDir($this->cacheDir)
+                    ->resize($size)
+                    ->guess();
+        }
+
+        return $sourceImg;
+    }
+
+    protected function hashForNick($nick)
+    {
+        return sha1($nick . microtime(false) . rand());
     }
 
 }

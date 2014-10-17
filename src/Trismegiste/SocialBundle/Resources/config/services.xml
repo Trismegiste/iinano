@@ -28,7 +28,11 @@
         </service>
 
         <service id="social.picture.storage" class="Trismegiste\SocialBundle\Repository\PictureRepository">
-            <argument type="string">%kernel.root_dir%/../storage/</argument>
+            <argument type="string">%kernel.root_dir%/../storage/picture</argument>
+            <argument type="string">%kernel.root_dir%/../storage/cache</argument>
+            <argument type="collection">
+                <argument key="full">800</argument>
+            </argument>
         </service>
 
         <service id="social.netizen.repository" class="Trismegiste\SocialBundle\Repository\NetizenRepository">

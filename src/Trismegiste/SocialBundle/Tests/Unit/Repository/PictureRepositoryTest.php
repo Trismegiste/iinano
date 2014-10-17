@@ -23,7 +23,7 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->sut = new PictureRepository(sys_get_temp_dir());
+        $this->sut = new PictureRepository(sys_get_temp_dir(), sys_get_temp_dir(), ['full' => 1000]);
         $this->author = new Author('kirk');
         $this->picture = new Picture($this->author);
     }
@@ -39,7 +39,7 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
         $file->expects($this->atLeastOnce())
                 ->method('isValid')
                 ->will($this->returnValue(true));
-        $file->expects($this->once())
+        $file->expects($this->never())  // I don't keep original picture for saving storage space, I don't make a clone of Picasa or Flickr
                 ->method('move');
 
         $this->sut->store($this->picture, $file);
@@ -92,10 +92,29 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage for storage
      */
-    public function testBadDirectory()
+    public function testBadStorageDirectory()
     {
-        new PictureRepository(__DIR__ . 'yopyop');
+        new PictureRepository(__DIR__ . 'yopyop', __DIR__, []);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage for cache
+     */
+    public function testBadCacheDirectory()
+    {
+        new PictureRepository(__DIR__, __DIR__ . 'yopyop', []);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage size configuration
+     */
+    public function testBadSizeConfig()
+    {
+        new PictureRepository(__DIR__, __DIR__, ['yo' => 42]);
     }
 
 }
