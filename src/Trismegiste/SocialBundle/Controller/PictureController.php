@@ -7,6 +7,7 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Gregwar\Image\Image;
 
 /**
  * PictureController is a controller for local storage of picture
@@ -20,7 +21,12 @@ class PictureController extends Template
     public function getAction($storageKey, $size = 'full')
     {
         $file = $this->get('social.picture.storage')
-                        ->getAbsolutePath($storageKey);
+                ->getAbsolutePath($storageKey);
+
+//        $file = Image::open($file)
+//                ->setCacheDir('/home/flo/Develop/iinano/storage/cache/')
+//                ->resize(100)
+//                ->guess();
 
         $response = new Response();
         $lastModif = new \DateTime();
