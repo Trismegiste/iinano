@@ -20,7 +20,7 @@ class PictureController extends Template
     public function getAction($storageKey, $size)
     {
         $file = $this->get('social.picture.storage')
-                ->getAbsolutePath($storageKey, $size);
+                ->getImagePath($storageKey, $size);
 
         $response = new Response();
         $lastModif = new \DateTime();

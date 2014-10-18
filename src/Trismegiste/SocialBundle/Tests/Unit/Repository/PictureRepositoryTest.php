@@ -39,6 +39,9 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
         $file->expects($this->atLeastOnce())
                 ->method('isValid')
                 ->will($this->returnValue(true));
+        $file->expects($this->atLeastOnce())
+                ->method('getPathname')
+                ->will($this->returnValue(__DIR__ . '/../../../Resources/public/img/mascot.png'));
         $file->expects($this->never())  // I don't keep original picture for saving storage space, I don't make a clone of Picasa or Flickr
                 ->method('move');
 

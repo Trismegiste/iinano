@@ -62,6 +62,7 @@ class PictureRepository
     /**
      * Stores an uploaded file to the storage and returns a Picture document for this picture
      *
+     * @param Picture $pub
      * @param UploadedFile $picFile
      *
      * @return \Trismegiste\Socialist\Picture
@@ -85,7 +86,7 @@ class PictureRepository
         $pub->setMimeType($serverMimeType);
         $pub->setStorageKey($syntheticName);
 
-        $path = $this->getAbsolutePath($syntheticName);
+        $path = $this->getStoragePath($syntheticName);
 
         // because diskspace is costly, I don't intend to keep orignal picture
         // that's why I resize at a full-hd res (mobile first and I don't intend to
@@ -95,20 +96,25 @@ class PictureRepository
                 ->save($path);
     }
 
+    protected function getStoragePath($filename)
+    {
+        return $this->storageDir
+                . implode('/', str_split(substr($filename, 0, self::SLOW_FS_CHUNK)))
+                . '/'
+                . $filename;
+    }
+
     /**
-     * Get the absolute of a picture with a given storageKey for a given size
+     * Get the absolute path of a picture with a given storageKey for a given size
      *
-     * @param string $filename
+     * @param string $filename the storage key
      * @param string $size 'full'|'medium'|'tiny'|'whatever'
      *
      * @return string absolute path in the filesystem
      */
-    public function getAbsolutePath($filename, $size = self::MAX_RES)
+    public function getImagePath($filename, $size = self::MAX_RES)
     {
-        $sourceImg = $this->storageDir
-                . implode('/', str_split(substr($filename, 0, self::SLOW_FS_CHUNK)))
-                . '/'
-                . $filename;
+        $sourceImg = $this->getStoragePath($filename);
 
         if (($size !== self::MAX_RES) && array_key_exists($size, $this->sizeConfig)) {
             $sourceImg = Image::open($sourceImg)
