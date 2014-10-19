@@ -54,7 +54,7 @@ class PictureRepository
         $this->cacheDir .= DIRECTORY_SEPARATOR;
 
         if (!array_key_exists(self::MAX_RES, $sizeCfg)) {
-            throw new \InvalidArgumentException("The size configuration for Picture is invalid");
+            throw new \InvalidArgumentException("The size configuration for Picture is invalid : '" . self::MAX_RES . "' key is missing");
         }
         $this->sizeConfig = $sizeCfg;
     }
@@ -88,8 +88,8 @@ class PictureRepository
 
         $path = $this->getStoragePath($syntheticName);
 
-        // because diskspace is costly, I don't intend to keep orignal picture
-        // that's why I resize at a full-hd res (mobile first and I don't intend to
+        // because diskspace is costly, I don't want to keep original picture
+        // that's why I resize & recompress at a full-hd res (mobile first and I don't intend to
         // clone Picasa)
         Image::open($picFile->getPathname())
                 ->cropResize($this->sizeConfig[self::MAX_RES], $this->sizeConfig[self::MAX_RES])
@@ -119,7 +119,7 @@ class PictureRepository
         if (($size !== self::MAX_RES) && array_key_exists($size, $this->sizeConfig)) {
             $sourceImg = Image::open($sourceImg)
                     ->setCacheDir($this->cacheDir)
-                    ->resize($this->sizeConfig[$size])
+                    ->resize($this->sizeConfig[$size]) // @todo why not cropResize as above ?
                     ->guess();
         }
 
