@@ -177,18 +177,13 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
      */
     public function repeatPublishing($id)
     {
+        $repeatAlias = array_search('Trismegiste\Socialist\Repeat', $this->classAlias);
         $original = $this->findByPk($id);
-
-        if ($original instanceof \Trismegiste\Socialist\Repeat) {  // @todo Liskov break : add a method in Publishing getSourceId() overriden in Repeat
-            $original = $original->getEmbedded();
-        }
-
-        $repeatAlias = 'repeat'; // @todo hardcoded value implies we need a new repository ?
 
         $found = $this->repository->findOne([
             MapAlias::CLASS_KEY => $repeatAlias,
             'owner.nickname' => $this->getNickname(),
-            'embedded.id' => $original->getId() // getSourceId()
+            'embedded.id' => $original->getSourceId()
         ]);
 
         if (!is_null($found)) {
@@ -200,6 +195,8 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
             $pub = $this->create($repeatAlias);
             $pub->setEmbedded($original);
             $this->persist($pub);
+
+            return $pub;
         } catch (\DomainException $e) {
             throw new \RuntimeException($e->getMessage());
         }

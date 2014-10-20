@@ -101,6 +101,8 @@ interface PublishingRepositoryInterface
      * Repeat a Publishing
      *
      * @param string $id the PK of the Publishing subclass
+     *
+     * @return \Trismegiste\Socialist\Repeat the repeated message
      */
     public function repeatPublishing($id);
 }

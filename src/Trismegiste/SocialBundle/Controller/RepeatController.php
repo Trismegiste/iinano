@@ -17,7 +17,9 @@ class RepeatController extends ContentController
         $repo = $this->get('social.publishing.repository');
 
         try {
-            $repo->repeatPublishing($id);
+            $pub = $repo->repeatPublishing($id);
+            $this->pushFlash('notice', "You've repeated a message from "
+                    . $pub->getEmbedded()->getAuthor()->getNickname());
         } catch (\RuntimeException $e) {
             $this->pushFlash('warning', $e->getMessage());
         }
