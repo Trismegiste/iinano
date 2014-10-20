@@ -172,4 +172,37 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
         $this->repository->persist($pub);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function repeatPublishing($id)
+    {
+        $original = $this->findByPk($id);
+
+        if ($original instanceof \Trismegiste\Socialist\Repeat) {  // @todo Liskov break : add a method in Publishing getSourceId() overriden in Repeat
+            $original = $original->getEmbedded();
+        }
+
+        $repeatAlias = 'repeat'; // @todo hardcoded value implies we need a new repository ?
+
+        $found = $this->repository->findOne([
+            MapAlias::CLASS_KEY => $repeatAlias,
+            'owner.nickname' => $this->getNickname(),
+            'embedded.id' => $original->getId() // getSourceId()
+        ]);
+
+        if (!is_null($found)) {
+            throw new \RuntimeException('You already have repeated this content');
+        }
+
+        try {
+            /* @var $pub \Trismegiste\Socialist\Repeat */
+            $pub = $this->create($repeatAlias);
+            $pub->setEmbedded($original);
+            $this->persist($pub);
+        } catch (\DomainException $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
+    }
+
 }

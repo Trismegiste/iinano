@@ -85,7 +85,7 @@ interface PublishingRepositoryInterface
      * and persistig it
      *
      * @param string $id primary key
-     * 
+     *
      * @return Publishing
      */
     public function iUnlikeThat($id);
@@ -93,7 +93,14 @@ interface PublishingRepositoryInterface
     /**
      * The current is reporting a Publishing as abuse or spam and persitence
      *
-     * @param string $id
+     * @param string $id the PK of the Publishing subclass
      */
     public function iReportThat($id);
+
+    /**
+     * Repeat a Publishing
+     *
+     * @param string $id the PK of the Publishing subclass
+     */
+    public function repeatPublishing($id);
 }
