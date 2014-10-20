@@ -5,14 +5,6 @@
         {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: content.author } %}
     </div>
     <div class="large-10 medium-10 columns">
-        {% set dropdown_id = 'drop' ~ content.id %}
-        <ul id="{{ dropdown_id }}" class="f-dropdown" data-dropdown-content>
-            {% if is_granted('OWNER', content) %}
-            <li><a href="{{ path('publishing_edit', {id: content.id}) }}">Edit</a></li>
-            <li><a href="{{ path('publishing_delete', {id: content.id}) }}">Delete</a></li>
-            {% endif %}
-            <li><a href="{{ path('pub_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">Report abuse or spam</a></li>
-        </ul>
         <h6 class="subheader">{{ content.author.nickname }} <small>{{ content.lastEdited | timeago }}</small></h6>
         {% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content) %}
 
@@ -21,14 +13,29 @@
                 <i class="fi-comment-quotes"></i>
                 {{ content.commentaryCount }}
             </a>
-            <a href="{{ path('pub_repeat_create', {id: content.id} ) }}" title="Retweet">
-                <i class="fi-loop"></i>
-                10
-            </a>
+            {% if not is_granted('OWNER', content) %}
+                <a href="{{ path('pub_repeat_create', {wallNick: wallNick, wallFilter: wallFilter, id: content.id} ) }}" title="Retweet">
+                    <i class="fi-loop"></i>
+                    10
+                </a>
+            {% else %}
+                <span>
+                    <i class="fi-loop"></i>
+                    10
+                </span>
+            {% endif %}
             {% include 'TrismegisteSocialBundle:Content:ajax/publishing_like_button.html.twig' %}
+            {% set dropdown_id = 'drop' ~ content.id %}
             <a href="#" title="More..." data-dropdown="{{ dropdown_id }}">
                 <i class="fi-widget"></i>
             </a>
+            <ul id="{{ dropdown_id }}" class="f-dropdown" data-dropdown-content>
+                {% if is_granted('OWNER', content) %}
+                    <li><a href="{{ path('publishing_edit', {id: content.id}) }}">Edit</a></li>
+                    <li><a href="{{ path('publishing_delete', {id: content.id}) }}">Delete</a></li>
+                    {% endif %}
+                <li><a href="{{ path('pub_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">Report abuse or spam</a></li>
+            </ul>
         </h4>
 
         {% block commentary_create %}{% endblock %}

@@ -81,9 +81,4 @@
         <requirement key="_method">POST</requirement>
     </route>
 
-    <route id="pub_repeat_create" pattern="/pub/{id}/repeat/create">
-        <default key="_controller">TrismegisteSocialBundle:Repeat:repeat</default>
-        <requirement key="id">%mongoid_regex%</requirement>
-    </route>
-
 </routes>

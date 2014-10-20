@@ -12,20 +12,20 @@ namespace Trismegiste\SocialBundle\Controller;
 class RepeatController extends ContentController
 {
 
-    public function repeatAction($id)
+    public function repeatAction($id, $wallNick, $wallFilter)
     {
         $repo = $this->get('social.publishing.repository');
+        $original = $repo->findByPk($id);
 
         /* @var $pub \Trismegiste\Socialist\Repeat */
         $pub = $repo->create('repeat');
-        $original = $repo->findByPk($id);
         $pub->setEmbedded($original);
         $repo->persist($pub);
 
         return $this->redirectRouteOk('wall_index', [
-                    'wallNick' => $this->getUser()->getUsername(),
-                    'wallFilter' => 'self'
-                        ], 'anchor-' . $pub->getId());
+                    'wallNick' => $wallNick,
+                    'wallFilter' => $wallFilter
+                        ], 'anchor-' . $original->getId());
     }
 
 }
