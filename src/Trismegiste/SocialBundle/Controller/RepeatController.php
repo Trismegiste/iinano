@@ -15,17 +15,17 @@ class RepeatController extends ContentController
     public function repeatAction($id, $wallNick, $wallFilter)
     {
         $repo = $this->get('social.publishing.repository');
-        $original = $repo->findByPk($id);
 
-        /* @var $pub \Trismegiste\Socialist\Repeat */
-        $pub = $repo->create('repeat');
-        $pub->setEmbedded($original);
-        $repo->persist($pub);
+        try {
+            $repo->repeatPublishing($id);
+        } catch (\RuntimeException $e) {
+            $this->pushFlash('warning', $e->getMessage());
+        }
 
         return $this->redirectRouteOk('wall_index', [
                     'wallNick' => $wallNick,
                     'wallFilter' => $wallFilter
-                        ], 'anchor-' . $original->getId());
+                        ], 'anchor-' . $id);
     }
 
 }
