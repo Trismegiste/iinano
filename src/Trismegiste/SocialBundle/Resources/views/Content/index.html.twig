@@ -55,8 +55,7 @@
 
         jQuery.fn.transformLinkToAjax = function ()
         {
-
-            var ajaxedLinkClick = function (event) {
+            $(document).on('click', 'a[data-social-ajaxed]', function (event) {
                 event.stopPropagation();
                 event.preventDefault();
                 $.ajax({
@@ -65,9 +64,7 @@
                 }).done(function (response) {
                     $(event.currentTarget).replaceWith(response);
                 });
-            };
-
-            $(document).on('click', 'a[data-social-ajaxed]', ajaxedLinkClick);
+            });
         };
 
         $(document).ready(function () {
@@ -115,6 +112,6 @@
         .content-actions-footer a,span {
             margin-right: 3em;
             color: #ccc;
-         }
+        }
     </style>
 {% endblock %}
