@@ -14,14 +14,12 @@
                 {{ content.commentaryCount }}
             </a>
             {% if not is_granted('OWNER', content) %}
-                <a href="{{ path('pub_repeat_create', {wallNick: wallNick, wallFilter: wallFilter, id: content.id} ) }}" title="Retweet">
-                    <i class="fi-loop"></i>
-                    {{ content.repeatedCount }}
+                <a href="{{ path('pub_repeat_create', {wallNick: wallNick, wallFilter: wallFilter, id: content.id} ) }}" title="Repeat">
+                    {% include 'TrismegisteSocialBundle:Content:publishing_repeat_button.html.twig' with {repeatCounter: content.repeatedCount} %}
                 </a>
             {% else %}
                 <span>
-                    <i class="fi-loop"></i>
-                    {{ content.repeatedCount }}
+                    {% include 'TrismegisteSocialBundle:Content:publishing_repeat_button.html.twig' with {repeatCounter: content.repeatedCount} %}
                 </span>
             {% endif %}
             {% include 'TrismegisteSocialBundle:Content:ajax/publishing_like_button.html.twig' %}
@@ -33,9 +31,9 @@
                 {% if is_granted('OWNER', content) %}
                     {% if content.editable %}
                         <li><a href="{{ path('publishing_edit', {id: content.id}) }}">Edit</a></li>
-                    {% endif %}
+                        {% endif %}
                     <li><a href="{{ path('publishing_delete', {id: content.id}) }}">Delete</a></li>
-                {% endif %}
+                    {% endif %}
                 <li><a href="{{ path('pub_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">Report abuse or spam</a></li>
             </ul>
         </h4>
