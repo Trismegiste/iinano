@@ -61,6 +61,7 @@ dokudoki:
         private: 'Trismegiste\Socialist\PrivateMessage'
         picture: 'Trismegiste\Socialist\Picture'
         repeat: 'Trismegiste\Socialist\Repeat'
+        video: 'Trismegiste\Socialist\Video'
 
 iinano:
     nickname_regex: "[-\da-z]+"
