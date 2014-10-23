@@ -50,6 +50,10 @@
             <tag name="form.type" alias="social_picture"/>
         </service>
 
+        <service id="social.type.video" class="Trismegiste\SocialBundle\Form\VideoType">
+            <tag name="form.type" alias="social_video"/>
+        </service>
+
         <service id="social.type.commentary" class="Trismegiste\SocialBundle\Form\CommentaryType">
             <argument type="service" id="social.commentary.repository"/>
             <tag name="form.type" alias="social_commentary"/>
