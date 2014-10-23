@@ -40,9 +40,9 @@ class StatusTypeTest extends PublishingTestCase
     public function getValidInputs()
     {
         $validated = $this->createData();
-        $validated->setLatitude('43');  // @todo force a float conversion in the setter of Status
-        $validated->setLongitude('7');
-        $validated->setZoom('15');
+        $validated->setLatitude(43);
+        $validated->setLongitude(7);
+        $validated->setZoom(15);
         $validated->setMessage('Nissa la Bella');
         $post = [
             'message' => 'Nissa la Bella',
