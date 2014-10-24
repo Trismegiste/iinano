@@ -3,6 +3,7 @@
 
 {%block stylesheets %}
 {{ parent() }}
+<link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/alertify.css') }}" />
 <style>
 nav.top-bar {
     margin-bottom: 20px;
@@ -111,4 +112,9 @@ img.avatar {
 
 {% block copyright_text %}
 Powered by <a href="{{ path('guest_about') }}">iinano</a> - 2014 - MIT license
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/trismegistesocial/js/alertify.js') }}"></script>
 {% endblock %}

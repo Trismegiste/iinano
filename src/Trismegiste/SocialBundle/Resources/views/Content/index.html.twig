@@ -63,9 +63,21 @@
                     type: 'POST'
                 }).done(function (response) {
                     $(event.currentTarget).replaceWith(response);
+                    alertify.success("You like");
                 });
             });
         };
+
+        $(document).on('click', 'a[data-social-delete]', function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+            var button = this;
+            alertify.confirm("Are you sure you want to delete this entry ?", function (e) {
+                if (e) {
+                    window.location.href = button.href;
+                }
+            });
+        });
 
         $(document).ready(function () {
 

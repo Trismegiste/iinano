@@ -9,7 +9,7 @@
         <ul id="{{ dropdown_id }}" class="f-dropdown" data-dropdown-content>
             {% if is_granted('OWNER', comment) %}
                 <li><a href="{{ path('pub_commentary_edit', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Edit</a></li>
-                <li><a href="{{ path('pub_commentary_delete', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Delete</a></li>
+                <li><a href="{{ path('pub_commentary_delete', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}" data-social-delete>Delete</a></li>
                 {% endif %}
             <li><a href="{{ path('commentary_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Report abuse or spam</a></li>
         </ul>
@@ -23,5 +23,6 @@
             <a href="#" title="More..." data-dropdown="{{ dropdown_id }}">
                 <i class="fi-widget"></i>
             </a>
-        </h4>    </div>
+        </h4>
+    </div>
 </div>
