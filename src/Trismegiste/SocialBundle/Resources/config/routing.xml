@@ -81,4 +81,8 @@
         <requirement key="_method">POST</requirement>
     </route>
 
+    <route id="pure_example" pattern="guest/pure">
+        <default key="_controller">TrismegisteSocialBundle:Pure:index</default>
+    </route>
+
 </routes>
