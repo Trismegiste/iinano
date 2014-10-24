@@ -1,3 +1,4 @@
+{# This is a layout with a responsive sidebar #}
 {% extends 'TrismegisteSocialBundle::purecss.html.twig' %}
 
 {% block stylesheets %}
@@ -21,12 +22,20 @@
         </div>
 
         <div id="main">
-            {% block topbar %}
-            {% endblock %}
+            <div class="topbar pure-menu pure-menu-open pure-menu-horizontal">
+                {% block topbar %}
+                {% endblock %}
+            </div>
             <div class="content">
                 {% block content %}
-                {% endblock content %}
+                {% endblock %}
+                <hr/>
+                <footer>
+                    {% block footer %}
+                    {% endblock %}
+                </footer>
             </div>
+
         </div>
     </div>
 {% endblock full_body %}
