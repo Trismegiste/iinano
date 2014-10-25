@@ -119,7 +119,7 @@ class PictureRepository
         if (($size !== self::MAX_RES) && array_key_exists($size, $this->sizeConfig)) {
             $sourceImg = Image::open($sourceImg)
                     ->setCacheDir($this->cacheDir)
-                    ->resize($this->sizeConfig[$size]) // @todo why not cropResize as above ?
+                    ->resize($this->sizeConfig[$size])
                     ->guess();
         }
 

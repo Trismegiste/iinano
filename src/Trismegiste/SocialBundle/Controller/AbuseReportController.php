@@ -19,7 +19,7 @@ class AbuseReportController extends ContentController
         switch ($action) {
             case 'add':
                 $repo->iReportThat($id);
-                // @todo this falsh must replace the original content
+                // @todo this flash must replace the original content
                 //$this->pushFlash('notice', 'You have reported this content as abusive');
                 break;
             default:
@@ -47,7 +47,7 @@ class AbuseReportController extends ContentController
         switch ($action) {
             case 'add':
                 $repo->iReportThat($id, $uuid);
-                // @todo this falsh must replace the original content
+                // @todo this flash must replace the original content
                 //$this->pushFlash('notice', 'You have reported this content as abusive');
                 break;
             default:
