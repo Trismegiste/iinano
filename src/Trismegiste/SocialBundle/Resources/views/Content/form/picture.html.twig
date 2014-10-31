@@ -16,7 +16,7 @@
 
 {% block crud %}
     {% if form.vars.value is not null and form.vars.value.storageKey is not null %}
-        <img src="{{ path('picture_get', {storageKey: form.vars.value.storageKey}) }}" class="picture-view"/>
+        <img src="{{ path('picture_get', {size:'medium', storageKey: form.vars.value.storageKey}) }}" class="picture-view"/>
     {% endif %}
     {{ parent() }}
 {% endblock %}

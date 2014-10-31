@@ -28,4 +28,5 @@ h1, h2, h3, h4 {
 .pub-action {
     margin: 0.3em 0;
     font-size: 1.2em;
+    opacity: 0.5
 }

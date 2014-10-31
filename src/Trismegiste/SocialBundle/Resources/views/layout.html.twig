@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block responsive_sidebar %}
-    <a class="pure-menu-heading" href="#">Nickname</a>
+    <a href="{{ path('wall_index', {wallNick: app.user.username, wallFilter:'self'}) }}">{{ app.user.username }}</a>
 
     <ul>
         <li><a href="{{ path('publishing_create', {type:"small"}) }}#anchor-form">Message</a></li>
