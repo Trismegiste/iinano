@@ -27,14 +27,14 @@
                                     href="{{ path('pub_repeat_create', {wallNick: wallNick, wallFilter: wallFilter, id: content.id} ) }}" title="Repeat"
                                 {% endif %}
                                 >
-                                <i class="icon-retweet"></i>{ content.repeatedCount }
+                                <i class="icon-retweet"></i>{{ content.getRepeatedCount() }}
                             </a>
                         </li>
                         <li>
                             {% include 'TrismegisteSocialBundle:Content:ajax/publishing_like_button.html.twig' %}
                         </li>
                         {% set dropdown_id = 'drop' ~ content.id %}
-                        <li><a href="#" data-dropdown="#{{ dropdown_id }}"><i class="icon-cog"></i></a></li>
+                        <li><a href="#" data-dropdown="#{{ dropdown_id }}" title="More..."><i class="icon-cog"></i></a></li>
                     </ul>
                 </div>
                 <div id="{{ dropdown_id }}" class="dropdown dropdown-anchor-right">

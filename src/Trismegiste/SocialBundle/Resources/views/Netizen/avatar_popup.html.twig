@@ -3,16 +3,18 @@
     <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="pure-img rounded"/>
 {% else %}
     {% set avatar_dropdown_counter = author.nickname ~ random() %}
-    <a href="#" data-dropdown="{{ avatar_dropdown_counter }}">
+    <a href="#" data-dropdown="#{{ avatar_dropdown_counter }}">
         <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="pure-img rounded"/>
     </a>
     {% include 'TrismegisteSocialBundle:Netizen:relation_type.html.twig' with {nickname: author.nickname} %}
-    <ul id="{{ avatar_dropdown_counter }}" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
-        <li><a href="{{ path('wall_index', {wallNick: author.nickname, wallFilter: 'self'}) }}">View wall</a></li>
-        <li><a href="{{ path('wall_index', {wallNick: author.nickname, wallFilter: 'following'}) }}">View following</a></li>
-        <li><a href="{{ path('netizen_show', {author: author.nickname}) }}">View profile</a></li>
-        {% if is_granted('LISTENER', author) %}
-        <li><a href="{{ path('private_create', {author: author.nickname}) }}">Send a PM</a></li>
-        {% endif %}
-    </ul>
+    <div class="dropdown" id="{{ avatar_dropdown_counter }}">
+        <ul class="dropdown-menu">
+            <li><a href="{{ path('wall_index', {wallNick: author.nickname, wallFilter: 'self'}) }}">View wall</a></li>
+            <li><a href="{{ path('wall_index', {wallNick: author.nickname, wallFilter: 'following'}) }}">View following</a></li>
+            <li><a href="{{ path('netizen_show', {author: author.nickname}) }}">View profile</a></li>
+                {% if is_granted('LISTENER', author) %}
+                <li><a href="{{ path('private_create', {author: author.nickname}) }}">Send a PM</a></li>
+                {% endif %}
+        </ul>
+    </div>
 {% endif %}

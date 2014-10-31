@@ -15,15 +15,15 @@
             </div>
             <div class="pure-u-1 pure-u-md-1-2">
                 <article>
-                    <h3>{ wallUser.profile.fullName } (@{{ wallNick }})</h3>
+                    <h3>{{ wallUser.profile.fullName }} (@{{ wallNick }})</h3>
                     <nav>
                         <a href="#" class="pure-button"><i class="icon-heart"></i>  {{ wallUser.fanCount }}</a>
                         <a href="#" class="pure-button">Follow</a>
                         <a href="#" class="pure-button">Edit</a>
                     </nav>
-                    <h4>Following 13</h4>
-                    <h4>Followers 7</h4>
-                    <h4>Friends 6</h4>
+                    <h4>Following {{ wallUser.followingCount }}</h4>
+                    <h4>Followers {{ wallUser.followerCount }}</h4>
+                    <h4>Friends {{ wallUser.friendIterator|length }}</h4>
                 </article>
             </div>
         </div>
