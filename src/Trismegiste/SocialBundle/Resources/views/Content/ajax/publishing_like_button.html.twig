@@ -1,14 +1,16 @@
 {% if content.hasFan(app.user.author) %}
     {% set like_action = 'remove' %}
     {% set like_text = 'Unlike' %}
+    {% set like_icon = 'icon-heart-empty' %}
 {% else %}
     {% set like_action = 'add' %}
     {% set like_text = 'Like' %}
+    {% set like_icon = 'icon-heart' %}
 {% endif %}
 <a data-social-ajaxed
    href="{{ path('pub_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, action: like_action}) }}"
    class="like-button"
    title="{{ like_text }}">
-    <i class="fi-heart"></i>
+    <i class="{{ like_icon }}"></i>
     {{ content.fanCount }}
 </a>

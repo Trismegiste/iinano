@@ -1,28 +1,43 @@
 {# template for viewing one commentary entity #}
-<div class="row commentary">
+<div class="pure-g entry">
     <a id="anchor-{{ content.id }}-{{ comment.uuid }}"></a>
-    <div class="large-2 medium-2 small-3 columns">
-        {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: comment.author } %}
+    <div class="pure-u-1-4 pure-u-md-1-5">
+        <header>
+            {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: comment.author } %}
+        </header>
     </div>
-    <div class="large-10 medium-10 columns">
-        {% set dropdown_id = 'drop' ~ content.id ~ comment.uuid %}
-        <ul id="{{ dropdown_id }}" class="f-dropdown" data-dropdown-content>
-            {% if is_granted('OWNER', comment) %}
-                <li><a href="{{ path('pub_commentary_edit', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Edit</a></li>
-                <li><a href="{{ path('pub_commentary_delete', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}" data-social-delete>Delete</a></li>
-                {% endif %}
-            <li><a href="{{ path('commentary_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Report abuse or spam</a></li>
-        </ul>
-        <h6 class="subheader">
-            {{ comment.author.nickname }}
-            <small>{{ comment.lastEdited | timeago }}</small>
-        </h6>
-        <p>{{ comment.message }}</p>
-        <h4 class="content-actions-footer">
-            {% include 'TrismegisteSocialBundle:Content:ajax/commentary_like_button.html.twig' %}
-            <a href="#" title="More..." data-dropdown="{{ dropdown_id }}">
-                <i class="fi-widget"></i>
-            </a>
-        </h4>
+    <div class="pure-u-1-1 pure-u-md-4-5">
+        <article>
+            <h4>{{ comment.author.nickname }}<time datetime="{{ comment.lastEdited|date() }}">{{ comment.lastEdited | timeago }}</time></h4>
+
+            {{ comment.message }}
+
+            <nav>
+                <div class="pub-action pure-menu pure-menu-open pure-menu-horizontal">
+                    <ul>
+                        <li>
+                            {% include 'TrismegisteSocialBundle:Content:ajax/commentary_like_button.html.twig' %}
+                        </li>
+                        <li>
+                            {% set dropdown_id = 'drop' ~ content.id ~ comment.uuid %}
+                            <a href="#" title="More..." data-dropdown="{{ dropdown_id }}">
+                                <i class="icon-cog"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="{{ dropdown_id }}" class="dropdown dropdown-anchor-right">
+                    <ul class="dropdown-menu">
+                        {% if is_granted('OWNER', comment) %}
+                            <li><a href="{{ path('pub_commentary_edit', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Edit</a></li>
+                            <li><a href="{{ path('pub_commentary_delete', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}" data-social-delete>Delete</a></li>
+                            {% endif %}
+                        <li><a href="{{ path('commentary_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Report abuse or spam</a></li>
+                    </ul>
+                </div>
+
+            </nav>
+        </article>
     </div>
 </div>

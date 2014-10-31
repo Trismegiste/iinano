@@ -1,10 +1,10 @@
 {# avatar icon + dropdown with mini content #}
 {% if app.user.username == author.nickname %}
-    <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="avatar"/>
+    <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="pure-img rounded"/>
 {% else %}
     {% set avatar_dropdown_counter = author.nickname ~ random() %}
     <a href="#" data-dropdown="{{ avatar_dropdown_counter }}">
-        <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="avatar"/>
+        <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="pure-img rounded"/>
     </a>
     {% include 'TrismegisteSocialBundle:Netizen:relation_type.html.twig' with {nickname: author.nickname} %}
     <ul id="{{ avatar_dropdown_counter }}" class="f-dropdown" data-dropdown-content aria-hidden="true" tabindex="-1">
