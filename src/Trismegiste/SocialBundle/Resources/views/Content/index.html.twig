@@ -50,7 +50,10 @@
     {{ parent() }}
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script>
-        jQuery.fn.leaflet = function () {
+
+        var social = {};
+
+        social.initLeafletShow = function () {
             $('div[data-social-status-show]').each(function () {
 
                 var item = $(this);
@@ -76,16 +79,16 @@
 
         }
 
-        jQuery.fn.transformLinkToAjax = function ()
+        social.transformLikeToAjax = function ()
         {
-            $(document).on('click', 'a[data-social-ajaxed]', function (event) {
+            $(document).on('click', 'a[data-like-ajaxed]', function (event) {
                 event.stopPropagation();
                 event.preventDefault();
                 $.ajax({
                     url: this.href,
                     type: 'POST'
                 }).done(function (response) {
-                    $(event.currentTarget).replaceWith(response.view);
+                    $(event.currentTarget).replaceWith(response);
                     alertify.success("Like updated");
                 });
             });
@@ -109,23 +112,23 @@
                     url: event.target.href,
                     success: function (data) {
                         if ('' != data) {
-                            $('#pagination').append(data)
-                            var old = event.target.href
+                            $('#pagination').append(data);
+                            var old = event.target.href;
                             event.target.href = old.replace(/(\d+)$/, function (match, p1, offset, str) {
-                                return {{ pagination }}+Number(p1)
+                                return {{ pagination }}+Number(p1);
                             })
                             $(document).foundation() // seems to be the right way according to #3885
-                            $(document).leaflet();
+                            social.initLeafletShow();
                         } else {
-                            $('#more-button').hide()
+                            $('#more-button').hide();
                         }
                     }
                 })
-                event.preventDefault()
+                event.preventDefault();
             })
 
-            $(document).leaflet();
-            $(document).transformLinkToAjax();
+            social.initLeafletShow();
+            social.transformLikeToAjax();
 
         })
     </script>

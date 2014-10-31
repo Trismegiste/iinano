@@ -1,13 +1,13 @@
 {% if content.hasFan(app.user.author) %}
     {% set like_action = 'remove' %}
     {% set like_text = 'Unlike' %}
-    {% set like_icon = 'icon-heart-empty' %}
+    {% set like_icon = 'icon-heart' %}
 {% else %}
     {% set like_action = 'add' %}
     {% set like_text = 'Like' %}
-    {% set like_icon = 'icon-heart' %}
+    {% set like_icon = 'icon-heart-empty' %}
 {% endif %}
-<a data-social-ajaxed
+<a data-like-ajaxed
    href="{{ path('pub_famous', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, action: like_action}) }}"
    class="like-button"
    title="{{ like_text }}">
