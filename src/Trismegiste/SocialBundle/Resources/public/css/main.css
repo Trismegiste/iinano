@@ -1,0 +1,31 @@
+body {
+    color: #333;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 300;
+    margin: 0 0 0.2em 0;
+    color: #777;
+}
+
+.entry header, article, form {
+    padding: 0.6em;
+}
+
+.rounded {
+    border-radius: 10px;
+}
+
+.commentary {
+    margin-left: 15%;
+}
+
+.entry time {
+    font-size: 0.7em;
+    margin-left: 3em;
+}
+
+.pub-action {
+    margin: 0.3em 0;
+    font-size: 1.2em;
+}

@@ -1,27 +1,50 @@
 {% extends 'TrismegisteSocialBundle::layout.html.twig' %}
 
-{% block page_title %}
+{% block meta_title %}
     {{ parent() }} | {{ wallNick }}'s wall
 {% endblock %}
 
-{% block feed %}
-    {% for content in listing %}
-        {% include 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
-        <hr/>
-    {% endfor %}
-    <div id="pagination"></div>
-    <div class="row">
-        <div class="small-12 column">
-            <a id="more-button" href="{{ path('ajax_content_more', {wallNick: wallNick, wallFilter: wallFilter, offset: pagination}) }}" class="button expand secondary">More</a>
-        </div>
-    </div>
-{% endblock %}
+{% block content %}
 
-{% block navbar %}
-    <a href="{{ path('netizen_show', {author: wallNick} ) }}"><img src="{{ path('netizen_avatar', {filename: wallUser.author.avatar} ) }}"/></a>
-    <hr/>
-    {% include 'TrismegisteSocialBundle:Content:index_navbar.html.twig' %}
-{% endblock navbar %}
+    {% block wall_profile %}
+        <div class="pure-g entry">
+            <div class="pure-u-1 pure-u-md-1-2">
+                <header>
+                    <a href="{{ path('netizen_show', {author: wallNick} ) }}"><img src="{{ path('netizen_avatar', {filename: wallUser.author.avatar} ) }}"  class="pure-img rounded"/></a>
+                </header>
+            </div>
+            <div class="pure-u-1 pure-u-md-1-2">
+                <article>
+                    <h3>{ wallUser.profile.fullName } (@{{ wallNick }})</h3>
+                    <nav>
+                        <a href="#" class="pure-button"><i class="icon-heart"></i>  {{ wallUser.fanCount }}</a>
+                        <a href="#" class="pure-button">Follow</a>
+                        <a href="#" class="pure-button">Edit</a>
+                    </nav>
+                    <h4>Following 13</h4>
+                    <h4>Followers 7</h4>
+                    <h4>Friends 6</h4>
+                </article>
+            </div>
+        </div>
+    {% endblock %}
+
+    {% block crud %}
+    {% endblock %}
+
+    {% block feed %}
+        {% for content in listing %}
+            {% include 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
+            <hr/>
+        {% endfor %}
+        <div id="pagination"></div>
+        <div class="row">
+            <div class="small-12 column">
+                <a id="more-button" href="{{ path('ajax_content_more', {wallNick: wallNick, wallFilter: wallFilter, offset: pagination}) }}" class="button expand secondary">More</a>
+            </div>
+        </div>
+    {% endblock feed %}
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}

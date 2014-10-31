@@ -1,120 +1,41 @@
-{# Base template for the front #}
-{% extends '::base.html.twig' %}
+{# Base template for the front, user must be logged #}
+{% extends 'TrismegisteSocialBundle::sidebar.html.twig' %}
 
 {%block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/alertify.css') }}" />
-<style>
-nav.top-bar {
-    margin-bottom: 20px;
-}
-/* fix a bug of Foundation */
-.top-bar .has-form input {
-    height: 29px;
-    border-top-width: 0px;
-    border-bottom-width: 0px;
-}
-img.avatar {
-    margin-top: 0.5em;
-}
-</style>
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/main.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/alertify.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/fontello.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/jquery.dropdown.css') }}" />
+{% endblock %}
+
+{% block responsive_sidebar %}
+    <a class="pure-menu-heading" href="#">Nickname</a>
+
+    <ul>
+        <li><a href="{{ path('publishing_create', {type:"small"}) }}#anchor-form">Message</a></li>
+        <li><a href="{{ path('publishing_create', {type:"status"}) }}#anchor-form">Status</a></li>
+        <li><a href="{{ path('publishing_create', {type:"picture"}) }}#anchor-form">Picture</a></li>
+        <li><a href="{{ path('publishing_create', {type:"video"}) }}#anchor-form">Video</a></li>
+        <li class="menu-item-divided"><a href="{{ path('private_create') }}">Private message</a></li>
+        <li class="menu-item-divided"><a href="{{ path('trismegiste_logout') }}">Logout</a></li>
+    </ul>
 {% endblock %}
 
 {% block topbar %}
-<nav class="top-bar" data-topbar>
-    {% if app.user.author is defined %}
-    <ul class="title-area">
-
-        <li class="name">
-            <h1>
-                <a href="{{ path('wall_index', {wallNick: app.user.username, wallFilter:'self'}) }}">
-                    {% block home_title %}Myself{% endblock %}
-                </a>
-            </h1>
-        </li>
-        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+    <ul>
+        <li><a href="{{ path('wall_index', {wallNick: app.user.username, wallFilter:'self'}) }}">Me</a></li>
+        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'following' }) }}">Following</a></li>
+        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'friend' }) }}">Friends</a></li>
     </ul>
-    {% endif %}
-
-    <section class="top-bar-section">
-
-        <ul class="left">
-            <li class="divider"></li>
-            {% if app.user.author is defined %}
-                <li class="has-dropdown">
-                    <a href="#">New content</a>
-                    <ul class="dropdown">
-                        <li><a href="{{ path('publishing_create', {type:"small"}) }}#anchor-form">Message</a></li>
-                        <li><a href="{{ path('publishing_create', {type:"status"}) }}#anchor-form">Status</a></li>
-                        <li><a href="{{ path('publishing_create', {type:"picture"}) }}#anchor-form">Picture</a></li>
-                        <li><a href="{{ path('publishing_create', {type:"video"}) }}#anchor-form">Video</a></li>
-                        <li class="divider"></li>
-                        <li><a href="{{ path('private_create') }}">Private message</a></li>
-                    </ul>
-                </li>
-                <li class="divider"></li>
-                <li class="has-dropdown">
-                    <a href="#">View contents from</a>
-                    <ul class="dropdown">
-                        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'following' }) }}">My following</a></li>
-                        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'follower' }) }}">My followers</a></li>
-                        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'friend' }) }}">My friends</a></li>
-                        <li class="divider"></li>
-                        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'all' }) }}">View all →</a></li>
-                    </ul>
-                </li>
-                <li class="divider"></li>
-                <li class="has-form">
-                    <div class="row collapse">
-                      <div class="large-8 small-9 columns">
-                        <input type="text" placeholder="Find Stuff">
-                      </div>
-                      <div class="large-4 small-3 columns">
-                        <a href="#" class="button expand secondary">Search</a>
-                      </div>
-                    </div>
-                </li>
-            {% endif %}
-        </ul>
-
-        <ul class="right">
-            <li class="divider"></li>
-            {% if app.user.author is defined %}
-                <li>
-                    <a href="{{ path('netizen_show',{ author: app.user.username}) }}">
-                        {{ app.user.username }}
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li class="has-form">
-                    <a href="{{ path('trismegiste_logout') }}" class="button alert">
-                        Sign out
-                    </a>
-                </li>
-            {% else %}
-                <li>
-                    <a href="{{ path('guest_register') }}">
-                        Register
-                    </a>
-                </li>
-                <li class="divider"></li>
-                <li class="has-form">
-                    <a href="{{ path('trismegiste_login') }}" class="button success">
-                        Sign in
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
-
-    </section>
-</nav>
 {% endblock %}
 
-{% block copyright_text %}
-Powered by <a href="{{ path('guest_about') }}">iinano</a> - 2014 - MIT license
+{% block footer %}
+    Powered by <a href="{{ path('guest_about') }}">iinano</a> - 2014 - MIT license
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('bundles/trismegistesocial/js/alertify.js') }}"></script>
+    <script src="{{ asset('bundles/trismegistesocial/js/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('bundles/trismegistesocial/js/alertify/alertify.js') }}"></script>
 {% endblock %}

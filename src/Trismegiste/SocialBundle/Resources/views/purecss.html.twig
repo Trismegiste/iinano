@@ -1,4 +1,4 @@
-{# This is a standard template for Yahoo PureCSS #}
+{# This is a standard template for Yahoo PureCSS w/ responsive capabilities #}
 <!doctype html>
 <html lang="en">
     <head>
@@ -8,6 +8,7 @@
         <title>{% block meta_title %}iinano{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/pure-min.css') }}"/>
+            <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/grids-responsive-min.css') }}"/>
         {% endblock %}
     </head>
     <body>
