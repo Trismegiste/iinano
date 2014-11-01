@@ -44,3 +44,23 @@
     </ul>
     {%- endif %}
 {%- endblock form_errors %}
+
+{% block date_widget -%}
+    {% if widget == 'single_text' -%}
+        {{ block('form_widget_simple') }}
+    {%- else -%}
+        {{- date_pattern|replace({
+            '{{ year }}':  form_widget(form.year),
+            '{{ month }}': form_widget(form.month),
+            '{{ day }}':   form_widget(form.day),
+        })|raw -}}
+    {%- endif %}
+{%- endblock date_widget %}
+
+{% block choice_widget_expanded -%}
+    {% for child in form %}
+        <label class="inline-left" for="{{ child.vars.id }}">{{ child.vars.label|trans({}, translation_domain) }}
+            {{ form_widget(child) }}
+        </label>
+    {% endfor %}
+{%- endblock choice_widget_expanded %}

@@ -2,12 +2,17 @@
 
 {% form_theme register '::inline_form.html.twig' %}
 
+{%block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/main.css') }}"/>
+{% endblock %}
+
 {% block full_body %}
-<div class="row">
-    <div class="large-12 column">
-        <h2>Register</h2>
-        <p>Please provide some informations to register your account</p>
-        {{ form(register) }}
+    <div class="row">
+        <div class="large-12 column">
+            <h2>Register</h2>
+            <p>Please provide some informations to register your account</p>
+            {{ form(register) }}
+        </div>
     </div>
-</div>
 {% endblock %}

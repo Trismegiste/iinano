@@ -1,31 +1,34 @@
 {% extends 'TrismegisteSocialBundle:Netizen:profile_layout.html.twig' %}
 
 {% block profile_content %}
-    {% if app.user.username == author.nickname %}
-        <div class="button-bar">
-            <ul class="button-group stack-for-small">
-                <li><a href="{{ path('netizen_profile_edit') }}" class="button secondary small">Edit my profile</a></li>
-                <li><a href="#" class="button secondary small">Change my password</a></li>
-                <li><a href="{{ path('netizen_avatar_edit') }}" class="button secondary small">Change my avatar</a></li>
-            </ul>
+    <article>
+
+        {% if app.user.username == author.nickname %}
+            <div class="button-bar">
+                <ul class="button-group stack-for-small">
+                    <li><a href="{{ path('netizen_profile_edit') }}" class="button secondary small">Edit my profile</a></li>
+                    <li><a href="#" class="button secondary small">Change my password</a></li>
+                    <li><a href="{{ path('netizen_avatar_edit') }}" class="button secondary small">Change my avatar</a></li>
+                </ul>
+            </div>
+        {% endif %}
+        <h3>{{ author.nickname }}</h3>
+        <h4>{{ profile.fullName }}</h4>
+        <div class="row information">
+            <div class="medium-6 small-12 column">
+                Gender: {{ profile.gender|gender }}<br/>
+                Location: {{ profile.location }}<br/>
+                Born the: {{ profile.dateOfBirth|date("Y/m/d") }}<br/>
+                Born at: {{ profile.placeOfBirth }}
+            </div>
+            <div class="medium-6 small-12 column">
+                Email (not public): {{ profile.email }}<br/>
+                Registered at: {{ profile.joinedAt|timeago }}<br/>
+                Content counter: {{ profile.publishingCounter }}<br/>
+                Commentary counter: {{ profile.commentaryCounter }}
+            </div>
         </div>
-    {% endif %}
-    <h3>{{ author.nickname }}</h3>
-    <h4>{{ profile.fullName }}</h4>
-    <div class="row information">
-        <div class="medium-6 small-12 column">
-            Gender: {{ profile.gender|gender }}<br/>
-            Location: {{ profile.location }}<br/>
-            Born the: {{ profile.dateOfBirth|date("Y/m/d") }}<br/>
-            Born at: {{ profile.placeOfBirth }}
-        </div>
-        <div class="medium-6 small-12 column">
-            Email (not public): {{ profile.email }}<br/>
-            Registered at: {{ profile.joinedAt|timeago }}<br/>
-            Content counter: {{ profile.publishingCounter }}<br/>
-            Commentary counter: {{ profile.commentaryCounter }}
-        </div>
-    </div>
+    </article>
 {% endblock %}
 
 {% block content %}
