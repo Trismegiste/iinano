@@ -1,0 +1,47 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_start -%}
+    {% if attr.class is not defined %}
+        {% set attr = attr|merge({'class': 'pure-form pure-form-stacked'}) %}
+    {% endif %}
+    {{ parent() }}
+{%- endblock form_start %}
+
+{% block widget_attributes -%}
+    {% if attr.class is not defined %}
+        {% set attr = attr|merge({'class': 'pure-input-1' }) %}
+    {% endif %}
+    {{ parent() }}
+{%- endblock widget_attributes %}
+
+{% block button_attributes -%}
+    {% if attr.class is not defined %}
+        {% set attr = attr|merge({'class': 'pure-button pure-button-primary' }) %}
+    {% endif %}
+    {{ parent() }}
+{%- endblock button_attributes %}
+
+
+{% block form -%}
+    {{ form_start(form) }}
+    <fieldset>
+        {{- form_widget(form) -}}
+    </fieldset>
+    {{ form_end(form) }}
+{%- endblock form %}
+
+{% block form_row -%}
+    {{- form_label(form) -}}
+    {{- form_errors(form) -}}
+    {{- form_widget(form) -}}
+{%- endblock form_row %}
+
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+    <ul class="form-error">
+        {%- for error in errors -%}
+            <li>{{ error.message }}</li>
+        {%- endfor -%}
+    </ul>
+    {%- endif %}
+{%- endblock form_errors %}

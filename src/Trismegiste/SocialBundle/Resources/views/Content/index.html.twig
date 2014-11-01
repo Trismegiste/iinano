@@ -76,8 +76,7 @@
                     item.removeAttr('data-social-status-show');
                 });
             },
-            transformLikeToAjax: function ()
-            {
+            transformLikeToAjax: function () {
                 $(document).on('click', 'a[data-like-ajaxed]', function (event) {
                     event.stopPropagation();
                     event.preventDefault();
@@ -116,7 +115,6 @@
                             event.target.href = old.replace(/(\d+)$/, function (match, p1, offset, str) {
                                 return {{ pagination }}+Number(p1);
                             })
-                            $(document).foundation() // seems to be the right way according to #3885
                             social.initLeafletShow();
                         } else {
                             $('#more-button').hide();
