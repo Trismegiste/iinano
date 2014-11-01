@@ -1,18 +1,23 @@
-{% extends '::foundation_form.html.twig' %}
+{% extends '::purecss_form.html.twig' %}
 
-{% block form_label -%}
-    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' right inline')|trim}) %}
+{% block form_start -%}
+    {% if attr.class is defined %}
+        {% set attr = attr|merge({'class': 'pure-form pure-form-aligned ' ~ attr.class }) %}
+    {% else %}
+        {% set attr = attr|merge({'class': 'pure-form pure-form-aligned'}) %}
+    {% endif %}
     {{ parent() }}
-{%- endblock form_label %}
+{%- endblock form_start %}
 
-{% block form_row %}
-<div class="row {% if form.vars.errors|length > 0 %}error{% endif %}">
-    <div class="small-3 columns">
-        {{- form_label(form) -}}
+{% block form_row -%}
+    <div class="pure-control-group">
+        {{ parent() }}
     </div>
-    <div class="small-9 columns">
-        {{- form_widget(form) -}}
-        {{- form_errors(form) -}}
-    </div>
-</div>
-{% endblock form_row %}
+{%- endblock form_row %}
+
+{% block widget_attributes -%}
+    {% if attr.class is not defined %}
+        {% set attr = attr|merge({'class': 'aligned-widget' }) %}
+    {% endif %}
+    {{ parent() }}
+{%- endblock widget_attributes %}

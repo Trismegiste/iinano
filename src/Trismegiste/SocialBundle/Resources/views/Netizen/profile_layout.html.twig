@@ -5,13 +5,17 @@
 {% endblock %}
 
 {% block content %}
-    <div class="pure-g profile-full">
+    <div class="pure-g profile-full entry">
         <div class="pure-u-1-1 pure-u-md-1-3 pure-u-lg-1-4">
-            <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}"/>
+            <header>
+                <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="pure-img"/>
+            </header>
         </div>
         <div class="pure-u-1-1 pure-u-md-2-3 pure-u-lg-3-4 profile-body">
-            {% block profile_content %}
-            {% endblock %}
+            <article>
+                {% block profile_content %}
+                {% endblock %}
+            </article>
         </div>
     </div>
 {% endblock content %}
