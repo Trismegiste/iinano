@@ -1,23 +1,13 @@
 {% extends '::purecss_form.html.twig' %}
 
-{% block form_start -%}
-    {% if attr.class is defined %}
-        {% set attr = attr|merge({'class': 'pure-form pure-form-aligned ' ~ attr.class }) %}
-    {% else %}
-        {% set attr = attr|merge({'class': 'pure-form pure-form-aligned'}) %}
-    {% endif %}
-    {{ parent() }}
-{%- endblock form_start %}
-
 {% block form_row -%}
-    <div class="pure-control-group">
-        {{ parent() }}
+    <div class="pure-g">
+        <div class="pure-u-1-3">
+            {{- form_label(form) -}}
+        </div>
+        <div class="pure-u-2-3">
+            {{- form_errors(form) -}}
+            {{- form_widget(form) -}}
+        </div>
     </div>
 {%- endblock form_row %}
-
-{% block widget_attributes -%}
-    {% if attr.class is not defined %}
-        {% set attr = attr|merge({'class': 'aligned-widget' }) %}
-    {% endif %}
-    {{ parent() }}
-{%- endblock widget_attributes %}

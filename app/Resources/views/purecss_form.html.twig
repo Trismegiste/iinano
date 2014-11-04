@@ -17,6 +17,8 @@
 {% block button_attributes -%}
     {% if attr.class is not defined %}
         {% set attr = attr|merge({'class': 'pure-button pure-button-primary' }) %}
+    {% else %}
+        {% set attr = attr|merge({'class': 'pure-button pure-button-primary ' ~ attr.class }) %}
     {% endif %}
     {{ parent() }}
 {%- endblock button_attributes %}
@@ -49,17 +51,19 @@
     {% if widget == 'single_text' -%}
         {{ block('form_widget_simple') }}
     {%- else -%}
-        {{- date_pattern|replace({
-            '{{ year }}':  form_widget(form.year),
-            '{{ month }}': form_widget(form.month),
-            '{{ day }}':   form_widget(form.day),
-        })|raw -}}
+        <div class="pure-g">
+            {{- date_pattern|replace({
+                '{{ year }}':  '<div class="pure-u-1-3">' ~ form_widget(form.year) ~ "</div>",
+                '{{ month }}': '<div class="pure-u-1-3">' ~ form_widget(form.month) ~ "</div>",
+                '{{ day }}': '<div class="pure-u-1-3">' ~ form_widget(form.day) ~ "</div>",
+            })|raw -}}
+        </div>
     {%- endif %}
 {%- endblock date_widget %}
 
 {% block choice_widget_expanded -%}
     {% for child in form %}
-        <label class="inline-left" for="{{ child.vars.id }}">{{ child.vars.label|trans({}, translation_domain) }}
+        <label for="{{ child.vars.id }}">{{ child.vars.label|trans({}, translation_domain) }}
             {{ form_widget(child) }}
         </label>
     {% endfor %}
