@@ -63,8 +63,9 @@
 
 {% block choice_widget_expanded -%}
     {% for child in form %}
-        <label for="{{ child.vars.id }}">{{ child.vars.label|trans({}, translation_domain) }}
-            {{ form_widget(child) }}
+        <label for="{{ child.vars.id }}" class="pure-radio">
+            {{ form_widget(child, {attr:{class:'toto'}}) }}
+            {{ child.vars.label|trans({}, translation_domain) }}
         </label>
     {% endfor %}
 {%- endblock choice_widget_expanded %}
