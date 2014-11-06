@@ -55,11 +55,14 @@
 </div>
 
 {% block commentary_create %}{% endblock %}
-<section class="commentary">
-    {% set commIt = content.commentaryIterator %}
-    {% if commIt.count > 0 %}
-        {% for comment in commIt %}
-            {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
-        {% endfor %}
-    {% endif %}
-</section>
+<div class="pure-g entry commentary">
+    <div class="pure-u-1-5"></div>
+    <div class="pure-u-4-5">
+        {% set commIt = content.commentaryIterator %}
+        {% if commIt.count > 0 %}
+            {% for comment in commIt %}
+                {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
