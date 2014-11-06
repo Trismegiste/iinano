@@ -1,15 +1,9 @@
 {# template for viewing one repeat entity #}
-<div class="row repeat">
-    <div class="column small-1">
-        <h1><i class="fi-quote"></i></h1>
-    </div>
-    <div class="small-11 column">
-        <h5>
-            <a href="{{ path('wall_index', {wallNick:content.embedded.author.nickname, wallFilter:'self' }) }}">
-                {{ content.embedded.author.nickname }}
-            </a>
-            has said {{ content.embedded.lastEdited | timeago }} :
-        </h5>
-        {% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content.embedded) with {content: content.embedded} %}
-    </div>
-</div>
+<h3>
+    <i class="icon-quote-left"></i>
+    <a href="{{ path('wall_index', {wallNick:content.embedded.author.nickname, wallFilter:'self' }) }}">
+        {{ content.embedded.author.nickname }}
+    </a>
+    has said {{ content.embedded.lastEdited | timeago }} :
+</h3>
+{% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content.embedded) with {content: content.embedded} %}
