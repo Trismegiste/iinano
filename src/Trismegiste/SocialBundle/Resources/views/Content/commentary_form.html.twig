@@ -3,6 +3,7 @@
 {% block crud %}
 {% embed 'TrismegisteSocialBundle:Content:publishing_show.html.twig' with {content: publishing} %}
     {% block commentary_create %}
+        <a id="anchor-form"></a>
         {{ form(form) }}
     {% endblock %}
 {% endembed %}

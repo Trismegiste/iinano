@@ -8,7 +8,6 @@
     </div>
     <div class="pure-u-1-1 pure-u-md-4-5">
         <article>
-
             <h4>{{ content.author.nickname }}<time datetime="{{ content.lastEdited|date() }}">{{ content.lastEdited | timeago }}</time></h4>
 
             {% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content) %}
@@ -41,7 +40,7 @@
                     <ul class="dropdown-menu">
                         {% if is_granted('OWNER', content) %}
                             {% if content.editable %}
-                                <li><a href="{{ path('publishing_edit', {id: content.id}) }}">Edit</a></li>
+                                <li><a href="{{ path('publishing_edit', {id: content.id}) }}#anchor-form">Edit</a></li>
                                 {% endif %}
                             <li><a href="{{ path('publishing_delete', {id: content.id}) }}" data-social-delete>Delete</a></li>
                             {% endif %}
