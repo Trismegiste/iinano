@@ -2,14 +2,23 @@ body {
     color: #333;
 }
 
+.content {
+    padding: 0.6em;
+}
+
 h1, h2, h3, h4 {
     font-weight: 300;
     margin: 0 0 0.2em 0;
     color: #777;
 }
 
-.entry header, article, form {
-    padding: 0.6em;
+.entry header {
+    margin-right: 1.2em;
+}
+
+section.commentary {
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
 }
 
 .rounded {
