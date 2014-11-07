@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block responsive_sidebar %}
-    <a href="{{ path('wall_index', {wallNick: app.user.username, wallFilter:'self'}) }}">{{ app.user.username }}</a>
+    <a href="{{ path('netizen_show', {author: app.user.username}) }}">{{ app.user.username }}</a>
 
     <ul>
         <li><a href="{{ path('publishing_create', {type:"small"}) }}#anchor-form">Message</a></li>

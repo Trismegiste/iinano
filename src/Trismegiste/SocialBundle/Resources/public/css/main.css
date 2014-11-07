@@ -61,3 +61,7 @@ form .form-error {
     padding: 0;
     margin: 0;
 }
+
+.text-center {
+    text-align: center;
+}
