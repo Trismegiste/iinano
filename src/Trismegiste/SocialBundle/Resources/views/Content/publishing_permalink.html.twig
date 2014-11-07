@@ -1,0 +1,10 @@
+{# Showing one published content template (for permalink) #}
+{% extends 'TrismegisteSocialBundle:Content:index.html.twig' %}
+
+{% block meta_title %}
+    {{ parent() }} | {{ publishing.author.nickname }}'s message
+{% endblock %}
+
+{% block content %}
+    {% include 'TrismegisteSocialBundle:Content:publishing_show.html.twig' with {content: publishing }%}
+{% endblock %}

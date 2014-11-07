@@ -9,6 +9,10 @@
         <requirement key="_method">GET</requirement>
     </route>
 
+    <route id="pub_permalink" pattern="/pub/{id}">
+        <default key="_controller">TrismegisteSocialBundle:Publishing:show</default>
+        <requirement key="id">%mongoid_regex%</requirement>
+    </route>
     <route id="publishing_create" pattern="/pub/create/{type}">
         <default key="_controller">TrismegisteSocialBundle:Publishing:create</default>
         <requirement key="type">%crud_url_param_regex%</requirement>
