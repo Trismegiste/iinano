@@ -2,7 +2,7 @@
 <div class="pure-g entry publishing">
     <a id="anchor-{{ content.id }}"></a>
     {% if content.isReportedBy(app.user.author) %}
-        {% include 'TrismegisteSocialBundle:Content:reported_message.html.twig' with {reported_content: content} %}
+        {% include 'TrismegisteSocialBundle:Content:reported_publishing.html.twig' %}
     {% else %}
         <div class="pure-u-1-4 pure-u-md-1-5">
             <header>
@@ -27,7 +27,7 @@
         <div class="pure-u-4-5">
             {% for comment in commIt %}
                 {% if comment.isReportedBy(app.user.author) %}
-                    {% include 'TrismegisteSocialBundle:Content:reported_message.html.twig' with {reported_content: comment} %}
+                    {% include 'TrismegisteSocialBundle:Content:reported_commentary.html.twig' %}
                 {% else %}
                     {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
                 {% endif %}

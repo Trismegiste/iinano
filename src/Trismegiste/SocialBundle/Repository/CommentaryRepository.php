@@ -11,6 +11,7 @@ use Trismegiste\Socialist\Publishing;
 
 /**
  * CommentaryRepository is a repository for Commentary
+ * @todo phpdoc and interface
  */
 class CommentaryRepository extends SecuredContentProvider implements CommentaryFactory
 {
@@ -76,6 +77,15 @@ class CommentaryRepository extends SecuredContentProvider implements CommentaryF
         $pub = $this->repository->findByPk($id);
         $commentary = $pub->getCommentaryByUuid($uuid);
         $commentary->report($this->getAuthor());
+
+        $this->repository->persist($pub);
+    }
+
+    public function iCancelReport($id, $uuid)
+    {
+        $pub = $this->repository->findByPk($id);
+        $commentary = $pub->getCommentaryByUuid($uuid);
+        $commentary->cancelReport($this->getAuthor());
 
         $this->repository->persist($pub);
     }
