@@ -34,10 +34,7 @@
     {% endblock %}
 
     {% block feed %}
-        {% for content in listing %}
-            {% include 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
-            <hr/>
-        {% endfor %}
+        {% include 'TrismegisteSocialBundle:Content:ajax/index_more.html.twig' %}
         <div id="pagination"></div>
         <div class="pure-g entry">
             <div class="pure-u-1">
