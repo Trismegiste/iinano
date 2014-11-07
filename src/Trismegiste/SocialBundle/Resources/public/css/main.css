@@ -66,10 +66,21 @@ form .form-error {
     text-align: center;
 }
 
+.right {
+    float: right;
+}
+
 .user-listing nav.user {
     padding: 0.3em;
 }
 
 .submenu {
     margin-bottom: 1.2em;
+}
+
+.private-message {
+    border-bottom: 1px;
+    border-bottom-color: #ddd;
+    border-bottom-style: solid;
+    padding: 0.3em;
 }

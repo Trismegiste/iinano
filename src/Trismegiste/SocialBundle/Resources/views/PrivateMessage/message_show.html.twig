@@ -1,14 +1,15 @@
-<div class="row private-message">
-    <div class="small-2 column">
-        <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="avatar"/>
+<div class="pure-g private-message entry">
+    <div class="pure-u-1-5">
+        <header>
+            <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="pure-img rounded"/>
+        </header>
     </div>
-    <div class="small-10 column">
+    <div class="pure-u-4-5">
         <div class="right">
             {% block pm_action %}
             {% endblock %}
         </div>
-        <h5 class="subheader">{{ author.nickname }} <small>{{ message.sentAt | timeago }}</small></h5>
-        <p>{{ message.message }}</p>
-        <hr/>
+        <h4>{{ author.nickname }} <time datetime="{{ message.sentAt|date() }}">{{ message.sentAt | timeago }}</time></h4>
+        {{ message.message }}
     </div>
 </div>
