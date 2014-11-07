@@ -2,11 +2,11 @@
 <h3>
     <i class="icon-quote-left"></i>
     <a href="{{ path('wall_index', {wallNick:content.embedded.author.nickname, wallFilter:'self' }) }}">
-        {{ content.embedded.author.nickname }}
+        {{ content.embedded.author.nickname -}}
     </a>
     has said
     <a href="{{ path('pub_permalink', {id: content.embedded.id }) }}">
-        {{ content.embedded.lastEdited | timeago }}
+        {{ content.embedded.lastEdited | timeago -}}
     </a>
     :
 </h3>

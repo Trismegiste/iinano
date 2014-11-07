@@ -85,7 +85,7 @@ class RendererExtension extends \Twig_Extension
                 }
 
                 $numberUnit = sprintf("%d %s%s", $curr, $word, ($curr >= 2) ? 's' : '');
-                $sentence = ($delta->invert === 0) ? "%s ago\n" : "in %s\n";
+                $sentence = ($delta->invert === 0) ? "%s ago" : "in %s";
 
                 return sprintf($sentence, $numberUnit);
             }
