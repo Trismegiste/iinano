@@ -55,8 +55,8 @@ img.picture-view {
 }
 
 form .form-error {
-    color: white;
-    background-color: red;
+    color: #ac2925;
+    background-color: pink;
     list-style-type: none;
     padding: 0;
     margin: 0;
