@@ -91,7 +91,7 @@ interface PublishingRepositoryInterface
     public function iUnlikeThat($id);
 
     /**
-     * The current is reporting a Publishing as abuse or spam and persitence
+     * The current user is reporting a Publishing as abuse or spam and persitence
      *
      * @param string $id the PK of the Publishing subclass
      */
@@ -105,4 +105,11 @@ interface PublishingRepositoryInterface
      * @return \Trismegiste\Socialist\Repeat the repeated message
      */
     public function repeatPublishing($id);
+
+    /**
+     * The current user is canceling this report as abuse or spam and persitence
+     *
+     * @param string $id the PK of the Publishing subclass
+     */
+    public function iCancelReport($id);
 }

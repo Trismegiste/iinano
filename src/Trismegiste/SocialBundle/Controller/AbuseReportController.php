@@ -21,6 +21,12 @@ class AbuseReportController extends ContentController
                 $repo->iReportThat($id);
                 $this->pushFlash('notice', 'You have reported this content as abusive');
                 break;
+
+            case 'delete':
+                $repo->iCancelReport($id);
+                $this->pushFlash('notice', 'You have removed your report on this content');
+                break;
+
             default:
                 $this->createNotFoundException("Action $action");
         }
@@ -48,6 +54,12 @@ class AbuseReportController extends ContentController
                 $repo->iReportThat($id, $uuid);
                 $this->pushFlash('notice', 'You have reported this comment as abusive');
                 break;
+
+            case 'delete':
+                $repo->iCancelReport($id, $uuid);
+                $this->pushFlash('notice', 'You have removed your report on this comment');
+                break;
+
             default:
                 $this->createNotFoundException("Action $action");
         }

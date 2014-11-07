@@ -2,9 +2,7 @@
 <div class="pure-g entry publishing">
     <a id="anchor-{{ content.id }}"></a>
     {% if content.isReportedBy(app.user.author) %}
-        <div class="pure-u-1">
-            <h4>You've reported this content from {{ content.author.nickname }} as abuse or spam</h4>
-        </div>
+        {% include 'TrismegisteSocialBundle:Content:reported_message.html.twig' with {reported_content: content} %}
     {% else %}
         <div class="pure-u-1-4 pure-u-md-1-5">
             <header>
@@ -29,10 +27,7 @@
         <div class="pure-u-4-5">
             {% for comment in commIt %}
                 {% if comment.isReportedBy(app.user.author) %}
-                    <div class="pure-u-1">
-                        <h4>You've reported this content from {{ comment.author.nickname }} as abuse or spam</h4>
-                        <h4><a href="#">Click here to cancel</a></h4>
-                    </div>
+                    {% include 'TrismegisteSocialBundle:Content:reported_message.html.twig' with {reported_content: comment} %}
                 {% else %}
                     {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
                 {% endif %}

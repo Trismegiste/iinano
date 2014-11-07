@@ -32,13 +32,13 @@
     <route id="pub_abusivereport" pattern="/pub/{id}/abusive/{action}">
         <default key="_controller">TrismegisteSocialBundle:AbuseReport:sendOnPublishing</default>
         <requirement key="id">%mongoid_regex%</requirement>
-        <requirement key="action">(add)</requirement>
+        <requirement key="action">(add|delete)</requirement>
     </route>
     <route id="commentary_abusivereport" pattern="/pub/{id}/commentary/{uuid}/abusive/{action}">
         <default key="_controller">TrismegisteSocialBundle:AbuseReport:sendOnCommentary</default>
         <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="uuid">%mongoid_regex%</requirement>
-        <requirement key="action">(add)</requirement>
+        <requirement key="action">(add|delete)</requirement>
     </route>
 
     <route id="netizen_famous" pattern="/user/{id}/like/{action}">

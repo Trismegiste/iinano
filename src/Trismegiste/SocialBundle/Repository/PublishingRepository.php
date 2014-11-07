@@ -202,4 +202,12 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
         }
     }
 
+    public function iCancelReport($id)
+    {
+        $pub = $this->findByPk($id);
+        $pub->cancelReport($this->getAuthor());
+
+        $this->repository->persist($pub);
+    }
+
 }

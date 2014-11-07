@@ -84,3 +84,8 @@ form .form-error {
     border-bottom-style: solid;
     padding: 0.3em;
 }
+
+.reported-content-panel {
+    background-color: pink;
+    margin-bottom: 0.6em;
+}
