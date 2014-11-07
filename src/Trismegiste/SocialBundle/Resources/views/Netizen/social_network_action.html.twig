@@ -1,12 +1,12 @@
 {% set defaultParam = {wallNick: wallNick, wallFilter: wallFilter, id: wallUser.id} %}
 
 {% if wallUser.hasFan(app.user.author) %}
-    <a href="{{ path('netizen_famous', {action: 'remove'}|merge(defaultParam)) }}" class="button tiny">Unlike</a>
+    <a href="{{ path('netizen_famous', {action: 'remove'}|merge(defaultParam)) }}" class="pure-button"><i class="icon-heart"></i>  {{ wallUser.fanCount }}</a>
 {% else %}
-    <a href="{{ path('netizen_famous', {action: 'add'}|merge(defaultParam)) }}" class="button tiny">Like</a>
+    <a href="{{ path('netizen_famous', {action: 'add'}|merge(defaultParam)) }}" class="pure-button"><i class="icon-heart-empty"></i>  {{ wallUser.fanCount }}</a>
 {% endif %}
 {% if app.user.isFollowing(wallUser) %}
-    <a href="{{ path('netizen_follow', {action: 'remove'}|merge(defaultParam)) }}" class="button tiny">Unfollow</a>
+    <a href="{{ path('netizen_follow', {action: 'remove'}|merge(defaultParam)) }}" class="pure-button">Unfollow</a>
 {% else %}
-    <a href="{{ path('netizen_follow', {action: 'add'}|merge(defaultParam)) }}" class="button tiny">Follow</a>
+    <a href="{{ path('netizen_follow', {action: 'add'}|merge(defaultParam)) }}" class="pure-button">Follow</a>
 {% endif %}
