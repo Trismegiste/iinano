@@ -2,13 +2,7 @@
 {% if relation > 0 %}
     <li>
         <h4 class="text-center">
-            {% if relation == 1 %}
-                follower
-            {% elseif relation == 2 %}
-                following
-            {% elseif relation == 3 %}
-                friend
-            {% endif %}
+            {{ relation|trans([], 'relation_type') }}
         </h4>
     </li>
 {% endif %}
