@@ -87,7 +87,7 @@ class RendererExtensionTest extends \PHPUnit_Framework_TestCase
         return [
             ['xx', 'Female'],
             ['xy', 'Male'],
-            ['wz', '??']
+            ['wz', '?']
         ];
     }
 

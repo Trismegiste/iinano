@@ -9,20 +9,49 @@
     {% block wall_profile %}
         {% if wallNick != app.user.username %}
             <div class="pure-g entry">
-                <div class="pure-u-1 pure-u-md-1-2">
+                <div class="pure-u-1-1 pure-u-md-1-3 pure-u-lg-1-4">
                     <header>
                         <a href="{{ path('netizen_show', {author: wallNick} ) }}"><img src="{{ path('netizen_avatar', {filename: wallUser.author.avatar} ) }}"  class="pure-img rounded"/></a>
                     </header>
                 </div>
-                <div class="pure-u-1 pure-u-md-1-2">
+                <div class="pure-u-1-1 pure-u-md-2-3 pure-u-lg-3-4 profile-body">
                     <article>
-                        <h3>{{ wallUser.profile.fullName }} (@{{ wallNick }})</h3>
+                        {% set author = wallUser.author %}
+                        {% set profile = wallUser.profile %}
+                        <h2>{{ author.nickname }}</h2>
+                        <h3>{{ profile.fullName }}</h3>
+                        <div class="pure-g">
+                            <div class="pure-u-1 pure-u-md-1-2">
+                                Gender: {{ profile.gender|gender }}<br/>
+                                Location: {{ profile.location }}<br/>
+                                Born the: {{ profile.dateOfBirth|date("Y/m/d") }}<br/>
+                                Born at: {{ profile.placeOfBirth }}
+                            </div>
+                            <div class="pure-u-1 pure-u-md-1-2">
+                                Email (not public): {{ profile.email }}<br/>
+                                Registered at: {{ profile.joinedAt|timeago }}<br/>
+                                Content counter: {{ profile.publishingCounter }}<br/>
+                                Commentary counter: {{ profile.commentaryCounter }}
+                            </div>
+                        </div>
                         <nav>
                             {% include 'TrismegisteSocialBundle:Netizen:social_network_action.html.twig' %}
                         </nav>
-                        <h4>Following {{ wallUser.followingCount }}</h4>
-                        <h4>Followers {{ wallUser.followerCount }}</h4>
-                        <h4>Friends {{ wallUser.friendIterator|length }}</h4>
+                        <div class="pure-g text-center">
+                            <div class="pure-u-1-3">
+                                <h3>Following</h3>
+                                <h1>{{ wallUser.followingCount }}</h1>
+                            </div>
+                            <div class="pure-u-1-3">
+                                <h3>Followers</h3>
+                                <h1>{{ wallUser.followerCount }}</h1>
+                            </div>
+                            <div class="pure-u-1-3">
+                                <h3>Friends</h3>
+                                <h1>{{ wallUser.friendIterator|length }}</h1>
+                            </div>
+                        </div>
+
                     </article>
                 </div>
             </div>

@@ -108,11 +108,9 @@ class RendererExtension extends \Twig_Extension
         switch ($genderType) {
             case 'xx':
                 return call_user_func($trans, 'Female');
-                break;
             case 'xy':
                 return call_user_func($trans, 'Male');
-                break;
-            default: return '??';
+            default: return '?';
         }
     }
 
