@@ -65,3 +65,7 @@ form .form-error {
 .text-center {
     text-align: center;
 }
+
+.user-listing nav.user {
+    padding: 0.3em;
+}
