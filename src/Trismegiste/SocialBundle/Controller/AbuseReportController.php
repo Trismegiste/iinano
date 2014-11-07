@@ -19,8 +19,7 @@ class AbuseReportController extends ContentController
         switch ($action) {
             case 'add':
                 $repo->iReportThat($id);
-                // @todo this flash must replace the original content
-                //$this->pushFlash('notice', 'You have reported this content as abusive');
+                $this->pushFlash('notice', 'You have reported this content as abusive');
                 break;
             default:
                 $this->createNotFoundException("Action $action");
@@ -47,8 +46,7 @@ class AbuseReportController extends ContentController
         switch ($action) {
             case 'add':
                 $repo->iReportThat($id, $uuid);
-                // @todo this flash must replace the original content
-                //$this->pushFlash('notice', 'You have reported this content as abusive');
+                $this->pushFlash('notice', 'You have reported this comment as abusive');
                 break;
             default:
                 $this->createNotFoundException("Action $action");

@@ -1,57 +1,24 @@
 {# Template for viewing one publishing root entity subclass #}
 <div class="pure-g entry publishing">
     <a id="anchor-{{ content.id }}"></a>
-    <div class="pure-u-1-4 pure-u-md-1-5">
-        <header>
-            {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: content.author } %}
-        </header>
-    </div>
-    <div class="pure-u-1-1 pure-u-md-4-5">
-        <article>
-            <h4>{{ content.author.nickname }}<time datetime="{{ content.lastEdited|date() }}">{{ content.lastEdited | timeago }}</time></h4>
-
-            {% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content) %}
-
-            <nav>
-                <div class="pub-action pure-menu pure-menu-open pure-menu-horizontal">
-                    <ul>
-                        <li>
-                            <a href="{{ path('pub_commentary_add', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}#anchor-{{ content.id }}" title="Reply">
-                                <i class="icon-reply"></i>{{ content.commentaryCount }}
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                {% if not is_granted('OWNER', content) %}
-                                    href="{{ path('pub_repeat_create', {wallNick: wallNick, wallFilter: wallFilter, id: content.id} ) }}" title="Repeat"
-                                {% endif %}
-                                >
-                                <i class="icon-retweet"></i>{{ content.getRepeatedCount() }}
-                            </a>
-                        </li>
-                        <li>
-                            {% include 'TrismegisteSocialBundle:Content:ajax/publishing_like_button.html.twig' %}
-                        </li>
-                        {% set dropdown_id = 'drop' ~ content.id %}
-                        <li><a href="#" data-dropdown="#{{ dropdown_id }}" title="More..."><i class="icon-cog"></i></a></li>
-                    </ul>
-                </div>
-                <div id="{{ dropdown_id }}" class="dropdown dropdown-anchor-right dropdown-tip">
-                    <ul class="dropdown-menu">
-                        {% if is_granted('OWNER', content) %}
-                            {% if content.editable %}
-                                <li><a href="{{ path('publishing_edit', {id: content.id}) }}#anchor-form">Edit</a></li>
-                                {% endif %}
-                            <li><a href="{{ path('publishing_delete', {id: content.id}) }}" data-social-delete>Delete</a></li>
-                            {% endif %}
-                        <li><a href="{{ path('pub_permalink', {id: content.id}) }}">Permalink</a></li>
-                        <li><a href="{{ path('pub_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">Report abuse or spam</a></li>
-                    </ul>
-                </div>
-            </nav>
-
-        </article>
-    </div>
+    {% if content.isReportedBy(app.user.author) %}
+        <div class="pure-u-1">
+            <h4>You've reported this content from {{ content.author.nickname }} as abuse or spam</h4>
+        </div>
+    {% else %}
+        <div class="pure-u-1-4 pure-u-md-1-5">
+            <header>
+                {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: content.author } %}
+            </header>
+        </div>
+        <div class="pure-u-1-1 pure-u-md-4-5">
+            <article>
+                <h4>{{ content.author.nickname }}<time datetime="{{ content.lastEdited|date() }}">{{ content.lastEdited | timeago }}</time></h4>
+                        {% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content) %}
+                        {% include 'TrismegisteSocialBundle:Content:publishing_navbar.html.twig' %}
+            </article>
+        </div>
+    {% endif %}
 </div>
 
 {% block commentary_create %}{% endblock %}
@@ -61,7 +28,14 @@
         <div class="pure-u-1-5"></div>
         <div class="pure-u-4-5">
             {% for comment in commIt %}
-                {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
+                {% if comment.isReportedBy(app.user.author) %}
+                    <div class="pure-u-1">
+                        <h4>You've reported this content from {{ comment.author.nickname }} as abuse or spam</h4>
+                        <h4><a href="#">Click here to cancel</a></h4>
+                    </div>
+                {% else %}
+                    {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
+                {% endif %}
             {% endfor %}
         </div>
     </div>
