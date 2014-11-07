@@ -8,6 +8,7 @@
     </a>
     <div class="dropdown dropdown-tip" id="{{ avatar_dropdown_counter }}">
         <ul class="dropdown-menu">
+            {% include 'TrismegisteSocialBundle:Netizen:relation_type.html.twig' with {nickname: author.nickname} %}
             <li><a href="{{ path('wall_index', {wallNick: author.nickname, wallFilter: 'self'}) }}">View wall</a></li>
             <li><a href="{{ path('wall_index', {wallNick: author.nickname, wallFilter: 'following'}) }}">View following</a></li>
             <li><a href="{{ path('netizen_show', {author: author.nickname}) }}">View profile</a></li>
@@ -16,5 +17,5 @@
                 {% endif %}
         </ul>
     </div>
-    {% include 'TrismegisteSocialBundle:Netizen:relation_type.html.twig' with {nickname: author.nickname} %}
+
 {% endif %}
