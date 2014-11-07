@@ -4,6 +4,10 @@
     <a href="{{ path('wall_index', {wallNick:content.embedded.author.nickname, wallFilter:'self' }) }}">
         {{ content.embedded.author.nickname }}
     </a>
-    has said {{ content.embedded.lastEdited | timeago }} :
+    has said
+    <a href="{{ path('pub_permalink', {id: content.embedded.id }) }}">
+        {{ content.embedded.lastEdited | timeago }}
+    </a>
+    :
 </h3>
 {% include 'TrismegisteSocialBundle:Content:show/' ~ choose_template(content.embedded) with {content: content.embedded} %}
