@@ -42,9 +42,12 @@ class RegisterType extends AbstractType
                         new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#'])
                     ],
                     'mapped' => false,
-                    'attr' => ['placeholder' => 'Choose a nickname']
+                    'attr' => ['placeholder' => 'Choose a nickname (from 5 to 20 characters, lowercase, numerical and \'-\')']
                 ])
-                ->add('password', 'password', [
+                ->add('password', 'repeated', [
+                    'first_name' => 'password',
+                    'second_name' => 'confirm_password',
+                    'type' => 'password',
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 4, 'max' => 40])
@@ -66,9 +69,9 @@ class RegisterType extends AbstractType
                     'empty_value' => 'Select'
                 ])
                 ->add('email', 'email', [
-                    'attr' => ['placeholder' => "Optional : a valid email used only if you've lost your password (not public)"],
+                    'attr' => ['placeholder' => "Private : a valid email used only if you've lost your password (not public)"],
                     'property_path' => 'profile.email',
-                    'required' => false
+                    'required' => true
                 ])
                 ->add('register', 'submit', ['attr' => ['class' => 'right']]);
     }
