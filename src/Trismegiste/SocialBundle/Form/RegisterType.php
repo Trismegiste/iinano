@@ -33,17 +33,20 @@ class RegisterType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nickname', 'text', [
-                    'constraints' => [
-                        // @todo all these constraints seem to me a little redundant
-                        new NotBlank(),
-                        new Length(['min' => 5, 'max' => 20]),
-                        new UniqueNickname(),
-                        new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#'])
-                    ],
-                    'mapped' => false,
-                    'attr' => ['placeholder' => 'Choose a nickname (from 5 to 20 characters, lowercase, numerical and \'-\')']
-                ])
+        $builder->add(
+                        $builder->create('nickname', 'text', [
+                            'constraints' => [
+                                // @todo all these constraints seem to me a little redundant
+                                new NotBlank(),
+                                new Length(['min' => 5, 'max' => 20]),
+                                new UniqueNickname(),
+                                new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#'])
+                            ],
+                            'mapped' => false,
+                            'attr' => ['placeholder' => 'Choose a nickname of 5 to 20 char. : a-z, 0-9 and \'-\')']
+                        ])
+                ->addViewTransformer(new NicknameTransformer())
+                )
                 ->add('password', 'repeated', [
                     'first_name' => 'password',
                     'second_name' => 'confirm_password',
