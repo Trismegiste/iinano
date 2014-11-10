@@ -1,11 +1,13 @@
 {% extends 'TrismegisteSocialBundle:Content:index.html.twig' %}
 
 {% block crud %}
-{% embed 'TrismegisteSocialBundle:Content:publishing_show.html.twig' with {content: publishing} %}
-    {% block commentary_create %}
-        <a id="anchor-form"></a>
-        {{ form(form) }}
-    {% endblock %}
-{% endembed %}
-<hr/>
+    {% embed 'TrismegisteSocialBundle:Content:publishing_show.html.twig' with {content: publishing} %}
+        {% block commentary_create %}
+            <a id="anchor-form"></a>
+            <article>
+                {{ form(form) }}
+            </article>
+        {% endblock %}
+    {% endembed %}
+    <hr/>
 {% endblock %}

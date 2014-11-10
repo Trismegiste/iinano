@@ -2,10 +2,6 @@ body {
     color: #333;
 }
 
-.content {
-    padding: 0.6em;
-}
-
 h1, h2, h3, h4 {
     font-weight: 300;
     margin: 0 0 0.2em 0;
@@ -13,7 +9,13 @@ h1, h2, h3, h4 {
 }
 
 .entry header {
-    margin-right: 1.2em;
+    margin-left: 0.6em;
+    margin-right: 0.6em;
+}
+
+.entry article {
+    margin-left: 0.6em;
+    margin-right: 0.6em;
 }
 
 .commentary {
@@ -64,6 +66,10 @@ form .form-error {
 
 .text-center {
     text-align: center;
+}
+
+.text-right {
+    text-align: right;
 }
 
 .right {

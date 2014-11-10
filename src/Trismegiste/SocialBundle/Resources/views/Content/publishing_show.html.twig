@@ -19,7 +19,12 @@
     {% endif %}
 </div>
 
-{% block commentary_create %}{% endblock %}
+<div class="pure-g entry">
+    <div class="pure-u-1">
+        {% block commentary_create %}
+        {% endblock %}
+    </div>
+</div>
 {% set commIt = content.commentaryIterator %}
 {% if commIt.count > 0 %}
     <div class="pure-g entry commentary">
