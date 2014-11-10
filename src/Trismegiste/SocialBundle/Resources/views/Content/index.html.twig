@@ -8,65 +8,7 @@
 
     {% block wall_profile %}
         {% if wallNick != app.user.username %}
-            <div class="pure-g entry">
-                <div class="pure-u-1-1 pure-u-md-1-3 pure-u-lg-1-4">
-                    <header>
-                        <a href="{{ path('netizen_show', {author: wallNick} ) }}"><img src="{{ path('netizen_avatar', {filename: wallUser.author.avatar} ) }}"  class="pure-img rounded"/></a>
-                    </header>
-                </div>
-                <div class="pure-u-1-1 pure-u-md-2-3 pure-u-lg-3-4 profile-body">
-                    {% set author = wallUser.author %}
-                    {% set profile = wallUser.profile %}
-                    <div class="pure-g">
-                        <div class="pure-u-4-5">
-                            <article>
-                                <h2>{{ author.nickname }}</h2>
-                            </article>
-                        </div>
-                        <div class="pure-u-1-5">
-                            <h2 class="text-right"><i class="icon-cog"></i></h2>
-                        </div>
-                    </div>
-                    <div class="pure-g">
-                        <div class="pure-u-1 pure-u-md-1-2">
-                            <article>
-                                Hello, I'm {{ profile.fullName }}. I'm living at {{ profile.location }}.
-                                I was born the {{ profile.dateOfBirth|date("Y/m/d") }} at {{ profile.placeOfBirth }}.
-                                If you like me, click here
-                                <a href="#" class="pure-button"><i class="icon-heart"></i>  {{ wallUser.fanCount }}</a>
-                            </article>
-                        </div>
-                        <div class="pure-u-1 pure-u-md-1-2">
-                            <article>
-                                I registered {{ profile.joinedAt|timeago }}, since I've posted
-                                {{ profile.publishingCounter }} contents and made
-                                {{ profile.commentaryCounter }} commentaries.<br/>
-                                My most repeated content is <a href="#">xxxx</a>,
-                                my most commented is <a href="#">xxxx</a> and
-                                my most liked is <a href="#">xxxx</a>.
-                            </article>
-                        </div>
-                    </div>
-                    <nav>
-                        {% include 'TrismegisteSocialBundle:Netizen:social_network_action.html.twig' %}
-                    </nav>
-                    <div class="pure-g text-center">
-                        <div class="pure-u-1-3">
-                            <h3>Following</h3>
-                            <h1>{{ wallUser.followingCount }}</h1>
-                        </div>
-                        <div class="pure-u-1-3">
-                            <h3>Followers</h3>
-                            <h1>{{ wallUser.followerCount }}</h1>
-                        </div>
-                        <div class="pure-u-1-3">
-                            <h3>Friends</h3>
-                            <h1>{{ wallUser.friendIterator|length }}</h1>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            {% include 'TrismegisteSocialBundle:Content:netizen_header.html.twig' %}
             <hr/>
         {% endif %}
     {% endblock %}
@@ -88,60 +30,8 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="{{ asset('bundles/trismegistesocial/js/init.js') }}"></script>
     <script>
-
-        var social = {
-            initLeafletShow: function () {
-                $('div[data-social-status-show]').each(function () {
-
-                    var item = $(this);
-                    var origin = {lng: item.data('socialStatusLng'), lat: item.data('socialStatusLat')};
-
-                    var map = L.map(item.attr('id'), {
-                        scrollWheelZoom: false,
-                        center: origin,
-                        zoom: item.data('socialStatusZoom')
-                    });
-
-                    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    }).addTo(map);
-
-                    L.marker(origin)
-                            .addTo(map)
-                            .bindPopup(item.data('socialStatusMessage'))
-                            .openPopup();
-                    // just to be sure this attribute will not be initialized two times
-                    item.removeAttr('data-social-status-show');
-                });
-            },
-            transformLikeToAjax: function () {
-                $(document).on('click', 'a[data-like-ajaxed]', function (event) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    $.ajax({
-                        url: this.href,
-                        type: 'POST'
-                    }).done(function (response) {
-                        $(event.currentTarget).replaceWith(response);
-                        alertify.success("Like updated");
-                    });
-                });
-            },
-            initConfirmDelete: function () {
-                $(document).on('click', 'a[data-social-delete]', function (event) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    var button = this;
-                    alertify.confirm("Are you sure you want to delete this entry ?", function (e) {
-                        if (e) {
-                            window.location.href = button.href;
-                        }
-                    });
-                });
-            }
-        };
-
         $(document).ready(function () {
 
             $('#more-button').on('click', function (event) {

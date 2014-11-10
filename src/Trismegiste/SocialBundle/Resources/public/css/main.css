@@ -88,7 +88,8 @@ form .form-error {
     border-bottom: 1px;
     border-bottom-color: #ddd;
     border-bottom-style: solid;
-    padding: 0.3em;
+    padding-bottom: 0.3em;
+    margin-bottom: 0.3em;
 }
 
 .reported-content-panel {

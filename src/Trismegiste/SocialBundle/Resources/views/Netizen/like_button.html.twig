@@ -1,0 +1,7 @@
+{% set defaultParam = {wallNick: wallNick, wallFilter: wallFilter, id: wallUser.id} %}
+
+{% if wallUser.hasFan(app.user.author) %}
+    <a href="{{ path('netizen_famous', {action: 'remove'}|merge(defaultParam)) }}" class="pure-button"><i class="icon-heart"></i>  {{ wallUser.fanCount }}</a>
+{% else %}
+    <a href="{{ path('netizen_famous', {action: 'add'}|merge(defaultParam)) }}" class="pure-button"><i class="icon-heart-empty"></i>  {{ wallUser.fanCount }}</a>
+{% endif %}

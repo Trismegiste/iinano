@@ -1,0 +1,7 @@
+{% set defaultParam = {wallNick: wallNick, wallFilter: wallFilter, id: wallUser.id} %}
+
+{% if app.user.isFollowing(wallUser) %}
+    <a href="{{ path('netizen_follow', {action: 'remove'}|merge(defaultParam)) }}" class="pure-button">Unfollow</a>
+{% else %}
+    <a href="{{ path('netizen_follow', {action: 'add'}|merge(defaultParam)) }}" class="pure-button">Follow</a>
+{% endif %}

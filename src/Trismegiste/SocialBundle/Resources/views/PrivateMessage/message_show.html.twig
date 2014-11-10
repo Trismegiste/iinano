@@ -5,11 +5,13 @@
         </header>
     </div>
     <div class="pure-u-4-5">
-        <h4>{{ author.nickname }} <time datetime="{{ message.sentAt|date() }}">{{ message.sentAt | timeago }}</time></h4>
-                {{ message.message }}
-        <div class="right">
-            {% block pm_action %}
-            {% endblock %}
-        </div>
+        <article>
+            <h4>{{ author.nickname }} <time datetime="{{ message.sentAt|date() }}">{{ message.sentAt | timeago }}</time></h4>
+                    {{ message.message }}
+            <div class="right">
+                {% block pm_action %}
+                {% endblock %}
+            </div>
+        </article>
     </div>
 </div>
