@@ -247,13 +247,18 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertAttributeCount(0, 'abusive', $this->document);
 
-        $this->repository->expects($this->once())
+        $this->repository->expects($this->exactly(2))
                 ->method('findByPk')
                 ->with($this->equalTo('54390582e3f43405428b4568'))
                 ->will($this->returnValue($this->document));
+        $this->repository->expects($this->exactly(2))
+                ->method('persist');
 
         $this->sut->iReportThat('54390582e3f43405428b4568');
         $this->assertAttributeCount(1, 'abusive', $this->document);
+
+        $this->sut->iCancelReport('54390582e3f43405428b4568');
+        $this->assertAttributeCount(0, 'abusive', $this->document);
     }
 
 }
