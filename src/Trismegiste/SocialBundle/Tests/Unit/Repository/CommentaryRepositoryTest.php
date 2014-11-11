@@ -158,19 +158,24 @@ class CommentaryRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testIReportThat(Commentary $comm)
     {
-        $this->repository->expects($this->once())
+        $this->repository->expects($this->exactly(2))
+                ->method('persist');
+
+        $this->repository->expects($this->exactly(2))
                 ->method('findByPk')
                 ->with($this->equalTo('54390582e3f43405428b4568'))
                 ->will($this->returnValue($this->document));
 
-        $this->document->expects($this->once())
+        $this->document->expects($this->exactly(2))
                 ->method('getCommentaryByUuid')
                 ->with($this->equalTo('123'))
                 ->will($this->returnValue($comm));
 
         $this->sut->iReportThat('54390582e3f43405428b4568', '123');
-
         $this->assertAttributeCount(1, 'abusive', $comm);
+
+        $this->sut->iCancelReport('54390582e3f43405428b4568', '123');
+        $this->assertAttributeCount(0, 'abusive', $this->document);
     }
 
 }
