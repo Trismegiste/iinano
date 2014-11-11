@@ -48,9 +48,10 @@ class GuestControllerTest extends WebTestCasePlus
         $form = $crawler->selectButton('Register')->form();
         $this->client->submit($form, ['netizen_register' => [
                 'nickname' => 'spock',
-                'password' => 'idic',
+                'password' => ['password' => 'idic', 'confirm_password' => 'idic'],
                 'fullName' => 'Spock',
-                'gender' => 'xy'
+                'gender' => 'xy',
+                'email' => 'dfsdfssdf@sddsqsdq.fr'
         ]]);
 
         $user = $this->repo->findByNickname('spock');
