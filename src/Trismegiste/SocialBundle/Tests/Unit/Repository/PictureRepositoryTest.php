@@ -23,32 +23,9 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->sut = new PictureRepository(sys_get_temp_dir(), sys_get_temp_dir(), ['full' => 1000]);
+        $this->sut = new PictureRepository(sys_get_temp_dir(), sys_get_temp_dir(), ['full' => 1000, 'medium' => 200]);
         $this->author = new Author('kirk');
         $this->picture = new Picture($this->author);
-    }
-
-    public function testValid()
-    {
-        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $file->expects($this->atLeastOnce())
-                ->method('getMimeType')
-                ->will($this->returnValue('image/png'));
-        $file->expects($this->atLeastOnce())
-                ->method('isValid')
-                ->will($this->returnValue(true));
-        $file->expects($this->atLeastOnce())
-                ->method('getPathname')
-                ->will($this->returnValue(__DIR__ . '/../../../Resources/public/img/mascot.png'));
-        $file->expects($this->never())  // I don't keep original picture for saving storage space, I don't make a clone of Picasa or Flickr
-                ->method('move');
-
-        $this->sut->store($this->picture, $file);
-
-        $this->assertEquals('image/png', $this->picture->getMimeType());
-        $this->assertRegexp('#^[\da-f]{40}\.png$#', $this->picture->getStorageKey());
     }
 
     /**
@@ -118,6 +95,41 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testBadSizeConfig()
     {
         new PictureRepository(__DIR__, __DIR__, ['yo' => 42]);
+    }
+
+    public function testValid()
+    {
+        $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $file->expects($this->atLeastOnce())
+                ->method('getMimeType')
+                ->will($this->returnValue('image/png'));
+        $file->expects($this->atLeastOnce())
+                ->method('isValid')
+                ->will($this->returnValue(true));
+        $file->expects($this->atLeastOnce())
+                ->method('getPathname')
+                ->will($this->returnValue(__DIR__ . '/../../../Resources/public/img/mascot.png'));
+        $file->expects($this->never())  // I don't keep original picture for saving storage space, I don't make a clone of Picasa or Flickr
+                ->method('move');
+
+        $this->sut->store($this->picture, $file);
+
+        $this->assertEquals('image/png', $this->picture->getMimeType());
+        $this->assertRegexp('#^[\da-f]{40}\.png$#', $this->picture->getStorageKey());
+
+        return $this->picture->getStorageKey();
+    }
+
+    /**
+     * @depends testValid
+     */
+    public function testImagePath($key)
+    {
+        $path = $this->sut->getImagePath($key, 'medium');
+        $image = \imagecreatefrompng($path);
+        $this->assertEquals(200, \imagesx($image));
     }
 
 }
