@@ -1,5 +1,8 @@
 {# panel for replacing reported content #}
-<div class="pure-u-1 reported-content-panel">
-    <h4>You've reported this commentary from {{ comment.author.nickname }} as abuse or spam.
-        <a href="{{ path('commentary_abusivereport', {action: 'delete', wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Click here to cancel</a></h4>
+<div class="pure-u-1">
+    <article class="reported-content-panel">
+        <h4>You've reported this commentary from {{ comment.author.nickname }} as abuse or spam.
+            <a href="{{ path('commentary_abusivereport', {action: 'delete', wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Click here to cancel</a>
+        </h4>
+    </article>
 </div>
