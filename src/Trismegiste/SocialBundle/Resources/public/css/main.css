@@ -23,12 +23,8 @@ h1, h2, h3, h4 {
 }
 
 .commentary {
-    padding-top: 0.6em;
-    padding-bottom: 0.6em;
-}
-
-.commentary .entry {
-    margin-bottom: 0.6em;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
 }
 
 .rounded {

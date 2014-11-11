@@ -60,7 +60,7 @@ class FamousControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
 
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.publishing .content-actions-footer a[title=Like]')->link()->getUri();
+        $link = $crawler->filter('.publishing article nav a[title=Like]')->link()->getUri();
         $crawler = $this->ajaxPost($link);
         $this->assertCount(1, $crawler->filter('a[title=Unlike]'));
         $this->assertEquals(1, (int) $crawler->filter('a[title=Unlike]')->text());
@@ -80,7 +80,7 @@ class FamousControllerTest extends WebTestCasePlus
         $this->logIn('spock');
 
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.publishing .content-actions-footer a[title=Like]')->link()->getUri();
+        $link = $crawler->filter('.publishing article nav a[title=Like]')->link()->getUri();
 
         $crawler = $this->ajaxPost($link);
         $this->assertCount(1, $crawler->filter('a[title=Unlike]'));
@@ -101,7 +101,7 @@ class FamousControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
 
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.publishing .content-actions-footer a[title=Unlike]')->link()->getUri();
+        $link = $crawler->filter('.publishing article nav a[title=Unlike]')->link()->getUri();
 
         $crawler = $this->ajaxPost($link);
         $this->assertCount(1, $crawler->filter('a[title=Like]'));
@@ -124,7 +124,7 @@ class FamousControllerTest extends WebTestCasePlus
         $repo->persist($doc);
         // click on the 'like' on the commentary
         $crawler = $this->getSelfWallCrawlerFor('kirk');
-        $link = $crawler->filter('.commentary .content-actions-footer a[title=Like]')->link();
+        $link = $crawler->filter('.commentary article nav a[title=Like]')->link();
         $crawler = $this->ajaxPost($link->getUri());
         // check we have 'unlike' button
         $unlikeButton = $crawler->filter('a[title=Unlike]');
