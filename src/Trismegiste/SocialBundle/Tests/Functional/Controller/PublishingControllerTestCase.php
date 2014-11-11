@@ -57,7 +57,7 @@ abstract class PublishingControllerTestCase extends WebTestCasePlus
     public function testCreateFirstPost()
     {
         $crawler = $this->getPage('content_index');
-        $link = $crawler->filter('section.top-bar-section')->selectLink($this->getCreateLinkText())->link();
+        $link = $crawler->filter('div#menu')->selectLink($this->getCreateLinkText())->link();
         $crawler = $this->client->click($link);
         $form = $crawler->selectButton('Save')->form();
         $this->client->submit($form, $this->getFormNewContent());

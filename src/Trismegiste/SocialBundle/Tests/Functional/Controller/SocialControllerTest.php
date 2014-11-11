@@ -36,25 +36,25 @@ class SocialControllerTest extends WebTestCasePlus
     public function testLikeSomebody()
     {
         $crawler = $this->getPage('wall_index', ['wallNick' => 'spock', 'wallFilter' => 'self']);
-        $this->assertEquals(0, (int) $crawler->filter('.vertical-nav span.fan-count')->text());
-        $link = $crawler->filter('.vertical-nav')->selectLink('Like')->link();
+        $this->assertEquals(0, (int) $crawler->filter('.netizen article a.fan-count')->text());
+        $link = $crawler->filter('.netizen article a.fan-count')->link();
         $crawler = $this->client->click($link);
-        $this->assertEquals(1, (int) $crawler->filter('.vertical-nav span.fan-count')->text());
+        $this->assertEquals(1, (int) $crawler->filter('.netizen article a.fan-count')->text());
     }
 
     public function testUnlikeSomebody()
     {
         $crawler = $this->getPage('wall_index', ['wallNick' => 'spock', 'wallFilter' => 'self']);
-        $this->assertEquals(1, (int) $crawler->filter('.vertical-nav span.fan-count')->text());
-        $link = $crawler->filter('.vertical-nav')->selectLink('Unlike')->link();
+        $this->assertEquals(1, (int) $crawler->filter('.netizen article a.fan-count')->text());
+        $link = $crawler->filter('.netizen article a.fan-count')->link();
         $crawler = $this->client->click($link);
-        $this->assertEquals(0, (int) $crawler->filter('.vertical-nav span.fan-count')->text());
+        $this->assertEquals(0, (int) $crawler->filter('.netizen article a.fan-count')->text());
     }
 
     public function testFollowSomebody()
     {
         $crawler = $this->getPage('wall_index', ['wallNick' => 'spock', 'wallFilter' => 'self']);
-        $link = $crawler->filter('.vertical-nav')->selectLink('Follow')->link();
+        $link = $crawler->filter('.netizen article')->selectLink('Follow')->link();
         $crawler = $this->client->click($link);
 
         $spock = $this->repo->findByNickname('spock');
@@ -68,7 +68,7 @@ class SocialControllerTest extends WebTestCasePlus
     public function testUnfollowSomebody()
     {
         $crawler = $this->getPage('wall_index', ['wallNick' => 'spock', 'wallFilter' => 'self']);
-        $link = $crawler->filter('.vertical-nav')->selectLink('Unfollow')->link();
+        $link = $crawler->filter('.netizen article')->selectLink('Unfollow')->link();
         $crawler = $this->client->click($link);
 
         $spock = $this->repo->findByNickname('spock');
