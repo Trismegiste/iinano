@@ -40,7 +40,7 @@ class NetizenControllerTest extends WebTestCasePlus
                 0, $crawler->filter('div.profile-body:contains("kirk")')->count()
         );
 
-        $this->assertCount(1, $crawler->filter('div.profile-body')->selectLink('Edit my profile'), 'The logged user can edit his profile');
+        $this->assertCount(1, $crawler->filter('div.content')->selectLink('Edit my profile'), 'The logged user can edit his profile');
     }
 
     public function testOtherProfile()
@@ -50,7 +50,7 @@ class NetizenControllerTest extends WebTestCasePlus
                 0, $crawler->filter('div.profile-body:contains("spock")')->count()
         );
 
-        $this->assertCount(0, $crawler->filter('div.profile-body')->selectLink('Edit my profile'), 'A logged user cannot edit others profile');
+        $this->assertCount(0, $crawler->filter('div.content')->selectLink('Edit my profile'), 'A logged user cannot edit others profile');
     }
 
     public function testGetAvatar()
