@@ -1,6 +1,14 @@
 {# Base template for the front, user must be logged #}
 {% extends 'TrismegisteSocialBundle::sidebar.html.twig' %}
 
+{% macro menu_item(route, route_param, label, url_option='') %}
+    <li {% if app.request.attributes.get('_route') == route and app.request.attributes.get('_route_params') == route_param %} class="pure-menu-selected" {% endif %}>
+        <a href="{{ path(route, route_param) }}{{ url_option }}">{{ label }}</a>
+    </li>
+{% endmacro %}
+
+{% import _self as pure %}
+
 {%block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/main.css') }}"/>
@@ -10,24 +18,26 @@
 {% endblock %}
 
 {% block responsive_sidebar %}
-    <a href="{{ path('wall_index', {wallNick: app.user.username, wallFilter:'self'}) }}">Myself</a>
-
     <ul>
-        <li><a href="{{ path('publishing_create', {type:"small"}) }}#anchor-form">Message</a></li>
-        <li><a href="{{ path('publishing_create', {type:"status"}) }}#anchor-form">Status</a></li>
-        <li><a href="{{ path('publishing_create', {type:"picture"}) }}#anchor-form">Picture</a></li>
-        <li><a href="{{ path('publishing_create', {type:"video"}) }}#anchor-form">Video</a></li>
-        <li class="menu-item-divided"><a href="{{ path('private_create') }}">Private message</a></li>
-        <li class="menu-item-divided"><a href="{{ path('netizen_show', {author: app.user.username}) }}">My profile</a></li>
+        {{ pure.menu_item('wall_index', { wallNick: app.user.username, wallFilter: 'self' }, 'Myself' ) }}
+        <li class="menu-item-divided"></li>
+            {{ pure.menu_item('publishing_create', {type:"small"}, 'Message', '#anchor-form' ) }}
+            {{ pure.menu_item('publishing_create', {type:"status"}, 'Status', '#anchor-form' ) }}
+            {{ pure.menu_item('publishing_create', {type:"picture"}, 'Picture', '#anchor-form' ) }}
+            {{ pure.menu_item('publishing_create', {type:"video"}, 'Video', '#anchor-form' ) }}
+        <li class="menu-item-divided"></li>
+            {{ pure.menu_item('private_create', {'author':''}, 'Private message') }}
+        <li class="menu-item-divided"></li>
+            {{ pure.menu_item('netizen_show', {author: app.user.username}, 'My profile') }}
         <li class="menu-item-divided"><a href="{{ path('trismegiste_logout') }}">Logout</a></li>
     </ul>
 {% endblock %}
 
 {% block topbar %}
     <ul>
-        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'following' }) }}">Following</a></li>
-        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'follower' }) }}">Followers</a></li>
-        <li><a href="{{ path('wall_index', { wallNick: app.user.username, wallFilter: 'friend' }) }}">Friends</a></li>
+        {{ pure.menu_item('wall_index', { wallNick: app.user.username, wallFilter: 'following' }, 'Following' ) }}
+        {{ pure.menu_item('wall_index', { wallNick: app.user.username, wallFilter: 'follower' }, 'Followers' ) }}
+        {{ pure.menu_item('wall_index', { wallNick: app.user.username, wallFilter: 'friend' }, 'Friends' ) }}
     </ul>
 {% endblock %}
 
