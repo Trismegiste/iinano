@@ -5,7 +5,9 @@
         <div class="pure-u-1">
             <a id="anchor-form"></a>
             <article>
-                {{ form(form) }}
+                {% block crud_form %}
+                    {{ form(form) }}
+                {% endblock %}
             </article>
         </div>
     </div>

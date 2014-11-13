@@ -14,9 +14,9 @@
     <img id="upload-preview" class="picture-view hidden-form pure-img"/>
 {% endblock %}
 
-{% block crud %}
+{% block crud_form %}
     {% if form.vars.value is not null and form.vars.value.storageKey is not null %}
-        <img src="{{ path('picture_get', {size:'medium', storageKey: form.vars.value.storageKey}) }}" class="picture-view"/>
+        <img src="{{ path('picture_get', {size:'medium', storageKey: form.vars.value.storageKey}) }}" class="picture-view pure-img"/>
     {% endif %}
     {{ parent() }}
 {% endblock %}
