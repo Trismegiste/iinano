@@ -8,3 +8,13 @@
 {% block content %}
     {% include 'TrismegisteSocialBundle:Content:publishing_show.html.twig' with {content: publishing }%}
 {% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .emphasizable {
+            font-size: 140%;
+            line-height: 140%;
+        }
+    </style>
+{% endblock %}

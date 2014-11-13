@@ -29,11 +29,11 @@
 
                 <div id="{{ dropdown_id }}" class="dropdown dropdown-anchor-right">
                     <ul class="dropdown-menu">
-                        {% if is_granted('OWNER', comment) %}
+                        <li><a href="{{ path('commentary_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Report abuse/spam</a></li>
+                            {% if is_granted('OWNER', comment) %}
                             <li><a href="{{ path('pub_commentary_edit', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}#anchor-form">Edit</a></li>
                             <li><a href="{{ path('pub_commentary_delete', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}" data-social-delete>Delete</a></li>
                             {% endif %}
-                        <li><a href="{{ path('commentary_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Report abuse or spam</a></li>
                     </ul>
                 </div>
 

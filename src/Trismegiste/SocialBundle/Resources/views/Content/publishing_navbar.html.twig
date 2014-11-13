@@ -25,14 +25,14 @@
     </div>
     <div id="{{ dropdown_id }}" class="dropdown dropdown-anchor-right dropdown-tip">
         <ul class="dropdown-menu">
-            {% if is_granted('OWNER', content) %}
-                {% if content.editable %}
+            <li><a href="{{ path('pub_permalink', {id: content.id}) }}">Permalink</a></li>
+                {% if is_granted('OWNER', content) %}
+                    {% if content.editable %}
                     <li><a href="{{ path('publishing_edit', {id: content.id}) }}#anchor-form">Edit</a></li>
                     {% endif %}
                 <li><a href="{{ path('publishing_delete', {id: content.id}) }}" data-social-delete>Delete</a></li>
                 {% endif %}
-            <li><a href="{{ path('pub_permalink', {id: content.id}) }}">Permalink</a></li>
-            <li><a href="{{ path('pub_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">Report abuse or spam</a></li>
+            <li><a href="{{ path('pub_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">Report abuse/spam</a></li>
         </ul>
     </div>
 </nav>
