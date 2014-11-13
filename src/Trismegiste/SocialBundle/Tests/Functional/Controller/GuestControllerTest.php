@@ -51,8 +51,11 @@ class GuestControllerTest extends WebTestCasePlus
                 'password' => ['password' => 'idic', 'confirm_password' => 'idic'],
                 'fullName' => 'Spock',
                 'gender' => 'xy',
-                'email' => 'dfsdfssdf@sddsqsdq.fr'
+                'email' => 'dfsdfssdf@sddsqsdq.fr',
+                'dateOfBirth' => ['year' => 2004, 'month' => 11, 'day' => 13]
         ]]);
+
+        $this->assertNotEquals($this->generateUrl('guest_register'), $this->client->getHistory()->current()->getUri());
 
         $user = $this->repo->findByNickname('spock');
         $this->assertEquals('spock', $user->getUsername());

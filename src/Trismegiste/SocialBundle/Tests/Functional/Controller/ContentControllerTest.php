@@ -46,7 +46,7 @@ class ContentControllerTest extends WebTestCasePlus
         $this->assertEquals($wallUri, $this->client->getHistory()->current()->getUri());
 
         // check homepage
-        $this->assertEquals(1, $crawler->filter('div#menu a:contains("kirk")')->count());
+        $this->assertEquals(1, $crawler->filter('div#menu a[href$="kirk/self/"]:contains("Myself")')->count());
         $this->assertEquals(0, $crawler->filter('div.netizen')->count());
     }
 
@@ -82,7 +82,7 @@ class ContentControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
         $crawler = $this->getPage('wall_index', ['wallNick' => 'spock', 'wallFilter' => 'all']);
 
-        $this->assertCount(1, $crawler->filter('div#menu a:contains("kirk")'));
+        $this->assertCount(1, $crawler->filter('div#menu a[href$="kirk/self/"]:contains("Myself")'));
         $this->assertCount(1, $crawler->filter('div.netizen article:contains("Spock")'));
     }
 
