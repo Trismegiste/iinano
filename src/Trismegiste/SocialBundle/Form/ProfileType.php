@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Email;
 
 /**
  * ProfileType is a type for Profile entity
@@ -32,16 +33,20 @@ class ProfileType extends AbstractType
                     'attr' => ['placeholder' => "Where you're currently living"]
                 ])
                 ->add('dateOfBirth', 'date', [
-                    'years' => range(date('Y') - 100, date('Y') - 6),
-                    'empty_value' => 'Select'
+                    'years' => range(date('Y') - 6, date('Y') - 100),
+                    'empty_value' => 'Select',
+                    'constraints' => new NotBlank()
                 ])
                 ->add('placeOfBirth', 'text', [
                     'required' => false,
                     'attr' => ['placeholder' => "Where you were born"]
                 ])
                 ->add('email', 'email', [
-                    'attr' => ['placeholder' => "Optional : a valid email used only if you've lost your password (not public)"],
-                    'required' => false
+                    'attr' => ['placeholder' => "Private : a valid email used only if you've lost your password"],
+                    'constraints' => [
+                        new NotBlank(),
+                        new Email()
+                    ]
                 ])
                 ->add('Save', 'submit');
     }

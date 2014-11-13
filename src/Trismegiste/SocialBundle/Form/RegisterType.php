@@ -15,6 +15,7 @@ use Trismegiste\SocialBundle\Security\NetizenFactory;
 use Symfony\Component\Form\FormInterface;
 use Trismegiste\SocialBundle\Validator\UniqueNickname;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Email;
 
 /**
  * RegisterType is a form to register an account
@@ -75,7 +76,10 @@ class RegisterType extends AbstractType
                 ->add('email', 'email', [
                     'attr' => ['placeholder' => "Private : a valid email used only if you've lost your password"],
                     'property_path' => 'profile.email',
-                    'constraints' => new NotBlank()
+                    'constraints' => [
+                        new NotBlank(),
+                        new Email()
+                    ]
                 ])
                 ->add('register', 'submit', ['attr' => ['class' => 'right']]);
     }
