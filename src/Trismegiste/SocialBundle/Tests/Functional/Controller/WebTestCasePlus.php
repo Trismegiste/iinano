@@ -82,6 +82,8 @@ class WebTestCasePlus extends WebTestCase
         $user->getAuthor()->setAvatar('00.jpg');
         $prof = new Profile();
         $prof->fullName = ucfirst($nickname);
+        $prof->dateOfBirth = \DateTime::createFromFormat(\DateTime::ISO8601, '1918-10-11T00:00:00Z');
+        $prof->email = $nickname . '@server.tld';
         $user->setProfile($prof);
         $this->getService('social.netizen.repository')->persist($user);
     }
