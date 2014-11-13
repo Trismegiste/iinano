@@ -50,5 +50,17 @@ var social = {
                 }
             });
         });
+    },
+    initReportPopup: function () {
+        $(document).on('click', 'a[data-social-report]', function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+            var button = this;
+            alertify.prompt("Please give a reason for reporting this content", function (e, str) {
+                if ((e) && (str.length > 0)) {
+                    window.location.href = button.href;
+                }
+            });
+        });
     }
 };
