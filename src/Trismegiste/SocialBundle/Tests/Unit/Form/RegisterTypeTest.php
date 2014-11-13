@@ -45,7 +45,14 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 
     public function testValidSubmit()
     {
-        $submitted = ['nickname' => 'daenerys-targa-7', 'password' => 'aaaa', 'fullName' => 'Daenerys Stormborn', 'gender' => 'xx'];
+        $submitted = [
+            'nickname' => 'daenerys-targa-7',
+            'password' => 'aaaa',
+            'fullName' => 'Daenerys Stormborn',
+            'gender' => 'xx',
+            'email' => 'mother@dragon.org',
+            'dateOfBirth' => ['year' => 2004, 'month' => 11, 'day' => 13]
+        ];
         $this->sut->submit($submitted);
         $this->assertTrue($this->sut->isValid());
         $user = $this->sut->getData();

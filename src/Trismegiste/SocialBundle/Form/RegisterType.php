@@ -45,7 +45,7 @@ class RegisterType extends AbstractType
                             'mapped' => false,
                             'attr' => ['placeholder' => 'Choose a nickname of 5 to 20 char. : a-z, 0-9 and \'-\')']
                         ])
-                ->addViewTransformer(new NicknameTransformer())
+                        ->addViewTransformer(new NicknameTransformer())
                 )
                 ->add('password', 'repeated', [
                     'first_name' => 'password',
@@ -68,13 +68,14 @@ class RegisterType extends AbstractType
                 ])
                 ->add('dateOfBirth', 'date', [
                     'property_path' => 'profile.dateOfBirth',
-                    'years' => range(date('Y') - 100, date('Y') - 6),
-                    'empty_value' => 'Select'
+                    'years' => range(date('Y') - 6, date('Y') - 100),
+                    'empty_value' => 'Select',
+                    'constraints' => new NotBlank()
                 ])
                 ->add('email', 'email', [
-                    'attr' => ['placeholder' => "Private : a valid email used only if you've lost your password (not public)"],
+                    'attr' => ['placeholder' => "Private : a valid email used only if you've lost your password"],
                     'property_path' => 'profile.email',
-                    'required' => true
+                    'constraints' => new NotBlank()
                 ])
                 ->add('register', 'submit', ['attr' => ['class' => 'right']]);
     }
