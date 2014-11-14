@@ -34,7 +34,7 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
         $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
         $this->assertCount(1, $crawler->filter('div.publishing'));
-        $link = $crawler->filter('div.publishing')->selectLink('Report abuse or spam')->link();
+        $link = $crawler->filter('div.publishing')->selectLink('Report abuse/spam')->link();
         $this->client->click($link);
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
     }
@@ -53,7 +53,7 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $this->logIn('kirk');
         $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
         $this->assertCount(1, $crawler->filter('div.commentary'));
-        $link = $crawler->filter('div.commentary')->selectLink('Report abuse or spam')->link();
+        $link = $crawler->filter('div.commentary')->selectLink('Report abuse/spam')->link();
         $this->client->click($link);
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
     }
