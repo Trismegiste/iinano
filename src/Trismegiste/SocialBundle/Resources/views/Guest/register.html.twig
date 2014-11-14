@@ -1,11 +1,6 @@
-{% extends 'TrismegisteSocialBundle::purecss.html.twig' %}
+{% extends 'TrismegisteSocialBundle:Guest:layout.html.twig' %}
 
 {% form_theme register '::inline_form.html.twig' %}
-
-{%block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/main.css') }}"/>
-{% endblock %}
 
 {% block full_body %}
     <div class="content">
