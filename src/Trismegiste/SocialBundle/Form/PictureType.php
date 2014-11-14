@@ -88,7 +88,7 @@ class PictureType extends AbstractType
             if ($picFile instanceof \Symfony\Component\HttpFoundation\File\UploadedFile) {
                 try {
                     $pub = $event->getData();
-                    $this->repository->store($pub, $picFile);
+                    $this->repository->insertUpload($pub, $picFile);
                     $event->setData($pub);
                 } catch (\Exception $e) {
                     $form->get('picture')->addError(new FormError($e->getMessage()));

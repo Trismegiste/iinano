@@ -22,9 +22,7 @@
         <service id="social.image.tool" class="Trismegiste\SocialBundle\Utils\ImageRefiner"></service>
 
         <service id="social.avatar.repository" class="Trismegiste\SocialBundle\Repository\AvatarRepository">
-            <argument type="string">%kernel.root_dir%/../storage/</argument>
-            <argument type="service" id="social.image.tool"/>
-            <argument/> <!-- injected by Extension -->
+            <argument type="service" id="social.picture.storage"/>
         </service>
 
         <service id="social.picture.storage" class="Trismegiste\SocialBundle\Repository\PictureRepository">
