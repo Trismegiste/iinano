@@ -19,9 +19,17 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        // directory structure
+        foreach (['/app', '/storage/picture', '/storage/cache'] as $dir) {
+            $tmp = sys_get_temp_dir() . $dir;
+            if (!file_exists($tmp)) {
+                mkdir($tmp, 0777, true);
+            }
+        }
+
         $this->container = new ContainerBuilder();
         // dependencies with other packages :
-        $this->container->setParameter('kernel.root_dir', '/var/tmp');
+        $this->container->setParameter('kernel.root_dir', sys_get_temp_dir() . '/app');
         $this->container->set('dokudoki.repository', $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface'));
         $this->container->set('security.context', $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface'));
         $this->container->set('security.encoder_factory', $this->getMock('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface'));

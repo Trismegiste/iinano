@@ -32,9 +32,7 @@ class Extension extends BaseExtension
         // injecting how many contents inside a page :
         $container->setParameter('social.pagination', $config['pagination']);
         // avatar size :
-//        $container->setParameter('social.avatar_size', $config['avatar_size']);
-//        $container->getDefinition('social.avatar.repository')
-//                ->replaceArgument(2, $config['avatar_size']);
+        $container->setParameter('social.avatar_size', $config['avatar_size']);
     }
 
     public function getAlias()
