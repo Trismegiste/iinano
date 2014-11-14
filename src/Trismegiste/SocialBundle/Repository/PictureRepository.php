@@ -60,16 +60,15 @@ class PictureRepository
     }
 
     /**
-     * Stores an uploaded file to the storage and returns a Picture document for this picture
+     * Stores an uploaded file to the storage and update a Picture document for this picture
+     * (no persistence only file creation)
      *
      * @param Picture $pub
      * @param UploadedFile $picFile
      *
-     * @return \Trismegiste\Socialist\Picture
-     *
      * @throws \InvalidArgumentException Bad mimetype
      */
-    public function store(Picture $pub, UploadedFile $picFile)
+    public function insertUpload(Picture $pub, UploadedFile $picFile)
     {
         if (!$picFile->isValid()) {
             throw new \RuntimeException('Upload was incomplete');
@@ -92,6 +91,21 @@ class PictureRepository
         // that's why I resize & recompress at a full-hd res (mobile first and I don't intend to
         // clone Picasa)
         Image::open($picFile->getPathname())
+                ->cropResize($this->sizeConfig[self::MAX_RES], $this->sizeConfig[self::MAX_RES])
+                ->save($path);
+    }
+
+    /**
+     * Upsert an image resource with a given storage key
+     *
+     * @param string $targetName storage key
+     * @param resource $imgRsrc image resource
+     */
+    public function upsertResource($targetName, $imgRsrc)
+    {
+        $path = $this->getStoragePath($targetName);
+
+        Image::fromResource($imgRsrc)
                 ->cropResize($this->sizeConfig[self::MAX_RES], $this->sizeConfig[self::MAX_RES])
                 ->save($path);
     }

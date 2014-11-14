@@ -7,32 +7,21 @@
 namespace Trismegiste\SocialBundle\Repository;
 
 use Trismegiste\Socialist\AuthorInterface;
-use Trismegiste\SocialBundle\Utils\ImageRefiner;
+use Trismegiste\SocialBundle\Repository\PictureRepository;
 
 /**
  * AvatarRepository is a repository for avatar
  *
- * @todo need for an interface FFS !
- * @todo all this stuff have a good propability to be deprecated with Gregwar/Image
+ * This is an Adapter onto PictureRepository
  */
 class AvatarRepository
 {
 
     protected $storage;
-    protected $imageTool;
-    protected $avatarSize;
 
-    public function __construct($path, ImageRefiner $imageTool, $dimension)
+    public function __construct(PictureRepository $repo)
     {
-        if (!is_int($dimension)) {
-            throw new \InvalidArgumentException("Dimension '$dimension' is not a valid integer");
-        }
-        if (($dimension <= 0) || ($dimension > 999)) {
-            throw new \OutOfRangeException("$dimension is not a valid dimension for an avatar picture");
-        }
-        $this->storage = realpath($path) . DIRECTORY_SEPARATOR;
-        $this->imageTool = $imageTool;
-        $this->avatarSize = (int) $dimension;
+        $this->storage = $repo;
     }
 
     /**
@@ -53,30 +42,15 @@ class AvatarRepository
         }
 
         try {
-            $avatarName = $this->getAvatarName($author->getNickname()) . '.jpg';
-            $destination = $this->getAvatarAbsolutePath($avatarName);
-            $this->imageTool->makeSquareThumbnailFrom($imageResource, $destination, $this->avatarSize);
+            // always the same name
+            $avatarName = sha1('avatar' . $author->getNickname()) . '.jpeg';
+
+            $this->storage->upsertResource($avatarName, $imageResource);
         } catch (\Exception $e) {
             throw new \RuntimeException('Unable to save avatar');
         }
 
         $author->setAvatar($avatarName);
-    }
-
-    /**
-     * Returns a cleaned name for the avatar file. This is a bijection
-     *
-     * @param string $nick a nickname
-     *
-     * @return string the basename of the avatar file
-     */
-    protected function getAvatarName($nick)
-    {
-        // it is not a way to "crypt" or whatsoever, it's a way to avoid two things:
-        // * strange characters in filesystem without collision when nicknames are utf-8
-        //   (for example: "kurogané" & "kurogane")
-        // * loose validation for parameters in routes (only hexadec digit)
-        return bin2hex($nick);
     }
 
     /**
@@ -88,7 +62,7 @@ class AvatarRepository
      */
     public function getAvatarAbsolutePath($filename)
     {
-        return $this->storage . $filename;
+        return $this->storage->getImagePath($filename);
     }
 
 }
