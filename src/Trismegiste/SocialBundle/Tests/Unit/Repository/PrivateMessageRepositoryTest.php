@@ -9,6 +9,7 @@ namespace Trismegiste\SocialBundle\Tests\Unit\Repository;
 use Trismegiste\SocialBundle\Repository\PrivateMessageRepository;
 use Trismegiste\Socialist\Author;
 use Trismegiste\Yuurei\Persistence\CollectionIterator;
+use Trismegiste\Socialist\PrivateMessage;
 
 /**
  * PrivateMessageRepositoryTest tests PrivateMessageRepository
@@ -33,10 +34,7 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut = new PrivateMessageRepository($this->repository, $this->security, 'alias');
         $this->source = new Author('kirk');
         $this->target = new Author('spock');
-        $this->document = $this->getMockBuilder('Trismegiste\Socialist\PrivateMessage')
-                ->setConstructorArgs([$this->source, $this->target])
-                ->setMethods([])
-                ->getMock();
+        $this->document = new PrivateMessage($this->source, $this->target);
 
         $this->currentUser = $this->getMockBuilder('Trismegiste\SocialBundle\Security\Netizen')
                 ->disableOriginalConstructor()
