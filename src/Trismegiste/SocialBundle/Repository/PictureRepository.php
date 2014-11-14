@@ -91,6 +91,7 @@ class PictureRepository
         // that's why I resize & recompress at a full-hd res (mobile first and I don't intend to
         // clone Picasa)
         Image::open($picFile->getPathname())
+                ->setCacheDir($this->cacheDir)
                 ->cropResize($this->sizeConfig[self::MAX_RES], $this->sizeConfig[self::MAX_RES])
                 ->save($path);
     }
@@ -106,6 +107,7 @@ class PictureRepository
         $path = $this->getStoragePath($targetName);
 
         Image::fromResource($imgRsrc)
+                ->setCacheDir($this->cacheDir)
                 ->cropResize($this->sizeConfig[self::MAX_RES], $this->sizeConfig[self::MAX_RES])
                 ->save($path);
     }
