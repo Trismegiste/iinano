@@ -53,16 +53,4 @@ class AvatarRepository
         $author->setAvatar($avatarName);
     }
 
-    /**
-     * Returns the full pathname to an avatar with a given basename
-     *
-     * @param string $filename the basename + extension
-     *
-     * @return string the full path to avatar
-     */
-    public function getAvatarAbsolutePath($filename)
-    {
-        return $this->storage->getImagePath($filename);
-    }
-
 }

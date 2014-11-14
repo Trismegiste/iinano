@@ -16,36 +16,16 @@ class AvatarRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /** @var AvatarRepository */
     protected $sut;
-    protected $imageTool;
-    protected $tmpDir;
+    protected $pictureRepo;
 
     protected function setUp()
     {
-        $this->imageTool = $this->getMockBuilder('Trismegiste\SocialBundle\Utils\ImageRefiner')
+        $this->pictureRepo = $this->getMockBuilder('Trismegiste\SocialBundle\Repository\PictureRepository')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $this->tmpDir = sys_get_temp_dir();
-        $this->sut = new AvatarRepository($this->tmpDir, $this->imageTool, 50);
+        $this->sut = new AvatarRepository($this->pictureRepo);
 
         $this->author = $this->getMock('Trismegiste\Socialist\AuthorInterface');
-    }
-
-    public function testConstructor()
-    {
-        $this->assertAttributeEquals($this->tmpDir . DIRECTORY_SEPARATOR, 'storage', $this->sut);
-    }
-
-    public function testAbsolutePath()
-    {
-        $path = $this->sut->getAvatarAbsolutePath('aaa.jpg');
-        $path_parts = pathinfo($path);
-
-        $this->assertEquals([
-            'dirname' => $this->tmpDir,
-            'basename' => 'aaa.jpg',
-            'extension' => 'jpg',
-            'filename' => 'aaa'
-                ], $path_parts);
     }
 
     /**
@@ -59,14 +39,13 @@ class AvatarRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testCheckOnResize()
     {
         $img = \imagecreatetruecolor(50, 50);
-        $this->imageTool->expects($this->once())
-                ->method('makeSquareThumbnailFrom');
+        $this->pictureRepo->expects($this->once())
+                ->method('upsertResource');
         $this->author->expects($this->once())
                 ->method('getNickname')
                 ->will($this->returnValue('kirk'));
         $this->author->expects($this->once())
-                ->method('setAvatar')
-                ->with($this->equalTo('6b69726b.jpg'));
+                ->method('setAvatar');
 
         $this->sut->updateAvatar($this->author, $img);
     }
@@ -77,27 +56,11 @@ class AvatarRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testCheckResizeProblem()
     {
         $img = \imagecreatetruecolor(50, 50);
-        $this->imageTool->expects($this->once())
-                ->method('makeSquareThumbnailFrom')
-                ->will($this->throwException(new \Exception));
+        $this->pictureRepo->expects($this->once())
+                ->method('upsertResource')
+                ->will($this->throwException(new \Exception()));
 
         $this->sut->updateAvatar($this->author, $img);
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testBadParametersCtor1()
-    {
-        new AvatarRepository($this->tmpDir, $this->imageTool, "wtf");
-    }
-
-    /**
-     * @expectedException \OutOfRangeException
-     */
-    public function testBadParametersCtor2()
-    {
-        new AvatarRepository($this->tmpDir, $this->imageTool, -273);
     }
 
 }
