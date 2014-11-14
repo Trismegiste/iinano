@@ -86,7 +86,7 @@ class PrivateMessageRepository extends SecuredContentProvider
             throw new \LogicException("$pk is not a Private message");
         }
 
-        if ($pm->getTarget() != $this->getAuthor()) {
+        if ($pm->getTarget()->getNickname() !== $this->getAuthor()->getNickname()) {
             throw new AccessDeniedException("You are not the receipient of this message");
         }
 
