@@ -37,3 +37,17 @@ class NormalizeDatabase extends ContainerAwareCommand
     }
 
 }
+
+/*
+
+// resync avatar in publishing :
+var cursor = db.dokudoki.find({'-class':'netizen'});
+
+while (cursor.hasNext()) {
+  var doc = cursor.next();
+  db.dokudoki.update({owner:{$exists:true}, 'owner.nickname':doc.author.nickname},
+                     {$set:{'owner.avatar':doc.author.avatar}},
+                     {multi:true});
+}
+
+*/

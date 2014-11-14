@@ -54,7 +54,10 @@ class PrivateMessageController extends Template
             $choice[] = [
                 'key' => $netizen->getUsername(),
                 'value' => $netizen->getUsername() . ' (' . $netizen->getProfile()->fullName . ')',
-                'avatar' => $this->generateUrl('netizen_avatar', ['filename' => $netizen->getAuthor()->getAvatar()])
+                'avatar' => $this->generateUrl('picture_get', [
+                    'storageKey' => $netizen->getAuthor()->getAvatar(),
+                    'size' => 'full'
+                ])
             ];
         }
 

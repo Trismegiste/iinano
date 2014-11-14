@@ -1,7 +1,7 @@
 <div class="pure-g private-message entry">
     <div class="pure-u-1-5">
         <header>
-            <img src="{{ path('netizen_avatar', {filename: author.avatar}) }}" class="pure-img rounded"/>
+            <img src="{{ path('picture_get', {storageKey: author.avatar, size:'full'}) }}" class="pure-img rounded"/>
         </header>
     </div>
     <div class="pure-u-4-5">
