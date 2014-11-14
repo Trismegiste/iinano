@@ -21,12 +21,12 @@ class PictureTypeTest extends PublishingTestCase
     protected function createType()
     {
         $this->storage = $this->getMockBuilder('Trismegiste\SocialBundle\Repository\PictureRepository')
-                ->setMethods(['store'])
+                ->setMethods(['insertUpload'])
                 ->disableOriginalConstructor()
                 ->getMock();
 
         $this->storage->expects($this->any())
-                ->method('store')
+                ->method('insertUpload')
                 ->will($this->returnCallback([$this, 'mockStore']));
 
         return new PictureType($this->storage);
