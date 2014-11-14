@@ -38,10 +38,6 @@
         <default key="_controller">TrismegisteSocialBundle:Netizen:showProfile</default>
         <requirement key="author">%nickname_regex%</requirement>
     </route>
-    <route id="netizen_avatar" pattern="/avatar/{filename}">
-        <default key="_controller">TrismegisteSocialBundle:Netizen:getAvatar</default>
-        <requirement key="filename">[\da-f]+\.jpg</requirement>
-    </route>
     <route id="netizen_profile_edit" pattern="/profile/myself/edit">
         <default key="_controller">TrismegisteSocialBundle:Netizen:editProfile</default>
     </route>

@@ -53,12 +53,6 @@ class NetizenControllerTest extends WebTestCasePlus
         $this->assertCount(0, $crawler->filter('div.content')->selectLink('Edit my profile'), 'A logged user cannot edit others profile');
     }
 
-    public function testGetAvatar()
-    {
-        $this->getPage('netizen_avatar', ['filename' => '00.jpg']);
-        $this->assertEquals('image/jpeg', $this->client->getResponse()->headers->get('Content-Type'));
-    }
-
     public function testEditMyProfile()
     {
         $newFullName = 'James Tiberius Kirk';

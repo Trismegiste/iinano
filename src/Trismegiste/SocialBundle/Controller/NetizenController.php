@@ -39,29 +39,6 @@ class NetizenController extends Template
         ]);
     }
 
-    public function getAvatarAction($filename)
-    {
-        $file = $this->get('social.avatar.repository')
-                ->getAvatarAbsolutePath($filename);
-
-        $response = new Response();
-        $lastModif = new \DateTime();
-        $lastModif->setTimestamp(filemtime($file));
-        $response->setLastModified($lastModif);
-        $response->setEtag(filesize($file));
-        $response->setPublic();
-
-        if ($response->isNotModified($this->getRequest())) {
-            return $response;
-        }
-
-        $response->headers->set('X-Sendfile', $file);
-        $response->headers->set('Content-Type', 'image/jpeg');
-        $this->get('logger')->debug("$filename xsended");
-
-        return $response;
-    }
-
     public function editAvatarAction(Request $request)
     {
         if ($request->getMethod() == 'POST') {
