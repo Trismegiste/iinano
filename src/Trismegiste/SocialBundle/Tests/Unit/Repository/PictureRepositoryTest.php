@@ -46,7 +46,7 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
         $file->expects($this->never())
                 ->method('move');
 
-        $this->sut->store($this->picture, $file);
+        $this->sut->insertUpload($this->picture, $file);
     }
 
     /**
@@ -67,7 +67,7 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
         $file->expects($this->never())
                 ->method('move');
 
-        $this->sut->store($this->picture, $file);
+        $this->sut->insertUpload($this->picture, $file);
     }
 
     /**
@@ -114,7 +114,7 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
         $file->expects($this->never())  // I don't keep original picture for saving storage space, I don't make a clone of Picasa or Flickr
                 ->method('move');
 
-        $this->sut->store($this->picture, $file);
+        $this->sut->insertUpload($this->picture, $file);
 
         $this->assertEquals('image/png', $this->picture->getMimeType());
         $this->assertRegexp('#^[\da-f]{40}\.png$#', $this->picture->getStorageKey());
