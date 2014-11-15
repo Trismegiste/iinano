@@ -5,6 +5,15 @@
 {% endblock %}
 
 {% block content %}
+    {% if app.user.username == author.nickname %}
+        <div class="pure-menu pure-menu-open pure-menu-horizontal submenu">
+            <ul>
+                <li><a href="{{ path('netizen_profile_edit') }}">Edit my profile</a></li>
+                <li><a href="#">Change my password</a></li>
+                <li><a href="{{ path('netizen_avatar_edit') }}">Change my avatar</a></li>
+            </ul>
+        </div>
+    {% endif %}
     <div class="pure-g profile-full entry">
         <div class="pure-u-1-1 pure-u-md-1-3 pure-u-lg-1-4">
             <header>
@@ -12,8 +21,10 @@
             </header>
         </div>
         <div class="pure-u-1-1 pure-u-md-2-3 pure-u-lg-3-4 profile-body">
-            {% block profile_content %}
-            {% endblock %}
+            <article>
+                {% block profile_content %}
+                {% endblock %}
+            </article>
         </div>
     </div>
 {% endblock content %}
