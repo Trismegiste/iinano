@@ -21,18 +21,22 @@
 
 {% block content %}
     {{ parent() }}
-    <div class="pure-g">
+    <div class="pure-g entry">
         <div class="pure-u-1 pure-u-md-1-2 user-listing">
             <hr/>
             <a id="profile-following"></a>
-            <h2>Following</h2>
-            {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: following} %}
+            <article>
+                <h2>Following</h2>
+                {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: following} %}
+            </article>
         </div>
         <div class="pure-u-1 pure-u-md-1-2 user-listing">
             <hr/>
             <a id="profile-follower"></a>
-            <h2>Followers</h2>
-            {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: follower} %}
+            <article>
+                <h2>Followers</h2>
+                {% include 'TrismegisteSocialBundle:Netizen:follow_listing.html.twig' with {listing: follower} %}
+            </article>
         </div>
     </div>
 {% endblock content %}
