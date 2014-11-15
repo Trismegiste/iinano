@@ -7,10 +7,8 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 use Trismegiste\SocialBundle\Controller\Template;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Trismegiste\SocialBundle\Form\ProfileType;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * NetizenController is a controller for the user : profile, stats...
@@ -57,7 +55,9 @@ class NetizenController extends Template
             return new \Symfony\Component\HttpFoundation\JsonResponse(['status' => 'ok']);
         }
 
-        return $this->render('TrismegisteSocialBundle:Netizen:avatar_edit.html.twig');
+        $author = $this->getUser()->getAuthor();
+
+        return $this->render('TrismegisteSocialBundle:Netizen:avatar_edit.html.twig', ['author' => $author]);
     }
 
     public function editProfileAction(Request $request)

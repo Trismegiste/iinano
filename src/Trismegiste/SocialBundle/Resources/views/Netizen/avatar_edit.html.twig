@@ -1,26 +1,19 @@
-{% extends 'TrismegisteSocialBundle::layout.html.twig' %}
+{% extends 'TrismegisteSocialBundle:Netizen:profile_layout.html.twig' %}
 
 {% block page_title %}
     {{ parent() }} | My profile | My Avatar
 {% endblock %}
 
-{% block content %}
-    <div class="pure-g">
-        <div class="pure-u-1-1 pure-u-md-1-2">
-            <h3>Pick or take a picture</h3>
-            <div id="image-cropper">
-                <div class="select-image-btn pure-button justify-cropper"><i class="icon-camera-alt"></i> Select new image</div>
-                <input type="file" class="cropit-image-input" capture="camera"/>
-                <div class="cropit-image-preview"></div>
-                <div class="image-size-label text-center justify-cropper">Resize image</div>
-                <input type="range" class="cropit-image-zoom-input justify-cropper" />
-            </div>
-            <button id="send-crop" class="pure-button justify-cropper">Send</button>
-        </div>
-        <div class="pure-u-1-1 pure-u-md-1-2">
-        </div>
+{% block profile_heading %}
+    <div id="image-cropper">
+        <div class="select-image-btn pure-button justify-cropper"><i class="icon-camera-alt"></i> Pick or take a picture</div>
+        <input type="file" class="cropit-image-input" capture="camera"/>
+        <div class="cropit-image-preview"></div>
+        <div class="image-size-label text-center justify-cropper">Resize image</div>
+        <input type="range" class="cropit-image-zoom-input justify-cropper" />
     </div>
-{% endblock content %}
+    <button id="send-crop" class="pure-button justify-cropper">Send</button>
+{% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
