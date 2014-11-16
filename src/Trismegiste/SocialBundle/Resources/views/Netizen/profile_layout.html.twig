@@ -1,5 +1,7 @@
 {% extends 'TrismegisteSocialBundle::layout.html.twig' %}
 
+{% import 'TrismegisteSocialBundle:widget:pure.html.twig' as pure %}
+
 {% block page_title %}
     {{ parent() }} | {{ author.nickname }}'s profile
 {% endblock %}
@@ -8,9 +10,9 @@
     {% if app.user.username == author.nickname %}
         <div class="pure-menu pure-menu-open pure-menu-horizontal submenu">
             <ul>
-                <li><a href="{{ path('netizen_profile_edit') }}">Edit my profile</a></li>
-                <li><a href="#">Change my password</a></li>
-                <li><a href="{{ path('netizen_avatar_edit') }}">Change my avatar</a></li>
+                {{ pure.menu_item('netizen_profile_edit', {}, 'Edit my profile') }}
+                {{ pure.menu_item('content_index', {}, 'Change my password') }}
+                {{ pure.menu_item('netizen_avatar_edit', {}, 'Change my avatar') }}
             </ul>
         </div>
     {% endif %}
