@@ -1,14 +1,6 @@
 {# Base template for the front, user must be logged #}
 {% extends 'TrismegisteSocialBundle::sidebar.html.twig' %}
 
-{% macro menu_item(route, route_param, label, url_option='') %}
-    <li {% if app.request.attributes.get('_route') == route and app.request.attributes.get('_route_params') == route_param %} class="pure-menu-selected" {% endif %}>
-        <a href="{{ path(route, route_param) }}{{ url_option }}">{{ label }}</a>
-    </li>
-{% endmacro %}
-
-{% import _self as pure %}
-
 {%block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/main.css') }}"/>

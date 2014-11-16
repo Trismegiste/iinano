@@ -1,7 +1,0 @@
-{# some widget for pure #}
-
-{% macro menu_item(route, route_param, label, url_option='') %}
-    <li {% if app.request.attributes.get('_route') == route and app.request.attributes.get('_route_params') == route_param %} class="pure-menu-selected" {% endif %}>
-        <a href="{{ path(route, route_param) }}{{ url_option }}">{{ label }}</a>
-    </li>
-{% endmacro %}
