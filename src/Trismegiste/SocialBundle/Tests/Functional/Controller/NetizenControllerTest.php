@@ -72,7 +72,7 @@ class NetizenControllerTest extends WebTestCasePlus
 
     public function testAjaxSendAvatar()
     {
-        $filename = $this->client->getContainer()->getParameter('kernel.root_dir') . '/../storage/00.jpg';
+        $filename = __DIR__ . '/../../../Resources/icon/00.jpg';
 
         $send = $this->generateUrl('netizen_avatar_edit');
         $this->client->request('POST', $send, [

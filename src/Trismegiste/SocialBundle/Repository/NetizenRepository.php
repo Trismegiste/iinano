@@ -101,7 +101,7 @@ class NetizenRepository implements NetizenRepositoryInterface
     {
         try {
             $this->storage->updateAvatar($user->getAuthor(), $imageResource);
-            $this->persist($user);
+            $this->repository->persist($user);
         } catch (\Exception $e) {
             throw new \RuntimeException($e->getMessage());
         }

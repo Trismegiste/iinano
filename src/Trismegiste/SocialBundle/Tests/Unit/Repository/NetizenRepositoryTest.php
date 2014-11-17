@@ -63,10 +63,12 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testPersist()
     {
+        $this->storage->expects($this->once())
+                ->method('updateAvatar');
+
         $user = new Netizen(new Author('kirk'));
         $user->setProfile(new Profile());
         $this->sut->persist($user);
-        $this->assertNotNull($user->getAuthor()->getAvatar());
 
         return $user;
     }
