@@ -9,9 +9,9 @@ namespace Trismegiste\SocialBundle\Tests\Functional\Controller;
 use Trismegiste\Socialist\Publishing;
 
 /**
- * StatusControllerTest tests tests PublishingController with Status
+ * PublishingControllerStatusTest tests tests PublishingController with Status
  */
-class StatusControllerTest extends PublishingControllerTestCase
+class PublishingControllerStatusTest extends PublishingControllerTestCase
 {
 
     protected function assertEditContent(Publishing $doc)

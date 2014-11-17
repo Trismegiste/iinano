@@ -9,9 +9,9 @@ namespace Trismegiste\SocialBundle\Tests\Functional\Controller;
 use Trismegiste\Socialist\Publishing;
 
 /**
- * SmallTalkControllerTest tests tests PublishingController with SmallTalk
+ * PublishingControllerSmallTalkTest tests tests PublishingController with SmallTalk
  */
-class SmallTalkControllerTest extends PublishingControllerTestCase
+class PublishingControllerSmallTalkTest extends PublishingControllerTestCase
 {
 
     protected function assertEditContent(Publishing $doc)
