@@ -72,14 +72,13 @@ class NetizenRepository implements NetizenRepositoryInterface
      */
     public function persist(Netizen $obj)
     {
-        // pre-persist :
-        if (is_null($obj->getAuthor()->getAvatar())) {
-            // @todo parameter for config
-            $avatarName = $obj->getProfile()->gender == 'xx' ? "00.jpg" : '01.jpg';
-            $obj->getAuthor()->setAvatar($avatarName);
-        }
-
         $this->repository->persist($obj);
+
+        // post-persist : manage avatar, so any possible problem with image doesn't mess a new netizen creation
+        if (is_null($obj->getAuthor()->getAvatar())) {
+            $img = $this->storage->getIcon($obj->getProfile()->gender);
+            $this->updateAvatar($obj, $img);
+        }
     }
 
     /**

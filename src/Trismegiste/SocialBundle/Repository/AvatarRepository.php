@@ -53,4 +53,11 @@ class AvatarRepository
         $author->setAvatar($avatarName);
     }
 
+    public function getIcon($code)
+    {
+        $fch = $code === 'xx' ? "00.jpg" : '01.jpg';
+
+        return \imagecreatefromjpeg(__DIR__ . '/../Resources/icon/' . $fch);
+    }
+
 }
