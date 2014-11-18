@@ -86,17 +86,22 @@ class PublishingController extends ContentController
     public function showAction($id)
     {
         $repo = $this->get('social.publishing.repository');
-        $post = $repo->findByPk($id);
-        $wallNick = $post->getAuthor()->getNickname();
-        $wallUser = $this->get('social.netizen.repository')->findByNickname($wallNick);
-        $param = [
-            'publishing' => $post,
-            'wallNick' => $wallNick,
-            'wallUser' => $wallUser,
-            'wallFilter' => 'self',
-            'pagination' => $this->getPagination(),
-            'commentary_preview' => 100 // @todo hardcode
-        ];
+        try {
+            $post = $repo->findByPk($id);
+
+            $wallNick = $post->getAuthor()->getNickname();
+            $wallUser = $this->get('social.netizen.repository')->findByNickname($wallNick);
+            $param = [
+                'publishing' => $post,
+                'wallNick' => $wallNick,
+                'wallUser' => $wallUser,
+                'wallFilter' => 'self',
+                'pagination' => $this->getPagination(),
+                'commentary_preview' => 100 // @todo hardcode
+            ];
+        } catch (\Trismegiste\Yuurei\Persistence\NotFoundException $e) {
+            throw $this->createNotFoundException($e->getMessage());
+        }
 
         return $this->render('TrismegisteSocialBundle:Content:publishing_permalink.html.twig'
                         , $param);
