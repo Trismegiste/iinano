@@ -19,8 +19,6 @@
             <argument/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
-        <service id="social.image.tool" class="Trismegiste\SocialBundle\Utils\ImageRefiner"></service>
-
         <service id="social.avatar.repository" class="Trismegiste\SocialBundle\Repository\AvatarRepository">
             <argument type="service" id="social.picture.storage"/>
         </service>
