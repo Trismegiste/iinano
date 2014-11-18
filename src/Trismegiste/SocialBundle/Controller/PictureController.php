@@ -22,9 +22,12 @@ class PictureController extends Template
         $file = $this->get('social.picture.storage')
                 ->getImagePath($storageKey, $size);
 
+        if (!file_exists($file)) {
+            throw $this->createNotFoundException($storageKey . ' not found');
+        }
+
         $response = new Response();
-        $lastModif = new \DateTime();
-        $lastModif->setTimestamp(filemtime($file));
+        $lastModif = \DateTime::createFromFormat('U', filemtime($file));
         $response->setLastModified($lastModif);
         $response->setEtag(filesize($file));
         $response->setPublic();

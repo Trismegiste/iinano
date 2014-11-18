@@ -79,12 +79,11 @@ class WebTestCasePlus extends WebTestCase
     protected function addUserFixture($nickname)
     {
         $user = $this->getService('security.netizen.factory')->create($nickname, 'mellon');
-        $user->getAuthor()->setAvatar('00.jpg');
-        $prof = new Profile();
+        $prof = $user->getProfile();
         $prof->fullName = ucfirst($nickname);
+        $prof->gender = 'xy';
         $prof->dateOfBirth = \DateTime::createFromFormat(\DateTime::ISO8601, '1918-10-11T00:00:00Z');
         $prof->email = $nickname . '@server.tld';
-        $user->setProfile($prof);
         $this->getService('social.netizen.repository')->persist($user);
     }
 
