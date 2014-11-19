@@ -11,12 +11,41 @@ use Trismegiste\SocialBundle\Form\VideoType;
 /**
  * VideoTypeTest tests the video form type
  */
-class VideoTypeTest extends \PHPUnit_Framework_TestCase // PublishingTestCase
+class VideoTypeTest extends PublishingTestCase
 {
 
-    public function test()
+    protected function createType()
     {
-        $this->markTestIncomplete();
+        return new VideoType();
+    }
+
+    protected function getModelFqcn()
+    {
+        return 'Trismegiste\Socialist\Video';
+    }
+
+    public function getInvalidInputs()
+    {
+        $validated = $this->createData();
+        $validated->setUrl('fdf://malformed.url/');
+        $post = [
+            'url' => 'fdf://malformed.url/'
+        ];
+        return [
+            [$post, $validated, ['url']]
+        ];
+    }
+
+    public function getValidInputs()
+    {
+        $validated = $this->createData();
+        $validated->setUrl('https://youtu.be/sfd54sd546dsf');
+        $post = [
+            'url' => 'https://youtu.be/sfd54sd546dsf'
+        ];
+        return [
+            [$post, $validated]
+        ];
     }
 
 }
