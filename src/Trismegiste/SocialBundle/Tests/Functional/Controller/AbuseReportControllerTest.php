@@ -48,19 +48,6 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $this->assertCount(0, $crawler->filter("article:contains('dummy message')"));
     }
 
-    public function testCancellingReportedOnPublishing()
-    {
-        $this->logIn('kirk');
-        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
-        $link = $crawler->filter('div.publishing article.reported-content-panel a')->link();
-        $this->client->click($link);
-        $crawler = $this->client->followRedirect();
-        $this->assertCount(1, $crawler->filter("article:contains('dummy message')"));
-
-        $link = $crawler->filter('.publishing nav')->selectLink('Report abuse/spam')->link();
-        $this->client->click($link);
-    }
-
     public function testReportCommentary()
     {
         $this->logIn('spock');
@@ -83,19 +70,6 @@ class AbuseReportControllerTest extends WebTestCasePlus
 
         $crawler = $this->client->followRedirect();
         $this->assertCount(0, $crawler->filter(".commentary article:contains('dummy comment')"));
-    }
-
-    public function testCancellingReportOnComentary()
-    {
-        $this->logIn('kirk');
-        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
-        $link = $crawler->filter('.commentary article.reported-content-panel a')->link();
-        $this->client->click($link);
-        $crawler = $this->client->followRedirect();
-        $this->assertCount(1, $crawler->filter(".commentary article:contains('dummy comment')"));
-
-        $link = $crawler->filter('.commentary nav')->selectLink('Report abuse/spam')->link();
-        $this->client->click($link);
     }
 
     public function testLogBadRole()
@@ -124,9 +98,46 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $this->assertEquals(1, (int) $lineSet->eq(2)->filter('td')->eq(3)->text());
     }
 
-    public function testNoOtherActionThanAddOrREmove()
+    public function testCancellingReportedOnPublishing()
     {
-        $this->markTestIncomplete();
+        $this->logIn('kirk');
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
+        $link = $crawler->filter('div.publishing article.reported-content-panel a')->link();
+        $this->client->click($link);
+        $crawler = $this->client->followRedirect();
+        $this->assertCount(1, $crawler->filter("article:contains('dummy message')"));
+    }
+
+    public function testCancellingReportOnComentary()
+    {
+        $this->logIn('kirk');
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
+        $link = $crawler->filter('.commentary article.reported-content-panel a')->link();
+        $this->client->click($link);
+        $crawler = $this->client->followRedirect();
+        $this->assertCount(1, $crawler->filter(".commentary article:contains('dummy comment')"));
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @expectedExceptionMessage kekeke
+     */
+    public function testCommentNoOtherActionThanAddOrRemove()
+    {
+        $pk = '545e0475e3f4345d1e0097b8';
+        $this->logIn('kirk');
+        $this->generateUrl('pub_abusivereport', ['wallNick' => 'kirk', 'wallFilter' => 'self', 'id' => $pk, 'uuid' => $pk, 'action' => 'kekeke']);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @expectedExceptionMessage kekeke
+     */
+    public function testPubNoOtherActionThanAddOrRemove()
+    {
+        $pk = '545e0475e3f4345d1e0097b8';
+        $this->logIn('kirk');
+        $this->generateUrl('commentary_abusivereport', ['wallNick' => 'kirk', 'wallFilter' => 'self', 'id' => $pk, 'uuid' => $pk, 'action' => 'kekeke']);
     }
 
 }

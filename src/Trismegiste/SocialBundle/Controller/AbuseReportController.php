@@ -26,9 +26,6 @@ class AbuseReportController extends ContentController
                 $repo->iCancelReport($id);
                 $this->pushFlash('notice', 'You have removed your report on this content');
                 break;
-
-            default:
-                $this->createNotFoundException("Action $action");
         }
 
         return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
@@ -59,9 +56,6 @@ class AbuseReportController extends ContentController
                 $repo->iCancelReport($id, $uuid);
                 $this->pushFlash('notice', 'You have removed your report on this comment');
                 break;
-
-            default:
-                $this->createNotFoundException("Action $action");
         }
 
         return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);

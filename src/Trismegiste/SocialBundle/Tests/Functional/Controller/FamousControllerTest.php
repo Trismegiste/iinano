@@ -145,25 +145,25 @@ class FamousControllerTest extends WebTestCasePlus
     }
 
     /**
-     * @depends initialize
      * @expectedException \Symfony\Component\Routing\Exception\InvalidParameterException
      * @expectedExceptionMessage kekeke
      */
-    public function testCommentNoOtherActionThanAddOrRemove($pk)
+    public function testCommentNoOtherActionThanAddOrRemove()
     {
+        $pk = '545e0475e3f4345d1e0097b8';
         $this->logIn('kirk');
-        $uri = $this->generateUrl('commentary_famous', ['wallNick' => 'kirk', 'wallFilter' => 'self', 'id' => $pk, 'uuid' => $pk, 'action' => 'kekeke']);
+        $this->generateUrl('commentary_famous', ['wallNick' => 'kirk', 'wallFilter' => 'self', 'id' => $pk, 'uuid' => $pk, 'action' => 'kekeke']);
     }
 
     /**
-     * @depends initialize
      * @expectedException \Symfony\Component\Routing\Exception\InvalidParameterException
      * @expectedExceptionMessage kekeke
      */
-    public function testPubNoOtherActionThanAddOrRemove($pk)
+    public function testPubNoOtherActionThanAddOrRemove()
     {
+        $pk = '545e0475e3f4345d1e0097b8';
         $this->logIn('kirk');
-        $uri = $this->generateUrl('pub_famous', ['wallNick' => 'kirk', 'wallFilter' => 'self', 'id' => $pk, 'action' => 'kekeke']);
+        $this->generateUrl('pub_famous', ['wallNick' => 'kirk', 'wallFilter' => 'self', 'id' => $pk, 'action' => 'kekeke']);
     }
 
 }
