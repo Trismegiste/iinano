@@ -98,3 +98,8 @@ form .form-error {
     margin-bottom: 0.6em;
     padding: 0.3em;
 }
+
+.content hr {
+    margin-right: 0.6em;
+    margin-left: 0.6em;
+}

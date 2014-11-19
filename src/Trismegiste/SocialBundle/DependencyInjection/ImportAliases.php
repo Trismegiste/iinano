@@ -13,6 +13,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * ImportAliases is a compiler pass to import some Dokudoki aliases definitions
  * into this bundle services.
+ *
+ * @todo this class is a monkey-patching, rework this entire process with
+ * the magical PrependExtensionInterface
  */
 class ImportAliases implements CompilerPassInterface
 {
