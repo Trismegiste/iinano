@@ -30,6 +30,7 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $this->logIn('spock');
         $repo = $this->getService('social.publishing.repository');
         $doc = $repo->create('small');
+        $doc->setMessage('dummy message');
         $repo->persist($doc);
         $this->logIn('kirk');
         $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
@@ -37,6 +38,27 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $link = $crawler->filter('div.publishing')->selectLink('Report abuse/spam')->link();
         $this->client->click($link);
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testReportedIsHidden()
+    {
+        $this->logIn('kirk');
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
+        $this->assertCount(1, $crawler->filter('div.publishing article.reported-content-panel'));
+        $this->assertCount(0, $crawler->filter("article:contains('dummy message')"));
+    }
+
+    public function testCancellingReportedOnPublishing()
+    {
+        $this->logIn('kirk');
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
+        $link = $crawler->filter('div.publishing article.reported-content-panel a')->link();
+        $this->client->click($link);
+        $crawler = $this->client->followRedirect();
+        $this->assertCount(1, $crawler->filter("article:contains('dummy message')"));
+
+        $link = $crawler->filter('.publishing nav')->selectLink('Report abuse/spam')->link();
+        $this->client->click($link);
     }
 
     public function testReportCommentary()
@@ -48,14 +70,32 @@ class AbuseReportControllerTest extends WebTestCasePlus
 
         $repo = $this->getService('social.commentary.repository');
         $comm = $repo->create();
+        $comm->setMessage('dummy comment');
         $repo->attachAndPersist($post, $comm);
 
         $this->logIn('kirk');
         $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
-        $this->assertCount(1, $crawler->filter('div.commentary'));
+        $this->assertCount(1, $crawler->filter(".commentary article:contains('dummy comment')"));
+
         $link = $crawler->filter('div.commentary')->selectLink('Report abuse/spam')->link();
         $this->client->click($link);
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+
+        $crawler = $this->client->followRedirect();
+        $this->assertCount(0, $crawler->filter(".commentary article:contains('dummy comment')"));
+    }
+
+    public function testCancellingReportOnComentary()
+    {
+        $this->logIn('kirk');
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'all']);
+        $link = $crawler->filter('.commentary article.reported-content-panel a')->link();
+        $this->client->click($link);
+        $crawler = $this->client->followRedirect();
+        $this->assertCount(1, $crawler->filter(".commentary article:contains('dummy comment')"));
+
+        $link = $crawler->filter('.commentary nav')->selectLink('Report abuse/spam')->link();
+        $this->client->click($link);
     }
 
     public function testLogBadRole()
@@ -82,6 +122,11 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $this->assertEquals(1, (int) $lineSet->eq(1)->filter('td')->eq(3)->text());
         $this->assertEquals('comm', $lineSet->eq(2)->filter('td')->eq(1)->text());
         $this->assertEquals(1, (int) $lineSet->eq(2)->filter('td')->eq(3)->text());
+    }
+
+    public function testNoOtherActionThanAddOrREmove()
+    {
+        $this->markTestIncomplete();
     }
 
 }
