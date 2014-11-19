@@ -79,7 +79,7 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
     public function getParameter()
     {
         return [
-            ['social.avatar_size', 300],
+            ['social.commentary_preview', 3],
             ['social.pagination', 20]
         ];
     }

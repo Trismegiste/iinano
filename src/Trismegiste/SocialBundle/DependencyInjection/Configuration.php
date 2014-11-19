@@ -27,7 +27,7 @@ class Configuration implements ConfigurationInterface
                         ->cannotBeEmpty()
                     ->end()
                     ->scalarNode('pagination')->defaultValue(20)->end()
-                    ->scalarNode('avatar_size')->defaultValue(300)->end()
+                    ->scalarNode('commentary_preview')->defaultValue(3)->end()
                 ->end();
 
         return $treeBuilder;

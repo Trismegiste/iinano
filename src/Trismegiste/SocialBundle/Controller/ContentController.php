@@ -22,7 +22,12 @@ class ContentController extends Template
 
     protected function getPagination()
     {
-        return $this->container->getParameter('social.pagination');
+        return $this->getParameter('social.pagination');
+    }
+
+    protected function getParameter($name)
+    {
+        return $this->container->getParameter($name);
     }
 
     /**
@@ -110,6 +115,7 @@ class ContentController extends Template
 
         $parameters['listing'] = $it;
         $parameters['pagination'] = $this->getPagination();
+        $parameters['commentary_preview'] = $this->getParameter('social.commentary_preview');
 
         return $this->render($wallSubview, $parameters);
     }

@@ -32,7 +32,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $expected = array(
             'nickname_regex' => '[-\\da-z]+',
             'pagination' => 20,
-            'avatar_size' => 300,
+            'commentary_preview' => 3,
         );
         $this->assertEquals($expected, $cfg);
     }
@@ -52,7 +52,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $expected = array(
             'nickname_regex' => '[-\\da-z]+',
             'pagination' => 30,
-            'avatar_size' => 299,
+            'commentary_preview' => 5,
         );
         $this->assertEquals($expected, $cfg);
     }

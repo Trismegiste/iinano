@@ -31,8 +31,8 @@ class Extension extends BaseExtension
         $container->setParameter('nickname_regex', $config['nickname_regex']);
         // injecting how many contents inside a page :
         $container->setParameter('social.pagination', $config['pagination']);
-        // avatar size :
-        $container->setParameter('social.avatar_size', $config['avatar_size']);
+        // limit of preview for commentaries :
+        $container->setParameter('social.commentary_preview', $config['commentary_preview']);
     }
 
     public function getAlias()

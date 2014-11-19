@@ -26,7 +26,11 @@
     </div>
 </div>
 {% set commIt = content.commentaryIterator %}
-{% if commIt.count > 0 %}
+{% set commItCount = commIt.count %}
+{% if commItCount > 0 %}
+    {% if commentary_preview is defined %}
+        {% set commIt = commIt|slice(0, commentary_preview) %}
+    {% endif %}
     <div class="pure-g entry">
         <div class="pure-u-1-5"></div>
         <div class="pure-u-4-5">
@@ -37,6 +41,9 @@
                     {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
                 {% endif %}
             {% endfor %}
+            {% if commentary_preview is defined and commItCount>commentary_preview %}
+                <a href="#" class="pure-button">Show more commentaries</a>
+            {% endif %}
         </div>
     </div>
 {% endif %}

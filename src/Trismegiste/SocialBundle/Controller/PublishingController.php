@@ -96,8 +96,7 @@ class PublishingController extends ContentController
                 'wallNick' => $wallNick,
                 'wallUser' => $wallUser,
                 'wallFilter' => 'self',
-                'pagination' => $this->getPagination(),
-                'commentary_preview' => 100 // @todo hardcode
+                'pagination' => $this->getPagination()
             ];
         } catch (\Trismegiste\Yuurei\Persistence\NotFoundException $e) {
             throw $this->createNotFoundException($e->getMessage());
