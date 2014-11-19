@@ -144,4 +144,26 @@ class FamousControllerTest extends WebTestCasePlus
         $this->assertEquals(0, $comments[0]->getFanCount());
     }
 
+    /**
+     * @depends initialize
+     * @expectedException \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @expectedExceptionMessage kekeke
+     */
+    public function testCommentNoOtherActionThanAddOrRemove($pk)
+    {
+        $this->logIn('kirk');
+        $uri = $this->generateUrl('commentary_famous', ['wallNick' => 'kirk', 'wallFilter' => 'self', 'id' => $pk, 'uuid' => $pk, 'action' => 'kekeke']);
+    }
+
+    /**
+     * @depends initialize
+     * @expectedException \Symfony\Component\Routing\Exception\InvalidParameterException
+     * @expectedExceptionMessage kekeke
+     */
+    public function testPubNoOtherActionThanAddOrRemove($pk)
+    {
+        $this->logIn('kirk');
+        $uri = $this->generateUrl('pub_famous', ['wallNick' => 'kirk', 'wallFilter' => 'self', 'id' => $pk, 'action' => 'kekeke']);
+    }
+
 }

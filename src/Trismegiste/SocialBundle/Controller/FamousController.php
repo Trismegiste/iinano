@@ -26,8 +26,6 @@ class FamousController extends Template
             case 'remove':
                 $pub = $repo->iUnlikeThat($id, $uuid);
                 break;
-            default:
-                $this->createNotFoundException("Action $action");
         }
 
         return $this->render('TrismegisteSocialBundle:Content:ajax/commentary_like_button.html.twig', [
@@ -50,8 +48,6 @@ class FamousController extends Template
             case 'remove':
                 $pub = $repo->iUnlikeThat($id);
                 break;
-            default:
-                $this->createNotFoundException("Action $action");
         }
 
         return $this->render('TrismegisteSocialBundle:Content:ajax/publishing_like_button.html.twig', [
