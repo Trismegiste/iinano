@@ -23,7 +23,7 @@ body.blurred > * {
   -webkit-transform: translate3d(0, 0, 0);
 }
 .lightbox-loading {
-	background: url(loading.gif) center center no-repeat;
+	background: url('../img/lightbox/loading.gif') center center no-repeat;
 	width: 31px;
 	height: 31px;
 	margin: -16px 0 0 -16px;
@@ -80,15 +80,15 @@ body.blurred > * {
 .lightbox-close {
 	right: 10px;
 	top: 10px;
-	background-image: url('close.png');
+	background-image: url('../img/lightbox/close.png');
 }
 .lightbox-next {
 	right: 10px;
 	top: 48%;
-	background-image: url('next.png');
+	background-image: url('../img/lightbox/next.png');
 }
 .lightbox-previous {
 	left: 10px;
 	top: 48%;
-	background-image: url('previous.png');
+	background-image: url('../img/lightbox/previous.png');
 }
