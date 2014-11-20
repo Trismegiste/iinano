@@ -173,4 +173,9 @@ class CommentaryControllerTest extends WebTestCasePlus
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
 
+    public function testAntiflood()
+    {
+        $this->markTestIncomplete();
+    }
+
 }

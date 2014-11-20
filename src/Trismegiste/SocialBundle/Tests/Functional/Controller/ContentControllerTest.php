@@ -93,4 +93,9 @@ class ContentControllerTest extends WebTestCasePlus
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
+    public function testAjaxGetCommentary()
+    {
+        $this->markTestIncomplete();
+    }
+
 }
