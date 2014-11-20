@@ -36,7 +36,14 @@
         <div class="pure-u-4-5" data-social-commentary-lst="{{ content.id }}">
             {% include 'TrismegisteSocialBundle:Content:ajax/commentary_list.html.twig' %}
             {% if commentary_preview is defined and commItCount>commentary_preview %}
-                <a data-social-commentary-ajax="{{ content.id }}" href="{{ path('ajax_commentary_more', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}" class="pure-button">Show all commentaries</a>
+                <div class="pure-g">
+                    <div class="pure-u-1-4 pure-u-md-1-5"></div>
+                    <div class="pure-u-1-1 pure-u-md-4-5">
+                        <a data-social-commentary-ajax="{{ content.id }}"
+                           href="{{ path('ajax_commentary_more', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}"
+                           class="pure-button button-tiny">Show all commentaries</a>
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>
