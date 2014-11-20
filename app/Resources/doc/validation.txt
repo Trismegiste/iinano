@@ -1,0 +1,74 @@
+# Constraints & Validations Rules
+
+## What
+So you want a smart model with rigid validations rules and a good integrity check.
+
+Perhaps you are misguided. A lot of problem with the model during the process
+of building an app are coming from a bad practices with constraints and validations rules.
+
+Let me explain :
+
+Validations, rules, constraints... are good for the model but we must know from where
+those rules are coming.
+
+* Is it a technical constraint ? Example, a VARCHAR with a limited space to store a blog article,
+or uniqueness of a username or a slug
+* Is it a business rule ? Example, an article has always an author, an invoice has at least one line
+* Is it a security rule ? Example, only an author can edit his own article
+* Is it a "presentation" rule ? Example, a title of an article does not exceed 80 char to
+fit in one line on most devices, an avatar must not exceed 100 kB because of bandwidth concerns.
+
+Because, our universe is not black or white and because we are not robot,
+there are always exception to many rules, particulary with security rules, and
+rules evolve since the business evolves :
+
+What about a moderator who could edit your article, or a test script which
+creates article without author, or a use-case of the model where article are huge ?
+Or suddenly, an article needs to track all contributors/authors ?
+
+Of course you cannot predict all of these case but let see how and where to implement these rules
+to prevent deadlock.
+
+## Where
+
+### Business rules
+Of course they lie within the model, for the most part. I prefer business rules
+to be effective as the object is created, not a side effect of the persistence layer,
+i.e even in memory the object must be valid. So if a rule need always to be true,
+add it in the class constructor.
+
+In setters, this kind of rules generates exception (InvalidArgumentException
+for example) so everytime you have an object you know it is valid.
+
+### Technical rules
+Well, since memory, diskspace and screen are not infinite, we need to add limit
+to properties and fields. By relying on NoSQL, many technical rules become irrelevant.
+
+Critical example: uniqueness on username, typically implemented in the database.
+
+Just to be sure : never but business rules in the database or you have to migrate
+your database every week.
+
+### Security rules
+This part is tricky because, it is difficult to discriminate a security rule from
+a business rule, since the customer explains all rules from his point of view
+and he is a user (with a set of granted privileges) in the model.
+
+These rules are going to the Security Component, with Voter and Roles. Don't
+put it in the model, it will create many deadlock. How to know if a rule is a security rule
+or a business rule ? Think in the administrator point of view. Can he create an
+article without an author => This is a security rule, if not, this is a business rule.
+
+Another way to discriminate: usually, security rules create HTTP/403 and
+are used in Twig with isGranted.
+
+### Presentation rules
+I call a presentation rule (or a "view rule") when it is a requirement coming from
+the presentation layer. A title must be short, as a nickname, that image must not exceed
+1920x1080 but this avatar must not exceed 300x300 etc...
+
+I put all these rules in forms, never in the model. So my model could be easily used
+in another project.
+
+
+
