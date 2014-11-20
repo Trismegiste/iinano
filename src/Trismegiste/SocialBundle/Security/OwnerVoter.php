@@ -56,7 +56,7 @@ class OwnerVoter implements VoterInterface
         }
 
         // compare the two Authors on nickname (avatar can change)
-        if ($object->getAuthor()->getNickname() == $user->getAuthor()->getNickname()) {
+        if ($object->getAuthor()->isEqual($user->getAuthor())) {
             return VoterInterface::ACCESS_GRANTED;
         }
 

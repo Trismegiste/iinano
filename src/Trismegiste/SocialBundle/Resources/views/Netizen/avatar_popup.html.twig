@@ -1,5 +1,5 @@
 {# avatar icon + dropdown with mini content #}
-{% if app.user.username == author.nickname %}
+{% if app.user.author.isEqual(author) %}
     <img src="{{ path('picture_get', {storageKey: author.avatar, size:'small'}) }}" class="pure-img rounded"/>
 {% else %}
     {% set avatar_dropdown_counter = author.nickname ~ random() %}
