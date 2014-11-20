@@ -76,5 +76,9 @@ var social = {
                 $('div[data-social-commentary-lst=' + pkContent + ']').html(response);
             });
         });
+    },
+    initLightBox: function () {
+        $('.publishing a.lightboxed').lightbox();
     }
+
 };
