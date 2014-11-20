@@ -16,14 +16,9 @@ class CommentaryController extends ContentController
     {
         $pub = $this->get('social.publishing.repository')->findByPk($id);
         // antiflood :
-        // @todo need an API in the model Publishing::isLastCommenter(AuthorInterface)
-        $it = $pub->getCommentaryIterator();
-        if ($it->count() > 0) {
-            // @todo need an API Author::isEqualTo(AuthorInterface)
-            if ($it->current()->getAuthor()->getNickname() === $this->getUser()->getUsername()) {
-                $this->pushFlash('warning', 'You cannot comment until someone else adds a commentary (antiflood)');
-                return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
-            }
+        if ($pub->isLastCommenter($this->getUser()->getAuthor())) {
+            $this->pushFlash('warning', 'You cannot comment until someone else adds a commentary (antiflood)');
+            return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
         }
 
         $form = $this->createForm('social_commentary');
