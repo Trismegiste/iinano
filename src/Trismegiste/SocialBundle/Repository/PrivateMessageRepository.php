@@ -72,7 +72,7 @@ class PrivateMessageRepository extends SecuredContentProvider
         // @todo Common behavior with OWNER voter => common interface "Ownable" with "::getOwnerAuthor()" ?
         // not critical because users don't see this access right within a browser
         // (unlike Edit/Delete for example)
-        if ($msg->getSender()->getNickname() !== $this->getAuthor()->getNickname()) {
+        if (!$msg->getSender()->isEqual($this->getAuthor())) {
             throw new AccessDeniedException("You cannot save this message because you're not the sender");
         }
 
@@ -86,7 +86,7 @@ class PrivateMessageRepository extends SecuredContentProvider
             throw new \LogicException("$pk is not a Private message");
         }
 
-        if ($pm->getTarget()->getNickname() !== $this->getAuthor()->getNickname()) {
+        if (!$pm->getTarget()->isEqual($this->getAuthor())) {
             throw new AccessDeniedException("You are not the receipient of this message");
         }
 
