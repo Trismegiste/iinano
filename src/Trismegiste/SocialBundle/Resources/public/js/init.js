@@ -78,7 +78,9 @@ var social = {
         });
     },
     initLightBox: function () {
-        $('.publishing a.lightboxed').lightbox();
+        $('a[data-lightbox]').lightbox();
+        $('a[data-lightbox]').removeAttr('data-lightbox');
+        // @todo not very satisfying but it works...
     }
 
 };
