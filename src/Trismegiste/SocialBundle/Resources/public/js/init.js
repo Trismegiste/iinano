@@ -62,5 +62,19 @@ var social = {
                 }
             });
         });
+    },
+    initGetCommentaryAjax: function () {
+        $(document).on('click', 'a[data-social-commentary-ajax]', function (event) {
+            var button = this;
+            var pkContent = $(button).data('socialCommentaryAjax');
+            event.stopPropagation();
+            event.preventDefault();
+            $.ajax({
+                url: button.href,
+                type: 'GET'
+            }).done(function (response) {
+                $('div[data-social-commentary-lst=' + pkContent + ']').html(response);
+            });
+        });
     }
 };

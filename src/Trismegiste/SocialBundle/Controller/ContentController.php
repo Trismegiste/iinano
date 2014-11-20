@@ -120,4 +120,26 @@ class ContentController extends Template
         return $this->render($wallSubview, $parameters);
     }
 
+    public function ajaxGetAllCommentaryAction($wallNick, $wallFilter, $id)
+    {
+        $this->onlyAjaxRequest();
+
+        $repo = $this->get('social.publishing.repository');
+        try {
+            $post = $repo->findByPk($id);
+
+            $param = [
+                'content' => $post,
+                'commIt' => $post->getCommentaryIterator(),
+                'wallNick' => $wallNick,
+                'wallFilter' => $wallFilter
+            ];
+        } catch (\Trismegiste\Yuurei\Persistence\NotFoundException $e) {
+            throw $this->createNotFoundException($e->getMessage());
+        }
+
+        return $this->render('TrismegisteSocialBundle:Content:ajax/commentary_list.html.twig'
+                        , $param);
+    }
+
 }

@@ -33,16 +33,10 @@
     {% endif %}
     <div class="pure-g entry">
         <div class="pure-u-1-5"></div>
-        <div class="pure-u-4-5">
-            {% for comment in commIt %}
-                {% if comment.isReportedBy(app.user.author) %}
-                    {% include 'TrismegisteSocialBundle:Content:reported_commentary.html.twig' %}
-                {% else %}
-                    {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
-                {% endif %}
-            {% endfor %}
+        <div class="pure-u-4-5" data-social-commentary-lst="{{ content.id }}">
+            {% include 'TrismegisteSocialBundle:Content:ajax/commentary_list.html.twig' %}
             {% if commentary_preview is defined and commItCount>commentary_preview %}
-                <a href="#" class="pure-button">Show more commentaries</a>
+                <a data-social-commentary-ajax="{{ content.id }}" href="{{ path('ajax_commentary_more', {wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}" class="pure-button">Show all commentaries</a>
             {% endif %}
         </div>
     </div>

@@ -1,0 +1,7 @@
+{% for comment in commIt %}
+    {% if comment.isReportedBy(app.user.author) %}
+        {% include 'TrismegisteSocialBundle:Content:reported_commentary.html.twig' %}
+    {% else %}
+        {% include 'TrismegisteSocialBundle:Content:commentary_show.html.twig' %}
+    {% endif %}
+{% endfor %}

@@ -14,6 +14,11 @@
         <requirement key="_method">GET</requirement>
         <requirement key="offset">[\d]+</requirement>
     </route>
+    <route id="ajax_commentary_more" pattern="/pub/{id}/commentary/all">
+        <default key="_controller">TrismegisteSocialBundle:Content:ajaxGetAllCommentary</default>
+        <requirement key="_method">GET</requirement>
+        <requirement key="id">%mongoid_regex%</requirement>
+    </route>
 
     <route id="pub_famous" pattern="/pub/{id}/famous/{action}">
         <default key="_controller">TrismegisteSocialBundle:Famous:ajaxLikePublish</default>
