@@ -175,7 +175,27 @@ class CommentaryControllerTest extends WebTestCasePlus
 
     public function testAntiflood()
     {
-        $this->markTestIncomplete();
+        /* @var $repo \Trismegiste\SocialBundle\Repository\PublishingRepository */
+        $repo = $this->getService('social.publishing.repository');
+        $pub = $repo->create('small');
+        $repo->persist($pub);
+        $pk = (string) $pub->getId();
+
+        $crawler = $this->getPage('wall_index', $this->wallParam);
+        $this->assertCount(1, $crawler->filter("a[id='anchor-$pk']"));
+        $link = $crawler->filter('.publishing a[title=Reply]')->link();
+        $crawler = $this->client->click($link);
+        $form = $crawler->selectButton('Save')->form();
+        $this->client->submit($form, ['social_commentary' => ['message' => __METHOD__]]);
+
+        $pub = $repo->findByPk($pk);
+        $this->assertEquals(1, $pub->getCommentaryCount());
+
+        // second reply :
+        $link = $crawler->filter('.publishing a[title=Reply]')->link();
+        $crawler = $this->client->click($link);
+        $this->assertCount(0, $crawler->selectButton('Save'));
+        $this->assertCount(1, $crawler->filter('script:contains("antiflood")'));
     }
 
 }
