@@ -37,20 +37,7 @@
                 </article>
             </div>
         </div>
-        <div class="pure-g text-center">
-            <div class="pure-u-1-3">
-                <h3><a href="{{ path('wall_index', {wallNick: wallNick, wallFilter:'following'}) }}">Following</a></h3>
-                <h1>{{ wallUser.followingCount }}</h1>
-            </div>
-            <div class="pure-u-1-3">
-                <h3><a href="{{ path('wall_index', {wallNick: wallNick, wallFilter:'follower'}) }}">Followers</a></h3>
-                <h1>{{ wallUser.followerCount }}</h1>
-            </div>
-            <div class="pure-u-1-3">
-                <h3><a href="{{ path('wall_index', {wallNick: wallNick, wallFilter:'friend'}) }}">Friends</a></h3>
-                <h1>{{ wallUser.friendIterator|length }}</h1>
-            </div>
-        </div>
+        {% include 'TrismegisteSocialBundle:Netizen:relation_counter.html.twig' with {netizen: wallUser} %}
 
     </div>
 </div>

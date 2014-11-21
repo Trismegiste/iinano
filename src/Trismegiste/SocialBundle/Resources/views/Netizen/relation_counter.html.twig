@@ -1,0 +1,15 @@
+{# Show relations counters and walls of a netizen #}
+<div class="pure-g text-center">
+    <div class="pure-u-1-3">
+        <h3><a href="{{ path('wall_index', {wallNick: netizen.username, wallFilter:'following'}) }}">Following</a></h3>
+        <h1>{{ netizen.followingCount }}</h1>
+    </div>
+    <div class="pure-u-1-3">
+        <h3><a href="{{ path('wall_index', {wallNick: netizen.username, wallFilter:'follower'}) }}">Followers</a></h3>
+        <h1>{{ netizen.followerCount }}</h1>
+    </div>
+    <div class="pure-u-1-3">
+        <h3><a href="{{ path('wall_index', {wallNick: netizen.username, wallFilter:'friend'}) }}">Friends</a></h3>
+        <h1>{{ netizen.friendIterator|length }}</h1>
+    </div>
+</div>
