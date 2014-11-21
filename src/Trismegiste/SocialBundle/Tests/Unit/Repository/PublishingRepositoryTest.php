@@ -17,7 +17,8 @@ use Trismegiste\SocialBundle\Security\Netizen;
 class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
 {
 
-    use \Trismegiste\SocialBundle\Tests\Helper\SecurityContextMock;
+    use \Trismegiste\SocialBundle\Tests\Helper\SecurityContextMock,
+        \Trismegiste\SocialBundle\Tests\Helper\AssertSolid;
 
     /** @var PublishingRepository */
     protected $sut;
@@ -181,11 +182,10 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testInterfaceInSync()
     {
-        $this->assertEquals(count(get_class_methods('Trismegiste\SocialBundle\Repository\PublishingRepository'))
-                , count(get_class_methods('Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface')) +
-                count(get_class_methods('Trismegiste\SocialBundle\Repository\PublishingFactory')) +
-                1
-        );
+        $this->assertMethodCountEquals('Trismegiste\SocialBundle\Repository\PublishingRepository', [
+            'Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface',
+            'Trismegiste\SocialBundle\Repository\PublishingFactory'
+                ], 1);
     }
 
     /**

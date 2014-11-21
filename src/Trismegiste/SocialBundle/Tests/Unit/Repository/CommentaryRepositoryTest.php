@@ -16,7 +16,8 @@ use Trismegiste\Socialist\Commentary;
 class CommentaryRepositoryTest extends \PHPUnit_Framework_TestCase
 {
 
-    use \Trismegiste\SocialBundle\Tests\Helper\SecurityContextMock;
+    use \Trismegiste\SocialBundle\Tests\Helper\SecurityContextMock,
+        \Trismegiste\SocialBundle\Tests\Helper\AssertSolid;
 
     /** @var CommentaryRepository */
     protected $sut;
@@ -176,6 +177,17 @@ class CommentaryRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->sut->iCancelReport('54390582e3f43405428b4568', '123');
         $this->assertAttributeCount(0, 'abusive', $this->document);
+    }
+
+    /**
+     * This because I don't want to forget new method in the interface
+     */
+    public function testInterfaceInSync()
+    {
+        $this->assertMethodCountEquals('Trismegiste\SocialBundle\Repository\CommentaryRepository', [
+            'Trismegiste\SocialBundle\Repository\CommentaryRepositoryInterface',
+            'Trismegiste\SocialBundle\Repository\CommentaryFactory'
+                ], 1);
     }
 
 }
