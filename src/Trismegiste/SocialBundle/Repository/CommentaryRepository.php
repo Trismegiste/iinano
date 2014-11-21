@@ -11,21 +11,29 @@ use Trismegiste\Socialist\Publishing;
 
 /**
  * CommentaryRepository is a repository for Commentary
- * @todo phpdoc and interface
  */
-class CommentaryRepository extends SecuredContentProvider implements CommentaryFactory
+class CommentaryRepository extends SecuredContentProvider implements CommentaryFactory, CommentaryRepositoryInterface
 {
 
+    /**
+     * @inheritdoc
+     */
     public function create()
     {
         return new Commentary($this->getAuthor());
     }
 
+    /**
+     * @inheritdoc
+     */
     public function findByUuid(Publishing $pub, $uuid)
     {
         return $pub->getCommentaryByUuid($uuid);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function persist(Publishing $pub, Commentary $comm)
     {
         $this->assertOwningRight($comm);
@@ -34,6 +42,9 @@ class CommentaryRepository extends SecuredContentProvider implements CommentaryF
         $this->repository->persist($pub);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function attachAndPersist(Publishing $pub, Commentary $comm)
     {
         $this->assertOwningRight($comm);
@@ -43,6 +54,9 @@ class CommentaryRepository extends SecuredContentProvider implements CommentaryF
         $this->repository->persist($pub);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function detachAndPersist(Publishing $pub, $uuid)
     {
         $comm = $pub->getCommentaryByUuid($uuid);
@@ -52,6 +66,9 @@ class CommentaryRepository extends SecuredContentProvider implements CommentaryF
         $this->repository->persist($pub);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function iLikeThat($id, $uuid)
     {
         $pub = $this->repository->findByPk($id);
@@ -62,6 +79,9 @@ class CommentaryRepository extends SecuredContentProvider implements CommentaryF
         return $pub;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function iUnlikeThat($id, $uuid)
     {
         $pub = $this->repository->findByPk($id);
@@ -72,6 +92,9 @@ class CommentaryRepository extends SecuredContentProvider implements CommentaryF
         return $pub;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function iReportThat($id, $uuid)
     {
         $pub = $this->repository->findByPk($id);
@@ -81,6 +104,9 @@ class CommentaryRepository extends SecuredContentProvider implements CommentaryF
         $this->repository->persist($pub);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function iCancelReport($id, $uuid)
     {
         $pub = $this->repository->findByPk($id);
