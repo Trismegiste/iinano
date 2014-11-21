@@ -93,9 +93,51 @@ class ContentControllerTest extends WebTestCasePlus
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testAjaxGetCommentary()
+    public function testCommentaryPreview()
     {
-        $this->markTestIncomplete();
+        $this->logIn('kirk');
+        $preview = $this->client->getContainer()->getParameter('social.commentary_preview');
+
+        /* @var $repo \Trismegiste\SocialBundle\Repository\PublishingRepository */
+        $repo = $this->getService('social.publishing.repository');
+        $pub = $repo->create('small');
+        for ($k = 0; $k < $preview + 1; $k++) {
+            $auth = new \Trismegiste\Socialist\Author('user' . $k);
+            $auth->setAvatar('abcdef.jpg');
+            $pub->attachCommentary(new \Trismegiste\Socialist\Commentary($auth));
+        }
+        $repo->persist($pub);
+        $pk = (string) $pub->getId();
+
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'self']);
+        $this->assertCount($preview, $crawler->filter("div[data-social-commentary-lst='$pk'] .commentary"));
+
+        return $pk;
+    }
+
+    /**
+     * @depends testCommentaryPreview
+     */
+    public function testAjaxGetCommentary($pk)
+    {
+        $this->logIn('kirk');
+        $preview = $this->client->getContainer()->getParameter('social.commentary_preview');
+
+        $more = $this->generateUrl('ajax_commentary_more', ['wallNick' => 'kirk', 'wallFilter' => 'all', 'id' => $pk]);
+        $crawler = $this->client->request('GET', $more, [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $this->assertCount($preview + 1, $crawler->filter(".commentary"));
+    }
+
+    public function testPublishingNotFound()
+    {
+        $this->logIn('kirk');
+        $more = $this->generateUrl('ajax_commentary_more', ['wallNick' => 'kirk', 'wallFilter' => 'all', 'id' => '446df529e3f4349958f5ebdc']);
+        $this->client->request('GET', $more, [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+        $response = $this->client->getResponse();
+        $this->assertEquals(404, $response->getStatusCode());
     }
 
 }
