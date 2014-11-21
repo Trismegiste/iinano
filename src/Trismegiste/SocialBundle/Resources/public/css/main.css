@@ -53,7 +53,7 @@ img.picture-view {
 }
 
 #more-button {
-    width: 100%
+    width: 80%;
 }
 
 form .form-error {
@@ -118,4 +118,9 @@ form .form-error {
 
 .netizen header {
     padding-bottom: 1em;
+}
+
+footer {
+    margin: 1.2em;
+
 }
