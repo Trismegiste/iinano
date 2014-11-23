@@ -41,7 +41,7 @@ So I kept the minimal requirements :
 And of course mandatory stuffs like Composer, PhpUnit and phpDocumentor
 
 ## Who
-Small business, small communities (from 100 to 100k people).
+Small business, small communities (from 100 to 10k people).
 Everything is public in the community and you can filter contents by your following,
 your followers and your friends. A friend is a following and a follower.
 
