@@ -26,6 +26,7 @@ class TrismegisteSocialBundle extends Bundle
             new Cli\CreateUser(),
             new Cli\NormalizeDatabase(),
             new Cli\FillForBench(),
+            new Cli\CliqueBench(),
             new Cli\MapReduceJob(),
             new Cli\MapReducePublishCounter()
         ]);
