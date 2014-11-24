@@ -22,7 +22,8 @@ class CliqueBench extends ContainerAwareCommand
         $this->setName('social:clique:bench')
                 ->setDescription('Benchmark with cliques')
                 ->addArgument('maxUser', InputArgument::OPTIONAL, 'how many', 100)
-                ->addArgument('messagePerUser', InputArgument::OPTIONAL, 'how many', 10);
+                ->addArgument('messagePerUser', InputArgument::OPTIONAL, 'how many', 10)
+                ->addOption('iter', null, InputOption::VALUE_REQUIRED, 'how many', 10);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -32,9 +33,10 @@ class CliqueBench extends ContainerAwareCommand
         $output->writeln("Fill...");
         $maxUser = $input->getArgument('maxUser');
         $messagePerUser = $input->getArgument('messagePerUser');
+        $maxIteration = $input->getOption('iter');
 
-        for ($iter = 1; $iter <= 10; $iter++) {
-            $geometricIter = (int) pow($maxUser, $iter / 10.0);
+        for ($iter = 1; $iter <= $maxIteration; $iter++) {
+            $geometricIter = (int) pow($maxUser, $iter / (float) $maxIteration);
             $this->init();
             $this->fill($output, $geometricIter, $messagePerUser);
             $this->bench($output, $geometricIter);
@@ -71,7 +73,7 @@ class CliqueBench extends ContainerAwareCommand
         $userRepo = $this->getContainer()->get('social.netizen.repository');
         /* @var $userFactory \Trismegiste\SocialBundle\Security\NetizenFactory */
         $userFactory = $this->getContainer()->get('security.netizen.factory');
-        /* @var $contentRepo Trismegiste\SocialBundle\Repository\PublishingRepository */
+        /* @var $contentRepo \Trismegiste\Yuurei\Persistence\Repository */
         $contentRepo = $this->getContainer()->get('dokudoki.repository');
         /* @var $progressBar \Symfony\Component\Console\Helper\ProgressHelper */
         $progressBar = $this->getHelper('progress');
@@ -100,24 +102,27 @@ class CliqueBench extends ContainerAwareCommand
         $output->writeln("Writing message");
         $progressBar->start($output, $numUser * $msgPerUser);
         for ($k = 0; $k < $numUser; $k++) {
+            $batch = [];
             $author = $user[$k]->getAuthor();
+            // template for one author :
+            $docTemplate = new \Trismegiste\Socialist\SmallTalk($author);
+            for ($i = 0; $i < $numUser; $i++) {
+                $docTemplate->addFan($user[$i]->getAuthor());
+            }
+            for ($i = 0; $i < 10; $i++) {
+                $comm = new \Trismegiste\Socialist\Commentary($user[rand(0, $numUser - 1)]->getAuthor());
+                $comm->setMessage('This is not a very long commentary but I think it is a good approx');
+                $docTemplate->attachCommentary($comm);
+            }
+
             for ($j = 0; $j < $msgPerUser; $j++) {
-                $doc = new \Trismegiste\Socialist\SmallTalk($author);
+                $doc = clone $docTemplate;
                 $doc->setMessage("One small talk $k-$j for iinano benchmark, one giant doc for mongo but it's not a big deal for this database");
-                for ($i = 0; $i < $numUser; $i++) {
-                    $doc->addFan($user[$i]->getAuthor());
-                }
-                for ($i = 0; $i < 10; $i++) {
-                    $comm = new \Trismegiste\Socialist\Commentary($user[rand(0, $numUser - 1)]->getAuthor());
-                    $comm->setMessage('This is not a very long commentary but I think it is a good approx');
-                    $doc->attachCommentary($comm);
-//                    for ($k = 0; $k < $likeCount / 10; $k++) {
-//                        $comm->addFan($user[rand(0, $userCount)]->getAuthor());
-//                    }
-                }
-                $contentRepo->persist($doc);
+                $batch[] = $doc;
+                //$contentRepo->persist($doc);
                 $progressBar->advance();
             }
+            $contentRepo->batchPersist($batch);
         }
         $progressBar->finish();
     }
