@@ -37,7 +37,7 @@ class AbuseReportController extends ContentController
         $reportRepo->compileReport();
         $iterator = $reportRepo->findMostReported(0, 30);
 
-        return $this->render('TrismegisteSocialBundle:AbuseReport:dashboard.html.twig', [
+        return $this->render('TrismegisteSocialBundle:AbuseReport:index.html.twig', [
                     'listing' => $iterator
         ]);
     }

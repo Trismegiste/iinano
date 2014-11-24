@@ -1,1 +1,3 @@
-{{ report.content.message }}
+<a href="{{ path('pub_permalink', {id: report.fk.id}) }}#anchor-{{ report.fk.id }}-{{ report.fk.uuid }}">
+    {{ report.content.message }}
+</a>
