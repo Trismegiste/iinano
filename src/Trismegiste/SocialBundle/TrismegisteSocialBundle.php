@@ -25,7 +25,6 @@ class TrismegisteSocialBundle extends Bundle
         $application->addCommands([
             new Cli\CreateUser(),
             new Cli\NormalizeDatabase(),
-            new Cli\FillForBench(),
             new Cli\CliqueBench(),
             new Cli\MapReduceJob(),
             new Cli\MapReducePublishCounter()

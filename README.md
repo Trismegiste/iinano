@@ -110,3 +110,24 @@ wait and see...
 
 I think the next release of iinano will run exclusively on EC2, S3, DynamoDB
 and CouldFront.
+
+### I've seen the model and the database content is denormalized, why ?
+
+It's on purpose. My prerequisites was that front page must not require more
+than 3 queries (including the mandatory query for the logged user).
+
+The drawback is there are some esoteric mapreduces & MongoDB javascripts
+but it's a feature of MongoDB and V8 does not come back from the 80's,
+unlike SQL...
+
+### What is "Dokudoki", the DBAL of "iinano" ?
+
+It's a micro-ODM I've created for MongoDB. "Micro" because there is a minimal API :
+It does not require any mapping information, it does not require
+any concrete inheritance (only an interface)
+and it does not require empty constructor nor dumb getter/setter
+unlike many ORM/ODM which break SRP/ISP in the model.
+
+### What is trimegiste/prelude ?
+
+It's a subclass of the symfony Kernel to keep your AppKernel strictly OCP.

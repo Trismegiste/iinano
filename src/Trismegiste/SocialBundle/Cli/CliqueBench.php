@@ -15,6 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CliqueBench extends ContainerAwareCommand
 {
 
+    protected $collector = [];
+
     public function configure()
     {
         $this->setName('social:clique:bench')
@@ -37,6 +39,17 @@ class CliqueBench extends ContainerAwareCommand
             $this->fill($output, $geometricIter, $messagePerUser);
             $this->bench($output, $geometricIter);
         }
+
+        $this->writeProfiling();
+    }
+
+    protected function writeProfiling()
+    {
+        $handle = fopen('result.csv', 'w');
+        foreach ($this->collector as $fields) {
+            fputcsv($handle, $fields);
+        }
+        fclose($handle);
     }
 
     protected function init()
@@ -94,6 +107,14 @@ class CliqueBench extends ContainerAwareCommand
                 for ($i = 0; $i < $numUser; $i++) {
                     $doc->addFan($user[$i]->getAuthor());
                 }
+                for ($i = 0; $i < 10; $i++) {
+                    $comm = new \Trismegiste\Socialist\Commentary($user[rand(0, $numUser - 1)]->getAuthor());
+                    $comm->setMessage('This is not a very long commentary but I think it is a good approx');
+                    $doc->attachCommentary($comm);
+//                    for ($k = 0; $k < $likeCount / 10; $k++) {
+//                        $comm->addFan($user[rand(0, $userCount)]->getAuthor());
+//                    }
+                }
                 $contentRepo->persist($doc);
                 $progressBar->advance();
             }
@@ -119,6 +140,7 @@ class CliqueBench extends ContainerAwareCommand
             $delta += microtime(true) - $stopwatch;
         }
         $output->writeln(sprintf("Clique #$numUser: %.0f ms", $delta * 1000));
+        $this->collector[] = ['userCount' => $numUser, 'duration' => $delta * 1000];
     }
 
 }
