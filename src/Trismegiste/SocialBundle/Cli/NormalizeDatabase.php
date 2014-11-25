@@ -32,8 +32,8 @@ class NormalizeDatabase extends ContainerAwareCommand
         $collection->ensureIndex(['-class' => 1]);
         // indexing user's nickname and ensuring uniqueness :
         $collection->ensureIndex(['author.nickname' => 1], ['sparse' => true, 'unique' => true]);
-        // indexing author of a publishing
-        $collection->ensureIndex(['owner.nickname' => 1], ['sparse' => true]);
+        // indexing author of a publishing **with sorting** for wall contents
+        $collection->ensureIndex(['owner.nickname' => 1, '_id' => -1], ['sparse' => true]);
     }
 
 }

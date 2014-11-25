@@ -15,6 +15,9 @@ use \Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * PrivateMessageRepository is a repository for PrivateMessage
+ *
+ * @todo queries need indexing [target.nickname:1 , sentAt:-1]
+ * @todo queries need indexing [source.nickname:1 , sentAt:-1]
  */
 class PrivateMessageRepository extends SecuredContentProvider
 {

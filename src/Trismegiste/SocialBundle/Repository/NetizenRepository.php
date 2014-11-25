@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  * NetizenRepository is a repository for Netizen (and also Author)
  *
  * @todo Subclass of SecuredContentProvider ?
+ * @todo optimization: remove all filter on alias, relying solely on author.nickname
  */
 class NetizenRepository implements NetizenRepositoryInterface
 {
