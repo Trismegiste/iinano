@@ -42,6 +42,16 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut = new PublishingRepository($this->repository, $this->security, ['message' => get_class($this->document)]);
     }
 
+    protected function createMongoCursorMock()
+    {
+        return $this->getMock('MongoCursor', [], [], '', false);
+    }
+
+    protected function createCollectionCursor()
+    {
+        return new CollectionIterator($this->createMongoCursorMock(), $this->repository);
+    }
+
     /**
      * @expectedException \RuntimeException
      * @expectedExceptionMessage not found
@@ -81,10 +91,10 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testFindLastEntriesDefault()
     {
-        $cursor = new CollectionIterator($this->getMock('MongoCursor', [], [], '', false), $this->repository);
+        $cursor = $this->createCollectionCursor();
         $this->repository->expects($this->once())
                 ->method('find')
-                ->with(['-class' => ['$in' => ['message']]])
+                ->with(['owner.nickname' => ['$exists' => true]])
                 ->will($this->returnValue($cursor));
 
         $this->sut->findLastEntries();
@@ -92,10 +102,10 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testFindLastEntriesScan()
     {
-        $cursor = new CollectionIterator($this->getMock('MongoCursor', [], [], '', false), $this->repository);
+        $cursor = $this->createCollectionCursor();
         $this->repository->expects($this->once())
                 ->method('find')
-                ->with(['-class' => ['$in' => ['message']], 'owner.nickname' => ['$in' => ['kirk']]])
+                ->with(['owner.nickname' => 'kirk'])
                 ->will($this->returnValue($cursor));
 
         $this->sut->findLastEntries(0, 20, new \ArrayIterator([$this->author->getNickname() => true]));
@@ -137,10 +147,10 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
         $user[0]->follow($user[3]);
 
         return [
-            [$user[0], 'self', ['kirk']],
-            [$user[0], 'following', ['mccoy', 'spock']],
-            [$user[0], 'follower', ['scotty', 'mccoy', 'sulu']],
-            [$user[0], 'friend', ['mccoy']]
+            [$user[0], 'self', 'kirk'],
+            [$user[0], 'following', ['$in' => ['mccoy', 'spock']]],
+            [$user[0], 'follower', ['$in' => ['scotty', 'mccoy', 'sulu']]],
+            [$user[0], 'friend', 'mccoy']
         ];
     }
 
@@ -149,10 +159,10 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindWallEntriesWithAuthor($user, $wallFilter, $authorName)
     {
-        $cursor = new CollectionIterator($this->getMock('MongoCursor', [], [], '', false), $this->repository);
+        $cursor = $this->createCollectionCursor();
         $this->repository->expects($this->once())
                 ->method('find')
-                ->with(['-class' => ['$in' => ['message']], 'owner.nickname' => ['$in' => $authorName]])
+                ->with(['owner.nickname' => $authorName])
                 ->will($this->returnValue($cursor));
 
         $this->sut->findWallEntries($user, $wallFilter);
@@ -160,10 +170,10 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testFindWallAll()
     {
-        $cursor = new CollectionIterator($this->getMock('MongoCursor', [], [], '', false), $this->repository);
+        $cursor = $this->createCollectionCursor();
         $this->repository->expects($this->once())
                 ->method('find')
-                ->with(['-class' => ['$in' => ['message']]])
+                ->with(['owner.nickname' => ['$exists' => true]])
                 ->will($this->returnValue($cursor));
 
         $this->sut->findWallEntries($this->createNetizen('kirk'), 'all');
