@@ -7,7 +7,6 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
-use Trismegiste\Socialist\Content;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Trismegiste\SocialBundle\Utils\SkippableIterator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -15,7 +14,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * ContentController is a template for the wall/dashboard with published content
  *
- * The user NEEDS to be authenticated
+ * The user MUST be authenticated
  */
 class ContentController extends Template
 {
@@ -120,6 +119,17 @@ class ContentController extends Template
         return $this->render($wallSubview, $parameters);
     }
 
+    /**
+     * Gets all commentaries of a Publishing entity
+     *
+     * @param string $wallNick the nickname of the wall
+     * @param type $wallFilter the filter of the wall
+     * @param string $id primary key of the Publishing entity
+     *
+     * @return Response the html fragment
+     *
+     * @throws NotFoundException if id not found
+     */
     public function ajaxGetAllCommentaryAction($wallNick, $wallFilter, $id)
     {
         $this->onlyAjaxRequest();
