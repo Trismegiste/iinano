@@ -1,25 +1,55 @@
 {% extends 'TrismegisteSocialBundle:Guest:layout.html.twig' %}
 
 {% block full_body %}
-    <div class="pure-g">
-        <div class="pure-u-1">
-            <div class="panel">
-                <div class="pure-g">
-                    <div class="pure-u-1 pure-u-md-2-3">
-                        <h1>iinano</h1>
-                        <p>A social network that follows <a href="http://en.wikipedia.org/wiki/SOLID_(object-oriented_design)">SOLID</a></p>
-                        <h3>Built with :</h3>
+    <div class="content">
+        <div class="pure-g">
+            <div class="pure-u-1 pure-u-md-2-3">
+                <h1>iinano</h1>
+                <p>A social network that follows <a href="http://en.wikipedia.org/wiki/SOLID_(object-oriented_design)">SOLID</a></p>
+                <section class="pure-g">
+                    <article class="pure-u-1 pure-u-md-1-2">
+                        <h3>Starring :</h3>
                         <ul>
-                            <li><a href="http://symfony.com/">Symfony</a> &amp; <a href="http://twig.sensiolabs.org/">Twig</a></li>
-                            <li><a href="http://mongodb.com/">MongoDB</a> &amp; <a href="http://github.com/Trismegiste/DokudokiBundle">Dokudoki</a></li>
-                            <li><a href="http://purecss.io/">PureCSS</a></li>
+                            <li><a href="http://symfony.com/">Symfony from SensioLabs</a></li>
+                            <li><a href="http://twig.sensiolabs.org/">Twig from SensioLabs</a></li>
+                            <li><a href="http://mongodb.com/">MongoDB</a></li>
+                            <li><a href="http://github.com/Trismegiste/DokudokiBundle">Dokudoki</a></li>
+                            <li><a href="http://purecss.io/">PureCSS from Yahoo</a></li>
+                            <li><a href="http://jquery.com/">jQuery</a></li>
                         </ul>
-                    </div>
-                    <div class="pure-u-1 pure-u-md-1-3">
-                        <img src="{{ asset('bundles/trismegistesocial/img/mascot.png') }}" class="pure-img"/>
-                    </div>
-                </div>
+                    </article>
+                    <article class="pure-u-1 pure-u-md-1-2">
+                        <h3>Also appearing :</h3>
+                        <ul>
+                            <li><a href="http://github.com/Gregwar/Image">Gregwar/Image</a></li>
+                            <li><a href="#">cropit from Scott Cheng</a></li>
+                            <li><a href="#">autocomplete from Pixabay </a></li>
+                            <li><a href="#">dropdown from Beautiful</a></li>
+                            <li><a href="#">lightbox from Duncan McDougall </a></li>
+                            <li><a href="#">alertify</a></li>
+                            <li><a href="#">iconfont from Fontello</a></li>
+                        </ul>
+                    </article>
+                </section>
+            </div>
+            <div class="pure-u-1 pure-u-md-1-3">
+                <img src="{{ asset('bundles/trismegistesocial/img/mascot.png') }}" class="pure-img" title="The mascot for this app"/>
             </div>
         </div>
+
     </div>
+
+{% endblock %}
+
+{%block stylesheets %}
+    {{ parent() }}
+    <style>
+        .content {
+            padding: 1em;
+        }
+        h1 {
+            font-weight: 200;
+            font-size: 3.6em;
+        }
+    </style>
 {% endblock %}

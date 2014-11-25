@@ -35,7 +35,8 @@ to prevent deadlock.
 Of course they lie within the model, for the most part. I prefer business rules
 to be effective as the object is created, not a side effect of the persistence layer,
 i.e even in memory the object must be valid. So if a rule need always to be true,
-add it in the class constructor.
+add it in the class constructor, for example forcing the Author entity as a parameter
+in the constructor of an Article.
 
 In setters, this kind of rules generates exception (InvalidArgumentException
 for example) so everytime you have an object you know it is valid.
