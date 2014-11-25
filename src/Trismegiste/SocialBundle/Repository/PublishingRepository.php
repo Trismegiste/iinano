@@ -75,17 +75,22 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
 
     public function findLastEntries($offset = 0, $limit = 20, \ArrayIterator $author = null)
     {
-        $docFilter = $this->aliasFilter;
+        $docFilter = ['owner.nickname' => ['$exists' => true]]; //$this->aliasFilter;
         if (!is_null($author)) {
             $filter = array_keys(iterator_to_array($author));
-            $docFilter['owner.nickname'] = ['$in' => $filter];
+            if (count($filter) > 1) {
+                $docFilter['owner.nickname'] = ['$in' => $filter];
+            } else {
+                $docFilter['owner.nickname'] = $filter[0];
+            }
         }
 
         return $this->repository
                         ->find($docFilter)
                         ->limit($limit)
                         ->offset($offset)
-                        ->sort(['createdAt' => -1]);
+                        //->sort(['createdAt' => -1]);
+                        ->sort(['_id' => -1]);
     }
 
     public function findWallEntries(Follower $wallUser, $wallFilter, $offset = 0, $limit = 20)

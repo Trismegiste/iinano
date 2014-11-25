@@ -64,7 +64,8 @@ class CliqueBench extends ContainerAwareCommand
         // indexing user's nickname and ensuring uniqueness :
         $collection->ensureIndex(['author.nickname' => 1], ['sparse' => true, 'unique' => true]);
         // indexing author of a publishing
-        $collection->ensureIndex(['owner.nickname' => 1], ['sparse' => true]);
+        //$collection->ensureIndex(['owner.nickname' => 1], ['sparse' => true]);
+        $collection->ensureIndex(['owner.nickname' => 1, '_id' => -1], ['sparse' => true]);
     }
 
     protected function fill(OutputInterface $output, $numUser, $msgPerUser)
