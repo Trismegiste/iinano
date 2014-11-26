@@ -1,6 +1,10 @@
 {# layout for admin #}
 {% extends 'TrismegisteSocialBundle::sidebar.html.twig' %}
 
+{% block meta_title %}
+    {{ parent() }} | Administration
+{% endblock %}
+
 {%block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/main.css') }}"/>

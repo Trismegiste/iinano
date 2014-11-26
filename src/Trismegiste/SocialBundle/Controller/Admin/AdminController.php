@@ -16,7 +16,7 @@ class AdminController extends Template
 
     public function dashboardAction()
     {
-        return $this->render('TrismegisteSocialBundle:Admin:layout.html.twig');
+        return $this->render('TrismegisteSocialBundle:Admin:dashboard.html.twig');
     }
 
 }
