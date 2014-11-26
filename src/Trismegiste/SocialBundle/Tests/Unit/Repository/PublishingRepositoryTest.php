@@ -100,7 +100,18 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->findLastEntries();
     }
 
-    public function testFindLastEntriesScan()
+    public function testFindLastEntriesEmptyUser()
+    {
+        $cursor = $this->createCollectionCursor();
+        $this->repository->expects($this->once())
+                ->method('find')
+                ->with(['owner.nickname' => ['$in' => []]])
+                ->will($this->returnValue($cursor));
+
+        $this->sut->findLastEntries(0, 20, new \ArrayIterator([]));
+    }
+
+    public function testFindLastEntriesOneUser()
     {
         $cursor = $this->createCollectionCursor();
         $this->repository->expects($this->once())
@@ -109,6 +120,17 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($cursor));
 
         $this->sut->findLastEntries(0, 20, new \ArrayIterator([$this->author->getNickname() => true]));
+    }
+
+    public function testFindLastEntriesTwoUser()
+    {
+        $cursor = $this->createCollectionCursor();
+        $this->repository->expects($this->once())
+                ->method('find')
+                ->with(['owner.nickname' => ['$in' => ['kirk', 'spock']]])
+                ->will($this->returnValue($cursor));
+
+        $this->sut->findLastEntries(0, 20, new \ArrayIterator(['kirk' => true, 'spock' => true]));
     }
 
     public function testPersist()

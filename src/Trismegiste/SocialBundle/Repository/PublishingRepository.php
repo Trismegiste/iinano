@@ -78,10 +78,10 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
         $docFilter = ['owner.nickname' => ['$exists' => true]]; //$this->aliasFilter;
         if (!is_null($author)) {
             $filter = array_keys(iterator_to_array($author));
-            if (count($filter) > 1) {
-                $docFilter['owner.nickname'] = ['$in' => $filter];
-            } else {
+            if (count($filter) === 1) {
                 $docFilter['owner.nickname'] = $filter[0];
+            } else {
+                $docFilter['owner.nickname'] = ['$in' => $filter];
             }
         }
 
