@@ -31,17 +31,6 @@ class AbuseReportController extends ContentController
         return $this->redirectRouteOk('wall_index', ['wallNick' => $wallNick, 'wallFilter' => $wallFilter], 'anchor-' . $id);
     }
 
-    public function listingAction()
-    {
-        $reportRepo = $this->get('social.abusereport.repository');
-        $reportRepo->compileReport();
-        $iterator = $reportRepo->findMostReported(0, 30);
-
-        return $this->render('TrismegisteSocialBundle:AbuseReport:index.html.twig', [
-                    'listing' => $iterator
-        ]);
-    }
-
     public function sendOnCommentaryAction($id, $uuid, $action, $wallNick, $wallFilter)
     {
         $repo = $this->get('social.commentary.repository');
