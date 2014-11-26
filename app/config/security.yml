@@ -21,11 +21,13 @@ security:
             pattern:    ^/
             provider: proprietary
             form_login:
-                check_path: /login_check
-                login_path: /guest/login
+                check_path: trismegiste_logincheck
+                login_path: trismegiste_login
+                default_target_path: netizen_landing_page
+                always_use_default_target_path: true
                 csrf_provider: form.csrf_provider
             logout:
-                path:   /logout
+                path:   trismegiste_logout
                 target: /
             anonymous: ~
 
@@ -33,5 +35,5 @@ security:
         - { path: ^/guest/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/abusereport/, roles: ROLE_MODERATOR }
         - { path: ^/admin/coupon/, roles: ROLE_MARKETING }
-        - { path: ^/admin/netizen/, roles: ROLE_ADMIN }
+        - { path: ^/admin/, roles: ROLE_ADMIN }
         - { path: ^/, roles: ROLE_USER }

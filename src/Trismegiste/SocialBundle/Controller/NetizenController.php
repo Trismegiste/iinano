@@ -83,4 +83,26 @@ class NetizenController extends Template
         ]);
     }
 
+    /**
+     * The page to redirect after successful login
+     */
+    public function landingPageAction()
+    {
+        $secu = $this->get('security.context');
+
+        $route = 'content_index';
+
+        if ($secu->isGranted('ROLE_ADMIN')) {
+            $route = 'admin_dashboard';
+        } else {
+            if ($secu->isGranted('ROLE_MODERATOR')) {
+                $route = 'abusive_listing';
+            } elseif ($secu->isGranted('ROLE_MARKETING')) {
+                $route = 'coupon_listing';
+            }
+        }
+
+        return $this->redirectRouteOk($route);
+    }
+
 }
