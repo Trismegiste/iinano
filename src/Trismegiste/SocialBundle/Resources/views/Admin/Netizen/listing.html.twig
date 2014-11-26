@@ -1,21 +1,33 @@
 {% extends 'TrismegisteSocialBundle:Admin:layout.html.twig' %}
 
 {% block page_title %}
-    {{ parent() }} | User admininstration
+    {{ parent() }} | User administration
 {% endblock %}
 
 {% block content %}
     <div class="pure-g">
         <div class="pure-u-1">
+            <form action="{{ path('netizen_listing') }}" class="pure-form">
+                <label>Find a user</label><input type="text" name="search"/>
+                <button class="pure-button pure-button-primary">Search</button>
+            </form>
             <table class="pure-table pure-table-horizontal pure-table-striped">
                 <tr>
                     <th style="width: 3em;"></th>
-                    <th>Content</th>
+                    <th>Nickname</th>
+                    <th>Email</th>
+                    <th>Registered</th>
+                    <th>Posts</th>
+                    <th>Paid subscription</th>
                 </tr>
                 {% for netizen in listing %}
                     <tr>
                         <td><input type="checkbox" class="action-selection"/></td>
                         <td>{{ netizen.author.nickname }}</td>
+                        <td>{{ netizen.profile.email }}</td>
+                        <td>{{ netizen.profile.joinedAt|timeago }}</td>
+                        <td>{{ netizen.profile.publishingCounter }}</td>
+                        <td>10$ until 2014-12-31</td>
                     </tr>
                 {% endfor %}
             </table>
