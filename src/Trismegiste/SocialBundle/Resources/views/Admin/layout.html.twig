@@ -1,0 +1,12 @@
+{# layout for admin #}
+{% extends 'TrismegisteSocialBundle::purecss.html.twig' %}
+
+{%block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/main.css') }}"/>
+{% endblock %}
+
+{% block full_body %}
+    {% block content %}
+    {% endblock %}
+{% endblock %}

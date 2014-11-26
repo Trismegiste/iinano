@@ -10,7 +10,7 @@
     </route>
 
     <route id="netizen_listing" pattern="/netizen/list">
-        <default key="_controller">TrismegisteSocialBundle:Netizen:listing</default>
+        <default key="_controller">TrismegisteSocialBundle:Admin/Netizen:listing</default>
         <requirement key="_method">GET</requirement>
     </route>
 

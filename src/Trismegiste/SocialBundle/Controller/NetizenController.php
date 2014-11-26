@@ -83,14 +83,4 @@ class NetizenController extends Template
         ]);
     }
 
-    public function listingAction()
-    {
-        $repo = $this->get('social.netizen.repository');
-        $it = $repo->search();
-
-        return $this->render('TrismegisteSocialBundle:Netizen:admin_listing.html.twig', [
-                    'listing' => $it
-        ]);
-    }
-
 }
