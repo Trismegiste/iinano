@@ -1,3 +1,13 @@
+h1, h2, h3, h4 {
+    font-weight: 300;
+    opacity: 0.5
+}
+
+.dashboard-tile {
+    min-height: 300px;
+    padding-bottom: 40px;
+}
+
 .dashboard-tile article {
     text-align: center;
     margin: 1em;
@@ -5,4 +15,8 @@
 
 .dashboard-tile h1 {
     font-size: 3em;
+}
+
+.dashboard-tile h2 {
+    font-size: 2em;
 }

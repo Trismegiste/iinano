@@ -7,6 +7,15 @@
 
 {%block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/main.css') }}"/>
     <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/backend.css') }}"/>
+{% endblock %}
+
+{% block responsive_sidebar %}
+    <ul>
+        {{ pure.menu_item('admin_dashboard', {}, 'Admin' ) }}
+        <li class="menu-item-divided"></li>
+            {{ pure.menu_item('abusive_listing', {}, 'Abuse/spam') }}
+            {{ pure.menu_item('netizen_listing', {}, 'Users') }}
+        <li class="menu-item-divided"><a href="{{ path('trismegiste_logout') }}">Logout</a></li>
+    </ul>
 {% endblock %}
