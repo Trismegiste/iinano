@@ -17,6 +17,12 @@ class RendererExtension extends \Twig_Extension
 
     protected $pathFormat;
     protected $templateAssoc;
+    protected $multiplier = [
+        1 => 'k',
+        'M',
+        'G',
+        'T'
+    ];
 
     /**
      * Ctor
@@ -38,7 +44,8 @@ class RendererExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFilter('timeago', [$this, 'humanDateFilter']),
-            new \Twig_SimpleFilter('gender', [$this, 'genderFilter'], ['needs_environment' => true])
+            new \Twig_SimpleFilter('gender', [$this, 'genderFilter'], ['needs_environment' => true]),
+            new \Twig_SimpleFilter('si', [$this, 'siFilter'])
         ];
     }
 
@@ -112,6 +119,17 @@ class RendererExtension extends \Twig_Extension
                 return call_user_func($trans, 'Male');
             default: return '?';
         }
+    }
+
+    public function siFilter($value, $unit = '')
+    {
+        if ($value < 1000) {
+            return $value; // optim
+        }
+
+        $power = floor(log10($value) / 3);
+
+        return sprintf('%.1f %s%s', $value / pow(1000, $power), $this->multiplier[$power], $unit);
     }
 
 }
