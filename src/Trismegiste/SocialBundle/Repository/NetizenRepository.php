@@ -130,4 +130,11 @@ class NetizenRepository implements NetizenRepositoryInterface
         return $this->repository->find($query);
     }
 
+    public function countAllUser()
+    {
+        $query = [MapAlias::CLASS_KEY => $this->classAlias];
+
+        return $this->repository->getCursor($query)->count();
+    }
+
 }

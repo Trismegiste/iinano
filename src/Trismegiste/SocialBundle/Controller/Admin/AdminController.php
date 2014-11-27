@@ -16,7 +16,12 @@ class AdminController extends Template
 
     public function dashboardAction()
     {
-        return $this->render('TrismegisteSocialBundle:Admin:dashboard.html.twig');
+        $param = [
+            'user' => $this->get('social.netizen.repository')->countAllUser(),
+            'content' => $this->get('social.publishing.repository')->countAllPublishing()
+        ];
+
+        return $this->render('TrismegisteSocialBundle:Admin:dashboard.html.twig', $param);
     }
 
 }

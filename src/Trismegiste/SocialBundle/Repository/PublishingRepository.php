@@ -215,4 +215,11 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
         $this->repository->persist($pub);
     }
 
+    public function countAllPublishing()
+    {
+        return $this->repository->getCursor([
+                    'owner.nickname' => ['$exists' => true]
+                ])->count();
+    }
+
 }

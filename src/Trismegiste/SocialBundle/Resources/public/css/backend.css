@@ -1,0 +1,8 @@
+.dashboard-tile article {
+    text-align: center;
+    margin: 1em;
+}
+
+.dashboard-tile h1 {
+    font-size: 3em;
+}
