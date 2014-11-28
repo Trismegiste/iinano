@@ -33,6 +33,11 @@
     <route id="guest_register" pattern="/guest/register">
         <default key="_controller">TrismegisteSocialBundle:Guest:register</default>
     </route>
+    <route id="guest_coupon_landing" pattern="/guest/coupon/{code}">
+        <default key="_controller">TrismegisteSocialBundle:Guest:couponLanding</default>
+        <requirement key="_method">GET</requirement>
+        <requirement key="code">[\da-zA-Z]+</requirement>
+    </route>
 
     <route id="netizen_show" pattern="/profile/{author}">
         <default key="_controller">TrismegisteSocialBundle:Netizen:showProfile</default>

@@ -71,4 +71,13 @@ class GuestController extends Template
         $this->get('security.context')->setToken($token);
     }
 
+    public function couponLandingAction($code)
+    {
+        $session = $this->getRequest()->getSession();
+        // if not anonymous : do not add session key but add a new ticket
+        $session->set('coupon', $code);
+
+        return $this->redirectRouteOk('content_index');
+    }
+
 }
