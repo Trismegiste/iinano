@@ -100,4 +100,27 @@ class RendererExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($render, $result);
     }
 
+    public function getConversion()
+    {
+        return [
+            [0, '0'],
+            [1, '1'],
+            [42, '42'],
+            [534, '534'],
+            [1337, '1.34k'],
+            [12345, '12.3k'],
+            [123456, '123k'],
+            [1234567, '1.23M']
+        ];
+    }
+
+    /**
+     * @dataProvider getConversion
+     */
+    public function testInternationalSystem($value, $expect)
+    {
+        $result = $this->twig->render("{{ $value|si }}");
+        $this->assertEquals($expect, $result);
+    }
+
 }

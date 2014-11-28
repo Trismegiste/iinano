@@ -121,15 +121,24 @@ class RendererExtension extends \Twig_Extension
         }
     }
 
-    public function siFilter($value, $unit = '')
+    /**
+     * Render a value with multiplier : k,M,G,T...
+     * 
+     * @param float|int $value
+     *
+     * @return string
+     */
+    public function siFilter($value)
     {
         if ($value < 1000) {
             return $value; // optim
         }
 
-        $power = floor(log10($value) / 3);
+        $digit = log10($value);
+        $power = floor($digit / 3);
+        $afterComma = floor(3 - fmod($digit, 3));
 
-        return sprintf('%.1f %s%s', $value / pow(1000, $power), $this->multiplier[$power], $unit);
+        return sprintf("%.{$afterComma}f%s", $value / pow(1000, $power), $this->multiplier[$power]);
     }
 
 }
