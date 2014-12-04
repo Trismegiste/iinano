@@ -207,6 +207,9 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function iCancelReport($id)
     {
         $pub = $this->findByPk($id);
@@ -215,6 +218,9 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
         $this->repository->persist($pub);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function countAllPublishing()
     {
         return $this->repository->getCursor([

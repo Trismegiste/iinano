@@ -112,4 +112,11 @@ interface PublishingRepositoryInterface
      * @param string $id the PK of the Publishing subclass
      */
     public function iCancelReport($id);
+
+    /**
+     * Count all Published contents from all users
+     *
+     * @return int
+     */
+    public function countAllPublishing();
 }
