@@ -21,6 +21,7 @@ class Ticket implements EntranceAccess
     public function __construct(PurchaseChoice $purchaseSystem, \DateTime $purchasedAt)
     {
         $this->purchase = $purchaseSystem;
+        $this->purchasedAt = $purchasedAt;
     }
 
     public function isValid(\DateTime $now = null)
@@ -29,9 +30,9 @@ class Ticket implements EntranceAccess
             $now = new \DateTime();
         }
 
-        $endPeriod = $this->purchasedAt->add($this->purchase->getDuration());
+        $now->sub($this->purchase->getDuration());
 
-        return $endPeriod < $now;
+        return $this->purchasedAt->getTimestamp() > $now->getTimestamp();
     }
 
     public function getPurchasedAt()

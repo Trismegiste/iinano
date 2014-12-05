@@ -14,11 +14,15 @@ interface EntranceAccess
 
     /**
      * Is this entrance access still valid ?
+     *
+     * @return bool
      */
     public function isValid();
 
     /**
      * Gets the date of purchase for this entrance access
+     *
+     * @return \DateTime
      */
     public function getPurchasedAt();
 }

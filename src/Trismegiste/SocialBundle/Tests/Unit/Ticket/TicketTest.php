@@ -4,39 +4,49 @@
  * iinano
  */
 
-namespace Trismegiste\SocialBundle\Ticket;
+namespace Trismegiste\SocialBundle\Tests\Unit\Ticket;
+
+use Trismegiste\SocialBundle\Ticket\Ticket;
 
 /**
- * Ticket is a entrance ticket. Acquired with a Payment or a Coupon
+ * TicketTest tests the Ticket entity
  */
-class Ticket implements EntranceAccess
+class TicketTest extends \PHPUnit_Framework_TestCase
 {
 
+    /** @var Ticket */
+    protected $sut;
+
     /** @var PurchaseChoice */
-    protected $purchase;
+    protected $choice;
 
-    /** @var \DateTime */
-    protected $purchasedAt;
-
-    public function __construct(PurchaseChoice $purchaseSystem, \DateTime $purchasedAt)
+    protected function setUp()
     {
-        $this->purchase = $purchaseSystem;
+        $duration = new \DateInterval("P5D"); // duration of 5 days
+        $this->choice = $this->getMock('Trismegiste\SocialBundle\Ticket\PurchaseChoice');
+        $this->choice->expects($this->once())
+                ->method('getDuration')
+                ->will($this->returnValue($duration));
+        $this->sut = new Ticket($this->choice, new \DateTime());
     }
 
-    public function isValid(\DateTime $now = null)
+    public function testNotExpired()
     {
-        if (is_null($now)) {
-            $now = new \DateTime();
-        }
-
-        $endPeriod = $this->purchasedAt->add($this->purchase->getDuration());
-
-        return $endPeriod < $now;
+        $this->assertTrue($this->sut->isValid());
     }
 
-    public function getPurchasedAt()
+    public function testNotExpiredFutur()
     {
-        return $this->purchasedAt;
+        $now = new \DateTime();
+        $now->modify("+1 day"); // we test for tomorrow
+        $this->assertTrue($this->sut->isValid($now));
+    }
+
+    public function testExpired()
+    {
+        $now = new \DateTime();
+        $now->modify("+1 month"); // we test in 1 month
+        $this->assertFalse($this->sut->isValid($now));
     }
 
 }

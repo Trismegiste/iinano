@@ -20,6 +20,9 @@ abstract class AbstractPurchase implements PurchaseChoice
         $this->duration = $duration;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getDuration()
     {
         return $this->duration;

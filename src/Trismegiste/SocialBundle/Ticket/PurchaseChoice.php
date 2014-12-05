@@ -14,6 +14,8 @@ interface PurchaseChoice
 
     /**
      * Gets the duration property of this PurchaseChoice
+     *
+     * @return \DateInterval
      */
     public function getDuration();
 }
