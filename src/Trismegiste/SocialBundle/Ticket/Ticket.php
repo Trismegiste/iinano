@@ -28,6 +28,9 @@ class Ticket implements EntranceAccess
         $this->purchasedAt = $now;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function isValid(\DateTime $now = null)
     {
         if (is_null($now)) {
@@ -39,6 +42,9 @@ class Ticket implements EntranceAccess
         return $this->purchasedAt->getTimestamp() > $now->getTimestamp();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getPurchasedAt()
     {
         return $this->purchasedAt;

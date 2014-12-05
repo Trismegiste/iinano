@@ -15,6 +15,11 @@ abstract class AbstractPurchase implements PurchaseChoice
     /** @var \DateInterval */
     protected $duration;
 
+    /**
+     * Ctor
+     * 
+     * @param \DateInterval $duration the given duration for this purchase
+     */
     public function __construct(\DateInterval $duration)
     {
         $this->duration = $duration;
