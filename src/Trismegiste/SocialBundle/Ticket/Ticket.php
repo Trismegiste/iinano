@@ -18,10 +18,14 @@ class Ticket implements EntranceAccess
     /** @var \DateTime */
     protected $purchasedAt;
 
-    public function __construct(PurchaseChoice $purchaseSystem, \DateTime $purchasedAt)
+    public function __construct(PurchaseChoice $purchaseSystem, \DateTime $now = null)
     {
+        if (is_null($now)) {
+            $now = new \DateTime();
+        }
+
         $this->purchase = $purchaseSystem;
-        $this->purchasedAt = $purchasedAt;
+        $this->purchasedAt = $now;
     }
 
     public function isValid(\DateTime $now = null)

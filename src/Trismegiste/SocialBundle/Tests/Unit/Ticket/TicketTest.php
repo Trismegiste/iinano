@@ -24,10 +24,23 @@ class TicketTest extends \PHPUnit_Framework_TestCase
     {
         $duration = new \DateInterval("P5D"); // duration of 5 days
         $this->choice = $this->getMock('Trismegiste\SocialBundle\Ticket\PurchaseChoice');
-        $this->choice->expects($this->once())
+        $this->choice->expects($this->any())
                 ->method('getDuration')
                 ->will($this->returnValue($duration));
-        $this->sut = new Ticket($this->choice, new \DateTime());
+        $this->sut = new Ticket($this->choice);
+    }
+
+    public function testPurchaseDate()
+    {
+        $this->assertInstanceOf('DateTime', $this->sut->getPurchasedAt());
+    }
+
+    public function testWithPurchaseDateConstruct()
+    {
+        $past = new \DateTime();
+        $past->modify('-3 days');
+        $t = new Ticket($this->choice, $past);
+        $this->assertTrue($t->isValid());
     }
 
     public function testNotExpired()
