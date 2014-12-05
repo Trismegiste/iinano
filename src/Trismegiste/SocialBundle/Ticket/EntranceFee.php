@@ -12,7 +12,7 @@ namespace Trismegiste\SocialBundle\Ticket;
 class EntranceFee implements PurchaseChoice
 {
 
-    /** @var int */
+    /** @var numeric */
     protected $amount = 0;
 
     /** ISO currency */
@@ -40,7 +40,9 @@ class EntranceFee implements PurchaseChoice
     }
 
     /**
-     * @inheritdoc
+     * Returns the subscription fee
+     *
+     * @return numeric
      */
     public function getAmount()
     {
@@ -48,7 +50,9 @@ class EntranceFee implements PurchaseChoice
     }
 
     /**
-     * @inheritdoc
+     * Returns the iso currency
+     *
+     * @return string
      */
     public function getCurrency()
     {
