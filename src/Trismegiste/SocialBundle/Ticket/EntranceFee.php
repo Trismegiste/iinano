@@ -6,11 +6,16 @@
 
 namespace Trismegiste\SocialBundle\Ticket;
 
+use Trismegiste\Yuurei\Persistence;
+
 /**
  * EntranceFee is a payment for acquiring Ticket
+ * Conceptually, in an e-commerce, this is a product template
  */
-class EntranceFee implements PurchaseChoice
+class EntranceFee implements PurchaseChoice, Persistence\Persistable
 {
+
+    use Persistence\PersistableImpl;
 
     /** @var numeric */
     protected $amount = 0;

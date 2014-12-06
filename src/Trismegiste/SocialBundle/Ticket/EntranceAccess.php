@@ -17,7 +17,7 @@ interface EntranceAccess
      *
      * @return bool
      */
-    public function isValid();
+    public function isValid(\DateTime $now = null);
 
     /**
      * Gets the date of purchase for this entrance access

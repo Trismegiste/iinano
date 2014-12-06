@@ -7,7 +7,8 @@
 namespace Trismegiste\SocialBundle\Ticket;
 
 /**
- * Ticket is a entrance ticket. Acquired with a Payment or a Coupon
+ * Ticket is a entrance ticket. Acquired with a EntranceFee or a Coupon
+ * Conceptually, in an e-commerce, this is an order
  */
 class Ticket implements EntranceAccess
 {
