@@ -22,15 +22,20 @@ class Coupon implements PurchaseChoice, Persistence\Persistable
     /** @var \DateTime read/write */
     protected $expiredAt;
 
+    /** @var string */
+    protected $hashKey;
+
     /**
      * Ctor
      *
      * @param \DateInterval $duration the given duration for this purchase
+     * @param string $code an asbtract key for this coupon. Must be unpredictible (unlike MongoId)
      * @param \DateTime $expiration expiration date (default: in 5 days)
      */
-    public function __construct(\DateInterval $duration, \DateTime $expiration = null)
+    public function __construct(\DateInterval $duration, $code, \DateTime $expiration = null)
     {
         $this->duration = $duration;
+        $this->hashKey = $code;
 
         if (is_null($expiration)) {
             $expiration = new \DateTime();
@@ -54,7 +59,7 @@ class Coupon implements PurchaseChoice, Persistence\Persistable
      */
     public function getHashKey()
     {
-        return (string) $this->getId(); // @todo hashids here could be cool
+        return $this->hashKey; // @todo hashids here could be cool
     }
 
 }
