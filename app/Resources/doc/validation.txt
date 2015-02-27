@@ -39,7 +39,7 @@ add it in the class constructor, for example forcing the Author entity as a para
 in the constructor of an Article.
 
 In setters, this kind of rules generates exception (InvalidArgumentException
-for example) so everytime you have an object you know it is valid.
+for example) so everytime you get an object you know it is valid.
 
 ### Technical rules
 Well, since memory, diskspace and screen are not infinite, we need to add limit
@@ -47,7 +47,7 @@ to properties and fields. By relying on NoSQL, many technical rules become irrel
 
 Critical example: uniqueness on username, typically implemented in the database.
 
-Just to be sure : never but business rules in the database or you have to migrate
+Just to be sure : never put business rules in the database or you have to migrate
 your database every week.
 
 ### Security rules
@@ -57,11 +57,12 @@ and he is a user (with a set of granted privileges) in the model.
 
 These rules are going to the Security Component, with Voter and Roles. Don't
 put it in the model, it will create many deadlock. How to know if a rule is a security rule
-or a business rule ? Think in the administrator point of view. Can he create an
-article without an author => This is a security rule, if not, this is a business rule.
+or a business rule ? Think in the administrator point of view. For example,
+can he create an article without an author => This is a security rule, if not,
+this is a business rule.
 
 Another way to discriminate: usually, security rules create HTTP/403 and
-are used in Twig with isGranted.
+are used in Twig with isGranted. OTH, business rules nicely inform and guide the end user.
 
 ### Presentation rules
 I call a presentation rule (or a "view rule") when it is a requirement coming from
@@ -69,7 +70,7 @@ the presentation layer. A title must be short, as a nickname, that image must no
 1920x1080 but this avatar must not exceed 300x300 etc...
 
 I put all these rules in forms, never in the model. So my model could be easily used
-in another project.
+in another project. Putting those rules in the database is a very bad idea.
 
 
 
