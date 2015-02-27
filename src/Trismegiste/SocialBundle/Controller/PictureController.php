@@ -24,6 +24,7 @@ class PictureController extends Template
 
         if (!file_exists($file)) {
             // no fallback image, a dead link is a dead link
+            $this->get('logger')->debug("$file not found");
             throw $this->createNotFoundException($storageKey . ' not found');
         }
 
