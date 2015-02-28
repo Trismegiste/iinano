@@ -14,16 +14,16 @@ use Trismegiste\SocialBundle\Ticket\EntranceFee;
 class EntraceFeeTest extends \PHPUnit_Framework_TestCase
 {
 
-    /** @var Ticket */
+    /** @var EntranceFee */
     protected $sut;
 
-    /** @var EntranceFee */
-    protected $choice;
+    /** @var DateInterval */
+    protected $duration;
 
     protected function setUp()
     {
-        $duration = new \DateInterval("P5D"); // duration of 5 days
-        $this->sut = new EntranceFee($duration, 100, 'EUR');
+        $this->duration = new \DateInterval("P5D"); // duration of 5 days
+        $this->sut = new EntranceFee($this->duration, 100, 'EUR');
     }
 
     public function testAmoutGetter()
@@ -39,6 +39,30 @@ class EntraceFeeTest extends \PHPUnit_Framework_TestCase
     public function testDurationGetter()
     {
         $this->assertInstanceOf('DateInterval', $this->sut->getDuration());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testValidatorNullAmout()
+    {
+        new EntranceFee($this->duration, 0, 'XXX');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testValidatorNegativeAmout()
+    {
+        new EntranceFee($this->duration, -10, 'XXX');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testValidatorBadCurrency()
+    {
+        new EntranceFee($this->duration, 10, '');
     }
 
 }
