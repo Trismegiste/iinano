@@ -21,7 +21,7 @@ class EntranceFee implements PurchaseChoice, Persistence\Persistable
     protected $amount = 0;
 
     /** ISO currency */
-    protected $currency = 'USD';
+    protected $currency;
 
     /** @var \DateInterval */
     protected $duration;
@@ -33,7 +33,15 @@ class EntranceFee implements PurchaseChoice, Persistence\Persistable
      */
     public function __construct(\DateInterval $duration, $amount, $curr)
     {
+        if (empty($curr)) {
+            throw new \InvalidArgumentException("Invalid currency");
+        }
+        if ($amount <= 0) {
+            throw new \InvalidArgumentException("Invalid negative or null amout");
+        }
         $this->duration = $duration;
+        $this->amount = $amount;
+        $this->currency = $curr;
     }
 
     /**
