@@ -62,7 +62,7 @@ class EntraceFeeTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidatorBadCurrency()
     {
-        new EntranceFee($this->duration, 10, '');
+        new EntranceFee($this->duration, 10, 'EU');
     }
 
 }

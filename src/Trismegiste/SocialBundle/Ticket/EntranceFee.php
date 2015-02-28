@@ -33,7 +33,7 @@ class EntranceFee implements PurchaseChoice, Persistence\Persistable
      */
     public function __construct(\DateInterval $duration, $amount, $curr)
     {
-        if (empty($curr)) {
+        if (3 !== strlen($curr)) {
             throw new \InvalidArgumentException("Invalid currency");
         }
         if ($amount <= 0) {
