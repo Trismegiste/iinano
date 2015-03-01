@@ -20,7 +20,7 @@ class FeeController extends Template
      */
     public function editAction()
     {
-        return new \Symfony\Component\HttpFoundation\Response("todo");
+        return $this->render('TrismegisteSocialBundle:Admin:feeedit.html.twig');
     }
 
 }
