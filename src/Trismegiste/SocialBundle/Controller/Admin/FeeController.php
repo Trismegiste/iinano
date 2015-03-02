@@ -15,12 +15,12 @@ class FeeController extends Template
 {
 
     /**
-     * Since there's one and only one instance of EntraceFee
+     * Since there's one and only one instance of EntranceFee
      * It creates/edits this entity
      */
     public function editAction()
     {
-        return $this->render('TrismegisteSocialBundle:Admin:feeedit.html.twig');
+        return $this->render('TrismegisteSocialBundle:Admin:fee_form.html.twig');
     }
 
 }
