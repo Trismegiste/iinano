@@ -7,6 +7,7 @@
 namespace Trismegiste\SocialBundle\Controller\Admin;
 
 use Trismegiste\SocialBundle\Controller\Template;
+use Trismegiste\SocialBundle\Form\EntranceFeeType;
 
 /**
  * FeeController is a controller for editing the entrance fee of the social network
@@ -20,8 +21,7 @@ class FeeController extends Template
      */
     public function editAction()
     {
-        $type = new \Trismegiste\SocialBundle\Form\EntranceFeeType();
-        $form = $this->createForm($type);
+        $form = $this->createForm(new EntranceFeeType());
 
         return $this->render('TrismegisteSocialBundle:Admin:fee_form.html.twig', ['form' => $form->createView()]);
     }

@@ -26,6 +26,6 @@
 
     <route id="entrancefee_edit" pattern="/fee/edit">
         <default key="_controller">TrismegisteSocialBundle:Admin/Fee:edit</default>
-        <requirement key="_method">GET</requirement>
+        <requirement key="_method">GET|POST</requirement>
     </route>
 </routes>
