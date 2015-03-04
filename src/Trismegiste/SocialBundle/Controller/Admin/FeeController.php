@@ -20,7 +20,10 @@ class FeeController extends Template
      */
     public function editAction()
     {
-        return $this->render('TrismegisteSocialBundle:Admin:fee_form.html.twig');
+        $type = new \Trismegiste\SocialBundle\Form\EntranceFeeType();
+        $form = $this->createForm($type);
+
+        return $this->render('TrismegisteSocialBundle:Admin:fee_form.html.twig', ['form' => $form->createView()]);
     }
 
 }
