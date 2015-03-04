@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Controller\Admin;
 
 use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Form\EntranceFeeType;
+use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 
 /**
  * FeeController is a controller for editing the entrance fee of the social network
@@ -22,8 +23,21 @@ class FeeController extends Template
     public function editAction()
     {
         $repo = $this->get('dokudoki.repository');
-        $fee = $repo->find(['-class' => 'fee']);
-        $form = $this->createForm(new EntranceFeeType());
+        $fee = $repo->findOne([MapAlias::CLASS_KEY => 'fee']);
+        $form = $this->createForm(new EntranceFeeType(), $fee);
+
+        $form->handleRequest($this->getRequest());
+        if ($form->isValid()) {
+            $newFee = $form->getData();
+            try {
+                $repo->persist($newFee);
+                $this->pushFlash('notice', 'Entrance fee saved');
+
+                // return somewhere
+            } catch (\MongoException $e) {
+                $this->pushFlash('warning', 'Cannot save entrance fee');
+            }
+        }
 
         return $this->render('TrismegisteSocialBundle:Admin:fee_form.html.twig', ['form' => $form->createView()]);
     }
