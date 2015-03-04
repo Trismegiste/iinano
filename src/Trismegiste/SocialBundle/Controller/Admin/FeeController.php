@@ -21,6 +21,8 @@ class FeeController extends Template
      */
     public function editAction()
     {
+        $repo = $this->get('dokudoki.repository');
+        $fee = $repo->find(['-class' => 'fee']);
         $form = $this->createForm(new EntranceFeeType());
 
         return $this->render('TrismegisteSocialBundle:Admin:fee_form.html.twig', ['form' => $form->createView()]);

@@ -20,27 +20,30 @@ class EntranceFee implements PurchaseChoice, Persistence\Persistable
     /** @var numeric */
     protected $amount = 0;
 
-    /** ISO currency */
-    protected $currency;
+    /** @var string ISO currency */
+    protected $currency = 'XXX';
 
     /** @var \DateInterval */
     protected $duration;
 
-    /**
-     * Ctor
-     *
-     * @param \DateInterval $duration the given duration for this purchase
-     */
-    public function __construct(\DateInterval $duration, $amount, $curr)
+    public function setDuration($str)
+    {
+        $this->duration = new \DateInterval($str);
+    }
+
+    public function setAmount($amount)
+    {
+        if ($amount <= 0) {
+            throw new \InvalidArgumentException("Invalid negative or null amout");
+        }
+        $this->amount = $amount;
+    }
+
+    public function setCurrency($curr)
     {
         if (3 !== strlen($curr)) {
             throw new \InvalidArgumentException("Invalid currency");
         }
-        if ($amount <= 0) {
-            throw new \InvalidArgumentException("Invalid negative or null amout");
-        }
-        $this->duration = $duration;
-        $this->amount = $amount;
         $this->currency = $curr;
     }
 
