@@ -22,11 +22,10 @@ class TicketTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $duration = new \DateInterval("P5D"); // duration of 5 days
         $this->choice = $this->getMock('Trismegiste\SocialBundle\Ticket\PurchaseChoice');
         $this->choice->expects($this->any())
                 ->method('getDuration')
-                ->will($this->returnValue($duration));
+                ->will($this->returnValue('+5 days'));
         $this->sut = new Ticket($this->choice);
     }
 

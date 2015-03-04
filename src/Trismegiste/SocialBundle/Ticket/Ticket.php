@@ -25,7 +25,7 @@ class Ticket implements EntranceAccess
             $now = new \DateTime();
         }
 
-        $this->purchase = $purchaseSystem;
+        $this->purchase = $purchaseSystem; // @todo embed or copy properties ?
         $this->purchasedAt = $now;
     }
 
@@ -38,7 +38,7 @@ class Ticket implements EntranceAccess
             $now = new \DateTime();
         }
 
-        $now->sub($this->purchase->getDuration());
+        $now->modify($this->purchase->getDuration());
 
         return $this->purchasedAt->getTimestamp() > $now->getTimestamp();
     }

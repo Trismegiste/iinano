@@ -12,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 /**
  * EntranceFeeType is a form for the unique EntranceFee entity
@@ -28,10 +29,18 @@ class EntranceFeeType extends AbstractType
                     ]
                 ])
                 ->add('currency', 'currency')
-                ->add('duration', 'text', [
+                ->add('duration', 'choice', [
                     'constraints' => [
-                        new NotBlank()
-                    ]
+                        new \Symfony\Component\Validator\Constraints\NotNull()
+                    ],
+                    'choices' => [
+                        '+ 1 month' => 'one month',
+                        '+ 3 months' => 'three months',
+                        '+ 6 months' => 'six months',
+                        '+ 1 year' => 'one year'
+                    ],
+                    'expanded' => true,
+                    'multiple' => false
                 ])
                 ->add('send', 'submit');
     }

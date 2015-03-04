@@ -23,12 +23,12 @@ class EntranceFee implements PurchaseChoice, Persistence\Persistable
     /** @var string ISO currency */
     protected $currency = 'XXX';
 
-    /** @var \DateInterval */
+    /** @var string a string for DateTime::modify */
     protected $duration;
 
     public function setDuration($str)
     {
-        $this->duration = new \DateInterval($str);
+        $this->duration = $str;
     }
 
     public function setAmount($amount)
