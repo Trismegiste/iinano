@@ -1,0 +1,11 @@
+{# flash message #}
+<script>
+    (function () {
+    {{ app.session.flashbag.get('notice')|json_encode()|raw }}.forEach(function(text) {
+        alertify.success(text);
+        });
+    {{ app.session.flashbag.get('warning')|json_encode()|raw }}.forEach(function(text) {
+                alertify.error(text);
+                });
+        })();
+</script>
