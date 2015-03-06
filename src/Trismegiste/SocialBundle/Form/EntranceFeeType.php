@@ -22,11 +22,12 @@ class EntranceFeeType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('amount', 'money', [
+        $builder->add('amount', 'number', [
                     'constraints' => [
                         new NotBlank(),
                         new GreaterThan(['value' => 0])
-                    ]
+                    ],
+                    'precision' => 2
                 ])
                 ->add('currency', 'currency')
                 ->add('duration', 'choice', [
