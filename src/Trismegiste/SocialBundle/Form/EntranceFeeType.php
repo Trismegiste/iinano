@@ -7,12 +7,10 @@
 namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 /**
  * EntranceFeeType is a form for the unique EntranceFee entity
@@ -29,7 +27,7 @@ class EntranceFeeType extends AbstractType
                     ],
                     'precision' => 2
                 ])
-                ->add('currency', 'currency')
+                ->add('currency', 'currency', ['preferred_choices' => ['USD', 'EUR', 'JPY']])
                 ->add('duration', 'choice', [
                     'constraints' => [
                         new \Symfony\Component\Validator\Constraints\NotNull()
