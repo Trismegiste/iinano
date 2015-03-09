@@ -18,7 +18,7 @@ class FeeController extends Template
 
     /**
      * Since there's one and only one instance of EntranceFee
-     * It creates/edits this entity
+     * This controller creates/edits this entity
      */
     public function editAction()
     {
@@ -33,13 +33,16 @@ class FeeController extends Template
                 $repo->persist($newFee);
                 $this->pushFlash('notice', 'Entrance fee saved');
 
-                // return somewhere
+                // return to the same page
+                $this->redirectRouteOk('entrancefee_edit');
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save entrance fee');
             }
         }
 
-        return $this->render('TrismegisteSocialBundle:Admin:fee_form.html.twig', ['form' => $form->createView()]);
+        return $this->render('TrismegisteSocialBundle:Admin:fee_form.html.twig', [
+                    'form' => $form->createView()
+        ]);
     }
 
 }

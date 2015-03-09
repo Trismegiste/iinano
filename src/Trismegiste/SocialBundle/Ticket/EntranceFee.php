@@ -33,17 +33,11 @@ class EntranceFee implements PurchaseChoice, Persistence\Persistable
 
     public function setAmount($amount)
     {
-        if ($amount <= 0) {
-            throw new \InvalidArgumentException("Invalid negative or null amout");
-        }
         $this->amount = $amount;
     }
 
     public function setCurrency($curr)
     {
-        if (3 !== strlen($curr)) {
-            throw new \InvalidArgumentException("Invalid currency");
-        }
         $this->currency = $curr;
     }
 

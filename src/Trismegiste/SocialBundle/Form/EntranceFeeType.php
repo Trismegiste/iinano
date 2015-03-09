@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 /**
  * EntranceFeeType is a form for the unique EntranceFee entity
@@ -27,10 +28,13 @@ class EntranceFeeType extends AbstractType
                     ],
                     'precision' => 2
                 ])
-                ->add('currency', 'currency', ['preferred_choices' => ['USD', 'EUR', 'JPY']])
+                ->add('currency', 'currency', [
+                    'preferred_choices' => ['USD', 'EUR', 'JPY'],
+                    'empty_value' => ''
+                ])
                 ->add('duration', 'choice', [
                     'constraints' => [
-                        new \Symfony\Component\Validator\Constraints\NotNull()
+                        new NotNull()
                     ],
                     'choices' => [
                         '+ 1 month' => 'one month',
@@ -51,7 +55,7 @@ class EntranceFeeType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults([ 'data_class' => 'Trismegiste\SocialBundle\Ticket\EntranceFee']);
+        $resolver->setDefaults(['data_class' => 'Trismegiste\SocialBundle\Ticket\EntranceFee']);
     }
 
 }
