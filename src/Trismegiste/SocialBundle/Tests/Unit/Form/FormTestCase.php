@@ -57,7 +57,8 @@ abstract class FormTestCase extends \PHPUnit_Framework_TestCase
     public function testSubmit($submitted, $expected)
     {
         $this->sut->submit($submitted);
-        $this->assertTrue($this->sut->isValid());
+        var_dump($this->sut->getData());
+        $this->assertTrue($this->sut->isValid(), var_export($this->sut->getErrors(), true));
         $this->assertEquals($expected, $this->sut->getData());
     }
 
