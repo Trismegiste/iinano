@@ -38,9 +38,7 @@ class Ticket implements EntranceAccess
             $now = new \DateTime();
         }
 
-        $now->modify($this->purchase->getDuration());
-
-        return $this->purchasedAt->getTimestamp() > $now->getTimestamp();
+        return $this->getExpiredAt()->getTimestamp() >= $now->getTimestamp();
     }
 
     /**
@@ -49,6 +47,14 @@ class Ticket implements EntranceAccess
     public function getPurchasedAt()
     {
         return $this->purchasedAt;
+    }
+
+    public function getExpiredAt()
+    {
+        $tmp = clone $this->purchasedAt;
+        $tmp->modify($this->purchase->getDuration());
+
+        return $tmp;
     }
 
 }

@@ -61,4 +61,10 @@ class TicketTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->sut->isValid($now));
     }
 
+    public function testExpirationDate()
+    {
+        $this->assertInstanceOf('\DateTime', $this->sut->getExpiredAt());
+        $this->assertNotEquals($this->sut->getExpiredAt(), $this->sut->getPurchasedAt());
+    }
+
 }

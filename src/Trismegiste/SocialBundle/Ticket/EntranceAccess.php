@@ -25,4 +25,11 @@ interface EntranceAccess
      * @return \DateTime
      */
     public function getPurchasedAt();
+
+    /**
+     * Gets the expiration date
+     *
+     * @return \DateTime 
+     */
+    public function getExpiredAt();
 }
