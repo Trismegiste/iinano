@@ -55,7 +55,7 @@ class AvatarRepository
 
     public function getIcon($code)
     {
-        $fch = $code === 'xx' ? "00.jpg" : '01.jpg';
+        $fch = 'avatar-' . ($code === 'xx' ? 'xx' : 'xy') . '.jpg';
 
         return \imagecreatefromjpeg(__DIR__ . '/../Resources/icon/' . $fch);
     }
