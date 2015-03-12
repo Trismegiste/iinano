@@ -45,7 +45,7 @@ class EntranceFeeType extends AbstractType
                     'expanded' => true,
                     'multiple' => false
                 ])
-                ->add('send', 'submit');
+                ->add('Edit', 'submit');
     }
 
     public function getName()
