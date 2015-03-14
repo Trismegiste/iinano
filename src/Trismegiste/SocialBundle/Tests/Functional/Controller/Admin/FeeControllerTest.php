@@ -7,9 +7,9 @@
 namespace Trismegiste\SocialBundle\Tests\Functional\Controller\Admin;
 
 /**
- * AdminControllerTest tests the admin dashboard
+ * FeeControllerTest tests the admin entrace fee edit
  */
-class AdminControllerTest extends AdminControllerTestCase
+class FeeControllerTest extends AdminControllerTestCase
 {
 
     public function testFeeEdit()
