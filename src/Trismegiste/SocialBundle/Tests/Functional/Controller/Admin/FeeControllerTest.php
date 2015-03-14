@@ -12,6 +12,14 @@ namespace Trismegiste\SocialBundle\Tests\Functional\Controller\Admin;
 class FeeControllerTest extends AdminControllerTestCase
 {
 
+    /**
+     * @test
+     */
+    public function initialize()
+    {
+        parent::initialize();
+    }
+
     public function testFeeEdit()
     {
         $this->assertSecuredPage('entrancefee_edit');

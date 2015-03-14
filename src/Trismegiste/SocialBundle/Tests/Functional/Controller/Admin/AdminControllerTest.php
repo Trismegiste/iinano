@@ -12,11 +12,18 @@ namespace Trismegiste\SocialBundle\Tests\Functional\Controller\Admin;
 class AdminControllerTest extends AdminControllerTestCase
 {
 
+    /**
+     * @test
+     */
+    public function initialize()
+    {
+        parent::initialize();
+    }
+
     public function testDashboardAccessWithAdmin()
     {
         $this->assertSecuredPage('admin_dashboard');
         $crawler = $this->client->getCrawler();
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertCount(1, $crawler->filter('div.dashboard-tile:contains("Users")'));
     }
 

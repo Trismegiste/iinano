@@ -14,28 +14,20 @@ use Trismegiste\SocialBundle\Tests\Functional\Controller\WebTestCasePlus;
 class AdminControllerTestCase extends WebTestCasePlus
 {
 
-    protected $collection;
-
-    protected function setUp()
+    protected function initialize()
     {
-        parent::setUp();
-        $this->collection = $this->getService('dokudoki.collection');
-    }
+        $collection = $this->getService('dokudoki.collection');
+        $collection->drop();
+        $this->assertCount(0, $collection->find());
 
-    /**
-     * @test
-     */
-    public function initialize()
-    {
-        $this->collection->drop();
-        $this->assertCount(0, $this->collection->find());
-        $this->addUserFixture('kirk');
-        $this->addUserFixture('spock');
+        $this->addUserFixture('simple');
+        $this->addUserFixture('admin');
 
         $repo = $this->getService('social.netizen.repository');
-        $user = $repo->findByNickname('kirk');
+        $user = $repo->findByNickname('admin');
         $user->setGroup('ROLE_ADMIN');
         $repo->persist($user);
+        $this->assertCount(2, $collection->find());
     }
 
     protected function assertSecuredPage($page)
@@ -43,12 +35,12 @@ class AdminControllerTestCase extends WebTestCasePlus
         $this->getPage($page);
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
 
-        $this->logIn('spock');
+        $this->logIn('simple');
         $this->getPage($page);
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
 
-        $this->logIn('kirk');
-        $crawler = $this->getPage($page);
+        $this->logIn('admin');
+        $this->getPage($page);
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
