@@ -36,4 +36,4 @@ security:
         - { path: ^/admin/abusereport/, roles: ROLE_MODERATOR }
         - { path: ^/admin/coupon/, roles: ROLE_MARKETING }
         - { path: ^/admin/, roles: ROLE_ADMIN }
-        - { path: ^/, roles: ROLE_USER }
+        - { path: ^/, roles: USER_W_TICKET }

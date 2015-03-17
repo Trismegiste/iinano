@@ -95,4 +95,9 @@ class Netizen extends User implements UserInterface
         $this->roles = [$str];
     }
 
+    public function hasValidTicket()
+    {
+        return true;
+    }
+
 }
