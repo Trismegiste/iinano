@@ -77,7 +77,7 @@ class GuestController extends Template
         // if not anonymous : do not add session key but add a new ticket
         $session->set('coupon', $code);
 
-        return $this->redirectRouteOk('content_index');
+        return $this->redirectRouteOk('guest_register');
     }
 
 }

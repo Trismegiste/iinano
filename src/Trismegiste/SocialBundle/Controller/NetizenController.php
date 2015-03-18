@@ -90,8 +90,7 @@ class NetizenController extends Template
     {
         $secu = $this->get('security.context');
 
-        $route = 'content_index';
-
+        // backoffice users :
         if ($secu->isGranted('ROLE_ADMIN')) {
             $route = 'admin_dashboard';
         } else {
@@ -99,6 +98,15 @@ class NetizenController extends Template
                 $route = 'abusive_listing';
             } elseif ($secu->isGranted('ROLE_MARKETING')) {
                 $route = 'coupon_listing';
+            }
+        }
+
+        // front users :
+        if (!isset($route)) {
+            if ($secu->isGranted('VALID_TICKET')) {
+                $route = 'content_index';
+            } else {
+                $route = 'ticket_acquire';
             }
         }
 

@@ -97,7 +97,7 @@ class Netizen extends User implements UserInterface
 
     public function hasValidTicket()
     {
-        return true;
+        return false;
     }
 
 }
