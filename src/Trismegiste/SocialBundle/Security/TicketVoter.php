@@ -18,7 +18,7 @@ class TicketVoter implements VoterInterface
 
     public function supportsAttribute($attribute)
     {
-        return 'USER_W_TICKET' === $attribute;
+        return 'VALID_TICKET' === $attribute;
     }
 
     public function supportsClass($fqcn)
@@ -32,7 +32,7 @@ class TicketVoter implements VoterInterface
         // this isn't a requirement, it's just one easy way for you to
         // design your voter
         if (1 !== count($attributes)) {
-            throw new \InvalidArgumentException('Only one attribute is allowed for OwnerVoter');
+            throw new \InvalidArgumentException('Only one attribute is allowed for TicketVoter');
         }
 
         // set the attribute to check against

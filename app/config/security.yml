@@ -32,8 +32,9 @@ security:
             anonymous: ~
 
     access_control:
-        - { path: ^/guest/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/abusereport/, roles: ROLE_MODERATOR }
         - { path: ^/admin/coupon/, roles: ROLE_MARKETING }
         - { path: ^/admin/, roles: ROLE_ADMIN }
-        - { path: ^/, roles: USER_W_TICKET }
+        - { path: ^/ticket/, roles: ROLE_USER }
+        - { path: ^/guest/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: VALID_TICKET }
