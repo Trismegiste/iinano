@@ -50,6 +50,8 @@ class GuestController extends Template
             if ($form->isValid()) {
                 // only user data data
                 $user = $form->getData();
+                // @todo add coupon if there is one (use session or GET param ?)
+                
                 $repo->persist($user);
                 $this->authenticateAccount($user);
 

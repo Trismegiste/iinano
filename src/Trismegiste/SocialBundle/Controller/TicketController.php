@@ -14,7 +14,7 @@ use Trismegiste\SocialBundle\Controller\Template;
 class TicketController extends Template
 {
 
-    public function acquireTicketAction()
+    public function noValidTicketAction()
     {
         return new \Symfony\Component\HttpFoundation\Response('check ticket ?');
     }

@@ -106,7 +106,7 @@ class NetizenController extends Template
             if ($secu->isGranted('VALID_TICKET')) {
                 $route = 'content_index';
             } else {
-                $route = 'ticket_acquire';
+                $route = 'no_valid_ticket';
             }
         }
 
