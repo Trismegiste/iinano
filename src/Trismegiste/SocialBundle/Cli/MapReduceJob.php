@@ -40,13 +40,14 @@ class MapReduceJob extends ContainerAwareCommand
         // collection name
         $tmpCollName = !is_null($input->getOption('tmpcoll')) ? $input->getOption('tmpcoll') : strtolower($input->getArgument('classname'));
 
-        $output->writeln("Lauching $fqcn and creating $tmpCollName");
+        $stopwatch = microtime(true);
+        $output->writeln("Launching $fqcn and creating $tmpCollName");
 
         $refl = new \ReflectionClass($fqcn);
         /** @var $job \Trismegiste\SocialBundle\Repository\MapReduce\MruService */
         $job = $refl->newInstance($coll, $tmpCollName);
         $job->execute();
-        $output->writeln("Update finished");
+        $output->writeln(sprintf("Update finished after %.1f sec", (microtime(true) - $stopwatch)));
     }
 
 }
