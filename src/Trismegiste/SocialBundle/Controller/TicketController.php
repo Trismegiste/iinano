@@ -9,7 +9,7 @@ namespace Trismegiste\SocialBundle\Controller;
 use Trismegiste\SocialBundle\Controller\Template;
 
 /**
- * TicketController is a landing page for payment/coupon to obtain ticket
+ * TicketController is a controller for purchasing ticket w/ payment or coupon
  */
 class TicketController extends Template
 {
