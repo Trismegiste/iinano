@@ -16,7 +16,7 @@ class TicketController extends Template
 
     public function noValidTicketAction()
     {
-        return new \Symfony\Component\HttpFoundation\Response('check ticket ?');
+        return $this->render('TrismegisteSocialBundle:Ticket:new_ticket.html.twig');
     }
 
 }
