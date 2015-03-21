@@ -35,4 +35,14 @@ abstract class MruService
         $this->mapReducedColl = $this->database->selectCollection($reducedName);
     }
 
+    abstract protected function mapReduce();
+
+    abstract protected function update();
+
+    final public function execute()
+    {
+        $this->mapReduce();
+        $this->update();
+    }
+
 }
