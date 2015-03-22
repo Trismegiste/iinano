@@ -12,7 +12,7 @@ namespace Trismegiste\SocialBundle\Tests\Functional\Cli {
     use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
     /**
-     * MapReduceJobTest is a ...
+     * MapReduceJobTest tests the MapReduceJob CLI
      */
     class MapReduceJobTest extends WebTestCase
     {
@@ -36,8 +36,11 @@ namespace Trismegiste\SocialBundle\Tests\Functional\Cli {
 
 }
 
+// fixtures
+
 namespace Trismegiste\SocialBundle\Repository\MapReduce {
 
+    // a fake MruService
     class DummyMru extends MruService
     {
 
