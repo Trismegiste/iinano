@@ -8,9 +8,9 @@ namespace Trismegiste\SocialBundle\Tests\Unit\Repository\MapReduce;
 
 use Trismegiste\SocialBundle\Repository\MapReduce\PublishingCounter;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Trismegiste\Socialist\Repeat;
 use Trismegiste\Socialist\SmallTalk;
 use Trismegiste\Socialist\Author;
+use Trismegiste\SocialBundle\Security\Netizen;
 
 /**
  * PublishingCounterTest tests PublishingCounter
@@ -34,7 +34,7 @@ class PublishingCounterTest extends WebTestCase
         $container = $kernel->getContainer();
         $this->repository = $container->get('dokudoki.repository');
         $this->collection = $container->get('dokudoki.collection');
-        $this->sut = new RepeatCounter($this->collection, 'test_report');
+        $this->sut = new PublishingCounter($this->collection, 'test_report');
     }
 
     /**
@@ -44,35 +44,28 @@ class PublishingCounterTest extends WebTestCase
     {
         $this->collection->drop();
 
-        $author = [];
-        foreach (['kirk', 'spock', 'mccoy'] as $nick) {
-            $author[] = new Author($nick);
-        }
+        $author = new Author('kirk');
+        $user = new Netizen($author);
+        $user->setProfile(new \Trismegiste\SocialBundle\Security\Profile());
+        $this->repository->persist($user);
 
-        $source = new SmallTalk($author[0]);
-        $this->repository->persist($source);
+        $source = new SmallTalk($author);
+        $this->repository->batchPersist([$source, $source, $source]);
 
-        $rep[0] = new Repeat($author[1]);
-        $rep[0]->setEmbedded($source);
-        $this->repository->persist($rep[0]);
+        $this->assertCount(4, $this->collection->find());
 
-        $rep[1] = new Repeat($author[2]);
-        $rep[1]->setEmbedded($rep[0]);
-        $this->repository->persist($rep[1]);
-
-        $this->assertCount(3, $this->collection->find());
+        return (string) $user->getId();
     }
 
-    public function testMapReduceUpdate()
+    /**
+     * @depends initialize
+     */
+    public function testMapReduceUpdate($userPk)
     {
         $this->sut->execute();
 
-        $listing = $this->repository->find();
-        $this->assertCount(3, $listing);
-        foreach ($listing as $doc) {
-            // all publishing, including the source are updated :
-            $this->assertEquals(2, $doc->getRepeatedCount(), get_class($doc));
-        }
+        $user = $this->repository->findByPk($userPk);
+        $this->assertEquals(3, $user->getProfile()->publishingCounter);
     }
 
 }
