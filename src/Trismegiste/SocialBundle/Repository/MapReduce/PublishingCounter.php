@@ -15,7 +15,7 @@ use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 class PublishingCounter extends MruService
 {
 
-    public function compileReport()
+    protected function mapReduce()
     {
 
         $map = <<<MAPFUNC
@@ -47,7 +47,7 @@ REDFUNC;
         return $result['counts'];
     }
 
-    public function updateRepeat()
+    protected function update()
     {
 
         $update = <<<UPDATEFUNC

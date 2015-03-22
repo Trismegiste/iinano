@@ -15,7 +15,7 @@ use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 class RepeatCounter extends MruService
 {
 
-    public function compileReport()
+    protected function mapReduce()
     {
 
         $map = <<<MAPFUNC
@@ -61,7 +61,7 @@ FINAFUNC;
         return $result['counts'];
     }
 
-    public function updateRepeat()
+    protected function update()
     {
 
         $update = <<<UPDATEFUNC

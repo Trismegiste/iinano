@@ -65,8 +65,7 @@ class RepeatCounterTest extends WebTestCase
 
     public function testMapReduceUpdate()
     {
-        $this->sut->compileReport();
-        $this->sut->updateRepeat();
+        $this->sut->execute();
 
         $listing = $this->repository->find();
         $this->assertCount(3, $listing);
