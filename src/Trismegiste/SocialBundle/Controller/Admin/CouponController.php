@@ -16,7 +16,12 @@ class CouponController extends Template
 
     public function listingAction()
     {
-        return $this->render('TrismegisteSocialBundle:Admin/Coupon:listing.html.twig');
+        $form = $this->createForm(new CouponType());
+
+        $param = [
+            'form' => $form->createView()
+        ];
+        return $this->render('TrismegisteSocialBundle:Admin/Coupon:listing.html.twig', $param);
     }
 
 }
