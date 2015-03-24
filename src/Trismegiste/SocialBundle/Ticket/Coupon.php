@@ -69,4 +69,14 @@ class Coupon implements PurchaseChoice, Persistence\Persistable
                 ($this->expiredAt->getTimestamp() < time()));
     }
 
+    /**
+     * returns how many times this coupon was used
+     *
+     * @return integer
+     */
+    public function getUsedCounter()
+    {
+        return $this->usedCounter;
+    }
+
 }

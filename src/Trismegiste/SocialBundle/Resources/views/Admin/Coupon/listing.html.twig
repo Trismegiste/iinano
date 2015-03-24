@@ -25,7 +25,7 @@
                     <tr>
                         <td><input type="checkbox" class="action-selection"/></td>
                         <td>{{ coupon.hashKey }}</td>
-                        <td>{{ coupon.maximumUse }}</td>
+                        <td>{{ coupon.usedCounter }}/{{ coupon.maximumUse }}</td>
                     </tr>
                 {% endfor %}
             </table>

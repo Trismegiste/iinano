@@ -18,6 +18,7 @@ class CouponType extends AbstractType
     {
         $builder->add('duration', 'integer')
                 ->add('maximumUse', 'integer')
+                ->add('expiredAt','date')
                 ->add('Create', 'submit');
     }
 
