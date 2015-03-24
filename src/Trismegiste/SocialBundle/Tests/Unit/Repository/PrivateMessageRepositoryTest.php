@@ -62,7 +62,7 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->security->expects($this->once())
                 ->method('isGranted')
-                ->with($this->equalTo('ROLE_USER'))
+                ->with($this->equalTo('VALID_TICKET'))
                 ->will($this->returnValue(true));
 
         $this->repository->expects($this->once())
@@ -76,7 +76,7 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->security->expects($this->once())
                 ->method('isGranted')
-                ->with($this->equalTo('ROLE_USER'))
+                ->with($this->equalTo('VALID_TICKET'))
                 ->will($this->returnValue(true));
 
         $this->repository->expects($this->once())
@@ -124,7 +124,7 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->security->expects($this->at(1))
                 ->method('isGranted')
-                ->with($this->equalTo('ROLE_USER'))
+                ->with($this->equalTo('VALID_TICKET'))
                 ->will($this->returnValue(true));
 
         $this->assertInstanceOf('Trismegiste\Socialist\PrivateMessage', $this->sut->createNewMessageTo($this->target));
@@ -138,7 +138,7 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->security->expects($this->once())
                 ->method('isGranted')
-                ->with($this->equalTo('ROLE_USER'))
+                ->with($this->equalTo('VALID_TICKET'))
                 ->will($this->returnValue(true));
 
         $msg = new \Trismegiste\Socialist\PrivateMessage($this->target, $this->source);
@@ -150,7 +150,7 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->security->expects($this->once())
                 ->method('isGranted')
-                ->with($this->equalTo('ROLE_USER'))
+                ->with($this->equalTo('VALID_TICKET'))
                 ->will($this->returnValue(true));
 
         $this->repository->expects($this->once())
@@ -177,7 +177,7 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->security->expects($this->once())
                 ->method('isGranted')
-                ->with($this->equalTo('ROLE_USER'))
+                ->with($this->equalTo('VALID_TICKET'))
                 ->will($this->returnValue(true));
 
         $this->repository->expects($this->once())
@@ -194,7 +194,7 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->security->expects($this->once())
                 ->method('isGranted')
-                ->with($this->equalTo('ROLE_USER'))
+                ->with($this->equalTo('VALID_TICKET'))
                 ->will($this->returnValue(true));
 
         $this->repository->expects($this->once())
