@@ -54,6 +54,11 @@
         <requirement key="_method">GET</requirement>
     </route>
 
+    <route id="no_valid_ticket" pattern="/ticket/new">
+        <default key="_controller">TrismegisteSocialBundle:Ticket:noValidTicket</default>
+        <requirement key="_method">GET</requirement>
+    </route>
+
     <route id="private_create" pattern="/private/{author}">
         <default key="_controller">TrismegisteSocialBundle:PrivateMessage:create</default>
         <default key="author"></default>

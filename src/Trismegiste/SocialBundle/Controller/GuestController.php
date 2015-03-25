@@ -50,6 +50,8 @@ class GuestController extends Template
             if ($form->isValid()) {
                 // only user data data
                 $user = $form->getData();
+                // @todo add coupon if there is one (use session or GET param ?)
+                
                 $repo->persist($user);
                 $this->authenticateAccount($user);
 
@@ -77,7 +79,7 @@ class GuestController extends Template
         // if not anonymous : do not add session key but add a new ticket
         $session->set('coupon', $code);
 
-        return $this->redirectRouteOk('content_index');
+        return $this->redirectRouteOk('guest_register');
     }
 
 }

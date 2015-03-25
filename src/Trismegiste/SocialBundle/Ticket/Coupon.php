@@ -16,33 +16,20 @@ class Coupon implements PurchaseChoice, Persistence\Persistable
 
     use Persistence\PersistableImpl;
 
-    /** @var \DateInterval write-only */
-    protected $duration;
+    /** @var \DateInterval duration of ticket gift */
+    public $duration;
 
-    /** @var \DateTime read/write */
-    protected $expiredAt;
+    /** @var \DateTime how long this coupon can be used */
+    public $expiredAt;
 
     /** @var string */
-    protected $hashKey;
+    public $hashKey;
 
-    /**
-     * Ctor
-     *
-     * @param \DateInterval $duration the given duration for this purchase
-     * @param string $code an asbtract key for this coupon. Must be unpredictible (unlike MongoId)
-     * @param \DateTime $expiration expiration date (default: in 5 days)
-     */
-    public function __construct(\DateInterval $duration, $code, \DateTime $expiration = null)
-    {
-        $this->duration = $duration;
-        $this->hashKey = $code;
+    /** @var integer how many times this coupon is used */
+    protected $usedCounter = 0;
 
-        if (is_null($expiration)) {
-            $expiration = new \DateTime();
-            $expiration->modify("+5 days");
-        }
-        $this->expiredAt = $expiration;
-    }
+    /** @var integer how many times this coupon can be used */
+    public $maximumUse = 1;
 
     /**
      * @inheritdoc
@@ -60,6 +47,36 @@ class Coupon implements PurchaseChoice, Persistence\Persistable
     public function getHashKey()
     {
         return $this->hashKey; // @todo hashids here could be cool
+    }
+
+    /**
+     * Incrementing the use of this coupon
+     */
+    public function incUse()
+    {
+        $this->usedCounter++;
+    }
+
+    /**
+     * Is this coupon still valid ?
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        return
+                (($this->usedCounter < $this->maximumUse) &&
+                ($this->expiredAt->getTimestamp() < time()));
+    }
+
+    /**
+     * returns how many times this coupon was used
+     *
+     * @return integer
+     */
+    public function getUsedCounter()
+    {
+        return $this->usedCounter;
     }
 
 }

@@ -63,6 +63,7 @@ dokudoki:
         repeat: 'Trismegiste\Socialist\Repeat'
         video: 'Trismegiste\Socialist\Video'
         fee: 'Trismegiste\SocialBundle\Ticket\EntranceFee'
+        coupon: 'Trismegiste\SocialBundle\Ticket\Coupon'
 
 iinano:
     nickname_regex: "[-\da-z]+"
