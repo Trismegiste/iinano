@@ -17,9 +17,10 @@ class CouponType extends AbstractType
 
     public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
-        $builder->add('duration', 'integer')
-                ->add('maximumUse', 'integer')
-                ->add('expiredAt', 'date')
+        $builder->add('hashKey')
+                ->add('duration', 'integer', ['data' => 5])
+                ->add('maximumUse', 'integer', ['data' => 1])
+                ->add('expiredAt', 'date', ['data' => new \DateTime('tomorrow')])
                 ->add('Create', 'submit');
     }
 
