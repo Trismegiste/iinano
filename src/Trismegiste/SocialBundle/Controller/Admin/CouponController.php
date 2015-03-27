@@ -18,10 +18,6 @@ class CouponController extends Template
 
     public function listingAction()
     {
-        $default = [
-            'expiredAt' => new \DateTime('tomorrow'),
-            'maximumUse' => 1
-        ];
         $form = $this->createForm(new CouponType(), null, [
             'action' => $this->generateUrl('coupon_create')
         ]);

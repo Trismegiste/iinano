@@ -22,14 +22,16 @@
                     <th>Duration in days</th>
                     <th>Expired at</th>
                     <th>Used counter</th>
+                    <th>Actions</th>
                 </tr>
                 {% for coupon in listing %}
                     <tr>
                         <td><input type="checkbox" class="action-selection"/></td>
                         <td>{{ coupon.hashKey }}</td>
                         <td>{{ coupon.duration }}</td>
-                        <td>{{ coupon.expiredAt|date() }}</td>
+                        <td>{{ coupon.expiredAt|date('F j, Y') }}</td>
                         <td>{{ coupon.usedCounter }}/{{ coupon.maximumUse }}</td>
+                        <td>Show Edit Delete Flyer</td>
                     </tr>
                 {% endfor %}
             </table>
