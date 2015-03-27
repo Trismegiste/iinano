@@ -18,23 +18,17 @@ class CouponController extends Template
 
     public function listingAction()
     {
-        $form = $this->createForm(new CouponType(), null, [
-            'action' => $this->generateUrl('coupon_create')
-        ]);
+        $listing = $this->get('dokudoki.repository')
+                        ->find(['-class' => 'coupon'])->sort(['_id' => -1]);
 
-        $repo = $this->get('dokudoki.repository');
-        $listing = $repo->find(['-class' => 'coupon'])->sort(['_id' => -1]);
-
-        $param = [
-            'form' => $form->createView(),
-            'listing' => $listing
-        ];
-        return $this->render('TrismegisteSocialBundle:Admin/Coupon:listing.html.twig', $param);
+        return $this->render('TrismegisteSocialBundle:Admin/Coupon:listing.html.twig', ['listing' => $listing]);
     }
 
     public function createAction(Request $request)
     {
-        $form = $this->createForm(new CouponType());
+        $form = $this->createForm(new CouponType(), null, [
+            'action' => $this->generateUrl('coupon_create')
+        ]);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -42,11 +36,13 @@ class CouponController extends Template
             $repo = $this->get('dokudoki.repository');
             $repo->persist($coupon);
             $this->pushFlash('notice', 'Coupon saved');
+
+            return $this->redirectRouteOk('coupon_listing');
         } else {
             $this->pushFlash('warning', 'Coupon not saved');
         }
 
-        return $this->redirectRouteOk('coupon_listing');
+        return $this->render('TrismegisteSocialBundle:Admin/Coupon:create.html.twig', ['form' => $form->createView()]);
     }
 
 }
