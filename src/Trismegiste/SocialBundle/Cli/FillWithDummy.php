@@ -14,6 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * FillWithDummy is CLI tool for dummy data for viewing
+ *
+ * @codeCoverageIgnore
  */
 class FillWithDummy extends ContainerAwareCommand
 {

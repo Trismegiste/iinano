@@ -34,12 +34,14 @@ class CouponController extends Template
         if ($form->isValid()) {
             $coupon = $form->getData();
             $repo = $this->get('dokudoki.repository');
-            $repo->persist($coupon);
-            $this->pushFlash('notice', 'Coupon saved');
+            try {
+                $repo->persist($coupon);
+                $this->pushFlash('notice', 'Coupon saved');
 
-            return $this->redirectRouteOk('coupon_listing');
-        } else {
-            $this->pushFlash('warning', 'Coupon not saved');
+                return $this->redirectRouteOk('coupon_listing');
+            } catch (\MongoException $e) {
+                $this->pushFlash('warning', 'Coupon not saved');
+            }
         }
 
         return $this->render('TrismegisteSocialBundle:Admin/Coupon:create.html.twig', ['form' => $form->createView()]);
