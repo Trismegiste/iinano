@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Security;
 
 use Trismegiste\Socialist\User;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Trismegiste\SocialBundle\Ticket\EntranceAccess;
 
 /**
  * Netizen is a User with features of login, security
@@ -31,6 +32,11 @@ class Netizen extends User implements UserInterface
      * @var array of roles
      */
     protected $roles = [];
+
+    /**
+     * @var array of ticket
+     */
+    protected $ticket = [];
 
     /**
      * @inheritdoc
@@ -142,7 +148,26 @@ class Netizen extends User implements UserInterface
      */
     public function hasValidTicket()
     {
-        return true;
+        return $this->getLastTicket()->isValid();
+    }
+
+    public function addTicket(EntranceAccess $ticket)
+    {
+        // we add the ticket only if it is valid and the last current ticket is not
+        if ($ticket->isValid() &&
+                !$this->getLastTicket()->isValid()) {
+            array_unshift($this->ticket, $ticket);
+        }
+    }
+
+    /**
+     * Returns the last added ticket
+     *
+     * @return EntranceAccess
+     */
+    public function getLastTicket()
+    {
+        return $this->ticket[0];
     }
 
 }
