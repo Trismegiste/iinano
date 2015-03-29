@@ -23,7 +23,10 @@
                         <td>{{ coupon.duration }}</td>
                         <td>{{ coupon.expiredAt|date('F j, Y') }}</td>
                         <td>{{ coupon.usedCounter }}/{{ coupon.maximumUse }}</td>
-                        <td>Show Edit Delete Flyer</td>
+                        <td>
+                            Show Edit Delete<br/>
+                            <a href="{{ path('guest_coupon_landing', {code: coupon.hashKey}) }}">Url</a> Flyer
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
