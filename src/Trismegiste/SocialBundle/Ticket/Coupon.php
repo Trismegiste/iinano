@@ -66,7 +66,7 @@ class Coupon implements PurchaseChoice, Persistence\Persistable
     {
         return
                 (($this->usedCounter < $this->maximumUse) &&
-                ($this->expiredAt->getTimestamp() < time()));
+                ( time() < $this->expiredAt->getTimestamp() ));
     }
 
     /**
