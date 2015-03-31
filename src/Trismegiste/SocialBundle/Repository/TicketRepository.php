@@ -32,7 +32,13 @@ class TicketRepository extends SecuredContentProvider
         $this->classKey = $alias;
     }
 
-    public function persistNewTicketWithCoupon(Netizen $user, Coupon $coupon)
+    /**
+     * Add a ticket created from a coupon to a user, persist a user and the coupon
+     * 
+     * @param Netizen $user
+     * @param Coupon $coupon
+     */
+    public function persistNewTicketFromCoupon(Netizen $user, Coupon $coupon)
     {
         $ticket = new Ticket($coupon);
         $user->addTicket($ticket);
