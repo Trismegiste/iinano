@@ -148,14 +148,15 @@ class Netizen extends User implements UserInterface
      */
     public function hasValidTicket()
     {
-        return $this->getLastTicket()->isValid();
+        $last = $this->getLastTicket();
+
+        return !is_null($last) && $last->isValid();
     }
 
     public function addTicket(EntranceAccess $ticket)
     {
         // we add the ticket only if it is valid and the last current ticket is not
-        if ($ticket->isValid() &&
-                !$this->getLastTicket()->isValid()) {
+        if ($ticket->isValid() && !$this->hasValidTicket()) {
             array_unshift($this->ticket, $ticket);
         }
     }
@@ -163,11 +164,11 @@ class Netizen extends User implements UserInterface
     /**
      * Returns the last added ticket
      *
-     * @return EntranceAccess
+     * @return EntranceAccess|null
      */
     public function getLastTicket()
     {
-        return $this->ticket[0];
+        return count($this->ticket) ? $this->ticket[0] : null;
     }
 
 }
