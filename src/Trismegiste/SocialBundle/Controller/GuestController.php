@@ -50,8 +50,15 @@ class GuestController extends Template
             if ($form->isValid()) {
                 // only user data data
                 $user = $form->getData();
-                // @todo add coupon if there is one (use session or GET param ?)
-                
+                // add coupon if there is one
+                $session = $this->getRequest()->getSession();
+                if ($session->has('coupon')) {
+                    $coupon = $this->get('social.ticket.repository')
+                            ->findCouponByHash($session->get('coupon'));
+                    $this->get('social.ticket.repository')
+                            ->persistNewTicketFromCoupon($user, $coupon);
+                }
+
                 $repo->persist($user);
                 $this->authenticateAccount($user);
 

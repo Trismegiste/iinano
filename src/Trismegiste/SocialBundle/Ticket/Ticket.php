@@ -52,7 +52,7 @@ class Ticket implements EntranceAccess
     public function getExpiredAt()
     {
         $tmp = clone $this->purchasedAt;
-        $tmp->modify($this->purchase->getDuration());
+        $tmp->modify('+' . $this->purchase->getDuration() . ' days');
 
         return $tmp;
     }

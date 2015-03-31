@@ -57,6 +57,11 @@
                  parent="social.securedcontent.template">
         </service>
 
+        <service id="social.ticket.repository"
+                 class="Trismegiste\SocialBundle\Repository\TicketRepository"
+                 parent="social.securedcontent.template">
+    </service>
+
         <!-- TWIG -->
 
         <service id="twig.social.renderer" class="Trismegiste\SocialBundle\Utils\RendererExtension">
