@@ -41,6 +41,12 @@ class GuestController extends Template
     public function registerAction(Request $request)
     {
         // @todo block all users full authenticated
+        // is there a coupon in session ?
+        $session = $this->getRequest()->getSession();
+        if ($session->has('coupon')) {
+            $param['coupon'] = $session->get('coupon');
+        }
+
         $repo = $this->get('social.netizen.repository');
         $form = $this->createForm('netizen_register');
 
@@ -50,25 +56,18 @@ class GuestController extends Template
             if ($form->isValid()) {
                 // only user data data
                 $user = $form->getData();
-                // add coupon if there is one
-                $session = $this->getRequest()->getSession();
-                if ($session->has('coupon')) {
-                    $coupon = $this->get('social.ticket.repository')
-                            ->findCouponByHash($session->get('coupon'));
-                    $this->get('social.ticket.repository')
-                            ->persistNewTicketFromCoupon($user, $coupon);
-                }
-
                 $repo->persist($user);
                 $this->authenticateAccount($user);
 
-                return $this->redirectRouteOk('content_index');
+                return $this->redirectRouteOk('no_valid_ticket');
             } else {
 
             }
         }
 
-        return $this->render('TrismegisteSocialBundle:Guest:register.html.twig', ['register' => $form->createView()]);
+        $param['register'] = $form->createView();
+
+        return $this->render('TrismegisteSocialBundle:Guest:register.html.twig', $param);
     }
 
     /**
@@ -80,10 +79,13 @@ class GuestController extends Template
         $this->get('security.context')->setToken($token);
     }
 
+    /**
+     * Landing page when a guest gets here with a coupon
+     */
     public function couponLandingAction($code)
     {
         $session = $this->getRequest()->getSession();
-        // if not anonymous : do not add session key but add a new ticket
+        // we add the coupon in session n matter how it is valid or not
         $session->set('coupon', $code);
 
         return $this->redirectRouteOk('guest_register');

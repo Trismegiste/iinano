@@ -6,6 +6,9 @@
     <div class="pure-g">
         <div class="pure-u-1">
             <h2>Register</h2>
+            {% if coupon is defined %}
+                <div>By validating this form, you're about to use the coupon "{{ coupon }}"</div>
+            {% endif %}
             <p>Please provide some informations to register your account</p>
             {{ form(register) }}
         </div>
