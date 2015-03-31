@@ -34,7 +34,7 @@ class PrivateMessageRepository extends SecuredContentProvider
     {
         return $this->repository->find([
                             MapAlias::CLASS_KEY => $this->classKey,
-                            'target.nickname' => $this->getNickname(),
+                            'target.nickname' => $this->getNickname(), // @todo mongo sparse index for this key
                             'read' => !$unread
                         ])
                         ->offset($offset)
@@ -45,7 +45,7 @@ class PrivateMessageRepository extends SecuredContentProvider
     {
         return $this->repository->find([
                             MapAlias::CLASS_KEY => $this->classKey,
-                            'source.nickname' => $this->getNickname(),
+                            'source.nickname' => $this->getNickname(), // @todo mongo sparse index for this key
                             'read' => !$unread
                         ])
                         ->offset($offset)

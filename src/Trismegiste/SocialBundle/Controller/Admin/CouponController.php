@@ -40,7 +40,7 @@ class CouponController extends Template
 
                 return $this->redirectRouteOk('coupon_listing');
             } catch (\MongoException $e) {
-                $this->pushFlash('warning', 'Coupon not saved');
+                $this->pushFlash('warning', 'Could not save the new coupon');
             }
         }
 

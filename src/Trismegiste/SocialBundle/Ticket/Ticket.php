@@ -25,7 +25,7 @@ class Ticket implements EntranceAccess
             $now = new \DateTime();
         }
 
-        $this->purchase = $purchaseSystem; // @todo embed or copy properties ?
+        $this->purchase = $purchaseSystem;
         $this->purchasedAt = $now;
     }
 
