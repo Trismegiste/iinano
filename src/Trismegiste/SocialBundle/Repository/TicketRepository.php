@@ -29,7 +29,7 @@ class TicketRepository extends SecuredContentProvider
      * @param Netizen $user
      * @param Coupon $coupon
      */
-    public function persistNewTicketFromCoupon(Netizen $user, Coupon $coupon)
+    public function useCouponFor(Netizen $user, Coupon $coupon)
     {
         $ticket = new Ticket($coupon);
         $user->addTicket($ticket);
