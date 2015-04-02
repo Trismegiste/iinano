@@ -81,6 +81,7 @@ class RegisterType extends AbstractType
                         new Email()
                     ]
                 ])
+                ->add('optionalCoupon', 'text', ['mapped' => false, 'required' => false])
                 ->add('register', 'submit', ['attr' => ['class' => 'right']]);
     }
 

@@ -41,14 +41,15 @@ class GuestController extends Template
     public function registerAction(Request $request)
     {
         // @todo block all users full authenticated
-        // is there a coupon in session ?
-        $session = $this->getRequest()->getSession();
-        if ($session->has('coupon')) {
-            $param['coupon'] = $session->get('coupon');
-        }
+
 
         $repo = $this->get('social.netizen.repository');
         $form = $this->createForm('netizen_register');
+        // is there a coupon in session ?
+        $session = $this->getRequest()->getSession();
+        if ($session->has('coupon')) {
+            $form->get('optionalCoupon')->setData($session->get('coupon'));
+        }
 
         $form->handleRequest($request);
 
