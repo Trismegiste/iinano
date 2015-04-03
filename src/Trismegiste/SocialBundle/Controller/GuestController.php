@@ -65,6 +65,7 @@ class GuestController extends Template
                     $this->get('social.ticket.repository')->useCouponFor($user, $coupon);
 
                     // redirect wall
+                    $session->remove('coupon');
                     return $this->redirectRouteOk('content_index');
                 } catch (Ticket\InvalidCouponException $e) {
                     $this->pushFlash('warning', $e->getMessage());
@@ -74,9 +75,7 @@ class GuestController extends Template
             return $this->redirectRouteOk('no_valid_ticket');
         }
 
-        $param['register'] = $form->createView();
-
-        return $this->render('TrismegisteSocialBundle:Guest:register.html.twig', $param);
+        return $this->render('TrismegisteSocialBundle:Guest:register.html.twig', ['register' => $form->createView()]);
     }
 
     /**
