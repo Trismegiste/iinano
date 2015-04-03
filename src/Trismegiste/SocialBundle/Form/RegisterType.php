@@ -82,7 +82,7 @@ class RegisterType extends AbstractType
                     ]
                 ])
                 ->add('optionalCoupon', 'text', ['mapped' => false, 'required' => false])
-                ->add('register', 'submit', ['attr' => ['class' => 'right']]);
+                ->add('register', 'submit');
     }
 
     public function getName()

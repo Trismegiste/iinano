@@ -16,7 +16,7 @@ class Coupon implements PurchaseChoice, Persistence\Persistable
 
     use Persistence\PersistableImpl;
 
-    /** @var \DateInterval duration of ticket gift */
+    /** @var string a string for DateTime::modify */
     public $duration;
 
     /** @var \DateTime how long this coupon can be used */

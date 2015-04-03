@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\SocialBundle\Ticket;
 
 /**
  * GuestController is a controller for unathentificated user
@@ -42,7 +43,6 @@ class GuestController extends Template
     {
         // @todo block all users full authenticated
 
-
         $repo = $this->get('social.netizen.repository');
         $form = $this->createForm('netizen_register');
         // is there a coupon in session ?
@@ -53,17 +53,22 @@ class GuestController extends Template
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                // only user data data
-                $user = $form->getData();
-                $repo->persist($user);
-                $this->authenticateAccount($user);
-
-                return $this->redirectRouteOk('no_valid_ticket');
-            } else {
-
+        if ($form->isSubmitted() && $form->isValid()) {
+            // only user data data
+            $user = $form->getData();
+            $repo->persist($user);
+            $this->authenticateAccount($user);
+            // coupon
+            $coupon = $form->get('optionalCoupon')->getData();
+            if (!empty($coupon)) {
+                try {
+                    $this->get('social.ticket.repository')->useCouponFor($user, $coupon);
+                } catch (Ticket\InvalidCouponException $e) {
+                    $this->pushFlash('warning', 'This coupon has expired or has been used too many times');
+                }
             }
+
+            return $this->redirectRouteOk('no_valid_ticket');
         }
 
         $param['register'] = $form->createView();
