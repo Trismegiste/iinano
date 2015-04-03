@@ -64,7 +64,7 @@ class GuestController extends Template
                 try {
                     $this->get('social.ticket.repository')->useCouponFor($user, $coupon);
                 } catch (Ticket\InvalidCouponException $e) {
-                    $this->pushFlash('warning', 'This coupon has expired or has been used too many times');
+                    $this->pushFlash('warning', $e->getMessage());
                 }
             }
 

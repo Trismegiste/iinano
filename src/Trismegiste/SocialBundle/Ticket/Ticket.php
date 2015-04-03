@@ -49,6 +49,9 @@ class Ticket implements EntranceAccess
         return $this->purchasedAt;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getExpiredAt()
     {
         $tmp = clone $this->purchasedAt;

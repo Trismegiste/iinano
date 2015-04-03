@@ -25,7 +25,7 @@ class TicketRepository extends SecuredContentProvider
     }
 
     /**
-     * Add a ticket created from a coupon to a user, persist a user and the coupon
+     * Add a ticket created from a coupon to a user, persist the user and the coupon
      *
      * @param Netizen $user
      * @param Coupon $coupon
@@ -45,7 +45,7 @@ class TicketRepository extends SecuredContentProvider
     }
 
     /**
-     * Finds a coupon from its hashkey
+     * Find a coupon from its hashkey
      *
      * @param string $hash
      *
@@ -58,14 +58,16 @@ class TicketRepository extends SecuredContentProvider
 
     /**
      * Ticket factory
+     * WARNING: edge effect on Coupon
      *
-     * @param Coupon $coupon
+     * @param Coupon $coupon (edge effect on usedCounter)
+     *
      * @throws InvalidCouponException
      */
     public function createTicketFromCoupon(Coupon $coupon)
     {
         if (!$coupon->isValid()) {
-            throw new InvalidCouponException();
+            throw new InvalidCouponException("The coupon '{$coupon->getHashKey()}' has expired or has been used too many times");
         }
 
         $ticket = new Ticket($coupon);
