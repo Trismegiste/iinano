@@ -24,7 +24,8 @@ class CouponType extends AbstractType
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 5])
-                    ]
+                    ],
+                    'attr' => ['placeholder' => 'case sensitive & minimum 5 characters']
                 ])
                 ->add('duration', 'integer', ['data' => 5])
                 ->add('maximumUse', 'integer', ['data' => 1])

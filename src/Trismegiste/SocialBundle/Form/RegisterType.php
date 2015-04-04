@@ -41,10 +41,10 @@ class RegisterType extends AbstractType
                                 new NotBlank(),
                                 new Length(['min' => 5, 'max' => 20]),
                                 new UniqueNickname(),
-                                new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#'])
+                                new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#', 'message'=>"This nickname is not valid: only a-z, 0-9 & '-' characters are valid."])
                             ],
                             'mapped' => false,
-                            'attr' => ['placeholder' => 'Choose a nickname of 5 to 20 char. : a-z, 0-9 and \'-\')']
+                            'attr' => ['placeholder' => 'Choose a nickname of 5 to 20 char. : a-z, 0-9 and \'-\'']
                         ])
                         ->addViewTransformer(new NicknameTransformer())
                 )
