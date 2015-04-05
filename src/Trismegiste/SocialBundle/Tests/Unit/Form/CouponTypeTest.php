@@ -23,21 +23,35 @@ class CouponTypeTest extends FormTestCase
     public function getInvalidInputs()
     {
         $obj = new Coupon();
+        $obj->hashKey = 'a';
+        $obj->maximumUse = 0;
+        $obj->setDurationValue(-5);
         return [
-            [['hashKey' => 'a'], $obj, ['hashKey']]
+            [
+                ['hashKey' => 'a', 'maximumUse' => 0, 'durationValue' => -5],
+                $obj,
+                ['hashKey', 'maximumUse', 'durationValue']
+            ]
         ];
     }
 
     public function getValidInputs()
     {
-        $expi = new \DateTime('tomorrow');
         $obj = new Coupon();
-        $obj->setDurationValue(20);
+        $obj->setDurationValue(5);
         $obj->hashKey = 'AZERTY';
-        $obj->maximumUse = 10;
-        $obj->expiredAt = $expi;
+        $obj->maximumUse = 50;
+        $obj->expiredAt = new \DateTime('2015-05-05');
         return [
-            [['durationValue' => 20, 'hashKey' => 'AZERTY', 'maximumUse' => 20, 'expiredAt' => $expi], $obj]
+            [
+                [
+                    'durationValue' => 5,
+                    'hashKey' => 'AZERTY',
+                    'maximumUse' => 50,
+                    'expiredAt' => ['year' => 2015, 'month' => 5, 'day' => 5]
+                ],
+                $obj
+            ]
         ];
     }
 
