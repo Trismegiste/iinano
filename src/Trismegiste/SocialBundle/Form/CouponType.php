@@ -8,8 +8,9 @@ namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 
 /**
  * CouponType is a form for Coupon entity
@@ -28,13 +29,20 @@ class CouponType extends AbstractType
                     'attr' => ['placeholder' => 'case sensitive & minimum 5 characters']
                 ])
                 ->add('durationValue', 'integer', [
-                    'label' => 'duration',
+                    'label' => 'Duration',
                     'data' => 5,
                     'constraints' => [
-                        new NotBlank()
+                        new NotBlank(),
+                        new Range(['min' => 1, 'max' => 60])
                     ]
                 ])
-                ->add('maximumUse', 'integer', ['data' => 1])
+                ->add('maximumUse', 'integer', [
+                    'data' => 1,
+                    'constraints' => [
+                        new NotBlank(),
+                        new Range(['min' => 1, 'max' => 1000])
+                    ]
+                ])
                 ->add('expiredAt', 'date', ['data' => new \DateTime('tomorrow')])
                 ->add('Create', 'submit');
     }

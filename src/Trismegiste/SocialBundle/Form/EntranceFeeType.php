@@ -36,7 +36,7 @@ class EntranceFeeType extends AbstractType
                     'constraints' => [
                         new NotNull()
                     ],
-                    'label' => 'duration',
+                    'label' => 'Duration',
                     'choices' => [
                         1 => 'one month',
                         3 => 'three months',
