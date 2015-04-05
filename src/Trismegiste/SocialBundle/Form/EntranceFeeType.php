@@ -32,15 +32,16 @@ class EntranceFeeType extends AbstractType
                     'preferred_choices' => ['USD', 'EUR', 'JPY'],
                     'empty_value' => ''
                 ])
-                ->add('duration', 'choice', [
+                ->add('durationValue', 'choice', [
                     'constraints' => [
                         new NotNull()
                     ],
+                    'label' => 'duration',
                     'choices' => [
-                        '+ 1 month' => 'one month',
-                        '+ 3 months' => 'three months',
-                        '+ 6 months' => 'six months',
-                        '+ 1 year' => 'one year'
+                        1 => 'one month',
+                        3 => 'three months',
+                        6 => 'six months',
+                        12 => 'one year'
                     ],
                     'expanded' => true,
                     'multiple' => false

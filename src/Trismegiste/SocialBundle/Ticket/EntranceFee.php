@@ -6,30 +6,18 @@
 
 namespace Trismegiste\SocialBundle\Ticket;
 
-use Trismegiste\Yuurei\Persistence;
-
 /**
  * EntranceFee is a payment for acquiring Ticket
  * Conceptually, in an e-commerce, this is a product template
  */
-class EntranceFee implements PurchaseChoice, Persistence\Persistable
+class EntranceFee extends PurchaseChoice
 {
-
-    use Persistence\PersistableImpl;
 
     /** @var numeric */
     protected $amount = 0;
 
     /** @var string ISO currency */
     protected $currency = 'XXX';
-
-    /** @var string a string for DateTime::modify */
-    protected $duration;
-
-    public function setDuration($str)
-    {
-        $this->duration = $str;
-    }
 
     public function setAmount($amount)
     {
@@ -39,14 +27,6 @@ class EntranceFee implements PurchaseChoice, Persistence\Persistable
     public function setCurrency($curr)
     {
         $this->currency = $curr;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDuration()
-    {
-        return $this->duration;
     }
 
     /**
@@ -67,6 +47,14 @@ class EntranceFee implements PurchaseChoice, Persistence\Persistable
     public function getCurrency()
     {
         return $this->currency;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDurationUnit()
+    {
+        return 'month';
     }
 
 }

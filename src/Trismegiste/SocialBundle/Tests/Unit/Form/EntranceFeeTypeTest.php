@@ -25,7 +25,7 @@ class EntranceFeeTypeTest extends FormTestCase
         $obj = new EntranceFee();
         $obj->setAmount(-999);
         return [
-            [['amount' => -999, 'currency' => 'ARF', 'duration' => '+5 months'], $obj, ['amount', 'currency', 'duration']]
+            [['amount' => -999, 'currency' => 'ARF', 'durationValue' => 5], $obj, ['amount', 'currency', 'durationValue']]
         ];
     }
 
@@ -34,9 +34,9 @@ class EntranceFeeTypeTest extends FormTestCase
         $obj = new EntranceFee();
         $obj->setAmount(9.99);
         $obj->setCurrency('USD');
-        $obj->setDuration('+ 1 year');
+        $obj->setDurationValue(12);
         return [
-            [['amount' => 9.99, 'currency' => 'USD', 'duration' => '+ 1 year'], $obj]
+            [['amount' => 9.99, 'currency' => 'USD', 'durationValue' => 12], $obj]
         ];
     }
 

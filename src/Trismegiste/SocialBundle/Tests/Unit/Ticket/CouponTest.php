@@ -22,7 +22,7 @@ class CouponTest extends \PHPUnit_Framework_TestCase
         $this->sut = new Coupon();
         $this->sut->expiredAt = new \DateTime('tomorrow');
         $this->sut->hashKey = 'toto';
-        $this->sut->duration = '+5 days';
+        $this->sut->setDurationValue(5);
     }
 
     public function testCounter()
@@ -50,7 +50,8 @@ class CouponTest extends \PHPUnit_Framework_TestCase
     public function testGetter()
     {
         $this->assertEquals('toto', $this->sut->getHashKey());
-        $this->assertEquals('+5 days', $this->sut->getDuration());
+        $this->assertEquals(5, $this->sut->getDurationValue());
+        $this->assertEquals('+5 day', $this->sut->getDurationOffset());
     }
 
 }

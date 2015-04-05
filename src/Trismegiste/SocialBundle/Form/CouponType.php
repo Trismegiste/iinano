@@ -24,9 +24,16 @@ class CouponType extends AbstractType
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 5])
+                    ],
+                    'attr' => ['placeholder' => 'case sensitive & minimum 5 characters']
+                ])
+                ->add('durationValue', 'integer', [
+                    'label' => 'duration',
+                    'data' => 5,
+                    'constraints' => [
+                        new NotBlank()
                     ]
                 ])
-                ->add('duration', 'integer', ['data' => 5])
                 ->add('maximumUse', 'integer', ['data' => 1])
                 ->add('expiredAt', 'date', ['data' => new \DateTime('tomorrow')])
                 ->add('Create', 'submit');

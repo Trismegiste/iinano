@@ -9,6 +9,7 @@ namespace Trismegiste\SocialBundle\Security;
 use Trismegiste\Socialist\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Trismegiste\SocialBundle\Ticket\EntranceAccess;
+use Trismegiste\SocialBundle\Ticket\InvalidTicketException;
 
 /**
  * Netizen is a User with features of login, security
@@ -155,10 +156,16 @@ class Netizen extends User implements UserInterface
 
     public function addTicket(EntranceAccess $ticket)
     {
-        // we add the ticket only if it is valid and the last current ticket is not
-        if ($ticket->isValid() && !$this->hasValidTicket()) {
-            array_unshift($this->ticket, $ticket);
+        // we add the ticket only if it is valid...
+        if (!$ticket->isValid()) {
+            throw new InvalidTicketException('The ticket is not valid');
         }
+        // ... and the last current ticket is not
+        if ($this->hasValidTicket()) {
+            throw new InvalidTicketException('The user has currently a valid ticket');
+        }
+
+        array_unshift($this->ticket, $ticket);
     }
 
     /**

@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\SocialBundle\Ticket;
 
 /**
  * GuestController is a controller for unathentificated user
@@ -41,24 +42,37 @@ class GuestController extends Template
     public function registerAction(Request $request)
     {
         // @todo block all users full authenticated
+
         $repo = $this->get('social.netizen.repository');
         $form = $this->createForm('netizen_register');
+        // is there a coupon in session ?
+        $session = $this->getRequest()->getSession();
+        if ($session->has('coupon')) {
+            $form->get('optionalCoupon')->setData($session->get('coupon'));
+        }
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                // only user data data
-                $user = $form->getData();
-                // @todo add coupon if there is one (use session or GET param ?)
-                
-                $repo->persist($user);
-                $this->authenticateAccount($user);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // only user data data
+            $user = $form->getData();
+            $repo->persist($user);
+            $this->authenticateAccount($user);
+            // coupon
+            $coupon = $form->get('optionalCoupon')->getData();
+            if (!empty($coupon)) {
+                try {
+                    $this->get('social.ticket.repository')->useCouponFor($user, $coupon);
 
-                return $this->redirectRouteOk('content_index');
-            } else {
-
+                    // redirect wall
+                    $session->remove('coupon');
+                    return $this->redirectRouteOk('content_index');
+                } catch (Ticket\InvalidCouponException $e) {
+                    $this->pushFlash('warning', $e->getMessage());
+                }
             }
+            //redirect payment
+            return $this->redirectRouteOk('no_valid_ticket');
         }
 
         return $this->render('TrismegisteSocialBundle:Guest:register.html.twig', ['register' => $form->createView()]);
@@ -73,10 +87,13 @@ class GuestController extends Template
         $this->get('security.context')->setToken($token);
     }
 
+    /**
+     * Landing page when a guest gets here with a coupon
+     */
     public function couponLandingAction($code)
     {
         $session = $this->getRequest()->getSession();
-        // if not anonymous : do not add session key but add a new ticket
+        // we add the coupon in session n matter how it is valid or not
         $session->set('coupon', $code);
 
         return $this->redirectRouteOk('guest_register');

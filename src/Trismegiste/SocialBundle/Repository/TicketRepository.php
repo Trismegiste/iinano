@@ -8,15 +8,10 @@ namespace Trismegiste\SocialBundle\Repository;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\Yuurei\Persistence\RepositoryInterface;
-use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
-use Trismegiste\Socialist\AuthorInterface;
-use \Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Trismegiste\SocialBundle\Ticket\PurchaseChoice;
-use Trismegiste\SocialBundle\Ticket\EntranceAccess;
 use Trismegiste\SocialBundle\Ticket\Ticket;
 use Trismegiste\SocialBundle\Ticket\Coupon;
-use Trismegiste\SocialBundle\Ticket\EntranceFee;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\SocialBundle\Ticket\InvalidCouponException;
 
 /**
  * TicketRepository is a repository for ticket coupon and fee
@@ -24,28 +19,61 @@ use Trismegiste\SocialBundle\Security\Netizen;
 class TicketRepository extends SecuredContentProvider
 {
 
-    protected $classKey;
-
-    public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx, $alias)
+    public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx)
     {
         parent::__construct($repo, $ctx);
-        $this->classKey = $alias;
     }
 
     /**
-     * Add a ticket created from a coupon to a user, persist a user and the coupon
-     * 
+     * Add a ticket created from a coupon to a user, persist the user and the coupon
+     *
      * @param Netizen $user
      * @param Coupon $coupon
      */
-    public function persistNewTicketFromCoupon(Netizen $user, Coupon $coupon)
+    public function useCouponFor(Netizen $user, $couponHash)
     {
-        $ticket = new Ticket($coupon);
+        $coupon = $this->findCouponByHash($couponHash);
+        if (is_null($coupon)) {
+            throw new InvalidCouponException('The coupon does not exist');
+        }
+
+        $ticket = $this->createTicketFromCoupon($coupon);
         $user->addTicket($ticket);
-        $coupon->incUse();
 
         $this->repository->persist($user);
         $this->repository->persist($coupon);
+    }
+
+    /**
+     * Find a coupon from its hashkey
+     *
+     * @param string $hash
+     *
+     * @return Coupon
+     */
+    public function findCouponByHash($hash)
+    {
+        return $this->repository->findOne(['hashKey' => $hash]);
+    }
+
+    /**
+     * Ticket factory
+     * WARNING: edge effect on Coupon
+     *
+     * @param Coupon $coupon (edge effect on usedCounter)
+     *
+     * @throws InvalidCouponException
+     */
+    public function createTicketFromCoupon(Coupon $coupon)
+    {
+        if (!$coupon->isValid()) {
+            throw new InvalidCouponException("The coupon '{$coupon->getHashKey()}' has expired or has been used too many times");
+        }
+
+        $ticket = new Ticket($coupon);
+        $coupon->incUse();
+
+        return $ticket;
     }
 
 }

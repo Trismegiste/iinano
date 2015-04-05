@@ -64,6 +64,7 @@ dokudoki:
         video: 'Trismegiste\Socialist\Video'
         fee: 'Trismegiste\SocialBundle\Ticket\EntranceFee'
         coupon: 'Trismegiste\SocialBundle\Ticket\Coupon'
+        ticket: 'Trismegiste\SocialBundle\Ticket\Ticket'
 
 iinano:
     nickname_regex: "[-\da-z]+"
