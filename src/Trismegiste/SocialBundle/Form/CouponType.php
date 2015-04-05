@@ -27,7 +27,13 @@ class CouponType extends AbstractType
                     ],
                     'attr' => ['placeholder' => 'case sensitive & minimum 5 characters']
                 ])
-                ->add('duration', 'integer', ['data' => 5])
+                ->add('durationValue', 'integer', [
+                    'label' => 'duration',
+                    'data' => 5,
+                    'constraints' => [
+                        new NotBlank()
+                    ]
+                ])
                 ->add('maximumUse', 'integer', ['data' => 1])
                 ->add('expiredAt', 'date', ['data' => new \DateTime('tomorrow')])
                 ->add('Create', 'submit');

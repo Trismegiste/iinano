@@ -16,11 +16,9 @@ class EntraceFeeTest extends \PHPUnit_Framework_TestCase
 
     /** @var EntranceFee */
     protected $sut;
-    protected $duration;
 
     protected function setUp()
     {
-        $this->duration = '+5 days';
         $this->sut = new EntranceFee();
     }
 
@@ -38,8 +36,9 @@ class EntraceFeeTest extends \PHPUnit_Framework_TestCase
 
     public function testDurationGetter()
     {
-        $this->sut->setDuration($this->duration);
-        $this->assertEquals($this->duration, $this->sut->getDuration());
+        $this->sut->setDurationValue(12);
+        $this->assertEquals(12, $this->sut->getDurationValue());
+        $this->assertEquals('+12 month', $this->sut->getDurationOffset());
     }
 
 }

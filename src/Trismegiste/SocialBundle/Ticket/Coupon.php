@@ -6,18 +6,11 @@
 
 namespace Trismegiste\SocialBundle\Ticket;
 
-use Trismegiste\Yuurei\Persistence;
-
 /**
  * Coupon is a coupon for acquiring Ticket
  */
-class Coupon implements PurchaseChoice, Persistence\Persistable
+class Coupon extends PurchaseChoice
 {
-
-    use Persistence\PersistableImpl;
-
-    /** @var string a string for DateTime::modify */
-    public $duration;
 
     /** @var \DateTime how long this coupon can be used */
     public $expiredAt;
@@ -30,14 +23,6 @@ class Coupon implements PurchaseChoice, Persistence\Persistable
 
     /** @var integer how many times this coupon can be used */
     public $maximumUse = 1;
-
-    /**
-     * @inheritdoc
-     */
-    public function getDuration()
-    {
-        return $this->duration;
-    }
 
     /**
      * Gets the hash key code for this coupon
@@ -77,6 +62,14 @@ class Coupon implements PurchaseChoice, Persistence\Persistable
     public function getUsedCounter()
     {
         return $this->usedCounter;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDurationUnit()
+    {
+        return 'day';
     }
 
 }

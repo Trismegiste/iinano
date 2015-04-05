@@ -22,10 +22,11 @@ class TicketTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->choice = $this->getMock('Trismegiste\SocialBundle\Ticket\PurchaseChoice');
+        $this->choice = $this->getMockForAbstractClass('Trismegiste\SocialBundle\Ticket\PurchaseChoice');
+        $this->choice->setDurationValue(5);
         $this->choice->expects($this->any())
-                ->method('getDuration')
-                ->will($this->returnValue('+5 days'));
+                ->method('getDurationUnit')
+                ->will($this->returnValue('day'));
         $this->sut = new Ticket($this->choice);
     }
 
