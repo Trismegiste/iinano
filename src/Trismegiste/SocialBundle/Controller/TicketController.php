@@ -14,20 +14,9 @@ use Trismegiste\SocialBundle\Controller\Template;
 class TicketController extends Template
 {
 
-    public function noValidTicketAction()
+    public function confirmBuyTicketAction()
     {
-        $session = $this->getRequest()->getSession();
-        if ($session->has('coupon')) {
-            $coupon = $this->get('social.ticket.repository')
-                    ->findCouponByHash($session->get('coupon'));
-
-            $this->get('social.ticket.repository')
-                    ->persistNewTicketFromCoupon($user, $coupon);
-        }
-
-
-
-        return $this->render('TrismegisteSocialBundle:Ticket:new_ticket.html.twig');
+        return $this->render('TrismegisteSocialBundle:Ticket:confirm_buy_ticket.html.twig');
     }
 
 }

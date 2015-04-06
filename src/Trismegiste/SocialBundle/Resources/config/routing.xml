@@ -54,8 +54,8 @@
         <requirement key="_method">GET</requirement>
     </route>
 
-    <route id="no_valid_ticket" pattern="/ticket/new">
-        <default key="_controller">TrismegisteSocialBundle:Ticket:noValidTicket</default>
+    <route id="confirm_buy_ticket" pattern="/ticket/new">
+        <default key="_controller">TrismegisteSocialBundle:Ticket:confirmBuyTicket</default>
         <requirement key="_method">GET</requirement>
     </route>
 

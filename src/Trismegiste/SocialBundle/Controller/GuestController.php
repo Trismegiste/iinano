@@ -72,7 +72,7 @@ class GuestController extends Template
                 }
             }
             //redirect payment
-            return $this->redirectRouteOk('no_valid_ticket');
+            return $this->redirectRouteOk('confirm_buy_ticket');
         }
 
         return $this->render('TrismegisteSocialBundle:Guest:register.html.twig', ['register' => $form->createView()]);
