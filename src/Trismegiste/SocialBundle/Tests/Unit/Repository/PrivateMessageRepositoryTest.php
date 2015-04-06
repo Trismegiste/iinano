@@ -17,6 +17,8 @@ use Trismegiste\Socialist\PrivateMessage;
 class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
 {
 
+    use \Trismegiste\SocialBundle\Tests\Helper\SecurityContextMock;
+
     /** @var PrivateMessageRepository */
     protected $sut;
     protected $repository;
@@ -24,33 +26,17 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
     protected $source;
     protected $target;
     protected $document;
-    protected $currentUser;
-    protected $token;
 
     protected function setUp()
     {
-        $this->repository = $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface');
-        $this->security = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $this->sut = new PrivateMessageRepository($this->repository, $this->security, 'alias');
         $this->source = new Author('kirk');
         $this->target = new Author('spock');
+
+        $this->repository = $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface');
+        $this->security = $this->createSecurityContextMock($this->source);
+        $this->sut = new PrivateMessageRepository($this->repository, $this->security, 'alias');
+
         $this->document = new PrivateMessage($this->source, $this->target);
-
-        $this->currentUser = $this->getMockBuilder('Trismegiste\SocialBundle\Security\Netizen')
-                ->disableOriginalConstructor()
-                ->getMock();
-        $this->currentUser->expects($this->any())
-                ->method('getAuthor')
-                ->will($this->returnValue($this->source));
-
-        $this->token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
-        $this->token->expects($this->any())
-                ->method('getUser')
-                ->will($this->returnValue($this->currentUser));
-
-        $this->security->expects($this->any())
-                ->method('getToken')
-                ->will($this->returnValue($this->token));
     }
 
     protected function createMockCursor()
