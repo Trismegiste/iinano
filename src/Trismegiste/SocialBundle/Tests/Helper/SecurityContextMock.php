@@ -7,6 +7,7 @@
 namespace Trismegiste\SocialBundle\Tests\Helper;
 
 use Trismegiste\Socialist\AuthorInterface;
+use Trismegiste\SocialBundle\Security\Netizen;
 
 /**
  * SecurityContextMock is a factory for mocking a security context
@@ -23,6 +24,11 @@ trait SecurityContextMock
                 ->method('getAuthor')
                 ->will($this->returnValue($author));
 
+        return $this->createSecurityContextMockFromUser($currentUser);
+    }
+
+    public function createSecurityContextMockFromUser(Netizen $currentUser)
+    {
         $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $token->expects($this->any())
                 ->method('getUser')

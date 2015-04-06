@@ -15,10 +15,11 @@ use Trismegiste\Socialist\Author;
 class FollowerTypeTest extends FormTestCase
 {
 
+    use \Trismegiste\SocialBundle\Tests\Helper\SecurityContextMock;
+
     protected $repository;
     protected $security;
     protected $currentUser;
-    protected $token;
 
     /**
      * @return \Trismegiste\SocialBundle\Security\Netizen
@@ -34,15 +35,7 @@ class FollowerTypeTest extends FormTestCase
         $follower = $this->createUser('spock');
         $follower->follow($this->currentUser); // kirk is followed by spock
 
-        $this->token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
-        $this->token->expects($this->any())
-                ->method('getUser')
-                ->will($this->returnValue($this->currentUser));
-
-        $this->security = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $this->security->expects($this->any())
-                ->method('getToken')
-                ->will($this->returnValue($this->token));
+        $this->security = $this->createSecurityContextMockFromUser($this->currentUser);
 
         $this->repository = $this->getMock('Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface');
         $this->repository->expects($this->any())
