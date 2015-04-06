@@ -13,6 +13,8 @@ use Trismegiste\SocialBundle\Form\PublishingType;
 
 /**
  * a test case template for form type
+ *
+ * @todo inheritance from FormTestCase ?
  */
 abstract class PublishingTestCase extends \PHPUnit_Framework_TestCase
 {

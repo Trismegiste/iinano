@@ -26,13 +26,16 @@ abstract class FormTestCase extends \PHPUnit_Framework_TestCase
     {
         $validator = Validation::createValidator();
         $type = $this->createType();
+        if (!is_array($type)) {
+            $type = [$type];
+        }
         $this->factory = Forms::createFormFactoryBuilder()
                 ->addExtension(new ValidatorExtension($validator))
-                ->addType($type)
+                ->addTypes($type)
                 ->getFormFactory();
 
         $data = $this->createData();
-        $this->sut = $this->factory->create($type->getName(), $data);
+        $this->sut = $this->factory->create($type[0]->getName(), $data);
     }
 
     abstract protected function createType();
