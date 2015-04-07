@@ -6,88 +6,90 @@
 
 namespace Trismegiste\SocialBundle\Tests\Unit\Form;
 
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Trismegiste\SocialBundle\Form\FollowerType;
+use Trismegiste\Socialist\Author;
+use Trismegiste\SocialBundle\Form\PrivateMessageType;
+use Trismegiste\Socialist\PrivateMessage;
 
 /**
  * PrivateMessageTypeTest tests PrivateMessageType
  */
-class PrivateMessageTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
+class PrivateMessageTypeTest extends FormTestCase
 {
 
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $sut;
+    use \Trismegiste\SocialBundle\Tests\Helper\SecurityContextMock;
 
-    /** @var \Trismegiste\SocialBundle\Security\Netizen */
-    protected $netizen;
-
-    /** @var \MongoCollection */
-    protected $collection;
-
-    /** @var \Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface */
     protected $repository;
-
-    /** @var \Symfony\Component\Form\FormFactoryInterface */
-    protected $formFactory;
-
-    /** @var \Trismegiste\SocialBundle\Security\NetizenFactory */
-    protected $netizenFactory;
-
-    protected function setUp()
-    {
-        $kernel = static::createKernel();
-        $kernel->boot();
-        $container = $kernel->getContainer();
-        $this->formFactory = $container->get('form.factory');
-        $this->collection = $container->get('dokudoki.collection');
-        $this->repository = $container->get('social.netizen.repository');
-        $this->netizenFactory = $container->get('security.netizen.factory');
-
-        $this->netizen = $this->netizenFactory->create('kirk', 'aaaa');
-        $token = new UsernamePasswordToken($this->netizen, null, 'secured_area', array('ROLE_USER'));
-        $container->get('security.context')->setToken($token);
-    }
+    protected $security;
+    protected $currentUser;
 
     /**
-     * @test
+     * @return \Trismegiste\SocialBundle\Security\Netizen
      */
-    public function initialize()
+    private function createUser($nick)
     {
-        $this->collection->drop();
+        return new \Trismegiste\SocialBundle\Security\Netizen(new Author($nick));
     }
 
-    public function testValidSubmit()
+    protected function createType()
     {
-        $follower = $this->netizenFactory->create('spock', 'aaaa');
-        $follower->follow($this->netizen);
-        $this->repository->persist($follower);
-        $this->sut = $this->formFactory->create('social_private_message', null, ['csrf_protection' => false]);
+        $this->currentUser = $this->createUser('kirk');
+        $follower = $this->createUser('spock');
+        $follower->follow($this->currentUser); // kirk is followed by spock
 
-        $this->sut->submit([
-            'target' => 'spock',
-            'message' => 'lol'
-        ]);
+        $this->security = $this->createSecurityContextMockFromUser($this->currentUser);
 
-        $this->assertTrue($this->sut->isValid());
-        $message = $this->sut->getData();
-        $this->assertInstanceOf('Trismegiste\Socialist\PrivateMessage', $message);
-        $this->assertEquals('spock', $message->getTarget()->getNickname());
-        $this->assertEquals('kirk', $message->getSender()->getNickname());
-        $this->assertEquals('lol', $message->getMessage());
+        $this->repository = $this->getMock('Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface');
+        $this->repository->expects($this->any())
+                ->method('findByNickname')
+                ->with($this->equalTo('spock'))
+                ->will($this->returnValue($follower));
+
+        $pmRepo = $this->getMockBuilder('Trismegiste\SocialBundle\Repository\PrivateMessageRepository')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $pmRepo->expects($this->once())
+                ->method('createNewMessageTo')
+                ->willReturn($this->createPM());
+
+        return [
+            new PrivateMessageType($pmRepo),
+            new FollowerType($this->repository, $this->security)
+        ];
     }
 
-    public function testInvalidSubmit()
+    public function getInvalidInputs()
     {
-        $follower = $this->repository->findByNickname('spock');
-        $follower->follow($this->netizen);
-        $this->sut = $this->formFactory->create('social_private_message', null, ['csrf_protection' => false]);
+        $obj = $this->createPM();
+        $obj->setMessage('gg');
+        return [
+            [
+                ['target' => 'spock', 'message' => 'gg'],
+                $obj,
+                ['message']
+            ]
+        ];
+    }
 
-        $this->sut->submit([
-            'target' => 'spock',
-            'message' => 'gg'
-        ]);
+    public function getValidInputs()
+    {
+        $obj = $this->createPM();
+        $obj->setMessage('lol');
+        return [
+            [
+                ['target' => 'spock', 'message' => 'lol'],
+                $obj
+            ]
+        ];
+    }
 
-        $this->assertFalse($this->sut->isValid());
-        $this->assertCount(1, $this->sut->get('message')->getErrors());
+    protected function createPM()
+    {
+        $pm = new PrivateMessage(new Author('kirk'), new Author('spock'));
+        $refl = new \Trismegiste\Yuurei\Utils\InjectionClass($pm);
+        $refl->injectProperty($pm, 'sentAt', new \DateTime('2019-04-01'));
+
+        return $pm;
     }
 
 }
