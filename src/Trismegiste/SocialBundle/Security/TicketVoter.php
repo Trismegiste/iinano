@@ -21,6 +21,9 @@ class TicketVoter implements VoterInterface
         return 'VALID_TICKET' === $attribute;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function supportsClass($fqcn)
     {
 

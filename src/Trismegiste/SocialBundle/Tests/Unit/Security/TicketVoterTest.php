@@ -11,9 +11,9 @@ use Trismegiste\Socialist\Author;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
- * OwnerVoterTest tests the voter OwnerVoter
+ * TicketVoterTest tests the voter TicketVoter
  */
-class OwnerVoterTest extends \PHPUnit_Framework_TestCase
+class TicketVoterTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $sut;
