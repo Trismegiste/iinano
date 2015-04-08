@@ -17,6 +17,8 @@ use Trismegiste\SocialBundle\Security\Profile;
 class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
 {
 
+    use \Trismegiste\SocialBundle\Tests\Helper\AssertSolid;
+
     /** @var NetizenRepository */
     protected $sut;
     protected $repository;
@@ -137,6 +139,26 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->with($this->equalTo(['-class' => 'netizen', 'author.nickname' => new \MongoRegex('/^user/')]));
 
         $this->sut->search('user');
+    }
+
+    /**
+     * This because I don't want to forget new method in the interface
+     */
+    public function testInterfaceInSync()
+    {
+        $this->assertMethodCountEquals('Trismegiste\SocialBundle\Repository\NetizenRepository', [
+            'Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface'
+                ], 1);
+    }
+
+    public function testCountAllUsers()
+    {
+        $this->repository->expects($this->once())
+                ->method('getCursor')
+                ->with($this->equalTo(['-class' => 'netizen']))
+                ->willReturn(new \ArrayObject([1, 2, 3]));
+
+        $this->assertEquals(3, $this->sut->countAllUser());
     }
 
 }
