@@ -64,4 +64,68 @@ class NetizenTest extends \PHPUnit_Framework_TestCase
         $this->sut->eraseCredentials(); // for CC
     }
 
+    public function testGroup()
+    {
+        $this->sut->setGroup('ROLE_ADMIN');
+        $this->assertEquals(['ROLE_ADMIN'], $this->sut->getRoles());
+    }
+
+    public function testNoTicketAtCreation()
+    {
+        $this->assertNull($this->sut->getLastTicket());
+    }
+
+    public function testNoValidTicketAtCreation()
+    {
+        $this->assertFalse($this->sut->hasValidTicket());
+    }
+
+    /**
+     * @expectedException \Trismegiste\SocialBundle\Ticket\InvalidTicketException
+     * @expectedExceptionMessage ticket is not valid
+     */
+    public function testAddInvalidTicket()
+    {
+        $ticket = $this->getMock('Trismegiste\SocialBundle\Ticket\EntranceAccess');
+        $ticket->expects($this->once())
+                ->method('isValid')
+                ->willReturn(false);
+
+        $this->sut->addTicket($ticket);
+    }
+
+    public function testAddValidTicket()
+    {
+        $ticket = $this->getMock('Trismegiste\SocialBundle\Ticket\EntranceAccess');
+        $ticket->expects($this->exactly(2))
+                ->method('isValid')
+                ->willReturn(true);
+
+        $this->sut->addTicket($ticket);
+
+        $this->assertTrue($this->sut->hasValidTicket());
+        $this->assertEquals($ticket, $this->sut->getLastTicket());
+    }
+
+    /**
+     * @expectedException \Trismegiste\SocialBundle\Ticket\InvalidTicketException
+     * @expectedExceptionMessage currently a valid ticket
+     */
+    public function testNoAddingTicketOnAlreadyValid()
+    {
+        $ticket = $this->getMock('Trismegiste\SocialBundle\Ticket\EntranceAccess');
+        $ticket->expects($this->exactly(3))
+                ->method('isValid')
+                ->willReturn(true);
+
+        $this->sut->addTicket($ticket);
+        $this->assertTrue($this->sut->hasValidTicket());
+
+        $ticket = $this->getMock('Trismegiste\SocialBundle\Ticket\EntranceAccess');
+        $ticket->expects($this->once())
+                ->method('isValid')
+                ->willReturn(true);
+        $this->sut->addTicket($ticket);
+    }
+
 }
