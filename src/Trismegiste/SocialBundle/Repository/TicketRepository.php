@@ -19,16 +19,13 @@ use Trismegiste\SocialBundle\Ticket\InvalidCouponException;
 class TicketRepository extends SecuredContentProvider
 {
 
-    public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx)
-    {
-        parent::__construct($repo, $ctx);
-    }
-
     /**
      * Add a ticket created from a coupon to a user, persist the user and the coupon
      *
      * @param Netizen $user
      * @param Coupon $coupon
+     *
+     * @todo remove $user from the method parameter : in fact he's already in the security ctx
      */
     public function useCouponFor(Netizen $user, $couponHash)
     {
