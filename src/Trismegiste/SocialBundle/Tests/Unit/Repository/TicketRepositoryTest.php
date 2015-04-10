@@ -96,4 +96,23 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($coupon->isValid());
     }
 
+    public function testUseValidCoupon()
+    {
+        $coupon = new \Trismegiste\SocialBundle\Ticket\Coupon();
+        $coupon->expiredAt = new \DateTime('tomorrow');
+
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->with(['hashKey' => 'found'])
+                ->willReturn($coupon);
+        $this->repository->expects($this->exactly(2))
+                ->method('persist');
+
+        $this->user->expects($this->once())
+                ->method('addTicket');
+
+        $this->sut->useCouponFor($this->user, 'found');
+        $this->assertFalse($coupon->isValid());
+    }
+
 }
