@@ -16,6 +16,18 @@ use Trismegiste\SocialBundle\Security\Netizen;
 class TicketVoter implements VoterInterface
 {
 
+    protected $freeAccess;
+
+    /**
+     * Ctor
+     *
+     * @param bool $free is this app free or not ? Injected somewhere
+     */
+    public function __construct($free = false)
+    {
+        $this->freeAccess = $free;
+    }
+
     public function supportsAttribute($attribute)
     {
         return 'VALID_TICKET' === $attribute;
@@ -51,6 +63,10 @@ class TicketVoter implements VoterInterface
         // make sure there is a user object (i.e. that the user is logged in)
         if (!$user instanceof Netizen) {
             return VoterInterface::ACCESS_DENIED;
+        }
+
+        if ($this->freeAccess) {
+            return VoterInterface::ACCESS_GRANTED;
         }
 
         if ($user->hasValidTicket()) {

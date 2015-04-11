@@ -79,4 +79,10 @@ class TicketVoterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $this->sut->vote($this->token, null, ['FLIP', 'FLOP']));
     }
 
+    public function testFreeAccess()
+    {
+        $this->sut = new TicketVoter(true);
+        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->sut->vote($this->token, null, ['VALID_TICKET']));
+    }
+
 }
