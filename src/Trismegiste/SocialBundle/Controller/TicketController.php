@@ -16,7 +16,16 @@ class TicketController extends Template
 
     public function confirmBuyTicketAction()
     {
+        if ($this->get('security.context')->isGranted('VALID_TICKET')) {
+            return $this->redirectRouteOk('content_index');
+        }
+
         return $this->render('TrismegisteSocialBundle:Ticket:confirm_buy_ticket.html.twig');
+    }
+
+    public function returnFromPayment()
+    {
+        
     }
 
 }

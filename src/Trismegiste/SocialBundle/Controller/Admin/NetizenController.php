@@ -39,4 +39,9 @@ class NetizenController extends Template
 
     }
 
+    public function editAction($pk)
+    {
+
+    }
+
 }

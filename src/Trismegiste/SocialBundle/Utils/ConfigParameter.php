@@ -20,5 +20,6 @@ class ConfigParameter implements Persistable
     public $maintenanceMsg = ''; // global header message
     public $appTitle = 'iinano'; // title on the front login
     public $minimumAge = 18;      // minimum age for registering
+    public $paypal;
 
 }
