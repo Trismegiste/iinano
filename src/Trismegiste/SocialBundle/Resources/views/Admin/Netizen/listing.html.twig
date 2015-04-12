@@ -18,7 +18,7 @@
                     <th>Email</th>
                     <th>Registered</th>
                     <th>Posts</th>
-                    <th>Paid subscription</th>
+                    <th>Expired</th>
                 </tr>
                 {% for netizen in listing %}
                     <tr>
@@ -27,7 +27,11 @@
                         <td>{{ netizen.profile.email }}</td>
                         <td>{{ netizen.profile.joinedAt|timeago }}</td>
                         <td>{{ netizen.profile.publishingCounter }}</td>
-                        <td>10$ until 2014-12-31</td>
+                        <td>
+                            {% if netizen.lastTicket is not null %}
+                                {{ netizen.lastTicket.expiredAt|timeago }}
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
