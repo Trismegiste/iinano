@@ -293,4 +293,14 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeCount(0, 'abusive', $this->document);
     }
 
+    public function testCountAllPublishing()
+    {
+        $this->repository->expects($this->once())
+                ->method('getCursor')
+                ->with(['owner.nickname' => ['$exists' => true]])
+                ->willReturn(new \ArrayObject([1, 2, 3]));
+
+        $this->assertEquals(3, $this->sut->countAllPublishing());
+    }
+
 }
