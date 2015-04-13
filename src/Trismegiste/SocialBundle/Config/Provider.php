@@ -27,10 +27,11 @@ class Provider implements CacheWarmerInterface, ProviderInterface
         $this->cacheDir = $cache_dir;
     }
 
-    public function write($obj)
+    public function write(array $param)
     {
+        $obj = new ParameterBag($param);
         $this->repo->persist($obj);
-        $this->dump($this->cacheDir, $obj);
+        $this->dump($this->cacheDir, $param);
     }
 
     public function read()
@@ -46,7 +47,7 @@ class Provider implements CacheWarmerInterface, ProviderInterface
     public function warmUp($cacheDir)
     {
         $c = $this->repo->findOne(['-class' => 'config']);
-        $this->dump($cacheDir, $c);
+        $this->dump($cacheDir, $c->data);
     }
 
     protected function dump($cacheDir, $obj)

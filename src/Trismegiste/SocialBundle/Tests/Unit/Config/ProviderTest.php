@@ -28,10 +28,10 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testWrite()
     {
-        $doc = new \Trismegiste\SocialBundle\Config\Parameter();
+        $doc = ['config' => 123];
         $this->sut->write($doc);
 
-        print_r($this->sut->read());
+        $this->assertEquals($doc, $this->sut->read());
     }
 
 }

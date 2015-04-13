@@ -12,7 +12,7 @@ namespace Trismegiste\SocialBundle\Config;
 interface ProviderInterface
 {
 
-    public function write($obj);
+    public function write(array $param);
 
     public function read();
 }
