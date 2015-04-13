@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 class Provider implements CacheWarmerInterface, ProviderInterface
 {
 
-    const FILENAME = 'config.php';
+    const FILENAME = 'social_config.php';
 
     /** @var Trismegiste\Yuurei\Persistence\RepositoryInterface */
     protected $repo;
@@ -30,7 +30,7 @@ class Provider implements CacheWarmerInterface, ProviderInterface
     public function write($obj)
     {
         $this->repo->persist($obj);
-        $this->warmUp($this->cacheDir);
+        $this->dump($this->cacheDir, $obj);
     }
 
     public function read()
@@ -46,9 +46,13 @@ class Provider implements CacheWarmerInterface, ProviderInterface
     public function warmUp($cacheDir)
     {
         $c = $this->repo->findOne(['-class' => 'config']);
+        $this->dump($cacheDir, $c);
+    }
 
+    protected function dump($cacheDir, $obj)
+    {
         file_put_contents($cacheDir . DIRECTORY_SEPARATOR . self::FILENAME
-                , '<?php return ' . var_export($c, true) . ';'
+                , '<?php return ' . var_export($obj, true) . ';'
         );
     }
 
