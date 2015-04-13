@@ -4,14 +4,14 @@
  * iinano
  */
 
-namespace Trismegiste\SocialBundle\Utils;
+namespace Trismegiste\SocialBundle\Config;
 
 use Trismegiste\Yuurei\Persistence\Persistable;
 
 /**
- * ConfigParameter is a collection of config parameters (cached)
+ * Parameter is a collection of config parameters (cached)
  */
-class ConfigParameter implements Persistable
+class Parameter implements Persistable
 {
 
     use \Trismegiste\Yuurei\Persistence\PersistableImpl;
