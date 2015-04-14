@@ -23,7 +23,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->repository = $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface');
-        $this->sut = new Provider($this->repository, sys_get_temp_dir());
+        $this->sut = new Provider($this->repository, sys_get_temp_dir(), []);
     }
 
     public function testWrite()
