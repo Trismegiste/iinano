@@ -7,6 +7,7 @@
 namespace Trismegiste\SocialBundle\Tests\Unit\Config;
 
 use Trismegiste\SocialBundle\Config\Provider;
+use Trismegiste\SocialBundle\Config\ParameterBag;
 
 /**
  * ProviderTest tests the cachec config provider
@@ -29,14 +30,34 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         @unlink($this->targetFile);
     }
 
-    public function testWrite()
+    public function testWriteNew()
     {
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->with(['-class' => 'config']);
+
         $this->repository->expects($this->once())
                 ->method('persist')
                 ->with($this->isInstanceOf('Trismegiste\SocialBundle\Config\ParameterBag'));
 
         $this->sut->write([]);
         $this->assertFileExists($this->targetFile);
+    }
+
+    public function testWriteExisting()
+    {
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->with(['-class' => 'config'])
+                ->willReturn(new ParameterBag(['database' => 789]));
+
+        $this->repository->expects($this->once())
+                ->method('persist')
+                ->with($this->isInstanceOf('Trismegiste\SocialBundle\Config\ParameterBag'));
+
+        $this->sut->write(['param' => 'ncc1701']);
+        $this->assertFileExists($this->targetFile);
+        $this->assertEquals(['param' => 'ncc1701'], $this->sut->read());
     }
 
     public function testRead()

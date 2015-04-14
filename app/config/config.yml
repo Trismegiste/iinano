@@ -65,6 +65,7 @@ dokudoki:
         fee: 'Trismegiste\SocialBundle\Ticket\EntranceFee'
         coupon: 'Trismegiste\SocialBundle\Ticket\Coupon'
         ticket: 'Trismegiste\SocialBundle\Ticket\Ticket'
+        config: 'Trismegiste\SocialBundle\Config\ParameterBag'
 
 iinano:
     nickname_regex: "[-\da-z]+"

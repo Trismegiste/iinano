@@ -44,10 +44,7 @@ class Provider implements CacheWarmerInterface, ProviderInterface
     public function write(array $param)
     {
         $obj = $this->getUniqueInstance();
-        if (is_null($obj)) {
-            $obj = new ParameterBag($param);
-        }
-
+        $obj->data = $param;
         $this->repo->persist($obj);
         $this->dump($this->cacheDir, $param);
     }
@@ -78,8 +75,7 @@ class Provider implements CacheWarmerInterface, ProviderInterface
     public function warmUp($cacheDir)
     {
         $c = $this->getUniqueInstance();
-        $param = is_null($c) ? $this->defaultParam : $c->data;
-        $this->dump($cacheDir, $param);
+        $this->dump($cacheDir, $c->data);
     }
 
     protected function dump($cacheDir, array $obj)
@@ -89,9 +85,20 @@ class Provider implements CacheWarmerInterface, ProviderInterface
         );
     }
 
+    /**
+     * Get the unique entity in database (or create it)
+     * 
+     * @return \Trismegiste\SocialBundle\Config\ParameterBag
+     */
     protected function getUniqueInstance()
     {
-        return $this->repo->findOne(['-class' => 'config']);
+        $singleton = $this->repo->findOne(['-class' => 'config']);
+
+        if (is_null($singleton)) {
+            $singleton = new ParameterBag($this->defaultParam);
+        }
+
+        return $singleton;
     }
 
 }
