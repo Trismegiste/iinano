@@ -20,11 +20,13 @@ class Provider implements CacheWarmerInterface, ProviderInterface
     /** @var Trismegiste\Yuurei\Persistence\RepositoryInterface */
     protected $repo;
     protected $cacheDir;
+    protected $defaultParam;
 
-    public function __construct(RepositoryInterface $repo, $cache_dir)
+    public function __construct(RepositoryInterface $repo, $cache_dir, array $default)
     {
         $this->repo = $repo;
         $this->cacheDir = $cache_dir;
+        $this->defaultParam = $default;
     }
 
     public function write(array $param)
@@ -47,6 +49,9 @@ class Provider implements CacheWarmerInterface, ProviderInterface
     public function warmUp($cacheDir)
     {
         $c = $this->repo->findOne(['-class' => 'config']);
+        if (is_null($c)) {
+            $c = new ParameterBag($this->defaultParam);
+        }
         $this->dump($cacheDir, $c->data);
     }
 

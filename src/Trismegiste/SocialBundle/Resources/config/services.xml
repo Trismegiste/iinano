@@ -60,7 +60,7 @@
         <service id="social.ticket.repository"
                  class="Trismegiste\SocialBundle\Repository\TicketRepository"
                  parent="social.securedcontent.template">
-    </service>
+        </service>
 
         <!-- TWIG -->
 
@@ -91,6 +91,14 @@
 
         <service id="security.validticket.voter" class="Trismegiste\SocialBundle\Security\TicketVoter">
             <tag name="security.voter"/>
+        </service>
+
+        <!-- misc -->
+        <service id="social.dynamic_config" class="Trismegiste\SocialBundle\Config\Provider">
+            <tag name="kernel.cache_warmer" priority="10" />
+            <argument type="service" id="dokudoki.repository" />
+            <argument>%kernel.cache_dir%</argument>
+            <argument/> <!-- injected by Extension -->
         </service>
 
     </services>

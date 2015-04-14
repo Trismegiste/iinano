@@ -28,6 +28,11 @@ class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('pagination')->defaultValue(20)->end()
                     ->scalarNode('commentary_preview')->defaultValue(3)->end()
+                    ->arrayNode('dynamic_default')
+                        ->useAttributeAsKey('key')
+                        ->prototype('scalar')
+                        ->end()
+                    ->end()
                 ->end();
 
         return $treeBuilder;

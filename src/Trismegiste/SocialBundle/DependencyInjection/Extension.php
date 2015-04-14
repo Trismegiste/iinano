@@ -33,6 +33,9 @@ class Extension extends BaseExtension
         $container->setParameter('social.pagination', $config['pagination']);
         // limit of preview for commentaries :
         $container->setParameter('social.commentary_preview', $config['commentary_preview']);
+        // inject default config in dynamic config
+        $container->getDefinition('social.dynamic_config')
+                ->replaceArgument(2, $config['dynamic_default']);
     }
 
     public function getAlias()
