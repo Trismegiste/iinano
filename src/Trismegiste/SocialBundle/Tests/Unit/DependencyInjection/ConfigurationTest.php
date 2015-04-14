@@ -33,6 +33,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'nickname_regex' => '[-\\da-z]+',
             'pagination' => 20,
             'commentary_preview' => 3,
+            'dynamic_default' => []
         );
         $this->assertEquals($expected, $cfg);
     }
@@ -53,6 +54,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'nickname_regex' => '[-\\da-z]+',
             'pagination' => 30,
             'commentary_preview' => 5,
+            'dynamic_default' => []
         );
         $this->assertEquals($expected, $cfg);
     }
