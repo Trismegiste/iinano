@@ -43,7 +43,11 @@ class Provider implements CacheWarmerInterface, ProviderInterface
      */
     public function write(array $param)
     {
-        $obj = new ParameterBag($param);
+        $obj = $this->getUniqueInstance();
+        if (is_null($obj)) {
+            $obj = new ParameterBag($param);
+        }
+
         $this->repo->persist($obj);
         $this->dump($this->cacheDir, $param);
     }
@@ -73,11 +77,9 @@ class Provider implements CacheWarmerInterface, ProviderInterface
      */
     public function warmUp($cacheDir)
     {
-        $c = $this->repo->findOne(['-class' => 'config']);
-        if (is_null($c)) {
-            $c = new ParameterBag($this->defaultParam);
-        }
-        $this->dump($cacheDir, $c->data);
+        $c = $this->getUniqueInstance();
+        $param = is_null($c) ? $this->defaultParam : $c->data;
+        $this->dump($cacheDir, $param);
     }
 
     protected function dump($cacheDir, array $obj)
@@ -85,6 +87,11 @@ class Provider implements CacheWarmerInterface, ProviderInterface
         file_put_contents($cacheDir . DIRECTORY_SEPARATOR . self::FILENAME
                 , '<?php return ' . var_export($obj, true) . ';'
         );
+    }
+
+    protected function getUniqueInstance()
+    {
+        return $this->repo->findOne(['-class' => 'config']);
     }
 
 }

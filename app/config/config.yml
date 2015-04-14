@@ -69,7 +69,7 @@ dokudoki:
 iinano:
     nickname_regex: "[-\da-z]+"
     dynamic_default:
-        # wether this app is free or not
+        # whether this app has a free access or not
         freeAccess: false
         # global header message
         maintenanceMsg: ''

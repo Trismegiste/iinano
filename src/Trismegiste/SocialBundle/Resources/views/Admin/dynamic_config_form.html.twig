@@ -1,0 +1,17 @@
+{% extends 'TrismegisteSocialBundle:Admin:layout.html.twig' %}
+
+{% block page_title %}
+    {{ parent() }} | Entrance Fee
+{% endblock %}
+
+{% form_theme form '::inline_form.html.twig' %}
+
+{% block content %}
+    <div class="pure-g entry">
+        <div class="pure-u-1-2">
+            <article>
+                {{ form(form) }}
+            </article>
+        </div>
+    </div>
+{% endblock %}

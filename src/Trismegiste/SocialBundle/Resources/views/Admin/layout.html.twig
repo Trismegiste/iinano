@@ -23,6 +23,7 @@
         <li class="menu-item-divided"></li>
             {{ pure.menu_item('coupon_listing', {}, 'Coupons') }}
             {{ pure.menu_item('coupon_create', {}, 'Create coupon') }}
+        <li class="menu-item-divided"><a href="{{ path('dynamic_config_edit') }}">Preferences</a></li>
         <li class="menu-item-divided"><a href="{{ path('trismegiste_logout') }}">Logout</a></li>
     </ul>
 {% endblock %}
