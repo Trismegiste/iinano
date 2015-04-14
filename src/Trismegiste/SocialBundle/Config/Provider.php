@@ -80,7 +80,7 @@ class Provider implements CacheWarmerInterface, ProviderInterface
         $this->dump($cacheDir, $c->data);
     }
 
-    protected function dump($cacheDir, $obj)
+    protected function dump($cacheDir, array $obj)
     {
         file_put_contents($cacheDir . DIRECTORY_SEPARATOR . self::FILENAME
                 , '<?php return ' . var_export($obj, true) . ';'
