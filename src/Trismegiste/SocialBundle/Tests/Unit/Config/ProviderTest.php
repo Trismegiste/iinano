@@ -31,7 +31,10 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testWrite()
     {
-        $this->assertFileNotExists($this->targetFile);
+        $this->repository->expects($this->once())
+                ->method('persist')
+                ->with($this->isInstanceOf('Trismegiste\SocialBundle\Config\ParameterBag'));
+
         $this->sut->write([]);
         $this->assertFileExists($this->targetFile);
     }
