@@ -27,6 +27,12 @@ class DynamicCfgType extends AbstractType
                     'expanded' => true,
                     'multiple' => false
                 ])
+                ->add('appTitle')
+                ->add('minimumAge', 'integer', [
+                    'constraints' => [
+                        new GreaterThan(5)
+                    ]
+                ])
                 ->add('Edit', 'submit');
     }
 
