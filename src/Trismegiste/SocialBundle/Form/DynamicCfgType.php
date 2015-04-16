@@ -7,11 +7,10 @@
 namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Range;
 
 /**
  * DynamicCfgType is a form to edit preferences/config of this app
@@ -27,10 +26,15 @@ class DynamicCfgType extends AbstractType
                     'expanded' => true,
                     'multiple' => false
                 ])
-                ->add('appTitle')
+                ->add('appTitle', 'text', [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Length(['min' => 5, 'max' => 40])
+                    ]
+                ])
                 ->add('minimumAge', 'integer', [
                     'constraints' => [
-                        new GreaterThan(5)
+                        new Range(['min' => 6, 'max' => 21])
                     ]
                 ])
                 ->add('Edit', 'submit');
