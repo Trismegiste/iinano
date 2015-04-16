@@ -18,6 +18,11 @@
         <default key="_controller">TrismegisteSocialBundle:Admin/Netizen:listing</default>
         <requirement key="_method">GET</requirement>
     </route>
+    <route id="netizen_show" pattern="/netizen/{id}">
+        <default key="_controller">TrismegisteSocialBundle:Admin/Netizen:show</default>
+        <requirement key="id">%mongoid_regex%</requirement>
+        <requirement key="_method">GET</requirement>
+    </route>
 
     <route id="coupon_listing" pattern="/coupon/list">
         <default key="_controller">TrismegisteSocialBundle:Admin/Coupon:listing</default>

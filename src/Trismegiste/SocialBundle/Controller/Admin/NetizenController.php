@@ -15,12 +15,22 @@ use Symfony\Component\HttpFoundation\Request;
 class NetizenController extends Template
 {
 
+    /**
+     * Gets the repository for netizen
+     *
+     * @return \Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface
+     */
+    protected function getRepository()
+    {
+        return $this->get('social.netizen.repository');
+    }
+
     public function listingAction(Request $req)
     {
         $it = [];
 
         if (!(empty($search = $req->query->get('search', '')))) {
-            $repo = $this->get('social.netizen.repository');
+            $repo = $this->getRepository();
             $it = $repo->search($search)->limit(5);
         }
 
@@ -39,9 +49,16 @@ class NetizenController extends Template
 
     }
 
-    public function editAction($pk)
+    public function editAction($id)
     {
 
+    }
+
+    public function showAction($id)
+    {
+        return $this->render('TrismegisteSocialBundle:Admin:Netizen/show.html.twig', [
+                    'netizen' => $this->getRepository()->findByPk($id)
+        ]);
     }
 
 }

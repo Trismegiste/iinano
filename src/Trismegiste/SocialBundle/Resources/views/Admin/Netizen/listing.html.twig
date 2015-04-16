@@ -23,7 +23,7 @@
                 {% for netizen in listing %}
                     <tr>
                         <td><input type="checkbox" class="action-selection"/></td>
-                        <td>{{ netizen.author.nickname }}</td>
+                        <td><a href="{{ path('netizen_show', {id: netizen.id}) }}">{{ netizen.author.nickname }}</a></td>
                         <td>{{ netizen.profile.email }}</td>
                         <td>{{ netizen.profile.joinedAt|timeago }}</td>
                         <td>{{ netizen.profile.publishingCounter }}</td>
