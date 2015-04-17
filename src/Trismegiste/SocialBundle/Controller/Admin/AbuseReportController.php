@@ -25,4 +25,25 @@ class AbuseReportController extends Template
         ]);
     }
 
+    /**
+     * Moderator decides abuse reports on a content are irrelevant
+     *
+     * @param type $id
+     */
+    public function resetAbuseReportOnContentAction($id)
+    {
+
+    }
+
+    /**
+     * Moderator decides abuse reports on a content are irrelevant
+     *
+     * @param type $id
+     * @param type $idComm
+     */
+    public function resetAbuseReportOnCommentaryAction($id, $idComm)
+    {
+
+    }
+
 }
