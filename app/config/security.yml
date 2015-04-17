@@ -30,6 +30,11 @@ security:
                 path:   trismegiste_logout
                 target: /
             anonymous: ~
+            remember_me:
+                key: %secret%
+                lifetime: 30000000
+                path: /
+                domain: ~
 
     access_control:
         - { path: ^/admin/config/, roles: ROLE_ADMIN }
