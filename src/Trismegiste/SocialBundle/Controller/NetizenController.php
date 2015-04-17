@@ -95,9 +95,9 @@ class NetizenController extends Template
             $route = 'admin_dashboard';
         } else {
             if ($secu->isGranted('ROLE_MODERATOR')) {
-                $route = 'abusive_listing';
+                $route = 'admin_abusive_listing';
             } elseif ($secu->isGranted('ROLE_MARKETING')) {
-                $route = 'coupon_listing';
+                $route = 'admin_coupon_listing';
             }
         }
 
