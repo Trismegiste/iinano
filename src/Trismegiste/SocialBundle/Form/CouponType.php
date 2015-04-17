@@ -29,7 +29,7 @@ class CouponType extends AbstractType
                     'attr' => ['placeholder' => 'case sensitive & minimum 5 characters']
                 ])
                 ->add('durationValue', 'integer', [
-                    'label' => 'Duration',
+                    'label' => 'Duration (days)',
                     'data' => 5,
                     'constraints' => [
                         new NotBlank(),
@@ -43,7 +43,10 @@ class CouponType extends AbstractType
                         new Range(['min' => 1, 'max' => 1000])
                     ]
                 ])
-                ->add('expiredAt', 'date', ['data' => new \DateTime('tomorrow')])
+                ->add('expiredAt', 'date', [
+                    'data' => new \DateTime('+1 month'),
+                    'years' => range(date('Y'), date('Y') + 2),
+                ])
                 ->add('Create', 'submit');
     }
 

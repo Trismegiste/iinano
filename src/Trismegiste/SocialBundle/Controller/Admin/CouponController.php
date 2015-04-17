@@ -27,7 +27,7 @@ class CouponController extends Template
     public function createAction(Request $request)
     {
         $form = $this->createForm(new CouponType(), null, [
-            'action' => $this->generateUrl('coupon_create')
+            'action' => $this->generateUrl('admin_coupon_create')
         ]);
         $form->handleRequest($request);
 
@@ -38,7 +38,7 @@ class CouponController extends Template
                 $repo->persist($coupon);
                 $this->pushFlash('notice', 'Coupon saved');
 
-                return $this->redirectRouteOk('coupon_listing');
+                return $this->redirectRouteOk('admin_coupon_listing');
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Could not save the new coupon');
             }

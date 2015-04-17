@@ -16,7 +16,8 @@
             {% endif %}
             Registered at: {{ profile.joinedAt|timeago }}<br/>
             Content counter: {{ profile.publishingCounter }}<br/>
-            Commentary counter: {{ profile.commentaryCounter }}
+            Commentary counter: {{ profile.commentaryCounter }}<br/>
+            Next payment: {{ app.user.lastTicket.expiredAt|timeago }}
         </div>
     </div>
 {% endblock %}

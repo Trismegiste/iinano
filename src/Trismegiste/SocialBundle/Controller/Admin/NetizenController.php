@@ -51,7 +51,27 @@ class NetizenController extends Template
 
     public function editAction($id)
     {
+        $repo = $this->getRepository();
+        $netizen = $repo->findByPk($id);
+        $form = $this->createForm(new EntranceFeeType(), $netizen);
 
+        $form->handleRequest($this->getRequest());
+        if ($form->isValid()) {
+            $newFee = $form->getData();
+            try {
+                $repo->persist($newFee);
+                $this->pushFlash('notice', 'Entrance fee saved');
+
+                // return to the same page
+                $this->redirectRouteOk('entrancefee_edit');
+            } catch (\MongoException $e) {
+                $this->pushFlash('warning', 'Cannot save entrance fee');
+            }
+        }
+
+        return $this->render('TrismegisteSocialBundle:Admin:fee_form.html.twig', [
+                    'form' => $form->createView()
+        ]);
     }
 
     public function showAction($id)
