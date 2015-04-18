@@ -36,7 +36,12 @@ class GuestController extends Template
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
 
-        return $this->render('TrismegisteSocialBundle:Guest:login.html.twig', ['error' => $error]);
+        $config = $this->get('social.dynamic_config')->read();
+
+        return $this->render('TrismegisteSocialBundle:Guest:login.html.twig', [
+                    'error' => $error,
+                    'config' => $config
+        ]);
     }
 
     public function registerAction(Request $request)

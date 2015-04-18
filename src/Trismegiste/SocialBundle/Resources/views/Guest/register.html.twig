@@ -3,11 +3,13 @@
 {% form_theme register '::inline_form.html.twig' %}
 
 {% block full_body %}
-    <div class="pure-g">
-        <div class="pure-u-1">
-            <h2>Register</h2>
-            <p>Please provide some informations to register your account</p>
-            {{ form(register) }}
+    <div class="content">
+        <div class="pure-g">
+            <div class="pure-u-1">
+                <h2>Register</h2>
+                <p>Please provide some informations to register your account</p>
+                {{ form(register) }}
+            </div>
         </div>
     </div>
 {% endblock %}

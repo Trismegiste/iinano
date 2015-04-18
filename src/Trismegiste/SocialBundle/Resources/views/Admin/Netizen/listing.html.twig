@@ -26,7 +26,7 @@
                         <td><a href="{{ path('admin_netizen_show', {id: netizen.id}) }}">{{ netizen.author.nickname }}</a></td>
                         <td>{{ netizen.profile.email }}</td>
                         <td>{{ netizen.profile.joinedAt|timeago }}</td>
-                        <td>{{ netizen.profile.publishingCounter }}</td>
+                        <td>{{ netizen.profile.publishingCounter|si }}</td>
                         <td>
                             {% if netizen.lastTicket is not null %}
                                 {{ netizen.lastTicket.expiredAt|timeago }}

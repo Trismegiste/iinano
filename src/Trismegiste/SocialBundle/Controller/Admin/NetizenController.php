@@ -63,7 +63,7 @@ class NetizenController extends Template
                 $this->pushFlash('notice', 'Entrance fee saved');
 
                 // return to the same page
-                $this->redirectRouteOk('entrancefee_edit');
+                $this->redirectRouteOk('admin_netizen_show');
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save entrance fee');
             }
