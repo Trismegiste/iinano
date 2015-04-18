@@ -33,12 +33,12 @@
         <requirement key="_method">GET|POST</requirement>
     </route>
 
-    <route id="admin_entrancefee_edit" pattern="/fee/edit">
+    <route id="admin_entrancefee_edit" pattern="/config/fee/edit">
         <default key="_controller">TrismegisteSocialBundle:Admin/Fee:edit</default>
         <requirement key="_method">GET|POST</requirement>
     </route>
 
-    <route id="admin_dynamic_config_edit" pattern="/config/edit">
+    <route id="admin_dynamic_config_edit" pattern="/config/param/edit">
         <default key="_controller">TrismegisteSocialBundle:Admin/Admin:editDynamicConfig</default>
         <requirement key="_method">GET|POST</requirement>
     </route>
