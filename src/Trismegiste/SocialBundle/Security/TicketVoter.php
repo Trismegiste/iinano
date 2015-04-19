@@ -25,7 +25,7 @@ class TicketVoter implements VoterInterface
     /**
      * Ctor
      *
-     * @param bool $free is this app free or not ? Injected somewhere
+     * @param Config\ProviderInterface $cfg is a provider for the global dynamic config
      */
     public function __construct(array $roles, Config\ProviderInterface $cfg)
     {
