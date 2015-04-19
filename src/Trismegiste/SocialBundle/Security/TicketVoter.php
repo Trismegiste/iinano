@@ -31,8 +31,6 @@ class TicketVoter implements VoterInterface
     {
         $this->role_hierarchy = $roles;
         $this->freeAccess = (bool) $cfg->read()['freeAccess'];
-
-        var_dump($this->freeAccess);
     }
 
     public function supportsAttribute($attribute)
