@@ -3,6 +3,7 @@ security:
         Trismegiste\SocialBundle\Security\Netizen: sha1
 
     role_hierarchy:
+        ROLE_USER:          ~
         ROLE_MODERATOR:     [ROLE_USER, ROLE_FREEPASS]
         ROLE_MANAGER:       [ROLE_MODERATOR, ROLE_FREEPASS]
         ROLE_ADMIN:         [ROLE_MANAGER, ROLE_FREEPASS]

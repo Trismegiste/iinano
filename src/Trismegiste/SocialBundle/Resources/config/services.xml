@@ -92,6 +92,7 @@
         <service id="security.validticket.voter" class="Trismegiste\SocialBundle\Security\TicketVoter">
             <tag name="security.voter"/>
             <argument>%security.role_hierarchy.roles%</argument>
+            <argument type="service" id="social.dynamic_config" />
         </service>
 
         <!-- misc -->

@@ -9,6 +9,7 @@ namespace Trismegiste\SocialBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\SocialBundle\Config;
 
 /**
  * TicketVoter is a voter to vote if a user has a valid ticket for entrance
@@ -26,10 +27,12 @@ class TicketVoter implements VoterInterface
      *
      * @param bool $free is this app free or not ? Injected somewhere
      */
-    public function __construct(array $roles, $free = false)
+    public function __construct(array $roles, Config\ProviderInterface $cfg)
     {
         $this->role_hierarchy = $roles;
-        $this->freeAccess = $free;
+        $this->freeAccess = (bool) $cfg->read()['freeAccess'];
+
+        var_dump($this->freeAccess);
     }
 
     public function supportsAttribute($attribute)
