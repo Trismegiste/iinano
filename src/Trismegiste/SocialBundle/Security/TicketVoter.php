@@ -9,6 +9,7 @@ namespace Trismegiste\SocialBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\SocialBundle\Config;
 
 /**
  * TicketVoter is a voter to vote if a user has a valid ticket for entrance
@@ -16,16 +17,22 @@ use Trismegiste\SocialBundle\Security\Netizen;
 class TicketVoter implements VoterInterface
 {
 
+    const ROLE_FREEPASS = 'ROLE_FREEPASS';
+
     protected $freeAccess;
+    protected $role_hierarchy;
 
     /**
      * Ctor
      *
      * @param bool $free is this app free or not ? Injected somewhere
      */
-    public function __construct($free = false)
+    public function __construct(array $roles, Config\ProviderInterface $cfg)
     {
-        $this->freeAccess = $free;
+        $this->role_hierarchy = $roles;
+        $this->freeAccess = (bool) $cfg->read()['freeAccess'];
+
+        var_dump($this->freeAccess);
     }
 
     public function supportsAttribute($attribute)
@@ -65,7 +72,7 @@ class TicketVoter implements VoterInterface
             return VoterInterface::ACCESS_DENIED;
         }
 
-        if ($this->freeAccess) {
+        if (($this->freeAccess) || ($this->hasFreeAccess($user))) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
@@ -75,6 +82,17 @@ class TicketVoter implements VoterInterface
 
         // if everything else fails:
         return VoterInterface::ACCESS_DENIED;
+    }
+
+    private function hasFreeAccess(Netizen $user)
+    {
+        foreach ($user->getRoles() as $role) {
+            if (in_array(self::ROLE_FREEPASS, $this->role_hierarchy[$role])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

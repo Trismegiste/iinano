@@ -3,10 +3,10 @@ security:
         Trismegiste\SocialBundle\Security\Netizen: sha1
 
     role_hierarchy:
-        ROLE_MODERATOR:     ROLE_USER
-        ROLE_MARKETING:     ROLE_USER
-        ROLE_ADMIN:         [ROLE_MODERATOR, ROLE_MARKETING]
-        ROLE_SUPER_ADMIN:   [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_USER:          ~
+        ROLE_MODERATOR:     [ROLE_USER, ROLE_FREEPASS]
+        ROLE_MANAGER:       [ROLE_MODERATOR, ROLE_FREEPASS]
+        ROLE_ADMIN:         [ROLE_MANAGER, ROLE_FREEPASS]
 
     providers:
         proprietary:
@@ -32,9 +32,9 @@ security:
             anonymous: ~
 
     access_control:
+        - { path: ^/admin/config/, roles: ROLE_ADMIN }
         - { path: ^/admin/abusereport/, roles: ROLE_MODERATOR }
-        - { path: ^/admin/coupon/, roles: ROLE_MARKETING }
-        - { path: ^/admin/, roles: ROLE_ADMIN }
+        - { path: ^/admin/, roles: ROLE_MANAGER }
         - { path: ^/ticket/, roles: ROLE_USER }
         - { path: ^/afterlogin, roles: ROLE_USER }
         - { path: ^/guest/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
