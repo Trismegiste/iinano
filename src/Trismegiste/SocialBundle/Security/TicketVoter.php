@@ -71,6 +71,9 @@ class TicketVoter implements VoterInterface
             return VoterInterface::ACCESS_DENIED;
         }
 
+        // @todo is it worth to split this voter into 3 to check VALID_TICKET ?
+        // ValidTicketVoter, FreePassVoter & FreeAccessVoter, each supporting VALID_TICKET ?
+        // seems overkill...
         if (($this->freeAccess) || ($this->hasFreeAccess($user))) {
             return VoterInterface::ACCESS_GRANTED;
         }
