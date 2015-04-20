@@ -47,7 +47,7 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testUseNotFoundCoupon()
     {
-        $this->sut->useCouponFor($this->user, 'notfound');
+        $this->sut->useCouponFor('notfound');
     }
 
     public function testFindCouponByHash()
@@ -111,7 +111,7 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->user->expects($this->once())
                 ->method('addTicket');
 
-        $this->sut->useCouponFor($this->user, 'found');
+        $this->sut->useCouponFor('found');
         $this->assertFalse($coupon->isValid());
     }
 

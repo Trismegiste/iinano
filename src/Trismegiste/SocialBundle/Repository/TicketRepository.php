@@ -22,13 +22,13 @@ class TicketRepository extends SecuredContentProvider
     /**
      * Add a ticket created from a coupon to a user, persist the user and the coupon
      *
-     * @param Netizen $user
      * @param Coupon $coupon
      *
-     * @todo remove $user from the method parameter : in fact he's already in the security ctx
+     * @throws InvalidCouponException if coupon does not exists
      */
-    public function useCouponFor(Netizen $user, $couponHash)
+    public function useCouponFor($couponHash)
     {
+        $user = $this->security->getToken()->getUser(); // could not use getLoggedUser because not valid yet
         $coupon = $this->findCouponByHash($couponHash);
         if (is_null($coupon)) {
             throw new InvalidCouponException('The coupon does not exist');
