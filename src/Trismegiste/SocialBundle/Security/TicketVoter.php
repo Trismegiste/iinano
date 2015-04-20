@@ -18,6 +18,7 @@ class TicketVoter implements VoterInterface
 {
 
     const ROLE_FREEPASS = 'ROLE_FREEPASS';
+    const SUPPORTED_ATTRIBUTE = 'VALID_TICKET';
 
     protected $freeAccess;
     protected $role_hierarchy;
@@ -35,7 +36,7 @@ class TicketVoter implements VoterInterface
 
     public function supportsAttribute($attribute)
     {
-        return 'VALID_TICKET' === $attribute;
+        return self::SUPPORTED_ATTRIBUTE === $attribute;
     }
 
     /**
