@@ -70,14 +70,10 @@ dokudoki:
 iinano:
     nickname_regex: "[-\da-z]+"
     dynamic_default:
-        # whether this app has a free access or not
         freeAccess: false
-        # global header message
         maintenanceMsg: ''
-        # title on the front login
         appTitle: 'iinano'
-        # minimum age for registering
+        subTitle: "Clear & simple"
         minimumAge: 18
-        # paypal coordinates
         paypal: ''
 

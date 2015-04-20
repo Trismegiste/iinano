@@ -20,22 +20,28 @@ class DynamicCfgType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('freeAccess', 'choice', [
-                    'choices' => [false => 'No', true => 'Yes'],
-                    'label' => 'Free access',
-                    'expanded' => true,
-                    'multiple' => false
-                ])
-                ->add('appTitle', 'text', [
+        $builder->add('appTitle', 'text', [
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 5, 'max' => 40])
+                    ]
+                ])
+                ->add('subTitle', 'textarea', [
+                    'required' => false,
+                    'constraints' => [
+                        new Length(['min' => 5, 'max' => 250])
                     ]
                 ])
                 ->add('minimumAge', 'integer', [
                     'constraints' => [
                         new Range(['min' => 6, 'max' => 21])
                     ]
+                ])
+                ->add('freeAccess', 'choice', [
+                    'choices' => [false => 'No', true => 'Yes'],
+                    'label' => 'Free access',
+                    'expanded' => true,
+                    'multiple' => false
                 ])
                 ->add('Edit', 'submit');
     }
