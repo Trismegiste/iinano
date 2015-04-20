@@ -33,6 +33,18 @@ class GuestControllerTest extends WebTestCasePlus
         $this->collection->drop();
         $this->assertCount(0, $this->collection->find());
         $this->addUserFixture('kirk');
+        // entrance fee config
+        $fee = new \Trismegiste\SocialBundle\Ticket\EntranceFee();
+        $fee->setAmount(1000);
+        $fee->setCurrency('JPY');
+        $fee->setDurationValue(12); // 12 months
+        $this->getService('dokudoki.repository')->persist($fee);
+        // coupon
+        $coupon = new \Trismegiste\SocialBundle\Ticket\Coupon();
+        $coupon->hashKey = 'ABCDE';
+        $coupon->expiredAt = new \DateTime('tomorrow');
+        $coupon->setDurationValue(5);
+        $this->getService('dokudoki.repository')->persist($coupon);
     }
 
     public function testAbout()
@@ -42,7 +54,7 @@ class GuestControllerTest extends WebTestCasePlus
         $this->assertCount(1, $iter);
     }
 
-    public function testRegister()
+    public function testRegisterWithPayment()
     {
         $crawler = $this->getPage('guest_register');
         $form = $crawler->selectButton('Register')->form();
@@ -52,10 +64,10 @@ class GuestControllerTest extends WebTestCasePlus
                 'fullName' => 'Spock',
                 'gender' => 'xy',
                 'email' => 'dfsdfssdf@sddsqsdq.fr',
-                'dateOfBirth' => ['year' => 2004, 'month' => 11, 'day' => 13]
+                'dateOfBirth' => ['year' => 1984, 'month' => 11, 'day' => 13]
         ]]);
 
-        $this->assertNotEquals($this->generateUrl('guest_register'), $this->client->getHistory()->current()->getUri());
+        $this->assertEquals($this->generateUrl('confirm_buy_ticket'), $this->client->getHistory()->current()->getUri());
 
         $user = $this->repo->findByNickname('spock');
         $this->assertEquals('spock', $user->getUsername());
@@ -73,14 +85,65 @@ class GuestControllerTest extends WebTestCasePlus
         $this->assertEquals($this->generateUrl('trismegiste_login'), $this->client->getHistory()->current()->getUri());
     }
 
-    public function testLoginPageOk()
+    public function testLoginPageFailWithoutPayment()
     {
+        $crawler = $this->getPage('trismegiste_login');
+        $form = $crawler->filter('form')->selectButton('Sign in')->form();
+        $this->client->submit($form, ['_username' => 'spock', '_password' => 'idic']);
+
+        $this->assertEquals($this->generateUrl('confirm_buy_ticket'), $this->client->getHistory()->current()->getUri());
+    }
+
+    public function testLoginPageWithPayment()
+    {
+        $crawler = $this->getPage('trismegiste_login');
+        $form = $crawler->filter('form')->selectButton('Sign in')->form();
+        $this->client->submit($form, ['_username' => 'spock', '_password' => 'idic']);
+        $this->assertEquals($this->generateUrl('confirm_buy_ticket'), $this->client->getHistory()->current()->getUri());
+
+        // faking a payment
+        $ticketRepo = $this->getService('social.ticket.repository');
+        $ticket = $ticketRepo->createTicketFromPayment();
+        $ticketRepo->persistNewPayment($ticket);
+
         $crawler = $this->getPage('trismegiste_login');
         $form = $crawler->filter('form')->selectButton('Sign in')->form();
         $this->client->submit($form, ['_username' => 'spock', '_password' => 'idic']);
 
         $this->assertEquals($this->generateUrl('wall_index', [
                     'wallNick' => 'spock',
+                    'wallFilter' => 'self'
+                ]), $this->client->getHistory()->current()->getUri());
+    }
+
+    public function testRegisterWithCoupon()
+    {
+        $crawler = $this->getPage('guest_register');
+        $form = $crawler->selectButton('Register')->form();
+        $this->client->submit($form, ['netizen_register' => [
+                'nickname' => 'coupon',
+                'password' => ['password' => 'idic', 'confirm_password' => 'idic'],
+                'fullName' => 'coupon',
+                'gender' => 'xy',
+                'email' => 'dfsdfssdf@sddsqsdq.fr',
+                'dateOfBirth' => ['year' => 1984, 'month' => 11, 'day' => 13],
+                'optionalCoupon' => 'ABCDE'
+        ]]);
+
+        $this->assertEquals($this->generateUrl('wall_index', [
+                    'wallNick' => 'coupon',
+                    'wallFilter' => 'self'
+                ]), $this->client->getHistory()->current()->getUri());
+    }
+
+    public function testLoginPageWithCoupon()
+    {
+        $crawler = $this->getPage('trismegiste_login');
+        $form = $crawler->filter('form')->selectButton('Sign in')->form();
+        $this->client->submit($form, ['_username' => 'coupon', '_password' => 'idic']);
+
+        $this->assertEquals($this->generateUrl('wall_index', [
+                    'wallNick' => 'coupon',
                     'wallFilter' => 'self'
                 ]), $this->client->getHistory()->current()->getUri());
     }
