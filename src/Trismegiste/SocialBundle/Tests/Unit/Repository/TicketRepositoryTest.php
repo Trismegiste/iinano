@@ -8,6 +8,9 @@ namespace Trismegiste\SocialBundle\Tests\Unit\Repository;
 
 use Trismegiste\SocialBundle\Repository\TicketRepository;
 use Trismegiste\Socialist\Author;
+use Trismegiste\SocialBundle\Ticket\Coupon;
+use Trismegiste\SocialBundle\Ticket\EntranceFee;
+use Trismegiste\SocialBundle\Ticket\Ticket;
 
 /**
  * TicketRepositoryTest tests TicketRepository
@@ -55,7 +58,7 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->repository->expects($this->once())
                 ->method('findOne')
                 ->with(['-class' => 'coupon', 'hashKey' => 'found'])
-                ->willReturn(new \Trismegiste\SocialBundle\Ticket\Coupon());
+                ->willReturn(new Coupon());
 
         $this->sut->findCouponByHash('found');
     }
@@ -65,7 +68,7 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateTicketFromExpiredCoupon()
     {
-        $coupon = new \Trismegiste\SocialBundle\Ticket\Coupon();
+        $coupon = new Coupon();
         $coupon->expiredAt = new \DateTime('yesterday');
         $this->assertFalse($coupon->isValid());
 
@@ -77,7 +80,7 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateTicketFromOverusedCoupon()
     {
-        $coupon = new \Trismegiste\SocialBundle\Ticket\Coupon();
+        $coupon = new Coupon();
         $coupon->expiredAt = new \DateTime('tomorrow');
         $coupon->incUse();
         $this->assertFalse($coupon->isValid());
@@ -87,7 +90,7 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateTicketFromValidCoupon()
     {
-        $coupon = new \Trismegiste\SocialBundle\Ticket\Coupon();
+        $coupon = new Coupon();
         $coupon->expiredAt = new \DateTime('tomorrow');
         $this->assertTrue($coupon->isValid());
 
@@ -98,7 +101,7 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testUseValidCoupon()
     {
-        $coupon = new \Trismegiste\SocialBundle\Ticket\Coupon();
+        $coupon = new Coupon();
         $coupon->expiredAt = new \DateTime('tomorrow');
 
         $this->repository->expects($this->once())
@@ -113,6 +116,45 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->sut->useCouponFor('found');
         $this->assertFalse($coupon->isValid());
+    }
+
+    public function testCreateTicketFromPayment()
+    {
+        $fee = new EntranceFee();
+        $fee->setAmount(1000);
+        $fee->setCurrency('JPY');
+        $fee->setDurationValue(12); // 12 months
+
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->with(['-class' => 'fee'])
+                ->willReturn($fee);
+
+        $ticket = $this->sut->createTicketFromPayment();
+        $this->assertInstanceOf('Trismegiste\SocialBundle\Ticket\Ticket', $ticket);
+        $this->assertTrue($ticket->isValid());
+        $this->assertTrue($ticket->isValid(new \DateTime('+11 months')));
+        $this->assertFalse($ticket->isValid(new \DateTime('+13 months')));
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testCreateTicketWithoutProperConfig()
+    {
+        $ticket = $this->sut->createTicketFromPayment();
+    }
+
+    public function testPersistNewPayment()
+    {
+        $ticket = new Ticket(new EntranceFee());
+
+        $this->repository->expects($this->once())
+                ->method('persist');
+        $this->user->expects($this->once())
+                ->method('addTicket');
+
+        $this->sut->persistNewPayment($ticket);
     }
 
 }

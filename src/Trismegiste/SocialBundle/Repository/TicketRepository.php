@@ -6,12 +6,11 @@
 
 namespace Trismegiste\SocialBundle\Repository;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Trismegiste\SocialBundle\Ticket\Ticket;
 use Trismegiste\SocialBundle\Ticket\Coupon;
 use Trismegiste\SocialBundle\Security\Netizen;
 use Trismegiste\SocialBundle\Ticket\InvalidCouponException;
+use Trismegiste\SocialBundle\Ticket\EntranceFee;
 
 /**
  * TicketRepository is a repository for ticket coupon and fee
@@ -28,6 +27,7 @@ class TicketRepository extends SecuredContentProvider
      */
     public function useCouponFor($couponHash)
     {
+        /** @var Netizen */
         $user = $this->security->getToken()->getUser(); // could not use getLoggedUser because not valid yet
         $coupon = $this->findCouponByHash($couponHash);
         if (is_null($coupon)) {
@@ -71,6 +71,38 @@ class TicketRepository extends SecuredContentProvider
         $coupon->incUse();
 
         return $ticket;
+    }
+
+    /**
+     * Fetch the current config for EntranceFee and create a new ticket from it
+     *
+     * @return Ticket
+     *
+     * @throws \RuntimeException if no fee has been configured
+     */
+    public function createTicketFromPayment()
+    {
+        /** @var EntranceFee */
+        $fee = $this->repository->findOne(['-class' => 'fee']);
+        if (is_null($fee)) {
+            throw new \RuntimeException('no payment has been configured');
+        }
+
+        return new Ticket($fee);
+    }
+
+    /**
+     * Persits a new payment in the current user
+     *
+     * @param Ticket $ticket the new ticket
+     */
+    public function persistNewPayment(Ticket $ticket)
+    {
+        /** @var Netizen */
+        $user = $this->security->getToken()->getUser();
+        $user->addTicket($ticket);
+
+        $this->repository->persist($user);
     }
 
 }
