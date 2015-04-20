@@ -148,4 +148,13 @@ class GuestControllerTest extends WebTestCasePlus
                 ]), $this->client->getHistory()->current()->getUri());
     }
 
+    public function testLandingWithCoupon()
+    {
+        $crawler = $this->getPage('guest_coupon_landing', ['code' => 'AZERTY']);
+        $this->assertEquals($this->generateUrl('guest_register'), $this->client->getHistory()->current()->getUri());
+
+        $prefillCoupon = $crawler->filter('form input[id="netizen_register_optionalCoupon"]');
+        $this->assertEquals('AZERTY', $prefillCoupon->attr('value'));
+    }
+
 }
