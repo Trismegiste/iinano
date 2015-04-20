@@ -33,7 +33,8 @@ class NetizenController extends Template
                     'follower' => $follower,
                     'following' => $following,
                     'author' => $user->getAuthor(),
-                    'profile' => $user->getProfile()
+                    'profile' => $user->getProfile(),
+                    'lastTicket' => $user->getLastTicket()
         ]);
     }
 
