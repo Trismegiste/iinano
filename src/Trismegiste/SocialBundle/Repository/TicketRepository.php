@@ -50,7 +50,7 @@ class TicketRepository extends SecuredContentProvider
      */
     public function findCouponByHash($hash)
     {
-        return $this->repository->findOne(['hashKey' => $hash]);
+        return $this->repository->findOne(['-class' => 'coupon', 'hashKey' => $hash]);
     }
 
     /**

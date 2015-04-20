@@ -67,7 +67,7 @@ class GuestController extends Template
             $coupon = $form->get('optionalCoupon')->getData();
             if (!empty($coupon)) {
                 try {
-                    $this->get('social.ticket.repository')->useCouponFor($user, $coupon);
+                    $this->get('social.ticket.repository')->useCouponFor($coupon);
 
                     // redirect wall
                     $session->remove('coupon');
