@@ -31,6 +31,7 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
         // dependencies with other packages :
         $this->container->setParameter('kernel.root_dir', sys_get_temp_dir() . '/app');
         $this->container->setParameter('kernel.cache_dir', sys_get_temp_dir() . '/cache');
+        $this->container->setParameter('security.role_hierarchy.roles', []);
         $this->container->set('dokudoki.repository', $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface'));
         $this->container->set('security.context', $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface'));
         $this->container->set('security.encoder_factory', $this->getMock('Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface'));
