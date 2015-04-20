@@ -45,6 +45,13 @@ h1, h2, h3, h4 {
 
 .pub-action a {
     color: #777;
+    display: block;
+    margin: 0.3em;
+    padding: 0.3em 0;
+}
+
+.pub-action a:hover {
+    background-color: #eee;
 }
 
 .status-map {
