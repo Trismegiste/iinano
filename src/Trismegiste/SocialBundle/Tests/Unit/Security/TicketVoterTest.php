@@ -19,6 +19,7 @@ class TicketVoterTest extends \PHPUnit_Framework_TestCase
     protected $sut;
     protected $currentUser;
     protected $token;
+    protected $config;
 
     protected function createDocument($nick)
     {
@@ -27,7 +28,12 @@ class TicketVoterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->sut = new TicketVoter();
+        $this->config = $this->getMock('Trismegiste\SocialBundle\Config\ProviderInterface');
+        $this->config->expects($this->any())
+                ->method('read')
+                ->willReturn(['freeAccess' => false]);
+
+        $this->sut = new TicketVoter([], $this->config);
 
         $this->currentUser = $this->getMockBuilder('Trismegiste\SocialBundle\Security\Netizen')
                 ->disableOriginalConstructor()
@@ -44,6 +50,8 @@ class TicketVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testValidTicketGranted()
     {
+        $this->setUserRole('ROLE_USER');
+
         $this->currentUser->expects($this->any())
                 ->method('hasValidTicket')
                 ->willReturn(true);
@@ -53,6 +61,8 @@ class TicketVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testNoValidTicketDenied()
     {
+        $this->setUserRole('ROLE_USER');
+
         $this->currentUser->expects($this->any())
                 ->method('hasValidTicket')
                 ->willReturn(false);
@@ -81,8 +91,33 @@ class TicketVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testFreeAccess()
     {
-        $this->sut = new TicketVoter(true);
+        $config = $this->getMock('Trismegiste\SocialBundle\Config\ProviderInterface');
+        $config->expects($this->once())
+                ->method('read')
+                ->willReturn(['freeAccess' => true]);
+        $this->sut = new TicketVoter([], $config);
+
         $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->sut->vote($this->token, null, ['VALID_TICKET']));
+    }
+
+    public function testUserWithOnlyFreePassRoleIsNotPossible()
+    {
+        $this->setUserRole('ROLE_FREEPASS');
+        $this->assertEquals(VoterInterface::ACCESS_DENIED, $this->sut->vote($this->token, null, ['VALID_TICKET']));
+    }
+
+    public function testUserHasFreePassRoleInHierarchy()
+    {
+        $this->setUserRole('ROLE_MULTIPASS');
+        $this->sut = new TicketVoter(['ROLE_MULTIPASS' => ['ROLE_DUMMY', 'ROLE_FREEPASS']], $this->config);
+        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->sut->vote($this->token, null, ['VALID_TICKET']));
+    }
+
+    protected function setUserRole($group)
+    {
+        $this->currentUser->expects($this->any())
+                ->method('getRoles')
+                ->willReturn([$group]);
     }
 
 }
