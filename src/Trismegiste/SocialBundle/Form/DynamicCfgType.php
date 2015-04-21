@@ -41,7 +41,8 @@ class DynamicCfgType extends AbstractType
                     'choices' => [false => 'No', true => 'Yes'],
                     'label' => 'Free access',
                     'expanded' => true,
-                    'multiple' => false
+                    'multiple' => false,
+                    'constraints' => [new NotBlank()]
                 ])
                 ->add('Edit', 'submit');
     }
