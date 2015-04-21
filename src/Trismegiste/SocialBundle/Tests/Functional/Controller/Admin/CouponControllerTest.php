@@ -34,10 +34,11 @@ class CouponControllerTest extends AdminControllerTestCase
     public function testCreateNewCoupon()
     {
         $this->client->followRedirects();
+        $this->logIn('admin');
         $crawler = $this->getPage('admin_coupon_create');
         $form = $crawler->filter('div.content form')->form();
-        $this->client->submit($form, ['social_coupon' => [
-                'haskKey' => 'YUIOP',
+        $crawler = $this->client->submit($form, ['free_coupon' => [
+                'hashKey' => 'YUIOP',
         ]]);
 
         $this->assertCount(1, $crawler->filter('div.content td:contains("YUIOP")'));
