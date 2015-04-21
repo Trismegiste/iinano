@@ -75,7 +75,7 @@ class AbuseReportControllerTest extends WebTestCasePlus
     public function testLogBadRole()
     {
         $this->logIn('kirk');
-        $this->getPage('abusive_listing');
+        $this->getPage('admin_abusive_listing');
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
 
@@ -88,7 +88,7 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $repo->persist($user);
 
         $this->logIn('moderat');
-        $crawler = $this->getPage('abusive_listing');
+        $crawler = $this->getPage('admin_abusive_listing');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $lineSet = $crawler->filter('table.abuse-listing tr');
         $this->assertCount(3, $lineSet);

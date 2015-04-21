@@ -10,7 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\BrowserKit\Cookie;
 use Trismegiste\Socialist\Author;
-use Trismegiste\SocialBundle\Security\Profile;
+use Trismegiste\SocialBundle\Ticket\Ticket;
+use Trismegiste\SocialBundle\Ticket\EntranceFee;
 
 /**
  * WebTestCasePlus is an extended WebTestCase with usefull helper
@@ -79,6 +80,9 @@ class WebTestCasePlus extends WebTestCase
     protected function addUserFixture($nickname)
     {
         $user = $this->getService('security.netizen.factory')->create($nickname, 'mellon');
+        $fee = new EntranceFee();
+        $fee->setDurationValue(12);
+        $user->addTicket(new Ticket($fee));
         $prof = $user->getProfile();
         $prof->fullName = ucfirst($nickname);
         $prof->gender = 'xy';

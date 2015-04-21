@@ -22,7 +22,7 @@ class FeeControllerTest extends AdminControllerTestCase
 
     public function testFeeEdit()
     {
-        $this->assertSecuredPage('entrancefee_edit');
+        $this->assertSecuredPage('admin_entrancefee_edit');
         $crawler = $this->client->getCrawler();
 
         $form = $crawler->selectButton('Edit')->form();
@@ -30,7 +30,7 @@ class FeeControllerTest extends AdminControllerTestCase
         $crawler = $this->client->submit($form, ['entrance_fee' => [
                 'amount' => '9.99',
                 'currency' => 'EUR',
-                'duration' => "+ 1 year"
+                'durationValue' => 12
         ]]);
         $response = $this->client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
