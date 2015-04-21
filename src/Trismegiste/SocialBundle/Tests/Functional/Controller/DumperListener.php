@@ -7,13 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 class DumperListener extends \PHPUnit_Framework_BaseTestListener
 {
 
-    protected $rootDir;
-
-    public function __construct($path)
-    {
-        $this->rootDir = $path;
-    }
-
     public function addError(\PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
         if (($test instanceof WebTestCasePlus) && !is_null($test->getCurrentResponse())) {
@@ -30,7 +23,7 @@ class DumperListener extends \PHPUnit_Framework_BaseTestListener
 
     protected function dumpResponse($prefix, $test, Response $response)
     {
-        $filepath = $this->rootDir . sprintf("/%s-%s-%d.html", $prefix, $test, $response->getStatusCode());
+        $filepath = sys_get_temp_dir() . sprintf("/%s-%s-%d.html", $prefix, $test, $response->getStatusCode());
         file_put_contents($filepath, $response->getContent());
     }
 

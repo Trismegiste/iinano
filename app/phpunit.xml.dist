@@ -48,9 +48,6 @@
 
     <listeners>
         <listener class="Trismegiste\SocialBundle\Tests\Functional\Controller\DumperListener">
-            <arguments>
-                <string>./app/cache/test</string>
-            </arguments>
         </listener>
     </listeners>
 </phpunit>
