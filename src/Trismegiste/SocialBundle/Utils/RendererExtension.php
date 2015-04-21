@@ -123,7 +123,7 @@ class RendererExtension extends \Twig_Extension
 
     /**
      * Render a value with multiplier : k,M,G,T...
-     * 
+     *
      * @param float|int $value
      *
      * @return string
@@ -136,7 +136,7 @@ class RendererExtension extends \Twig_Extension
 
         $digit = log10($value);
         $power = floor($digit / 3);
-        $afterComma = floor(3 - fmod($digit, 3));
+        $afterComma = floor(fmod($digit, 3)) ? 0 : 1; // if [1k, 10k[ => one digit after comma else 0 digit
 
         return sprintf("%.{$afterComma}f%s", $value / pow(1000, $power), $this->multiplier[$power]);
     }
