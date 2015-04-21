@@ -47,9 +47,20 @@ class AdminControllerTest extends AdminControllerTestCase
                 'minimumAge' => 13,
                 'freeAccess' => 0
         ]]);
-        sleep(3);
+
+        $this->assertCount(1, $crawler->filter('div.content form input[value="' . $randString . '"]'));
+
+        return $randString;
+    }
+
+    /**
+     * @depends testEditDynamicConfig
+     */
+    public function testCacheEditedDynamicConfig($expected)
+    {
+        // to reload
         $cfg = $this->getService('social.dynamic_config')->read();
-        $this->assertEquals($randString, $cfg['appTitle']);
+        $this->assertEquals($expected, $cfg['appTitle']);
     }
 
 }
