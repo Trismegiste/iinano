@@ -105,6 +105,7 @@ class NetizenTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->sut->hasValidTicket());
         $this->assertEquals($ticket, $this->sut->getLastTicket());
+        $this->assertCount(1, $this->sut->getTicketIterator());
     }
 
     /**

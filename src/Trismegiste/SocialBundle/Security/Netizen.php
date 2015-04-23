@@ -154,6 +154,13 @@ class Netizen extends User implements UserInterface
         return !is_null($last) && $last->isValid();
     }
 
+    /**
+     * Add a valid ticket to this user with an invalid ticket
+     *
+     * @param EntranceAccess $ticket
+     *
+     * @throws InvalidTicketException
+     */
     public function addTicket(EntranceAccess $ticket)
     {
         // we add the ticket only if it is valid...
@@ -176,6 +183,16 @@ class Netizen extends User implements UserInterface
     public function getLastTicket()
     {
         return count($this->ticket) ? $this->ticket[0] : null;
+    }
+
+    /**
+     * Get an interator on tickets
+     * 
+     * @return \ArrayIterator
+     */
+    public function getTicketIterator()
+    {
+        return new \ArrayIterator($this->ticket);
     }
 
 }
