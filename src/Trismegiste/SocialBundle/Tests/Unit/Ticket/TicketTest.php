@@ -68,4 +68,9 @@ class TicketTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEquals($this->sut->getExpiredAt(), $this->sut->getPurchasedAt());
     }
 
+    public function testGetTitle()
+    {
+        $this->assertStringStartsWith('Mock', $this->sut->getTitle());
+    }
+
 }

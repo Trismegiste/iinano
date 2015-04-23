@@ -29,7 +29,12 @@ interface EntranceAccess
     /**
      * Gets the expiration date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getExpiredAt();
+
+    /**
+     * Gets a human readable label for this object
+     */
+    public function getTitle();
 }

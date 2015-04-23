@@ -60,6 +60,15 @@ class Ticket implements EntranceAccess
         return $tmp;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function getTitle()
+    {
+        preg_match('#([^\\\\]+)$#', get_class($this->purchase), $match);
+        return $match[1];
+    }
+
 }
 
 /* @todo Statistique & predction pour les tickets

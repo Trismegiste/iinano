@@ -36,7 +36,7 @@
                         </tr>
                         {% for ticket in netizen.ticketIterator %}
                             <tr>
-                                <td>{{ 'fee' }}</td>
+                                <td>{{ ticket.title }}</td>
                                 <td>{{ ticket.isValid() }}</td>
                                 <td>{{ ticket.purchasedAt|date }}</td>
                                 <td>{{ ticket.expiredAt|date }}</td>
