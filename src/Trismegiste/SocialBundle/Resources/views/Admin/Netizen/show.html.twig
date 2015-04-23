@@ -1,13 +1,31 @@
 {% extends 'TrismegisteSocialBundle:Admin:layout.html.twig' %}
 
-{% block page_title %}
+{% block meta_title %}
     {{ parent() }} | Show {{ netizen.username }}
 {% endblock %}
 
 {% block content %}
     <div class="pure-g">
-        <div class="pure-u-1 pure-u-md-1-2">
-            Show netizen {{ netizen.username }}
+        <div class="pure-u-1">
+            <h2>{{ netizen.username }}</h2>
+            <h3>{{ netizen.profile.fullName }}</h3>
+            <div class="pure-g">
+                <div class="pure-u-1 pure-u-md-1-2">
+                    Gender: {{ netizen.profile.gender|gender }}<br/>
+                    Location: {{ netizen.profile.location }}<br/>
+                    Born the: {{ netizen.profile.dateOfBirth|date("Y/m/d") }}<br/>
+                    Born at: {{ netizen.profile.placeOfBirth }}
+                </div>
+                <div class="pure-u-1 pure-u-md-1-2">
+                    Email: {{ netizen.profile.email }}<br/>
+                    Registered at: {{ netizen.profile.joinedAt|timeago }}<br/>
+                    Content counter: {{ netizen.profile.publishingCounter }}<br/>
+                    Commentary counter: {{ netizen.profile.commentaryCounter }}<br/>
+                    {% if netizen.lastTicket is not null %}
+                        Next payment: {{ netizen.lastTicket.expiredAt|timeago }}
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
