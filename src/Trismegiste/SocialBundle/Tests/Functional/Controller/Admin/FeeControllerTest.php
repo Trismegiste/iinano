@@ -27,6 +27,7 @@ class FeeControllerTest extends AdminControllerTestCase
 
         $form = $crawler->selectButton('Edit')->form();
 
+        $this->client->followRedirects();
         $crawler = $this->client->submit($form, ['entrance_fee' => [
                 'amount' => '9.99',
                 'currency' => 'EUR',
