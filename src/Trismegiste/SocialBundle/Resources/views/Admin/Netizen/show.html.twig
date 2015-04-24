@@ -13,17 +13,26 @@
                 <div class="pure-u-1 pure-u-md-1-2">
                     Gender: {{ netizen.profile.gender|gender }}<br/>
                     Location: {{ netizen.profile.location }}<br/>
-                    Born the: {{ netizen.profile.dateOfBirth|date("Y/m/d") }}<br/>
-                    Born at: {{ netizen.profile.placeOfBirth }}
+                    Email: {{ netizen.profile.email }}<br/>
                 </div>
                 <div class="pure-u-1 pure-u-md-1-2">
-                    Email: {{ netizen.profile.email }}<br/>
-                    Registered at: {{ netizen.profile.joinedAt|timeago }}<br/>
+                    Registered: {{ netizen.profile.joinedAt|timeago }}<br/>
                     Content counter: {{ netizen.profile.publishingCounter }}<br/>
                     Commentary counter: {{ netizen.profile.commentaryCounter }}<br/>
                     {% if netizen.lastTicket is not null %}
                         Next payment: {{ netizen.lastTicket.expiredAt|timeago }}
                     {% endif %}
+                </div>
+                <div class="pure-u-1">
+                    <a href="{{ path('wall_index',{wallNick: netizen.username, wallFilter:'self'}) }}" class="pure-button">
+                        Go to wall
+                    </a>
+                    <a href="{{ path('netizen_show',{author: netizen.username}) }}" class="pure-button">
+                        Go to profile
+                    </a>
+                    <a href="{{ path('admin_netizen_promote',{id: netizen.id}) }}" class="pure-button">
+                        Change privileges
+                    </a>
                 </div>
                 <div class="pure-u-1">
                     <h4>Ticket history</h4>

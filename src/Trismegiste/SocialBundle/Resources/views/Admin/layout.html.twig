@@ -18,14 +18,14 @@
         <li class="menu-item-divided"></li>
             {{ pure.menu_item('admin_abusive_listing', {}, 'Abuse/spam') }}
             {{ pure.menu_item('admin_netizen_listing', {}, 'Users') }}
+            {{ pure.menu_item('admin_coupon_listing', {}, 'Coupons') }}
+            {{ pure.menu_item('admin_coupon_create', {}, 'New coupon') }}
         <li class="menu-item-divided"></li>
             {{ pure.menu_item('admin_entrancefee_edit', {}, 'Fee') }}
-        <li class="menu-item-divided"></li>
-            {{ pure.menu_item('admin_coupon_listing', {}, 'Coupons') }}
-            {{ pure.menu_item('admin_coupon_create', {}, 'Create coupon') }}
-        <li class="menu-item-divided"></li>
             {{ pure.menu_item('admin_dynamic_config_edit', {}, 'Preferences') }}
-        <li class="menu-item-divided"><a href="{{ path('trismegiste_logout') }}">Logout</a></li>
+        <li class="menu-item-divided"></li>
+            {{ pure.menu_item('content_index', {}, 'Front') }}
+            {{ pure.menu_item('trismegiste_logout', {}, 'Logout') }}
     </ul>
 {% endblock %}
 

@@ -39,9 +39,15 @@ class NetizenController extends Template
         ]);
     }
 
-    public function promoteAction()
+    public function promoteAction($id)
     {
+        $repo = $this->getRepository();
+        $netizen = $repo->findByPk($id);
+        $form = $this->createForm('role_choice');
 
+        return $this->render('TrismegisteSocialBundle:Admin:Netizen/edit.html.twig', [
+                    'form' => $form->createView()
+        ]);
     }
 
     public function blockAction()
@@ -51,8 +57,7 @@ class NetizenController extends Template
 
     public function editAction($id)
     {
-        $repo = $this->getRepository();
-        $netizen = $repo->findByPk($id);
+
         $form = $this->createForm(new EntranceFeeType(), $netizen);
 
         $form->handleRequest($this->getRequest());

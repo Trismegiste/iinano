@@ -59,5 +59,10 @@
             <tag name="form.type" alias="social_commentary"/>
         </service>
 
+        <service id="social.type.rolechoice" class="Trismegiste\SocialBundle\Form\HierarchyRoleType">
+            <tag name="form.type" alias="role_choice"/>
+            <argument>%security.role_hierarchy.roles%</argument>
+        </service>
+
     </services>
 </container>
