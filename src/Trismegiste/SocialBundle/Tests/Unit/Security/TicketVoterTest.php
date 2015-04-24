@@ -116,8 +116,8 @@ class TicketVoterTest extends \PHPUnit_Framework_TestCase
     protected function setUserRole($group)
     {
         $this->currentUser->expects($this->any())
-                ->method('getRoles')
-                ->willReturn([$group]);
+                ->method('getGroup')
+                ->willReturn($group);
     }
 
 }

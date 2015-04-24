@@ -37,8 +37,9 @@ class NetizenTest extends \PHPUnit_Framework_TestCase
 
     public function testRoles()
     {
-        $this->sut->addRole('ROLE_USER');
-        $this->assertEquals(['ROLE_USER'], $this->sut->getRoles());
+        $this->sut->setGroup('ROLE_ADMIN');
+        $this->assertEquals('ROLE_ADMIN', $this->sut->getGroup());
+        $this->assertEquals(['ROLE_ADMIN'], $this->sut->getRoles()); // for BC
     }
 
     public function testProfile()
@@ -62,12 +63,6 @@ class NetizenTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(get_class($strat), $this->sut->getCredentialType());
         $this->sut->eraseCredentials(); // for CC
-    }
-
-    public function testGroup()
-    {
-        $this->sut->setGroup('ROLE_ADMIN');
-        $this->assertEquals(['ROLE_ADMIN'], $this->sut->getRoles());
     }
 
     public function testNoTicketAtCreation()

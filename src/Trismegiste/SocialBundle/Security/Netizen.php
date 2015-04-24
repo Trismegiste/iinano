@@ -30,9 +30,9 @@ class Netizen extends User implements UserInterface
     protected $profile;
 
     /**
-     * @var array of roles
+     * @var string one role in the hierarchy roles security
      */
-    protected $roles = [];
+    protected $roleGroup;
 
     /**
      * @var array of ticket
@@ -60,7 +60,7 @@ class Netizen extends User implements UserInterface
      */
     public function getRoles()
     {
-        return $this->roles;
+        return [$this->roleGroup];
     }
 
     /**
@@ -121,15 +121,13 @@ class Netizen extends User implements UserInterface
     }
 
     /**
-     * Add (append) a role to this user
+     * Get the role of this user
      *
-     * @param string $str
+     * @return string the role group
      */
-    public function addRole($str)
+    public function getGroup()
     {
-        if (!in_array($str, $this->roles)) {
-            $this->roles[] = $str;
-        }
+        return $this->roleGroup;
     }
 
     /**
@@ -139,7 +137,7 @@ class Netizen extends User implements UserInterface
      */
     public function setGroup($str)
     {
-        $this->roles = [$str];
+        $this->roleGroup = $str;
     }
 
     /**
@@ -187,7 +185,7 @@ class Netizen extends User implements UserInterface
 
     /**
      * Get an interator on tickets
-     * 
+     *
      * @return \ArrayIterator
      */
     public function getTicketIterator()
