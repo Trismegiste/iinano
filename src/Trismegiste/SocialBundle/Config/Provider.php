@@ -52,8 +52,13 @@ class Provider implements CacheWarmerInterface, ProviderInterface
     /**
      * @inheritdoc
      */
-    public function read()
+    public function read($forceReload = false)
     {
+        if ($forceReload) {
+            $cfg = $this->getUniqueInstance();
+            $this->loadedConfig = $cfg->data;
+        }
+
         if (is_null($this->loadedConfig)) {
             $this->loadedConfig = include $this->cacheDir . DIRECTORY_SEPARATOR . self::FILENAME;
         }
@@ -87,7 +92,7 @@ class Provider implements CacheWarmerInterface, ProviderInterface
 
     /**
      * Get the unique entity in database (or create it)
-     * 
+     *
      * @return \Trismegiste\SocialBundle\Config\ParameterBag
      */
     protected function getUniqueInstance()

@@ -28,7 +28,7 @@ class AdminController extends Template
     public function editDynamicConfigAction()
     {
         $repo = $this->get('social.dynamic_config');
-        $config = $repo->read();
+        $config = $repo->read(true);
         $form = $this->createForm(new DynamicCfgType(), $config);
 
         $form->handleRequest($this->getRequest());
