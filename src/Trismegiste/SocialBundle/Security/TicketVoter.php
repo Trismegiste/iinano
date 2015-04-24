@@ -88,14 +88,10 @@ class TicketVoter implements VoterInterface
 
     private function hasFreeAccess(Netizen $user)
     {
-        foreach ($user->getRoles() as $role) {
-            if (isset($this->role_hierarchy[$role]) &&
-                    in_array(self::ROLE_FREEPASS, $this->role_hierarchy[$role])) {
-                return true;
-            }
-        }
+        $roleGroup = $user->getGroup();
 
-        return false;
+        return (isset($this->role_hierarchy[$roleGroup]) &&
+                in_array(self::ROLE_FREEPASS, $this->role_hierarchy[$roleGroup]));
     }
 
 }

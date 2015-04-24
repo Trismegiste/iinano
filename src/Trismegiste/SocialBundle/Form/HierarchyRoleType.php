@@ -35,7 +35,7 @@ class HierarchyRoleType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
-            'choices' => array_keys($this->hierarchyRole),
+            'choices' => array_combine(array_keys($this->hierarchyRole), array_keys($this->hierarchyRole)),
             'required' => true
         ]);
     }

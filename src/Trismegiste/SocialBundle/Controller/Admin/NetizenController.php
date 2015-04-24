@@ -6,8 +6,9 @@
 
 namespace Trismegiste\SocialBundle\Controller\Admin;
 
-use Trismegiste\SocialBundle\Controller\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Trismegiste\SocialBundle\Controller\Template;
+use Trismegiste\SocialBundle\Form\NetizenRoleType;
 
 /**
  * NetizenController is a controller for administrating Netizen
@@ -43,40 +44,29 @@ class NetizenController extends Template
     {
         $repo = $this->getRepository();
         $netizen = $repo->findByPk($id);
-        $form = $this->createForm('role_choice');
+        $form = $this->createForm(new NetizenRoleType(), $netizen);
+
+        $form->handleRequest($this->getRequest());
+        if ($form->isValid()) {
+            try {
+                $repo->persist($netizen);
+                $this->pushFlash('notice', 'User promoted');
+
+                // return to the same page
+                return $this->redirectRouteOk('admin_netizen_show', ['id' => $netizen->getId()]);
+            } catch (\MongoException $e) {
+                $this->pushFlash('warning', 'Cannot promote user');
+            }
+        }
 
         return $this->render('TrismegisteSocialBundle:Admin:Netizen/edit.html.twig', [
                     'form' => $form->createView()
         ]);
     }
 
-    public function blockAction()
+    public function blockWriteUntilAction()
     {
-
-    }
-
-    public function editAction($id)
-    {
-
-        $form = $this->createForm(new EntranceFeeType(), $netizen);
-
-        $form->handleRequest($this->getRequest());
-        if ($form->isValid()) {
-            $newFee = $form->getData();
-            try {
-                $repo->persist($newFee);
-                $this->pushFlash('notice', 'Entrance fee saved');
-
-                // return to the same page
-                $this->redirectRouteOk('admin_netizen_show');
-            } catch (\MongoException $e) {
-                $this->pushFlash('warning', 'Cannot save entrance fee');
-            }
-        }
-
-        return $this->render('TrismegisteSocialBundle:Admin:fee_form.html.twig', [
-                    'form' => $form->createView()
-        ]);
+        // @todo blockWriteUntilAction
     }
 
     public function showAction($id)

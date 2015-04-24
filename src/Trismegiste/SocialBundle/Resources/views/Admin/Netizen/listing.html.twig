@@ -24,7 +24,7 @@
                     <tr>
                         <td><input type="checkbox" class="action-selection"/></td>
                         <td><a href="{{ path('admin_netizen_show', {id: netizen.id}) }}">{{ netizen.author.nickname }}</a></td>
-                        <td>{{ netizen.roles[0] }}</td>
+                        <td>{{ netizen.group }}</td>
                         <td>{{ netizen.profile.joinedAt|timeago }}</td>
                         <td>{{ netizen.profile.publishingCounter|si }}</td>
                         <td>
