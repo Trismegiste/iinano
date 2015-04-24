@@ -39,7 +39,7 @@ class AdminController extends Template
                 $this->pushFlash('notice', 'Config saved');
 
                 // return to the same page
-                $this->redirectRouteOk('admin_dynamic_config_edit');
+                return $this->redirectRouteOk('admin_dynamic_config_edit');
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save config');
             }

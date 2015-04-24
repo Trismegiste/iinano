@@ -34,7 +34,7 @@ class FeeController extends Template
                 $this->pushFlash('notice', 'Entrance fee saved');
 
                 // return to the same page
-                $this->redirectRouteOk('admin_entrancefee_edit');
+                return $this->redirectRouteOk('admin_entrancefee_edit');
             } catch (\MongoException $e) {
                 $this->pushFlash('warning', 'Cannot save entrance fee');
             }
