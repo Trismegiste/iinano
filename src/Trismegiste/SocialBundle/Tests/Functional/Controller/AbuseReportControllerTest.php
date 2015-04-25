@@ -75,11 +75,13 @@ class AbuseReportControllerTest extends WebTestCasePlus
     public function testLogBadRole()
     {
         $this->logIn('kirk');
-        $this->getPage('admin_abusive_listing');
+        $this->getPage('admin_abusive_pub_listing');
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+        $this->getPage('admin_abusive_comm_listing');
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
 
-    public function testLogWithModerator()
+    public function testLogWithModeratorOnPublishListing()
     {
         $repo = $this->getService('social.netizen.repository');
         $this->addUserFixture('moderat');
@@ -88,14 +90,23 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $repo->persist($user);
 
         $this->logIn('moderat');
-        $crawler = $this->getPage('admin_abusive_listing');
+        $crawler = $this->getPage('admin_abusive_pub_listing');
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $lineSet = $crawler->filter('table.abuse-listing tr');
-        $this->assertCount(3, $lineSet);
-        $this->assertEquals('small', $lineSet->eq(1)->filter('td')->eq(1)->text());
+        $this->assertCount(2, $lineSet);
+        $this->assertCount(1, $lineSet->eq(1)->filter('td:contains("dummy message")'));
         $this->assertEquals(1, (int) $lineSet->eq(1)->filter('td')->eq(3)->text());
-        $this->assertEquals('comm', $lineSet->eq(2)->filter('td')->eq(1)->text());
-        $this->assertEquals(1, (int) $lineSet->eq(2)->filter('td')->eq(3)->text());
+    }
+
+    public function testLogWithModeratorOnCommentaryListing()
+    {
+        $this->logIn('moderat');
+        $crawler = $this->getPage('admin_abusive_comm_listing');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $lineSet = $crawler->filter('table.abuse-listing tr');
+        $this->assertCount(2, $lineSet);
+        $this->assertCount(1, $lineSet->eq(1)->filter('td:contains("dummy comment")'));
+        $this->assertEquals(1, (int) $lineSet->eq(1)->filter('td')->eq(3)->text());
     }
 
     public function testCancellingReportedOnPublishing()
