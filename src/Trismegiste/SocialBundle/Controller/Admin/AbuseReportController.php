@@ -26,7 +26,12 @@ class AbuseReportController extends Template
 
     public function commListingAction()
     {
+        $reportRepo = $this->get('social.abusereport.repository');
+        $iterator = $reportRepo->findMostReportedCommentary(0, 30);
 
+        return $this->render('TrismegisteSocialBundle:Admin:AbuseReport/comm_listing.html.twig', [
+                    'listing' => $iterator
+        ]);
     }
 
     /**

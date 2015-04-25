@@ -65,8 +65,16 @@ class AbuseReport
      */
     public function findMostReportedCommentary($offset = 0, $limit = 20)
     {
-
+        return $this->collection->aggregateCursor([
+                    ['$match' => [
+                            'commentary.0' => ['$exists' => true],
+                            'commentary' => ['$elemMatch' => ['abusiveCount' => ['$gt' => 0]]]
+                        ]
+                    ], // I love arrays
+                    ['$unwind' => '$commentary'],
+                    ['$match' => ['commentary.abusiveCount' => ['$gt' => 0]]],
+                    ['$project' => ['commentary' => true]]
+        ]);
     }
 
-//db.dokudoki.aggregate( {$match:{'commentary.0':{$exists:true}, commentary:{$elemMatch:{abusiveCount:{$gt:0}}}}},  {$unwind: "$commentary"}, {$match: {'commentary.abusiveCount':{$gt:0}}},{$project:{commentary:true}} );
 }
