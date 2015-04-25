@@ -1,3 +1,4 @@
-<a href="{{ path('pub_permalink', {id: report.fk.id}) }}">
-    {{ report.content.message }}
-</a>
+{% set source = report.embedded|merge({_id:report.embedded.id}) %}
+
+{% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ report.embedded['-class'] ~ '.html.twig'
+        with { report:source } only %}

@@ -47,11 +47,14 @@ class AbuseReport
      */
     public function findMostReportedPublish($offset = 0, $limit = 20)
     {
-        return $this->repository->find([
+        return $this->collection->find([
                             'abusiveCount' => ['$gt' => 0]
+                                ], [
+                            'fanList' => false,
+                            'commentary' => false
                         ])
                         ->sort(['abusiveCount' => -1])
-                        ->offset($offset)
+                        ->skip($offset)
                         ->limit($limit);
     }
 

@@ -1,1 +1,5 @@
-{{ report.content.message }}
+<figcaption>{{ report.message }}</figcaption>
+<a href="{{ path('pub_permalink', {id: report._id}) }}">
+    <img src="{{ path('picture_get', {size:'tiny', storageKey: report.storageKey}) }}"
+         class="pure-img"/>
+</a>

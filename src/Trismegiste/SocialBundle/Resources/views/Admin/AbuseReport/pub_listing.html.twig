@@ -16,7 +16,7 @@
                 {% for report in listing %}
                     <tr>
                         <td><input type="checkbox" class="action-selection"/></td>
-                        <td>{% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ choose_template(report) %}</td>
+                        <td>{% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ report['-class'] ~ '.html.twig' %}</td>
                         <td class="text-center">{# publish.abusiveCounter #}</td>
                     </tr>
                 {% endfor %}
