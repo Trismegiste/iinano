@@ -14,15 +14,19 @@ use Trismegiste\SocialBundle\Controller\Template;
 class AbuseReportController extends Template
 {
 
-    public function listingAction()
+    public function pubListingAction()
     {
         $reportRepo = $this->get('social.abusereport.repository');
-        $reportRepo->compileReport();
-        $iterator = $reportRepo->findMostReported(0, 30);
+        $iterator = $reportRepo->findMostReportedPublish(0, 30);
 
-        return $this->render('TrismegisteSocialBundle:Admin:AbuseReport/listing.html.twig', [
+        return $this->render('TrismegisteSocialBundle:Admin:AbuseReport/pub_listing.html.twig', [
                     'listing' => $iterator
         ]);
+    }
+
+    public function commListingAction()
+    {
+
     }
 
     /**
