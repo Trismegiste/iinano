@@ -13,66 +13,66 @@ namespace Trismegiste\SocialBundle\Repository;
 class AbuseReport
 {
 
-    protected $sourceName;
-
     /** @var \MongoCollection */
-    protected $compiledReport;
+    protected $collection;
 
     /** @var array */
     protected $pubAlias;
 
-    /** @var \MongoDB */
-    protected $database;
-
     /**
      * Ctor
      *
-     * @param \MongoCollection $sourceCollection the source collection of Content
-     * @param string $targetName the target collection's name (in the same db as $sourceCollection
+     * @param \MongoCollection $coll collection of Content
      * @param array $aliases an array of aliases for Publishing subclasses
      */
-    public function __construct(\MongoCollection $sourceCollection, $targetName, array $aliases)
+    public function __construct(\MongoCollection $coll, array $aliases)
     {
-        $this->database = $sourceCollection->db;
-        $this->sourceName = $sourceCollection->getName();
-        $this->compiledReport = $this->database->selectCollection($targetName);
         $this->pubAlias = $aliases;
+        $this->collection = $coll;
     }
 
     /**
-     * Runs a script in MongoDB
-     *
-     * @throws \RuntimeException
-     */
-    public function compileReport()
-    {
-        $result = $this->database
-                ->execute(new \MongoCode(file_get_contents(__DIR__ . '/v8/abusereport.js'), [
-            'aliases' => $this->pubAlias,
-            'sourceName' => $this->sourceName,
-            'targetName' => $this->compiledReport->getName(),
-            'classAliasKey' => \Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias::CLASS_KEY
-        ]));
-
-        if (!$result['ok']) {
-            throw new \RuntimeException($result['errmsg']);
-        }
-    }
-
-    /**
-     * Retrieves a cursor on a compiled list on abuse reports
+     * Retrieves an iterator on a list of abusive Publishing (root) entities
      *
      * @param int $offset
      * @param int $limit
      *
      * @return \MongoCursor
      */
-    public function findMostReported($offset = 0, $limit = 20)
+    public function findMostReportedPublish($offset = 0, $limit = 20)
     {
-        return $this->compiledReport->find()
-                        ->sort(['counter' => -1])
+        return $this->collection->find([
+                            'abusiveCount' => ['$gt' => 0]
+                                ], [
+                            'fanList' => false,
+                            'commentary' => false
+                        ])
+                        ->sort(['abusiveCount' => -1])
                         ->skip($offset)
                         ->limit($limit);
+    }
+
+    /**
+     * Retrieves an iterator on a list of abusive Commentary
+     *
+     * @param int $offset
+     * @param int $limit
+     *
+     * @return \MongoCursor
+     */
+    public function findMostReportedCommentary($offset = 0, $limit = 20)
+    {
+        return $this->collection->aggregateCursor([
+                    ['$match' => [
+                            'commentary.0' => ['$exists' => true],
+                            'commentary' => ['$elemMatch' => ['abusiveCount' => ['$gt' => 0]]]
+                        ]
+                    ],
+                    ['$unwind' => '$commentary'],
+                    ['$match' => ['commentary.abusiveCount' => ['$gt' => 0]]],
+                    ['$project' => ['commentary' => true]],
+                    ['$sort' => ['commentary.abusiveCount' => -1]]
+        ]); // I love arrays
     }
 
 }

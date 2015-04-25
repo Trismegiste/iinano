@@ -1,0 +1,28 @@
+{% extends 'TrismegisteSocialBundle:Admin:layout.html.twig' %}
+
+{% block meta_title %}
+    {{ parent() }} | Abuse report & moderation
+{% endblock %}
+
+{% block content %}
+    <div class="pure-g">
+        <div class="pure-u-1">
+            <table class="pure-table pure-table-horizontal pure-table-striped abuse-listing">
+                <tr>
+                    <th></th>
+                    <th>Content</th>
+                    <th>Author</th>
+                    <th>Reported</th>
+                </tr>
+                {% for report in listing %}
+                    <tr>
+                        <td><input type="checkbox" class="action-selection"/></td>
+                        <td>{% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ report['-class'] ~ '.html.twig' %}</td>
+                        <td>{{ report.owner.nickname }}</td>
+                        <td class="text-center">{{ report.abusiveCount }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

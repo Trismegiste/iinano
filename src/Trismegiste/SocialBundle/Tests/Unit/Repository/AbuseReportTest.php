@@ -52,15 +52,10 @@ class AbuseReportTest extends WebTestCase
         $doc3->attachCommentary($comm);
 
         return [
-            [$doc0, []],
-            [$doc1, [['type' => 'small', 'counter' => 1]]],
-            [$doc2,
-                [
-                    ['type' => 'small', 'counter' => 2],
-                    ['type' => 'comm', 'counter' => 1]
-                ]
-            ],
-            [$doc3, [['type' => 'comm', 'counter' => 1]]]
+            [$doc0, ['comm' => 0, 'pub' => 0, 'pubCount' => 0]],
+            [$doc1, ['comm' => 0, 'pub' => 1, 'pubCount' => 1]],
+            [$doc2, ['comm' => 1, 'pub' => 1, 'pubCount' => 2]],
+            [$doc3, ['comm' => 1, 'pub' => 0, 'pubCount' => 0]]
         ];
     }
 
@@ -71,14 +66,21 @@ class AbuseReportTest extends WebTestCase
     {
         $this->container->get('dokudoki.collection')->drop();
         $this->container->get('dokudoki.repository')->persist($doc);
-        $this->sut->compileReport();
 
-        $result = iterator_to_array($this->sut->findMostReported(), false);
-        $this->assertCount(count($assertion), $result);
-        foreach ($assertion as $idx => $check) {
-            $this->assertEquals($check['type'], $result[$idx]['type']);
-            $this->assertEquals($check['counter'], $result[$idx]['counter']);
-            $this->assertArrayHasKey('id', $result[$idx]['fk']);
+        $result = $this->sut->findMostReportedPublish();
+        $this->assertCount($assertion['pub'], $result);
+        if ($assertion['pub'] == 1) {
+            $result->rewind();
+            $pub = $result->current();
+            $this->assertEquals($assertion['pubCount'], $pub['abusiveCount']);
+        }
+
+        $result = $this->sut->findMostReportedCommentary();
+        $this->assertCount($assertion['comm'], $result);
+        if ($assertion['comm'] == 1) {
+            $result->rewind();
+            $comm = $result->current()['commentary'];
+            $this->assertEquals(1, $comm['abusiveCount']);
         }
     }
 

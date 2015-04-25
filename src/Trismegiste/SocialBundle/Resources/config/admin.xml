@@ -9,8 +9,12 @@
         <requirement key="_method">GET</requirement>
     </route>
 
-    <route id="admin_abusive_listing" pattern="/abusereport/list">
-        <default key="_controller">TrismegisteSocialBundle:Admin/AbuseReport:listing</default>
+    <route id="admin_abusive_pub_listing" pattern="/abusereport/pub/list">
+        <default key="_controller">TrismegisteSocialBundle:Admin/AbuseReport:pubListing</default>
+        <requirement key="_method">GET</requirement>
+    </route>
+    <route id="admin_abusive_comm_listing" pattern="/abusereport/comm/list">
+        <default key="_controller">TrismegisteSocialBundle:Admin/AbuseReport:commListing</default>
         <requirement key="_method">GET</requirement>
     </route>
 

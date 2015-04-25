@@ -9,18 +9,27 @@ namespace Trismegiste\SocialBundle\Controller\Admin;
 use Trismegiste\SocialBundle\Controller\Template;
 
 /**
- * AbuseReportController is a ...
+ * AbuseReportController is a controller for administrate AbuseReport on Publishing and Commentary
  */
 class AbuseReportController extends Template
 {
 
-    public function listingAction()
+    public function pubListingAction()
     {
         $reportRepo = $this->get('social.abusereport.repository');
-        $reportRepo->compileReport();
-        $iterator = $reportRepo->findMostReported(0, 30);
+        $iterator = $reportRepo->findMostReportedPublish(0, 30);
 
-        return $this->render('TrismegisteSocialBundle:Admin:AbuseReport/listing.html.twig', [
+        return $this->render('TrismegisteSocialBundle:Admin:AbuseReport/pub_listing.html.twig', [
+                    'listing' => $iterator
+        ]);
+    }
+
+    public function commListingAction()
+    {
+        $reportRepo = $this->get('social.abusereport.repository');
+        $iterator = $reportRepo->findMostReportedCommentary(0, 30);
+
+        return $this->render('TrismegisteSocialBundle:Admin:AbuseReport/comm_listing.html.twig', [
                     'listing' => $iterator
         ]);
     }

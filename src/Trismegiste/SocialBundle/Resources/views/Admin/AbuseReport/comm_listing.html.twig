@@ -9,17 +9,21 @@
         <div class="pure-u-1">
             <table class="pure-table pure-table-horizontal pure-table-striped abuse-listing">
                 <tr>
-                    <th style="width: 3em;"></th>
-                    <th style="width: 8em;">Type</th>
+                    <th></th>
                     <th>Content</th>
-                    <th style="width: 8em;">Reported</th>
+                    <th>Author</th>
+                    <th>Reported</th>
                 </tr>
                 {% for report in listing %}
                     <tr>
                         <td><input type="checkbox" class="action-selection"/></td>
-                        <td>{{ report.type }}</td>
-                        <td>{% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ report.type ~ '.html.twig' %}</td>
-                        <td class="text-center">{{ report.counter }}</td>
+                        <td>
+                            <a href="{{ path('pub_permalink', {id: report._id}) }}#anchor-{{ report._id }}-{{ report.commentary.uuid }}">
+                                {{ report.commentary.message }}
+                            </a>
+                        </td>
+                        <td>{{ report.commentary.owner.nickname }}</td>
+                        <td class="text-center">{{ report.commentary.abusiveCount }}</td>
                     </tr>
                 {% endfor %}
             </table>

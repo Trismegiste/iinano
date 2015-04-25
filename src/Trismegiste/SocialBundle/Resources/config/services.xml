@@ -42,7 +42,6 @@
 
         <service id="social.abusereport.repository" class="Trismegiste\SocialBundle\Repository\AbuseReport">
             <argument type="service" id="dokudoki.collection"/>
-            <argument>abusereport</argument>
             <argument/> <!-- injected by ImportAlias compiler pass -->
         </service>
 
