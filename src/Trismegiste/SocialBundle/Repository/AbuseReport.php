@@ -18,6 +18,9 @@ class AbuseReport
     /** @var RepositoryInterface */
     protected $repository;
 
+    /** @var \MongoCollection */
+    protected $collection;
+
     /** @var array */
     protected $pubAlias;
 
@@ -27,19 +30,20 @@ class AbuseReport
      * @param RepositoryInterface $repo repository of Content
      * @param array $aliases an array of aliases for Publishing subclasses
      */
-    public function __construct(RepositoryInterface $repo, array $aliases)
+    public function __construct(RepositoryInterface $repo, array $aliases, \MongoCollection $coll)
     {
         $this->repository = $repo;
         $this->pubAlias = $aliases;
+        $this->collection = $coll;
     }
 
     /**
-     * Retrieves an iterator on a compiled list on abuse reports
+     * Retrieves an iterator on a list of abusive Publishing (root) entities
      *
      * @param int $offset
      * @param int $limit
      *
-     * @return \MongoCursor
+     * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
      */
     public function findMostReportedPublish($offset = 0, $limit = 20)
     {
@@ -51,4 +55,18 @@ class AbuseReport
                         ->limit($limit);
     }
 
+    /**
+     * Retrieves an iterator on a list of abusive Commentary
+     *
+     * @param int $offset
+     * @param int $limit
+     *
+     * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
+     */
+    public function findMostReportedCommentary($offset = 0, $limit = 20)
+    {
+
+    }
+
+//db.dokudoki.aggregate( {$match:{'commentary.0':{$exists:true}, commentary:{$elemMatch:{abusiveCount:{$gt:0}}}}},  {$unwind: "$commentary"}, {$match: {'commentary.abusiveCount':{$gt:0}}},{$project:{commentary:true}} );
 }
