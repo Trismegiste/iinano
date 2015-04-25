@@ -9,7 +9,7 @@ namespace Trismegiste\SocialBundle\Controller\Admin;
 use Trismegiste\SocialBundle\Controller\Template;
 
 /**
- * AbuseReportController is a ...
+ * AbuseReportController is a controller for administrate AbuseReport on Publishing and Commentary
  */
 class AbuseReportController extends Template
 {

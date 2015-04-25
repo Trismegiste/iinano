@@ -6,8 +6,6 @@
 
 namespace Trismegiste\SocialBundle\Repository;
 
-use Trismegiste\Yuurei\Persistence\RepositoryInterface;
-
 /**
  * AbuseReport is a repository for compiling and listing abusive or spam report
  * on Content (Commentary and Publishing subclasses)
@@ -39,7 +37,7 @@ class AbuseReport
      * @param int $offset
      * @param int $limit
      *
-     * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
+     * @return \MongoCursor
      */
     public function findMostReportedPublish($offset = 0, $limit = 20)
     {
@@ -60,7 +58,7 @@ class AbuseReport
      * @param int $offset
      * @param int $limit
      *
-     * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
+     * @return \MongoCursor
      */
     public function findMostReportedCommentary($offset = 0, $limit = 20)
     {
@@ -69,11 +67,12 @@ class AbuseReport
                             'commentary.0' => ['$exists' => true],
                             'commentary' => ['$elemMatch' => ['abusiveCount' => ['$gt' => 0]]]
                         ]
-                    ], // I love arrays
+                    ],
                     ['$unwind' => '$commentary'],
                     ['$match' => ['commentary.abusiveCount' => ['$gt' => 0]]],
-                    ['$project' => ['commentary' => true]]
-        ]);
+                    ['$project' => ['commentary' => true]],
+                    ['$sort' => ['commentary.abusiveCount' => -1]]
+        ]); // I love arrays
     }
 
 }
