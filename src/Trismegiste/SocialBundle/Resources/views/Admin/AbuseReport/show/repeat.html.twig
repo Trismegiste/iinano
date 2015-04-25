@@ -1,4 +1,10 @@
-{% set source = report.embedded|merge({_id:report.embedded.id}) %}
-
-{% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ report.embedded['-class'] ~ '.html.twig'
+{% set source = report.embedded|merge({_id:report._id}) %}
+<div class="pure-g">
+    <div class="pure-u-7-8">
+        {% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ report.embedded['-class'] ~ '.html.twig'
         with { report:source } only %}
+    </div>
+    <div class="pure-u-1-8">
+        <a href="{{ path('pub_permalink', {id: report.embedded.id}) }}"><i class="icon-retweet"></i></a>
+    </div>
+</div>
