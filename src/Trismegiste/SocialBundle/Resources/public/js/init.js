@@ -56,8 +56,8 @@ var social = {
             event.stopPropagation();
             event.preventDefault();
             var button = this;
-            alertify.prompt("Please give a reason for reporting this content", function (e, str) {
-                if ((e) && (str.length > 0)) {
+            alertify.confirm("Are you sure you want to report this content as abusive or spam", function (e) {
+                if (e) {
                     window.location.href = button.href;
                 }
             });
