@@ -11,6 +11,7 @@
                 <tr>
                     <th style="width: 3em;"></th>
                     <th>Content</th>
+                    <th>Author</th>
                     <th style="width: 8em;">Reported</th>
                 </tr>
                 {% for report in listing %}
@@ -21,6 +22,7 @@
                                 {{ report.commentary.message }}
                             </a>
                         </td>
+                        <td>{{ report.commentary.owner.nickname }}</td>
                         <td class="text-center">{{ report.commentary.abusiveCount }}</td>
                     </tr>
                 {% endfor %}

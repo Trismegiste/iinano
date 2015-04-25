@@ -11,13 +11,15 @@
                 <tr>
                     <th style="width: 3em;"></th>
                     <th>Content</th>
+                    <th>Author</th>
                     <th style="width: 8em;">Reported</th>
                 </tr>
                 {% for report in listing %}
                     <tr>
                         <td><input type="checkbox" class="action-selection"/></td>
                         <td>{% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ report['-class'] ~ '.html.twig' %}</td>
-                        <td class="text-center">{# publish.abusiveCounter #}</td>
+                        <td>{{ report.owner.nickname }}</td>
+                        <td class="text-center">{{ report.abusiveCount }}</td>
                     </tr>
                 {% endfor %}
             </table>

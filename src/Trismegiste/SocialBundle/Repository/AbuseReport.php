@@ -15,9 +15,6 @@ use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 class AbuseReport
 {
 
-    /** @var RepositoryInterface */
-    protected $repository;
-
     /** @var \MongoCollection */
     protected $collection;
 
@@ -27,12 +24,11 @@ class AbuseReport
     /**
      * Ctor
      *
-     * @param RepositoryInterface $repo repository of Content
+     * @param \MongoCollection $coll collection of Content
      * @param array $aliases an array of aliases for Publishing subclasses
      */
-    public function __construct(RepositoryInterface $repo, array $aliases, \MongoCollection $coll)
+    public function __construct(\MongoCollection $coll, array $aliases)
     {
-        $this->repository = $repo;
         $this->pubAlias = $aliases;
         $this->collection = $coll;
     }
