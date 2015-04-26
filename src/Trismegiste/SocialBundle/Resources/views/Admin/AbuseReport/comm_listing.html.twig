@@ -16,7 +16,7 @@
                 </tr>
                 {% for report in listing %}
                     <tr>
-                        <td><input type="checkbox" class="action-selection"/></td>
+                        <td><input type="checkbox" class="pure-checkbox"/></td>
                         <td>
                             <a href="{{ path('pub_permalink', {id: report._id}) }}#anchor-{{ report._id }}-{{ report.commentary.uuid }}">
                                 {{ report.commentary.message }}
