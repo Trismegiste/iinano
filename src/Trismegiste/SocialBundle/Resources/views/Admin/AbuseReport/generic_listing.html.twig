@@ -15,8 +15,7 @@
             <th>Reported</th>
         </tr>
         {% for child in form %}
-            {% set report = child.vars.value %}
-            {{ dump(report) }}
+            {% set report = child.vars.label %}
             <tr>
                 <td><input type="checkbox" class="pure-checkbox"/></td>
                 <td>{% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ report['-class'] ~ '.html.twig' %}</td>
