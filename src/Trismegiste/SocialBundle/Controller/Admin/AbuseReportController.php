@@ -19,7 +19,7 @@ class AbuseReportController extends Template
     {
         $reportRepo = $this->get('social.abusereport.repository');
         $iterator = $reportRepo->findMostReportedPublish(0, 30);
-        $form = $this->createForm(new AbuseReportActionType());
+        $form = $this->createForm(new AbuseReportActionType($iterator));
 
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
