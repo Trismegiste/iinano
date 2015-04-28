@@ -1,12 +1,1 @@
 {% extends 'TrismegisteSocialBundle:Admin:AbuseReport/generic_listing.html.twig' %}
-
-{% block listing_row %}
-    {% for report in listing %}
-        <tr>
-            <td><input type="checkbox" class="pure-checkbox"/></td>
-            <td>{% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ report['-class'] ~ '.html.twig' %}</td>
-            <td>{{ report.owner.nickname }}</td>
-            <td class="text-center">{{ report.abusiveCount }}</td>
-        </tr>
-    {% endfor %}
-{% endblock %}

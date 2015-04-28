@@ -74,7 +74,7 @@ class AdminSelectionChoice implements ChoiceListInterface
         $checkbox = [];
 
         foreach ($this->listing as $key => $obj) {
-            $checkbox[] = new ChoiceView($obj, $key, $obj['-class']);
+            $checkbox[] = new ChoiceView($obj, $key, $obj);
         }
 
         return $checkbox;
