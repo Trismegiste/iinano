@@ -36,9 +36,16 @@ class AbuseReportController extends Template
     {
         $reportRepo = $this->get('social.abusereport.repository');
         $iterator = $reportRepo->findMostReportedCommentary(0, 30);
+        $form = $this->createForm(new AbuseReportActionType($iterator));
+
+        $form->handleRequest($this->getRequest());
+        if ($form->isValid()) {
+            print_r($form->getData());
+        }
 
         return $this->render('TrismegisteSocialBundle:Admin:AbuseReport/comm_listing.html.twig', [
-                    'listing' => $iterator
+                    'listing' => $iterator,
+                    'form' => $form->createView()
         ]);
     }
 

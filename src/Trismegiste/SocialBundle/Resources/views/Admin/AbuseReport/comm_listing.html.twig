@@ -1,16 +1,27 @@
 {% extends 'TrismegisteSocialBundle:Admin:AbuseReport/generic_listing.html.twig' %}
 
-{% block listing_row %}
-    {% for report in listing %}
+{% form_theme form _self %}
+
+{% block _admin_abusereport_action_selection_list_row %}
+    <table class="pure-table pure-table-horizontal pure-table-striped abuse-listing">
         <tr>
-            <td><input type="checkbox" class="pure-checkbox"/></td>
-            <td>
-                <a href="{{ path('pub_permalink', {id: report._id}) }}#anchor-{{ report._id }}-{{ report.commentary.uuid }}">
-                    {{ report.commentary.message }}
-                </a>
-            </td>
-            <td>{{ report.commentary.owner.nickname }}</td>
-            <td class="text-center">{{ report.commentary.abusiveCount }}</td>
+            <th></th>
+            <th>Content</th>
+            <th>Author</th>
+            <th>Reported</th>
         </tr>
-    {% endfor %}
+        {% for child in form %}
+            {% set report = child.vars.label %}
+            <tr>
+                <td>{{ form_widget(child, {attr:{class:'pure-checknox'}}) }}</td>
+                <td>
+                    <a href="{{ path('pub_permalink', {id: report._id}) }}#anchor-{{ report._id }}-{{ report.commentary.uuid }}">
+                        {{ report.commentary.message }}
+                    </a>
+                </td>
+                <td>{{ report.commentary.owner.nickname }}</td>
+                <td class="text-center">{{ report.commentary.abusiveCount }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}

@@ -24,7 +24,7 @@ class AbuseReportActionType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('selectionList', 'choice', [
+        $builder->add('selection_list', 'choice', [
                     'choice_list' => new AdminSelectionChoice($this->listing),
                     'expanded' => true,
                     'multiple' => true
