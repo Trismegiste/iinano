@@ -4,28 +4,6 @@
     {{ parent() }} | Abuse report & moderation
 {% endblock %}
 
-{% form_theme form _self %}
-
-{% block choice_widget_expanded %}
-    <table class="pure-table pure-table-horizontal pure-table-striped abuse-listing">
-        <tr>
-            <th></th>
-            <th>Content</th>
-            <th>Author</th>
-            <th>Reported</th>
-        </tr>
-        {% for child in form %}
-            {% set report = child.vars.label %}
-            <tr>
-                <td><input type="checkbox" class="pure-checkbox"/></td>
-                <td>{% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ report['-class'] ~ '.html.twig' %}</td>
-                <td>{{ report.owner.nickname }}</td>
-                <td class="text-center">{{ report.abusiveCount }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-{% endblock %}
-
 {% block content %}
     <div class="pure-g">
         <div class="pure-u-1">
