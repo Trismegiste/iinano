@@ -7,6 +7,7 @@
 {% block content %}
     <div class="pure-g">
         <div class="pure-u-1">
+            {{ form_start(form) }}
             <table class="pure-table pure-table-horizontal pure-table-striped abuse-listing">
                 <tr>
                     <th></th>
@@ -17,6 +18,7 @@
                 {% block listing_row %}
                 {% endblock %}
             </table>
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}

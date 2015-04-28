@@ -7,6 +7,7 @@
 namespace Trismegiste\SocialBundle\Controller\Admin;
 
 use Trismegiste\SocialBundle\Controller\Template;
+use Trismegiste\SocialBundle\Form\AbuseReportActionType;
 
 /**
  * AbuseReportController is a controller for administrate AbuseReport on Publishing and Commentary
@@ -18,9 +19,16 @@ class AbuseReportController extends Template
     {
         $reportRepo = $this->get('social.abusereport.repository');
         $iterator = $reportRepo->findMostReportedPublish(0, 30);
+        $form = $this->createForm(new AbuseReportActionType());
+
+        $form->handleRequest($this->getRequest());
+        if ($form->isValid()) {
+            print_r($form->getData());
+        }
 
         return $this->render('TrismegisteSocialBundle:Admin:AbuseReport/pub_listing.html.twig', [
-                    'listing' => $iterator
+                    'listing' => $iterator,
+                    'form' => $form->createView()
         ]);
     }
 
