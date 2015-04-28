@@ -30,7 +30,7 @@ class AbuseReportActionType extends AbstractType
                     'multiple' => true
                 ])
                 ->add('action', 'choice', [
-                    'empty_value' => '---',
+                    'empty_value' => 'Select an action',
                     'choices' => ['reset report', 'delete content']
                 ])
                 ->add('makeItSo', 'submit');

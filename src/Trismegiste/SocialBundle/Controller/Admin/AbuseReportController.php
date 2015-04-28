@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Controller\Admin;
 
 use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Form\AbuseReportActionType;
+use Trismegiste\SocialBundle\Utils\UnwindCommentaryIterator;
 
 /**
  * AbuseReportController is a controller for administrate AbuseReport on Publishing and Commentary
@@ -36,7 +37,7 @@ class AbuseReportController extends Template
     {
         $reportRepo = $this->get('social.abusereport.repository');
         $iterator = $reportRepo->findMostReportedCommentary(0, 30);
-        $form = $this->createForm(new AbuseReportActionType($iterator));
+        $form = $this->createForm(new AbuseReportActionType(new UnwindCommentaryIterator($iterator)));
 
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
