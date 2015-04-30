@@ -3,6 +3,7 @@
 {% form_theme form _self %}
 
 {% block _admin_abusereport_action_selection_list_row %}
+    {{ form_errors(form) }}
     <table class="pure-table pure-table-horizontal pure-table-striped abuse-listing">
         <tr>
             <th></th>
@@ -21,3 +22,4 @@
         {% endfor %}
     </table>
 {% endblock %}
+

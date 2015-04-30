@@ -6,8 +6,10 @@
 
 namespace Trismegiste\SocialBundle\Form;
 
+use Iterator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * AbuseReportActionType is a form for action choices in abuse report listing
@@ -17,7 +19,7 @@ class AbuseReportActionType extends AbstractType
 
     protected $listing;
 
-    public function __construct(\Iterator $listing)
+    public function __construct(Iterator $listing)
     {
         $this->listing = $listing;
     }
@@ -27,7 +29,8 @@ class AbuseReportActionType extends AbstractType
         $builder->add('selection_list', 'choice', [
                     'choice_list' => new AdminSelectionChoice($this->listing),
                     'expanded' => true,
-                    'multiple' => true
+                    'multiple' => true,
+                    'constraints' => new NotBlank()
                 ])
                 ->add('action', 'choice', [
                     'empty_value' => 'Select an action',

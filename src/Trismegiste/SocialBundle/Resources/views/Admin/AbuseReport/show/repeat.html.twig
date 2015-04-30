@@ -4,7 +4,7 @@
         {% include 'TrismegisteSocialBundle:Admin/AbuseReport:show/' ~ report.embedded['-class'] ~ '.html.twig'
         with { report:source } only %}
     </div>
-    <div class="pure-u-1-8">
-        <a href="{{ path('pub_permalink', {id: report.embedded.id}) }}"><i class="icon-retweet"></i></a>
+    <div class="pure-u-1-8 text-center">
+        <a href="{{ path('pub_permalink', {id: report.embedded.id}) }}" title="Repeat's origin"><i class="icon-retweet"></i></a>
     </div>
 </div>
