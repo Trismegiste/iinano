@@ -86,11 +86,13 @@ class AbuseReport
 
     public function batchResetCounterPublish(array $listing)
     {
-        $compilPk = [];
         foreach ($listing as $item) {
-            $compilPk[] = $item['_id'];
+            $this->collection->update(
+                    ['_id' => $item['_id']]
+                    , ['$set' => ['abusiveCount' => 0, 'abusive' => []]]
+                    // too bad update {multi:true} is not supported by the driver...
+            );
         }
-        $this->collection->update(['_id' => ['$in' => $compilPk]], ['$set' => ['abusiveCount' => 0, 'abusive' => []]]);
     }
 
 }
