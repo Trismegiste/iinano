@@ -18,13 +18,36 @@ class AbuseReportController extends Template
 
     public function pubListingAction()
     {
+        /* @var $reportRepo \Trismegiste\SocialBundle\Repository\AbuseReport */
         $reportRepo = $this->get('social.abusereport.repository');
         $iterator = $reportRepo->findMostReportedPublish(0, 30);
         $form = $this->createForm(new AbuseReportActionType($iterator));
 
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
-            print_r($form->getData());
+            $data = $form->getData();
+            switch ($data['action']) {
+                case 'RESET' :
+                    try {
+                        $reportRepo->batchResetCounterPublish($data['selection_list']);
+                        return $this->redirectRouteOk('admin_abusive_pub_listing');
+                    } catch (\MongoException $e) {
+                        $this->pushFlash('warning', 'Cannot reset counters, please try again');
+                    }
+                    break;
+
+                case 'DELETE' :
+                    try {
+                        $reportRepo->batchDeletePublish($data['selection_list']);
+                        return $this->redirectRouteOk('admin_abusive_pub_listing');
+                    } catch (\MongoException $e) {
+                        $this->pushFlash('warning', 'Cannot delete content, please try again');
+                    }
+                    break;
+
+                default:
+                    print_r($data);
+            }
         }
 
         return $this->render('TrismegisteSocialBundle:Admin:AbuseReport/pub_listing.html.twig', [

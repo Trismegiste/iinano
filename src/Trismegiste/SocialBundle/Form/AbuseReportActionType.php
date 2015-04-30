@@ -30,11 +30,14 @@ class AbuseReportActionType extends AbstractType
                     'choice_list' => new AdminSelectionChoice($this->listing),
                     'expanded' => true,
                     'multiple' => true,
-                    'constraints' => new NotBlank()
+                    'constraints' => new NotBlank(['message' => 'Please select at least one item'])
                 ])
                 ->add('action', 'choice', [
                     'empty_value' => 'Select an action',
-                    'choices' => ['reset report', 'delete content']
+                    'choices' => [
+                        'RESET' => 'Reset report counter',
+                        'DELETE' => 'Delete content'
+                    ]
                 ])
                 ->add('makeItSo', 'submit');
     }

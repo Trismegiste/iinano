@@ -75,4 +75,22 @@ class AbuseReport
         ]); // I love arrays
     }
 
+    public function batchDeletePublish(array $listing)
+    {
+        $compilPk = [];
+        foreach ($listing as $item) {
+            $compilPk[] = $item['_id'];
+        }
+        $this->collection->remove(['_id' => ['$in' => $compilPk]]);
+    }
+
+    public function batchResetCounterPublish(array $listing)
+    {
+        $compilPk = [];
+        foreach ($listing as $item) {
+            $compilPk[] = $item['_id'];
+        }
+        $this->collection->update(['_id' => ['$in' => $compilPk]], ['$set' => ['abusiveCount' => 0, 'abusive' => []]]);
+    }
+
 }
