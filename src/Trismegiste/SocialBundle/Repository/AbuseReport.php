@@ -95,4 +95,14 @@ class AbuseReport
         }
     }
 
+    public function batchResetCounterCommentary(array $listing)
+    {
+        // @todo
+    }
+
+    public function batchDeleteCommentary(array $listing)
+    {
+        // @todo
+    }
+
 }

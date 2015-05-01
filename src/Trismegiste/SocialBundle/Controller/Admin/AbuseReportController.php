@@ -44,9 +44,6 @@ class AbuseReportController extends Template
                         $this->pushFlash('warning', 'Cannot delete content, please try again');
                     }
                     break;
-
-                default:
-                    print_r($data);
             }
         }
 
@@ -64,7 +61,26 @@ class AbuseReportController extends Template
 
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
-            print_r($form->getData());
+            $data = $form->getData();
+            switch ($data['action']) {
+                case 'RESET' :
+                    try {
+                        $reportRepo->batchResetCounterCommentary($data['selection_list']);
+                        return $this->redirectRouteOk('admin_abusive_comm_listing');
+                    } catch (\MongoException $e) {
+                        $this->pushFlash('warning', 'Cannot reset counters, please try again');
+                    }
+                    break;
+
+                case 'DELETE' :
+                    try {
+                        $reportRepo->batchDeleteCommentary($data['selection_list']);
+                        return $this->redirectRouteOk('admin_abusive_comm_listing');
+                    } catch (\MongoException $e) {
+                        $this->pushFlash('warning', 'Cannot delete commentary, please try again');
+                    }
+                    break;
+            }
         }
 
         return $this->render('TrismegisteSocialBundle:Admin:AbuseReport/comm_listing.html.twig', [
