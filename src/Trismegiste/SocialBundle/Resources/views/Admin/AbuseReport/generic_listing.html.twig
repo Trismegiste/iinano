@@ -4,19 +4,41 @@
     {{ parent() }} | Abuse report & moderation
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .content button {
+            margin-top: 0.3em;
+            margin-left: 1em;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
-    <div class="pure-g">
-        <div class="pure-u-1">
-            <table class="pure-table pure-table-horizontal pure-table-striped abuse-listing">
-                <tr>
-                    <th></th>
-                    <th>Content</th>
-                    <th>Author</th>
-                    <th>Reported</th>
-                </tr>
-                {% block listing_row %}
-                {% endblock %}
-            </table>
+    {{ form_start(form) }}
+    <fieldset>
+        <div class="pure-g">
+            <div class="pure-u-1">
+                <table class="pure-table pure-table-horizontal pure-table-striped abuse-listing">
+                    <tr>
+                        <th></th>
+                        <th>Content</th>
+                        <th>Author</th>
+                        <th>Reported</th>
+                    </tr>
+                    {{ form_row(form.selection_list) }}
+                </table>
+            </div>
         </div>
-    </div>
+        <div class="pure-g">
+            <div class="pure-u-1 pure-u-md-1-4">
+                {{ form_errors(form) }}
+                {{ form_widget(form.action, {attr:{class:'pure-input-1'}}) }}
+            </div>
+            <div class="pure-u-1 pure-u-md-1-4">
+                {{ form_widget(form.makeItSo) }}
+            </div>
+        </div>
+    </fieldset>
+    {{ form_end(form) }}
 {% endblock %}

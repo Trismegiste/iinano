@@ -11,11 +11,11 @@
 
     <route id="admin_abusive_pub_listing" pattern="/abusereport/pub/list">
         <default key="_controller">TrismegisteSocialBundle:Admin/AbuseReport:pubListing</default>
-        <requirement key="_method">GET</requirement>
+        <requirement key="_method">GET|POST</requirement>
     </route>
     <route id="admin_abusive_comm_listing" pattern="/abusereport/comm/list">
         <default key="_controller">TrismegisteSocialBundle:Admin/AbuseReport:commListing</default>
-        <requirement key="_method">GET</requirement>
+        <requirement key="_method">GET|POST</requirement>
     </route>
 
     <route id="admin_netizen_listing" pattern="/netizen/list">

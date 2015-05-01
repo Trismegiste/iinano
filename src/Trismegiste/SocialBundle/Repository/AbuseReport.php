@@ -75,4 +75,34 @@ class AbuseReport
         ]); // I love arrays
     }
 
+    public function batchDeletePublish(array $listing)
+    {
+        $compilPk = [];
+        foreach ($listing as $item) {
+            $compilPk[] = $item['_id'];
+        }
+        $this->collection->remove(['_id' => ['$in' => $compilPk]]);
+    }
+
+    public function batchResetCounterPublish(array $listing)
+    {
+        foreach ($listing as $item) {
+            $this->collection->update(
+                    ['_id' => $item['_id']]
+                    , ['$set' => ['abusiveCount' => 0, 'abusive' => []]]
+                    // too bad update {multi:true} is not supported by the driver...
+            );
+        }
+    }
+
+    public function batchResetCounterCommentary(array $listing)
+    {
+        // @todo
+    }
+
+    public function batchDeleteCommentary(array $listing)
+    {
+        // @todo
+    }
+
 }
