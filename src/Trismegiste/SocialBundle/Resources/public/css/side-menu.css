@@ -210,3 +210,9 @@ Hides the menu at `48em`, but modify this based on your app's needs.
         padding-right: 10px;
     }
 }
+
+@media (max-width: 480px) {
+    .topbar input[type="text"] {
+        margin-top: 0.7em;
+    }
+}
