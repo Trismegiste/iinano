@@ -89,25 +89,4 @@ class AbuseReportController extends Template
         ]);
     }
 
-    /**
-     * Moderator decides abuse reports on a publish are irrelevant
-     *
-     * @param type $id
-     */
-    public function resetAbuseReportOnPublishAction($id)
-    {
-        //@todo
-    }
-
-    /**
-     * Moderator decides abuse reports on a commentary are irrelevant
-     *
-     * @param type $id
-     * @param type $idComm
-     */
-    public function resetAbuseReportOnCommentaryAction($id, $idComm)
-    {
-        // @todo
-    }
-
 }
