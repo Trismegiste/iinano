@@ -94,12 +94,10 @@ class NetizenController extends Template
         // backoffice users :
         if ($secu->isGranted('ROLE_ADMIN')) {
             $route = 'admin_dashboard';
-        } else {
-            if ($secu->isGranted('ROLE_MODERATOR')) {
-                $route = 'admin_abusive_listing';
-            } elseif ($secu->isGranted('ROLE_MARKETING')) {
-                $route = 'admin_coupon_listing';
-            }
+        } else if ($secu->isGranted('ROLE_MANAGER')) {
+            $route = 'admin_dashboard';
+        } else if ($secu->isGranted('ROLE_MODERATOR')) {
+            $route = 'admin_abusive_pub_listing';
         }
 
         // front users :
