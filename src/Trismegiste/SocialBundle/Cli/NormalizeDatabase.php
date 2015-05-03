@@ -35,7 +35,7 @@ class NormalizeDatabase extends ContainerAwareCommand
         // indexing author of a publishing **with sorting** for wall contents
         $collection->ensureIndex(['owner.nickname' => 1, '_id' => -1], ['sparse' => true]);
         // 2dsphere index for Status
-        $this->collection->ensureIndex(['location' => "2dsphere"], ['sparse' => true]);
+        $collection->ensureIndex(['location' => "2dsphere"], ['sparse' => true]);
     }
 
 }
