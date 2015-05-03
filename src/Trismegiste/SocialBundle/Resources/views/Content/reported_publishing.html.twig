@@ -1,7 +1,7 @@
 {# panel for replacing reported content #}
 <div class="pure-u-1">
     <article class="reported-content-panel">
-        <h4>You've reported this entry from {{ content.author.nickname }} as abuse or spam.
+        <h4>Reported as abuse or spam.
             <a href="{{ path('pub_abusivereport', {action: 'delete', wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">Click here to cancel</a>
         </h4>
     </article>
