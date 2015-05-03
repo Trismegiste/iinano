@@ -23,6 +23,7 @@ class Profile
     public $joinedAt;
     public $publishingCounter = 0;
     public $commentaryCounter = 0;
+    public $likeCounter = 0;
 
     public function __construct()
     {

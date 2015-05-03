@@ -6,11 +6,12 @@
 
 namespace Trismegiste\SocialBundle\Repository\MapReduce;
 
-use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
-
 /**
  * CounterPerUser is a map-reduce service against MongoDB for counting
  * Publishing/commentary/Like per user and updating Netizen.profile
+ *
+ * For the Like Counter, this is the RECEIVED Likes by each user on Content only, not
+ * how many Likes a user has "sent" to others. Likes on Netizen are not count.
  */
 class CounterPerUser extends MruService
 {
