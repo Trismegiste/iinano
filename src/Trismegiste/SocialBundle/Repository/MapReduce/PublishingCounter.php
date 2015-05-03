@@ -6,8 +6,6 @@
 
 namespace Trismegiste\SocialBundle\Repository\MapReduce;
 
-use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
-
 /**
  * PublishingCounter is a map-reduce service against MongoDB for counting
  * Publishing per user and updating Netizen.profile
@@ -37,7 +35,8 @@ REDFUNC;
                     'reduce' => new \MongoCode($reduce),
                     'query' => ['owner.nickname' => ['$exists' => true]],
                     'out' => $this->mapReducedColl->getName()
-                ]
+                ],
+                ['socketTimeoutMS'=>300000]
         );
 
         if ($result['ok'] != 1) {  // mongodb returns this value as a double ?!?
