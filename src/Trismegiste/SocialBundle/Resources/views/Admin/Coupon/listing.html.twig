@@ -9,7 +9,7 @@
         <div class="pure-u-1">
             <table class="pure-table pure-table-horizontal pure-table-striped">
                 <tr>
-                    <th style="width: 3em;"></th>
+                    <th></th>
                     <th>Code</th>
                     <th>Duration in days</th>
                     <th>Expired at</th>
@@ -24,7 +24,9 @@
                         <td>{{ coupon.expiredAt|date('F j, Y') }}</td>
                         <td>{{ coupon.usedCounter }}/{{ coupon.maximumUse }}</td>
                         <td>
-                            Show Edit Delete<br/>
+                            <i class="icon-eye"></i>
+                            <i class="icon-pencil"></i>
+                            <i class="icon-trash-empty"></i><br/>
                             <a href="{{ path('guest_coupon_landing', {code: coupon.hashKey}) }}">Url</a> Flyer
                         </td>
                     </tr>
