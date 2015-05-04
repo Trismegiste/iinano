@@ -12,13 +12,16 @@ use Trismegiste\SocialBundle\Security\Netizen;
 use Trismegiste\SocialBundle\Config;
 
 /**
- * TicketVoter is a voter to vote if a user has a valid ticket for entrance
+ * TicketVoter is a voter to vote if a user has a valid entrance means such as :
+ * - a valid ticket
+ * - a free_pass role
+ * - the app is free
  */
 class TicketVoter implements VoterInterface
 {
 
     const ROLE_FREEPASS = 'ROLE_FREEPASS';
-    const SUPPORTED_ATTRIBUTE = 'VALID_TICKET';
+    const SUPPORTED_ATTRIBUTE = 'VALID_ACCESS';
 
     protected $freeAccess;
     protected $role_hierarchy;
@@ -71,9 +74,6 @@ class TicketVoter implements VoterInterface
             return VoterInterface::ACCESS_DENIED;
         }
 
-        // @todo is it worth to split this voter into 3 to check VALID_TICKET ?
-        // ValidTicketVoter, FreePassVoter & FreeAccessVoter, each supporting VALID_TICKET ?
-        // seems overkill...
         if (($this->freeAccess) || ($this->hasFreeAccess($user))) {
             return VoterInterface::ACCESS_GRANTED;
         }

@@ -9,7 +9,7 @@ namespace Trismegiste\SocialBundle\Controller;
 use Trismegiste\SocialBundle\Controller\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Trismegiste\SocialBundle\Form\ProfileType;
-
+use Trismegiste\SocialBundle\Ticket\TicketVoter;
 /**
  * NetizenController is a controller for the user : profile, stats...
  */
@@ -102,7 +102,7 @@ class NetizenController extends Template
 
         // front users :
         if (!isset($route)) {
-            if ($secu->isGranted('VALID_TICKET')) {
+            if ($secu->isGranted(TicketVoter::SUPPORTED_ATTRIBUTE)) {
                 $route = 'content_index';
             } else {
                 $route = 'confirm_buy_ticket';

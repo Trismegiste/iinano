@@ -56,7 +56,7 @@ class TicketVoterTest extends \PHPUnit_Framework_TestCase
                 ->method('hasValidTicket')
                 ->willReturn(true);
 
-        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->sut->vote($this->token, null, ['VALID_TICKET']));
+        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->sut->vote($this->token, null, [TicketVoter::SUPPORTED_ATTRIBUTE]));
     }
 
     public function testNoValidTicketDenied()
@@ -67,13 +67,13 @@ class TicketVoterTest extends \PHPUnit_Framework_TestCase
                 ->method('hasValidTicket')
                 ->willReturn(false);
 
-        $this->assertEquals(VoterInterface::ACCESS_DENIED, $this->sut->vote($this->token, null, ['VALID_TICKET']));
+        $this->assertEquals(VoterInterface::ACCESS_DENIED, $this->sut->vote($this->token, null, [TicketVoter::SUPPORTED_ATTRIBUTE]));
     }
 
     public function testDeniedUnauthenticated()
     {
         $anonymous = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
-        $this->assertEquals(VoterInterface::ACCESS_DENIED, $this->sut->vote($anonymous, null, ['VALID_TICKET']));
+        $this->assertEquals(VoterInterface::ACCESS_DENIED, $this->sut->vote($anonymous, null, [TicketVoter::SUPPORTED_ATTRIBUTE]));
     }
 
     public function testAbstainOnUnsupportedAttribute()
@@ -97,20 +97,20 @@ class TicketVoterTest extends \PHPUnit_Framework_TestCase
                 ->willReturn(['freeAccess' => true]);
         $this->sut = new TicketVoter([], $config);
 
-        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->sut->vote($this->token, null, ['VALID_TICKET']));
+        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->sut->vote($this->token, null, [TicketVoter::SUPPORTED_ATTRIBUTE]));
     }
 
     public function testUserWithOnlyFreePassRoleIsNotPossible()
     {
         $this->setUserRole('ROLE_FREEPASS');
-        $this->assertEquals(VoterInterface::ACCESS_DENIED, $this->sut->vote($this->token, null, ['VALID_TICKET']));
+        $this->assertEquals(VoterInterface::ACCESS_DENIED, $this->sut->vote($this->token, null, [TicketVoter::SUPPORTED_ATTRIBUTE]));
     }
 
     public function testUserHasFreePassRoleInHierarchy()
     {
         $this->setUserRole('ROLE_MULTIPASS');
         $this->sut = new TicketVoter(['ROLE_MULTIPASS' => ['ROLE_DUMMY', 'ROLE_FREEPASS']], $this->config);
-        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->sut->vote($this->token, null, ['VALID_TICKET']));
+        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $this->sut->vote($this->token, null, [TicketVoter::SUPPORTED_ATTRIBUTE]));
     }
 
     protected function setUserRole($group)

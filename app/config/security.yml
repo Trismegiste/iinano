@@ -38,4 +38,4 @@ security:
         - { path: ^/ticket/, roles: ROLE_USER }
         - { path: ^/afterlogin, roles: ROLE_USER }
         - { path: ^/guest/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, roles: VALID_TICKET }
+        - { path: ^/, roles: VALID_ACCESS }

@@ -38,7 +38,7 @@ abstract class SecuredContentProvider
      */
     protected function getLoggedUser()
     {
-        if (!$this->security->isGranted('VALID_TICKET')) {
+        if (!$this->security->isGranted('VALID_ACCESS')) {
             throw new AccessDeniedException('Not logged');
         }
 
