@@ -18,7 +18,7 @@
                     <th>Role</th>
                     <th>Registered</th>
                     <th>Posts</th>
-                    <th>Expired</th>
+                    <th>Ticket</th>
                 </tr>
                 {% for netizen in listing %}
                     <tr>
@@ -28,8 +28,8 @@
                         <td>{{ netizen.profile.joinedAt|timeago }}</td>
                         <td>{{ netizen.profile.publishingCounter|si }}</td>
                         <td>
-                            {% if netizen.lastTicket is not null %}
-                                {{ netizen.lastTicket.expiredAt|timeago }}
+                            {% if netizen.hasValidTicket() %}
+                                <i class="icon-ok"></i>
                             {% endif %}
                         </td>
                     </tr>

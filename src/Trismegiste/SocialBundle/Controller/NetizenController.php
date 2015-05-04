@@ -9,7 +9,8 @@ namespace Trismegiste\SocialBundle\Controller;
 use Trismegiste\SocialBundle\Controller\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Trismegiste\SocialBundle\Form\ProfileType;
-use Trismegiste\SocialBundle\Ticket\TicketVoter;
+use Trismegiste\SocialBundle\Security\TicketVoter;
+
 /**
  * NetizenController is a controller for the user : profile, stats...
  */

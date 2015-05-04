@@ -46,7 +46,7 @@
                         {% for ticket in netizen.ticketIterator %}
                             <tr>
                                 <td>{{ ticket.title }}</td>
-                                <td>{{ ticket.isValid() }}</td>
+                                <td>{% if ticket.isValid() %}<i class="icon-ok"></i>{% endif %}</td>
                                 <td>{{ ticket.purchasedAt|date }}</td>
                                 <td>{{ ticket.expiredAt|date }}</td>
                             </tr>
