@@ -8,7 +8,7 @@ var social = {
             var item = $(this);
             var origin = {lng: item.data('socialStatusLng'), lat: item.data('socialStatusLat')};
 
-            var map = L.map(item.attr('id'), {
+            var map = L.map(this, {
                 scrollWheelZoom: false,
                 center: origin,
                 zoom: item.data('socialStatusZoom')
