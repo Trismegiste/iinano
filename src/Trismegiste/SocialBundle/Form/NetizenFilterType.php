@@ -34,6 +34,14 @@ class NetizenFilterType extends AbstractType
                     'required' => false
                 ])
                 ->add('group', 'role_choice')
+                ->add('sort', 'choice', [
+                    'choices' => [
+                        'lastRegister' => 'Last registered',
+                        'firstRegister' => 'First registered',
+                        'maxPoster' => 'Max publisher',
+                        'minPoster' => 'Min publisher'
+                    ]
+                ])
                 ->add('Search', 'submit');
     }
 

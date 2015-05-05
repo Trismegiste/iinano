@@ -35,6 +35,13 @@ class NetizenController extends Template
         $repo = $this->getRepository();
         $filter = $this->createForm(new NetizenFilterType($this->container->getParameter('nickname_regex')));
 
+        $filter->handleRequest($req);
+        if ($filter->isValid()) {
+            $it = $repo->search($filter->getData())
+                    ->sort(['_id' => -1])
+                    ->limit(100);
+        }
+
         return $this->render('TrismegisteSocialBundle:Admin:Netizen/listing.html.twig', [
                     'listing' => $it,
                     'filter' => $filter->createView()
