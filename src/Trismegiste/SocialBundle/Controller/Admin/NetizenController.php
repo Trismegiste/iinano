@@ -6,9 +6,12 @@
 
 namespace Trismegiste\SocialBundle\Controller\Admin;
 
+use MongoException;
 use Symfony\Component\HttpFoundation\Request;
 use Trismegiste\SocialBundle\Controller\Template;
+use Trismegiste\SocialBundle\Form\NetizenFilterType;
 use Trismegiste\SocialBundle\Form\NetizenRoleType;
+use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 
 /**
  * NetizenController is a controller for administrating Netizen
@@ -19,7 +22,7 @@ class NetizenController extends Template
     /**
      * Gets the repository for netizen
      *
-     * @return \Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface
+     * @return NetizenRepositoryInterface
      */
     protected function getRepository()
     {
@@ -29,14 +32,12 @@ class NetizenController extends Template
     public function listingAction(Request $req)
     {
         $it = [];
-
-        if (!(empty($search = $req->query->get('search', '')))) {
-            $repo = $this->getRepository();
-            $it = $repo->search($search)->limit(5);
-        }
+        $repo = $this->getRepository();
+        $filter = $this->createForm(new NetizenFilterType($this->container->getParameter('nickname_regex')));
 
         return $this->render('TrismegisteSocialBundle:Admin:Netizen/listing.html.twig', [
-                    'listing' => $it
+                    'listing' => $it,
+                    'filter' => $filter->createView()
         ]);
     }
 
@@ -54,7 +55,7 @@ class NetizenController extends Template
 
                 // return to the same page
                 return $this->redirectRouteOk('admin_netizen_show', ['id' => $netizen->getId()]);
-            } catch (\MongoException $e) {
+            } catch (MongoException $e) {
                 $this->pushFlash('warning', 'Cannot promote user');
             }
         }
