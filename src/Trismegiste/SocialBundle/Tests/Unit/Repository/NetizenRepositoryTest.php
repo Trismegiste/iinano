@@ -138,7 +138,7 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->method('find')
                 ->with($this->equalTo(['-class' => 'netizen', 'author.nickname' => new \MongoRegex('/^user/')]));
 
-        $this->sut->search('user');
+        $this->sut->search(['nickname' => 'user']);
     }
 
     /**
