@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
 /**
- * AdminSelectionChoice is a ...
+ * AdminSelectionChoice is a multi-line selection for admin listing
  */
 class AdminSelectionChoice implements ChoiceListInterface
 {

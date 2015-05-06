@@ -14,20 +14,22 @@
         <div class="pure-u-1">
             <table class="pure-table pure-table-horizontal pure-table-striped">
                 <tr>
-                    <th style="width: 3em;"></th>
                     <th>Nickname</th>
-                    <th>Role</th>
                     <th>Registered</th>
-                    <th>Posts</th>
+                    <th>Followed</th>
+                    <th>Likes</th>
+                    <th>Published</th>
+                    <th>Likes on Publish</th>
                     <th>Ticket</th>
                 </tr>
                 {% for netizen in listing %}
                     <tr>
-                        <td><input type="checkbox" class="action-selection"/></td>
                         <td><a href="{{ path('admin_netizen_show', {id: netizen.id}) }}">{{ netizen.author.nickname }}</a></td>
-                        <td>{{ netizen.group }}</td>
                         <td>{{ netizen.profile.joinedAt|timeago }}</td>
+                        <td>{{ netizen.followerCount|si }}</td>
+                        <td>{{ netizen.fanCount|si }}</td>
                         <td>{{ netizen.profile.publishingCounter|si }}</td>
+                        <td>{{ netizen.profile.likeCounter|si }}</td>
                         <td>
                             {% if netizen.hasValidTicket() %}
                                 <i class="icon-ok"></i>
