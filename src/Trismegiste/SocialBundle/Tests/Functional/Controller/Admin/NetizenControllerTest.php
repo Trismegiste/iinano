@@ -28,8 +28,8 @@ class NetizenControllerTest extends AdminControllerTestCase
         $this->assertCount(0, $crawler->filter('div.content table tr td')); // no research criteria => no listing
 
         $form = $crawler->selectButton('Search')->form();
-        $crawler = $this->client->submit($form, [
-            'search' => 'si'
+        $crawler = $this->client->submit($form, ['social_netizen_filter' =>
+            ['nickname' => 'si']
         ]);
 
         $showLink = $crawler->filter('div.content table td a:contains("simple")');
