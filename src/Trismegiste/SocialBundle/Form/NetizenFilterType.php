@@ -37,17 +37,16 @@ class NetizenFilterType extends AbstractType
                 ->add('sort', 'choice', [
                     'choices' => [
                         // writing mongo sorting array in the form is not a security issue
-                        // since this field is only set to one of these choices
+                        // since this field is constrained to one of these values
                         // and the form is CSRF protected
                         '_id -1' => 'Last registered',
                         '_id 1' => 'First registered',
                         'profile.publishingCounter -1' => 'High publisher first',
-                        'profile.publishingCounter 1' => 'Low publisher first',
-                        'fanList -1' => 'Most liked first',
-                        'follower -1' => 'Most followed first'
+                        'profile.publishingCounter 1' => 'Low publisher first'
                     ]
                 ])
-                ->add('Search', 'submit');
+                ->add('search', 'submit')
+                ->add('export', 'submit');
     }
 
     public function getName()

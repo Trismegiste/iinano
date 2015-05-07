@@ -38,6 +38,8 @@ class NetizenController extends Template
         $filter->handleRequest($req);
         if ($filter->isValid()) {
             $it = $repo->search($filter->getData())->limit(100);
+
+            $exportAction = $filter->get('export')->isClicked();
         }
 
         return $this->render('TrismegisteSocialBundle:Admin:Netizen/listing.html.twig', [
