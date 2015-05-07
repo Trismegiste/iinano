@@ -68,9 +68,9 @@ interface NetizenRepositoryInterface
     /**
      * Search for a user
      *
-     * @param string $filter the start of the nickname
+     * @param array $filter values of NetizenFilterType
      */
-    public function search($filter = null);
+    public function search(array $filter);
 
     /**
      * Return the count of all registered users

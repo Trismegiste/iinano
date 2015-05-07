@@ -36,10 +36,15 @@ class NetizenFilterType extends AbstractType
                 ->add('group', 'role_choice')
                 ->add('sort', 'choice', [
                     'choices' => [
-                        'lastRegister' => 'Last registered',
-                        'firstRegister' => 'First registered',
-                        'maxPoster' => 'Max publisher',
-                        'minPoster' => 'Min publisher'
+                        // writing mongo sorting array in the form is not a security issue
+                        // since this field is only set to one of these choices
+                        // and the form is CSRF protected
+                        '_id -1' => 'Last registered',
+                        '_id 1' => 'First registered',
+                        'profile.publishingCounter -1' => 'High publisher first',
+                        'profile.publishingCounter 1' => 'Low publisher first',
+                        'fanList -1' => 'Most liked first',
+                        'follower -1' => 'Most followed first'
                     ]
                 ])
                 ->add('Search', 'submit');

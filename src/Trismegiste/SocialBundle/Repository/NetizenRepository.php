@@ -119,9 +119,10 @@ class NetizenRepository implements NetizenRepositoryInterface
     /**
      * @inheritdoc
      */
-    public function search($filter = null)
+    public function search(array $filter)
     {
         $query = [ MapAlias::CLASS_KEY => $this->classAlias];
+        $sort = [];
 
         if (!empty($filter['nickname'])) {
             $query['author.nickname'] = new \MongoRegex("/^{$filter['nickname']}/");
@@ -129,8 +130,12 @@ class NetizenRepository implements NetizenRepositoryInterface
         if (!empty($filter['group'])) {
             $query['roleGroup'] = $filter['group'];
         }
+        if (!empty($filter['sort'])) {
+            list($key, $direction) = explode(' ', $filter['sort']);
+            $sort[$key] = (int) $direction;
+        }
 
-        return $this->repository->find($query);
+        return $this->repository->find($query)->sort($sort);
     }
 
     /**
