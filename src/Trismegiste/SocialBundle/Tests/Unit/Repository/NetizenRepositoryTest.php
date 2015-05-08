@@ -134,9 +134,13 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testSearchUser()
     {
+        $mockIterator = $this->getMockBuilder('Trismegiste\Yuurei\Persistence\CollectionIterator')
+                ->disableOriginalConstructor()
+                ->getMock();
         $this->repository->expects($this->once())
                 ->method('find')
-                ->with($this->equalTo(['-class' => 'netizen', 'author.nickname' => new \MongoRegex('/^user/')]));
+                ->with($this->equalTo(['-class' => 'netizen', 'author.nickname' => new \MongoRegex('/^user/')]))
+                ->willReturn($mockIterator);
 
         $this->sut->search(['nickname' => 'user']);
     }
