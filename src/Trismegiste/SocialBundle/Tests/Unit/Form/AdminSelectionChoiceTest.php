@@ -16,10 +16,12 @@ class AdminSelectionChoiceTest extends \PHPUnit_Framework_TestCase
 
     /** @var Trismegiste\SocialBundle\Form\AdminSelectionChoice */
     protected $sut;
+    protected $item;
 
     protected function setUp()
     {
-        $choices = new \ArrayIterator([555 => new \stdClass()]);
+        $this->item = new \stdClass();
+        $choices = new \ArrayIterator([555 => $this->item]);
         $this->sut = new AdminSelectionChoice($choices);
     }
 
@@ -27,6 +29,21 @@ class AdminSelectionChoiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertCount(1, $this->sut->getChoices());
         $this->assertInstanceOf('stdClass', $this->sut->getChoices()[0]);
+    }
+
+    public function testGetChoicesForValues()
+    {
+        $this->assertEquals([$this->item], $this->sut->getChoicesForValues([555]));
+    }
+
+    public function testGetIndicesForChoices()
+    {
+        $this->sut->getIndicesForChoices([]);
+    }
+
+    public function testGetIndicesForValues()
+    {
+        $this->assertEquals([0], $this->sut->getIndicesForValues([555]));
     }
 
 }

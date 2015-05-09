@@ -56,7 +56,7 @@ class AdminSelectionChoice implements ChoiceListInterface
         $indices = [];
 
         foreach ($values as $value) {
-            if ($found = array_search($value, $keys)) {
+            if (false !== $found = array_search($value, $keys)) {
                 $indices[] = $found;
             }
         }
@@ -89,7 +89,7 @@ class AdminSelectionChoice implements ChoiceListInterface
     {
         $values = [];
         foreach ($choices as $choice) {
-            if ($found = array_search($choice, $this->listing)) {
+            if (false !== $found = array_search($choice, $this->listing)) {
                 $values[] = $found;
             }
         }
