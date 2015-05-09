@@ -27,7 +27,6 @@
 {% endblock %}
 
 {% block topbar %}
-    <a id="anchor-topbar"></a>
     <ul>
         {{ pure.menu_item('wall_index', { wallNick: app.user.username, wallFilter: 'following' }, 'Following' ) }}
         {{ pure.menu_item('wall_index', { wallNick: app.user.username, wallFilter: 'follower' }, 'Followers' ) }}
