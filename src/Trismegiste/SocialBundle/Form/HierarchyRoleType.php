@@ -36,7 +36,6 @@ class HierarchyRoleType extends AbstractType
     {
         $choices = [];
         foreach ($this->hierarchyRole as $key => $role) {
-            ;
             $choices[$key] = ucfirst(strtolower(preg_replace('#^ROLE_#', '', $key)));
         }
 
