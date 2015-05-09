@@ -46,4 +46,27 @@ class AdminSelectionChoiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals([0], $this->sut->getIndicesForValues([555]));
     }
 
+    public function testGetPreferredViews()
+    {
+        $this->assertEquals([], $this->sut->getPreferredViews()); // no preferred view
+    }
+
+    public function testGetRemainingViews()
+    {
+        $res = $this->sut->getRemainingViews();
+        $this->assertCount(1, $res);
+        $this->assertInstanceOf('Symfony\Component\Form\Extension\Core\View\ChoiceView', $res[0]);
+    }
+
+    public function testGetValues()
+    {
+        $this->assertEquals([555], $this->sut->getValues());
+    }
+
+    public function testGetValuesForChoices()
+    {
+        $res = $this->sut->getValuesForChoices([$this->item]);
+        $this->assertEquals([555], $res);
+    }
+
 }
