@@ -6,12 +6,12 @@
 
 namespace Trismegiste\SocialBundle\Utils;
 
-use Mother;
-
 /**
  * UnwindCommentaryIterator is a Decorator for aggregation of commentary
  *
- * Main goal : provide a unique primary key with _id from Publishing and uui
+ * Main goal : provide a composite primary key with _id from Publishing and Uuid from the Commentary
+ *
+ * @see self::key()
  */
 class UnwindCommentaryIterator implements \Iterator
 {
