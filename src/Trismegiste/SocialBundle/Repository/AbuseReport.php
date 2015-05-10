@@ -102,7 +102,15 @@ class AbuseReport
 
     public function batchDeleteCommentary(array $listing)
     {
-        // @todo
+        foreach ($listing as $item) {
+            $this->collection->update(
+                    ['_id' => $item['_id']], ['$pull' => [
+                    'commentary' => [
+                        'uuid' => $item['commentary']['uuid']
+                    ]
+                ]]
+            );
+        }
     }
 
 }
