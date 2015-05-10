@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
 /**
@@ -43,7 +44,8 @@ class NetizenFilterType extends AbstractType
                         '_id 1' => 'First registered',
                         'profile.publishingCounter -1' => 'High publisher first',
                         'profile.publishingCounter 1' => 'Low publisher first'
-                    ]
+                    ],
+                    'constraints' => new NotBlank()
                 ])
                 ->add('search', 'submit')
                 ->add('export', 'submit');

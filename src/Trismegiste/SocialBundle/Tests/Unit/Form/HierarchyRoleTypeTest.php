@@ -25,6 +25,7 @@ class HierarchyRoleTypeTest extends FormTestCase
     {
         return [
             ['ab', null],
+            [null, null]
         ];
     }
 

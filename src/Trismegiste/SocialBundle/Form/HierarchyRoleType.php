@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * HierarchyRoleType is a choice list filled with hierarchy roles of security components
@@ -41,7 +42,8 @@ class HierarchyRoleType extends AbstractType
 
         $resolver->setDefaults([
             'choices' => $choices,
-            'required' => true
+            'required' => true,
+            'constraints' => new NotBlank()
         ]);
     }
 

@@ -34,8 +34,10 @@ class NetizenRoleTypeTest extends FormTestCase
 
     public function getInvalidInputs()
     {
+        $user = new Netizen(new Author('kirk'));
         return [
-            [['group' => 'ab'], new Netizen(new Author('kirk'))]
+            [['group' => 'ab'], $user],
+            [['group' => null], $user]
         ];
     }
 
