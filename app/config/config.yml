@@ -68,7 +68,7 @@ dokudoki:
         config: 'Trismegiste\SocialBundle\Config\ParameterBag'
 
 iinano:
-    nickname_regex: "[-\da-z]+"
+    nickname_regex: "[\da-z][-\da-z]*"
     dynamic_default:
         freeAccess: false
         maintenanceMsg: ''
