@@ -24,7 +24,7 @@
             <article>
                 <h1>Health</h1>
                 <h2>Load {{ health.cpu.0 }} {{ health.cpu.1 }} {{ health.cpu.2 }}</h2>
-                <h2>Load {{ health.memory|si }}</h2>
+                <h2>Memory {{ health.memory|si }}</h2>
                 <h2>Collection size {{ health.mongo.size|si }}</h2>
                 <h2>Doc avg size {{ health.mongo.avgObjSize|si }}</h2>
                 <h2>Index size {{ health.mongo.totalIndexSize|si }}</h2>

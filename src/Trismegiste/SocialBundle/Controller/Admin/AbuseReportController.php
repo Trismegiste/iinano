@@ -30,6 +30,8 @@ class AbuseReportController extends Template
                 case 'RESET' :
                     try {
                         $reportRepo->batchResetCounterPublish($data['selection_list']);
+                        $this->pushFlash('notice', count($data['selection_list']) . ' counters reset');
+
                         return $this->redirectRouteOk('admin_abusive_pub_listing');
                     } catch (\MongoException $e) {
                         $this->pushFlash('warning', 'Cannot reset counters, please try again');
@@ -39,6 +41,8 @@ class AbuseReportController extends Template
                 case 'DELETE' :
                     try {
                         $reportRepo->batchDeletePublish($data['selection_list']);
+                        $this->pushFlash('notice', count($data['selection_list']) . ' contents deleted');
+
                         return $this->redirectRouteOk('admin_abusive_pub_listing');
                     } catch (\MongoException $e) {
                         $this->pushFlash('warning', 'Cannot delete content, please try again');
@@ -66,6 +70,8 @@ class AbuseReportController extends Template
                 case 'RESET' :
                     try {
                         $reportRepo->batchResetCounterCommentary($data['selection_list']);
+                        $this->pushFlash('notice', count($data['selection_list']) . ' counters reset');
+
                         return $this->redirectRouteOk('admin_abusive_comm_listing');
                     } catch (\MongoException $e) {
                         $this->pushFlash('warning', 'Cannot reset counters, please try again');
@@ -75,6 +81,8 @@ class AbuseReportController extends Template
                 case 'DELETE' :
                     try {
                         $reportRepo->batchDeleteCommentary($data['selection_list']);
+                        $this->pushFlash('notice', count($data['selection_list']) . ' contents deleted');
+
                         return $this->redirectRouteOk('admin_abusive_comm_listing');
                     } catch (\MongoException $e) {
                         $this->pushFlash('warning', 'Cannot delete commentary, please try again');
