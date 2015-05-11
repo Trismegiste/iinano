@@ -38,10 +38,10 @@ class EntranceFeeType extends AbstractType
                     ],
                     'label' => 'Duration',
                     'choices' => [
-                        1 => 'one month',
-                        3 => 'three months',
+                        12 => 'one year',
                         6 => 'six months',
-                        12 => 'one year'
+                        3 => 'three months',
+                        1 => 'one month'
                     ],
                     'expanded' => true,
                     'multiple' => false
