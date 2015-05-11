@@ -15,7 +15,19 @@
         <div class="pure-u-1 pure-u-md-1-2 dashboard-tile">
             <article>
                 <h1>Content</h1>
-                <h2>{{ content|si }}</h2>
+                {% for counter in content %}
+                    <h2>{{ counter._id }} {{ counter.counter|si }}</h2>
+                {% endfor %}
+            </article>
+        </div>
+        <div class="pure-u-1 pure-u-md-1-2 dashboard-tile">
+            <article>
+                <h1>Health</h1>
+                <h2>Load {{ health.cpu.0 }} {{ health.cpu.1 }} {{ health.cpu.2 }}</h2>
+                <h2>Load {{ health.memory|si }}</h2>
+                <h2>Collection size {{ health.mongo.size|si }}</h2>
+                <h2>Doc avg size {{ health.mongo.avgObjSize|si }}</h2>
+                <h2>Index size {{ health.mongo.totalIndexSize|si }}</h2>
             </article>
         </div>
     </div>

@@ -17,10 +17,18 @@ class AdminController extends Template
 
     public function dashboardAction()
     {
+        $coll = $this->get('dokudoki.collection');
         $param = [
             'user' => $this->get('social.netizen.repository')->countAllUser(),
-            'content' => $this->get('social.publishing.repository')->countAllPublishing()
+            'content' => $coll->aggregateCursor([['$group' => ['_id' => '$-class', 'counter' => ['$sum' => 1]]]]),
+            'health' => [
+                'cpu' => sys_getloadavg(),
+                'mongo' => $coll->db
+                        ->execute(new \MongoCode('db.dokudoki.stats();'))['retval'],
+                'memory' => memory_get_peak_usage(true)
+            ]
         ];
+
 
         return $this->render('TrismegisteSocialBundle:Admin:dashboard.html.twig', $param);
     }
