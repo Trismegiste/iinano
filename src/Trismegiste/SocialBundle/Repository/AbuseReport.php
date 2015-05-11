@@ -75,6 +75,12 @@ class AbuseReport
         ]); // I love arrays
     }
 
+    /**
+     * Delete all Publishing content with their pk
+     *
+     * @param array $listing flat array given by the query above
+     * @see self::findMostReportedPublish()
+     */
     public function batchDeletePublish(array $listing)
     {
         $compilPk = [];
@@ -84,6 +90,11 @@ class AbuseReport
         $this->collection->remove(['_id' => ['$in' => $compilPk]]);
     }
 
+    /**
+     * Reset all abuse report counters of the given Publishing content
+     *
+     * @param array $listing
+     */
     public function batchResetCounterPublish(array $listing)
     {
         foreach ($listing as $item) {
@@ -95,6 +106,12 @@ class AbuseReport
         }
     }
 
+    /**
+     * Reset all abuse report counters of given embedded Commentary
+     *
+     * @param array $listing a list of document given by findMostReportedCommentary()
+     * @see self::findMostReportedCommentary()
+     */
     public function batchResetCounterCommentary(array $listing)
     {
         foreach ($listing as $item) {
@@ -110,6 +127,12 @@ class AbuseReport
         }
     }
 
+    /**
+     * Delete all given embedded Commentary
+     *
+     * @param array $listing a list of document given by findMostReportedCommentary()
+     * @see self::findMostReportedCommentary()
+     */
     public function batchDeleteCommentary(array $listing)
     {
         foreach ($listing as $item) {
