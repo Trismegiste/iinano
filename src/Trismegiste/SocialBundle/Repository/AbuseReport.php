@@ -97,7 +97,17 @@ class AbuseReport
 
     public function batchResetCounterCommentary(array $listing)
     {
-        // @todo
+        foreach ($listing as $item) {
+            $this->collection->update([
+                '_id' => $item['_id'],
+                'commentary.uuid' => $item['commentary']['uuid']
+                    ], [
+                '$set' => [
+                    'commentary.$.abusiveCount' => 0,
+                    'commentary.$.abusive' => [],
+                ]]
+            );
+        }
     }
 
     public function batchDeleteCommentary(array $listing)
