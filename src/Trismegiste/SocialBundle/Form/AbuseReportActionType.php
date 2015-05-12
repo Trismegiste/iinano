@@ -17,6 +17,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class AbuseReportActionType extends AbstractType
 {
 
+    const RESET = 'RESET';
+    const DELETE = 'DELETE';
+
     protected $listing;
 
     public function __construct(Iterator $listing)
@@ -35,8 +38,8 @@ class AbuseReportActionType extends AbstractType
                 ->add('action', 'choice', [
                     'empty_value' => 'Select an action',
                     'choices' => [
-                        'RESET' => 'Reset report counter',
-                        'DELETE' => 'Delete content'
+                        self::RESET => 'Reset report counter',
+                        self::DELETE => 'Delete content'
                     ]
                 ])
                 ->add('makeItSo', 'submit');

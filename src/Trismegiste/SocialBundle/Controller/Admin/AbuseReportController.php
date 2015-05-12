@@ -27,7 +27,7 @@ class AbuseReportController extends Template
         if ($form->isValid()) {
             $data = $form->getData();
             switch ($data['action']) {
-                case 'RESET' :
+                case AbuseReportActionType::RESET :
                     try {
                         $reportRepo->batchResetCounterPublish($data['selection_list']);
                         $this->pushFlash('notice', count($data['selection_list']) . ' counters reset');
@@ -38,7 +38,7 @@ class AbuseReportController extends Template
                     }
                     break;
 
-                case 'DELETE' :
+                case AbuseReportActionType::DELETE :
                     try {
                         $reportRepo->batchDeletePublish($data['selection_list']);
                         $this->pushFlash('notice', count($data['selection_list']) . ' contents deleted');
@@ -67,7 +67,7 @@ class AbuseReportController extends Template
         if ($form->isValid()) {
             $data = $form->getData();
             switch ($data['action']) {
-                case 'RESET' :
+                case AbuseReportActionType::RESET :
                     try {
                         $reportRepo->batchResetCounterCommentary($data['selection_list']);
                         $this->pushFlash('notice', count($data['selection_list']) . ' counters reset');
@@ -78,7 +78,7 @@ class AbuseReportController extends Template
                     }
                     break;
 
-                case 'DELETE' :
+                case AbuseReportActionType::DELETE :
                     try {
                         $reportRepo->batchDeleteCommentary($data['selection_list']);
                         $this->pushFlash('notice', count($data['selection_list']) . ' contents deleted');
