@@ -23,7 +23,8 @@ class VideoType extends AbstractType
                     'constraints' => [
                         new NotBlank(),
                         new Url()
-                    ]
+                    ],
+                    'attr' => ['data-form-focus' => null]
                 ])
                 ->add('save', 'submit');
     }

@@ -19,7 +19,10 @@ class StatusType extends AbstractType
     public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
         $builder->add("location", new GeolocationType(), ['inherit_data' => true])
-                ->add('message', 'text', ['constraints' => new Length(['min' => 3, 'max' => 80])])
+                ->add('message', 'text', [
+                    'constraints' => new Length(['min' => 3, 'max' => 80]),
+                    'attr' => ['data-form-focus' => null]
+                ])
                 ->add('save', 'submit');
     }
 
