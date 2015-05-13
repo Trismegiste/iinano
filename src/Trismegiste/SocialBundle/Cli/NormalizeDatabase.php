@@ -36,20 +36,8 @@ class NormalizeDatabase extends ContainerAwareCommand
         $collection->ensureIndex(['owner.nickname' => 1, '_id' => -1], ['sparse' => true]);
         // 2dsphere index for Status
         $collection->ensureIndex(['location' => "2dsphere"], ['sparse' => true]);
+        // for text search
+        $collection->ensureIndex(['message' => 'text', 'commentary.message' => 'text'], ['sparse' => true, 'weights' => ['message' => 3]]);
     }
 
 }
-
-/*
-
-// resync avatar in publishing :
-var cursor = db.dokudoki.find({'-class':'netizen'});
-
-while (cursor.hasNext()) {
-  var doc = cursor.next();
-  db.dokudoki.update({owner:{$exists:true}, 'owner.nickname':doc.author.nickname},
-                     {$set:{'owner.avatar':doc.author.avatar}},
-                     {multi:true});
-}
-
-*/
