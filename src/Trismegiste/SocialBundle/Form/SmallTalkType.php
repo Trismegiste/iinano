@@ -19,10 +19,13 @@ class SmallTalkType extends AbstractType
 
     public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
     {
-        $builder->add('message', 'textarea', ['constraints' => [
+        $builder->add('message', 'textarea', [
+                    'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 10, 'max' => 280])
-            ]])
+                    ],
+                    'attr' => ['data-form-focus' => null]
+                ])
                 ->add('save', 'submit');
     }
 
