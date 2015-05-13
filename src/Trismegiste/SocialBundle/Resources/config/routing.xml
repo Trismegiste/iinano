@@ -31,7 +31,7 @@
         <requirement key="_method">GET</requirement>
     </route>
     <route id="ajax_search_more" pattern="/search/{keyword}/more/{offset}">
-        <default key="_controller">TrismegisteSocialBundle:Search:ajaxMore</default>
+        <default key="_controller">TrismegisteSocialBundle:Search:ajaxSearchMore</default>
         <requirement key="_method">GET</requirement>
         <requirement key="offset">[\d]+</requirement>
     </route>

@@ -14,25 +14,44 @@ use Symfony\Component\HttpFoundation\Request;
 class SearchController extends ContentController
 {
 
-    public function listingAction(Request $req)
+    protected function getDefaultParam()
     {
-        $search = $req->query->get('keyword');
-        $parameters['keyword'] = $search;
-
-        // filling the logged user info for wall
         $parameters['wallNick'] = $this->getUser()->getUsername();
         $parameters['wallUser'] = $this->getUser();
         $parameters['wallFilter'] = 'self';
-
-        // filling feed entries and skipping one if in CRUD
-        $repo = $this->get('dokudoki.repository');
-        $it = $repo->find(['$text' => ['$search' => $search]])->limit($this->getPagination());
-
-        $parameters['listing'] = $it;
         $parameters['pagination'] = $this->getPagination();
         $parameters['commentary_preview'] = $this->getParameter('social.commentary_preview');
 
+        return $parameters;
+    }
+
+    public function listingAction(Request $req)
+    {
+        $parameters = $this->getDefaultParam();
+
+        $search = $req->query->get('keyword');
+        $parameters['keyword'] = $search;
+
+        $repo = $this->get('dokudoki.repository');
+        $parameters['listing'] = $repo->find(['$text' => ['$search' => $search]])
+                ->limit($this->getPagination());
+
         return $this->render('TrismegisteSocialBundle:Content:search.html.twig', $parameters);
+    }
+
+    public function ajaxSearchMoreAction($offset, $keyword)
+    {
+        $this->onlyAjaxRequest();
+
+        $parameters = $this->getDefaultParam();
+        $parameters['keyword'] = $keyword;
+
+        $repo = $this->get('dokudoki.repository');
+        $parameters['listing'] = $repo->find(['$text' => ['$search' => $keyword]])
+                ->offset($offset)
+                ->limit($this->getPagination());
+
+        return $this->render('TrismegisteSocialBundle:Content:ajax/index_more.html.twig', $parameters);
     }
 
 }
