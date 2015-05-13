@@ -81,6 +81,9 @@ var social = {
         $('a[data-lightbox]').lightbox();
         $('a[data-lightbox]').removeAttr('data-lightbox');
         // @todo not very satisfying but it works...
+    },
+    initFormFocus: function ()
+    {
+        $('form *[data-form-focus]').first().focus();
     }
-
 };
