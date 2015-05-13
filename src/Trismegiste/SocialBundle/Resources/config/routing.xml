@@ -26,6 +26,16 @@
         <requirement key="id">%mongoid_regex%</requirement>
     </route>
 
+    <route id="search_listing" pattern="/search">
+        <default key="_controller">TrismegisteSocialBundle:Search:listing</default>
+        <requirement key="_method">GET</requirement>
+    </route>
+    <route id="ajax_search_more" pattern="/search/{keyword}/more/{offset}">
+        <default key="_controller">TrismegisteSocialBundle:Search:ajaxSearchMore</default>
+        <requirement key="_method">GET</requirement>
+        <requirement key="offset">[\d]+</requirement>
+    </route>
+
     <route id="guest_about" pattern="/guest/about">
         <default key="_controller">TrismegisteSocialBundle:Guest:about</default>
         <requirement key="_method">GET</requirement>
