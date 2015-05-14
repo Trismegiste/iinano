@@ -45,7 +45,10 @@ class RendererExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFilter('timeago', [$this, 'humanDateFilter']),
             new \Twig_SimpleFilter('gender', [$this, 'genderFilter'], ['needs_environment' => true]),
-            new \Twig_SimpleFilter('si', [$this, 'siFilter'])
+            new \Twig_SimpleFilter('si', [$this, 'siFilter']),
+            new \Twig_SimpleFilter('auto_url', [$this, 'autoUrlFilter'], [
+                'pre_escape' => 'html',
+                'is_safe' => array('html')])
         ];
     }
 
@@ -139,6 +142,20 @@ class RendererExtension extends \Twig_Extension
         $afterComma = floor(fmod($digit, 3)) ? 0 : 1; // if [1k, 10k[ => one digit after comma else 0 digit
 
         return sprintf("%.{$afterComma}f%s", $value / pow(1000, $power), $this->multiplier[$power]);
+    }
+
+    /**
+     * Parse a string a decorate URL with <a>
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    public function autoUrlFilter($value)
+    {
+        return preg_replace_callback('#(http\\://[^\s]+)#', function($match) {
+            return '<a href="' . $match[1] . '">' . $match[1] . '</a>';
+        }, $value);
     }
 
 }
