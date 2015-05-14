@@ -153,6 +153,7 @@ class RendererExtension extends \Twig_Extension
      */
     public function autoUrlFilter($value)
     {
+        // @todo use only the domain.tld for the text inside the link
         return preg_replace_callback('#(http\\://[^\s]+)#', function($match) {
             return '<a href="' . $match[1] . '">' . $match[1] . '</a>';
         }, $value);
