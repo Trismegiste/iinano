@@ -126,7 +126,6 @@ class NetizenController extends Template
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            print_r($form->getData());
             $this->get('security.netizen.factory')
                     ->setNewCredential($currentUser, $form->getData()['password']);
             $repo->persist($currentUser);
