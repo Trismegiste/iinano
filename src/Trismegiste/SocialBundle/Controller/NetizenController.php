@@ -113,4 +113,9 @@ class NetizenController extends Template
         return $this->redirectRouteOk($route);
     }
 
+    public function changePasswordAction()
+    {
+        return new \Symfony\Component\HttpFoundation\Response('todo');
+    }
+
 }
