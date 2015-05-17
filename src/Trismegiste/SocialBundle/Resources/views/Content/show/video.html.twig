@@ -1,2 +1,3 @@
-<iframe height="400" width="100%" src="{{ content.url }}" frameborder="0">
+{# the name is here to prevent a bug from Chrome with the back button #}
+<iframe name="video-{{ content.id }}" data-fluid-video height="400" src="{{ content.url }}" frameborder="0">
 </iframe>

@@ -85,5 +85,12 @@ var social = {
     initFormFocus: function ()
     {
         $('form *[data-form-focus]').first().focus();
+    },
+    initFluidVideo: function () {
+        fluidvids.init({
+            selector: ['iframe[data-fluid-video]'],
+            players: ['www.youtube.com', 'player.vimeo.com']
+        });
+        $('iframe[data-fluid-video]').removeAttr('data-fluid-video'); // to prevent double init with more
     }
 };
