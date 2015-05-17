@@ -65,6 +65,7 @@
     </route>
     <route id="netizen_password_change" pattern="/profile/myself/password">
         <default key="_controller">TrismegisteSocialBundle:Netizen:changePassword</default>
+        <requirement key="_method">GET|POST</requirement>
     </route>
 
     <route id="confirm_buy_ticket" pattern="/ticket/new">

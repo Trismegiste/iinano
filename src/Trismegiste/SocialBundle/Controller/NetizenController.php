@@ -6,8 +6,10 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
-use Trismegiste\SocialBundle\Controller\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Trismegiste\SocialBundle\Controller\Template;
+use Trismegiste\SocialBundle\Form\ChangePasswordType;
 use Trismegiste\SocialBundle\Form\ProfileType;
 use Trismegiste\SocialBundle\Security\TicketVoter;
 
@@ -54,7 +56,7 @@ class NetizenController extends Template
 
             $this->pushFlash('notice', 'Avatar updated');
 
-            return new \Symfony\Component\HttpFoundation\JsonResponse(['status' => 'ok']);
+            return new JsonResponse(['status' => 'ok']);
         }
 
         $author = $this->getUser()->getAuthor();
@@ -113,9 +115,29 @@ class NetizenController extends Template
         return $this->redirectRouteOk($route);
     }
 
-    public function changePasswordAction()
+    /**
+     * The page for changing the password/credentials
+     */
+    public function changePasswordAction(Request $request)
     {
-        return new \Symfony\Component\HttpFoundation\Response('todo');
+        $currentUser = $this->getUser();
+        $form = $this->createForm(new ChangePasswordType(), $currentUser);
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $repo = $this->get('social.netizen.repository');
+            $user = $repo->findByPk($currentUser->getId());  // we reload the user to prevent SESSION hack
+
+            $repo->persist($user);
+            $this->pushFlash('notice', 'Password changed');
+
+            return $this->redirectRouteOk('netizen_show', ['author' => $currentUser->getUsername()]);
+        }
+
+        return $this->render('TrismegisteSocialBundle:Netizen:profile_edit.html.twig', [
+                    'form' => $form->createView(),
+                    'author' => $currentUser->getAuthor()
+        ]);
     }
 
 }
