@@ -120,15 +120,16 @@ class NetizenController extends Template
      */
     public function changePasswordAction(Request $request)
     {
-        $currentUser = $this->getUser();
-        $form = $this->createForm(new ChangePasswordType(), $currentUser);
+        $repo = $this->get('social.netizen.repository');
+        $currentUser = $repo->findByPk($this->getUser()->getId());  // we reload the user to assertain he's refresh
+        $form = $this->createForm(new ChangePasswordType());
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $repo = $this->get('social.netizen.repository');
-            $user = $repo->findByPk($currentUser->getId());  // we reload the user to prevent SESSION hack
-
-            $repo->persist($user);
+            print_r($form->getData());
+            $this->get('security.netizen.factory')
+                    ->setNewCredential($currentUser, $form->getData()['password']);
+            $repo->persist($currentUser);
             $this->pushFlash('notice', 'Password changed');
 
             return $this->redirectRouteOk('netizen_show', ['author' => $currentUser->getUsername()]);
