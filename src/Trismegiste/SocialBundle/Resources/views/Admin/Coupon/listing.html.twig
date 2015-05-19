@@ -25,7 +25,7 @@
                         <td>{{ coupon.usedCounter }}/{{ coupon.maximumUse }}</td>
                         <td>
                             <i class="icon-eye"></i>
-                            <i class="icon-pencil"></i>
+                            <a href="{{ path('admin_coupon_edit', {id: coupon.id}) }}" title="Edit"><i class="icon-pencil"></i></a>
                             <i class="icon-trash-empty"></i><br/>
                             <a href="{{ path('guest_coupon_landing', {code: coupon.hashKey}) }}">Url</a> Flyer
                         </td>

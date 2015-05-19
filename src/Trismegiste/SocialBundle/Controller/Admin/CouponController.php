@@ -47,4 +47,9 @@ class CouponController extends Template
         return $this->render('TrismegisteSocialBundle:Admin/Coupon:create.html.twig', ['form' => $form->createView()]);
     }
 
+    public function editAction($id)
+    {
+        return new \Symfony\Component\HttpFoundation\Response('todo');
+    }
+
 }

@@ -41,6 +41,11 @@
         <default key="_controller">TrismegisteSocialBundle:Admin/Coupon:create</default>
         <requirement key="_method">GET|POST</requirement>
     </route>
+    <route id="admin_coupon_edit" pattern="/coupon/{id}/edit">
+        <default key="_controller">TrismegisteSocialBundle:Admin/Coupon:edit</default>
+        <requirement key="id">%mongoid_regex%</requirement>
+        <requirement key="_method">GET|POST</requirement>
+    </route>
 
     <route id="admin_entrancefee_edit" pattern="/config/fee/edit">
         <default key="_controller">TrismegisteSocialBundle:Admin/Fee:edit</default>
