@@ -15,9 +15,15 @@
         <div class="pure-u-1 pure-u-md-1-2 dashboard-tile">
             <article>
                 <h1>Content</h1>
-                {% for counter in content %}
-                    <h2>{{ counter._id }} {{ counter.counter|si }}</h2>
-                {% endfor %}
+                <table class="pure-table pure-table-striped">
+                    <tr><th>Type</th><th>Count</th></tr>
+                    {% for counter in content %}
+                        <tr>
+                            <td>{{ counter._id }}</td>
+                            <td>{{ counter.counter|si }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
             </article>
         </div>
         <div class="pure-u-1 pure-u-md-1-2 dashboard-tile">
