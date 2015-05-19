@@ -75,9 +75,11 @@ class CouponController extends Template
 
     public function deleteAction($id)
     {
-        $this->get('social.ticket.repository')->deleteCoupon($id, $this->get('dokudoki.collection'));
+        $this->get('social.ticket.repository')
+                ->deleteCoupon($id, $this->get('dokudoki.collection'));
+        $this->pushFlash('notice', 'Coupon deleted');
 
-        return new Response('', 200);
+        return $this->redirectRouteOk('admin_coupon_listing');
     }
 
 }

@@ -23,7 +23,9 @@
                         <td>{{ coupon.usedCounter }}/{{ coupon.maximumUse }}</td>
                         <td>
                             <a href="{{ path('admin_coupon_edit', {id: coupon.id}) }}" title="Edit"><i class="icon-pencil"></i></a>
-                            <a href="{{ path('admin_coupon_delete', {id: coupon.id}) }}" title="Delete"><i class="icon-trash-empty"></i></a><br/>
+                            <form method="POST" action="{{ path('admin_coupon_delete', {id: coupon.id}) }}" class="pure-form">
+                                <button class="pure-button" title="Delete"><i class="icon-trash-empty"></i></button>
+                            </form>
                             <a href="{{ path('guest_coupon_landing', {code: coupon.hashKey}) }}">Url</a> Flyer
                         </td>
                     </tr>
@@ -31,4 +33,28 @@
             </table>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', 'a[data-admin-delete]', function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                var button = this;
+
+                alertify.confirm("Are you sure you want to delete this coupon ?", function (e) {
+                    if (e) {
+                        $.ajax({
+                            url: button.href,
+                            type: 'POST'
+                        }).done(function (response) {
+                            alertify.success("Coupon deleted");
+                        });
+                    }
+                });
+            });
+        })
+    </script>
 {% endblock %}
