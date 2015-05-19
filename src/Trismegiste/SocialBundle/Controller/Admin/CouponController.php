@@ -44,12 +44,36 @@ class CouponController extends Template
             }
         }
 
-        return $this->render('TrismegisteSocialBundle:Admin/Coupon:create.html.twig', ['form' => $form->createView()]);
+        return $this->render('TrismegisteSocialBundle:Admin/Coupon:form.html.twig', ['form' => $form->createView()]);
     }
 
     public function editAction($id)
     {
-        return new \Symfony\Component\HttpFoundation\Response('todo');
+        $repo = $this->get('dokudoki.repository');
+        $coupon = $repo->findByPk($id);
+        $form = $this->createForm(new CouponType(), $coupon, [
+            'action' => $this->generateUrl('admin_coupon_edit', ['id' => $id])
+        ]);
+        $form->handleRequest($this->getRequest());
+
+        if ($form->isValid()) {
+            $coupon = $form->getData();
+            try {
+                $repo->persist($coupon);
+                $this->pushFlash('notice', 'Coupon saved');
+
+                return $this->redirectRouteOk('admin_coupon_listing');
+            } catch (\MongoException $e) {
+                $this->pushFlash('warning', 'Could not save the new coupon');
+            }
+        }
+
+        return $this->render('TrismegisteSocialBundle:Admin/Coupon:form.html.twig', ['form' => $form->createView()]);
+    }
+
+    public function deleteAction($id)
+    {
+
     }
 
 }

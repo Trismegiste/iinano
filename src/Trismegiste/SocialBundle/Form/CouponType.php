@@ -7,10 +7,12 @@
 namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\Range;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Range;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * CouponType is a form for Coupon entity
@@ -18,13 +20,14 @@ use Symfony\Component\Validator\Constraints\Length;
 class CouponType extends AbstractType
 {
 
-    public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('hashKey', 'text', [
                     'label' => 'Code',
                     'constraints' => [
                         new NotBlank(),
-                        new Length(['min' => 5])
+                        new Length(['min' => 5]),
+                        new Regex('#[\da-zA-Z]+#')
                     ],
                     'attr' => ['placeholder' => 'case sensitive & minimum 5 characters']
                 ])
@@ -47,7 +50,7 @@ class CouponType extends AbstractType
                     'data' => new \DateTime('+1 month'),
                     'years' => range(date('Y'), date('Y') + 2),
                 ])
-                ->add('Create', 'submit');
+                ->add('Save', 'submit');
     }
 
     public function getName()
