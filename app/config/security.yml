@@ -37,6 +37,7 @@ security:
                 domain: ~
 
     access_control:
+        - { path: "^/admin/netizen/[0-9a-f]+/promote", roles: ROLE_ADMIN }
         - { path: ^/admin/config/, roles: ROLE_ADMIN }
         - { path: ^/admin/abusereport/, roles: ROLE_MODERATOR }
         - { path: ^/admin/, roles: ROLE_MANAGER }
