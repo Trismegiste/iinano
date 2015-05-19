@@ -6,9 +6,11 @@
 
 namespace Trismegiste\SocialBundle\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Form\CouponType;
-use Symfony\Component\HttpFoundation\Request;
+use Trismegiste\SocialBundle\Ticket\Coupon;
 
 /**
  * CouponController is a crud controller for coupons
@@ -26,11 +28,11 @@ class CouponController extends Template
 
     public function createAction(Request $request)
     {
-        $form = $this->createForm(new CouponType(), null, [
+        $form = $this->createForm(new CouponType(), new Coupon(), [
             'action' => $this->generateUrl('admin_coupon_create')
         ]);
-        $form->handleRequest($request);
 
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $coupon = $form->getData();
             $repo = $this->get('dokudoki.repository');
@@ -44,7 +46,51 @@ class CouponController extends Template
             }
         }
 
-        return $this->render('TrismegisteSocialBundle:Admin/Coupon:create.html.twig', ['form' => $form->createView()]);
+        return $this->render('TrismegisteSocialBundle:Admin/Coupon:form.html.twig', ['form' => $form->createView()]);
+    }
+
+    public function editAction($id)
+    {
+        $repo = $this->get('dokudoki.repository');
+        $coupon = $repo->findByPk($id);
+        $form = $this->createForm(new CouponType(), $coupon, [
+            'action' => $this->generateUrl('admin_coupon_edit', ['id' => $id])
+        ]);
+
+        $form->handleRequest($this->getRequest());
+        if ($form->isValid()) {
+            $coupon = $form->getData();
+            try {
+                $repo->persist($coupon);
+                $this->pushFlash('notice', 'Coupon saved');
+
+                return $this->redirectRouteOk('admin_coupon_listing');
+            } catch (\MongoException $e) {
+                $this->pushFlash('warning', 'Could not save the coupon');
+            }
+        }
+
+        return $this->render('TrismegisteSocialBundle:Admin/Coupon:form.html.twig', ['form' => $form->createView()]);
+    }
+
+    public function deleteAction($id)
+    {
+        $repo = $this->get('dokudoki.repository');
+        $coupon = $repo->findByPk($id);
+
+        if ($this->getRequest()->getMethod() == 'POST') {
+            try {
+                $this->get('social.ticket.repository')
+                        ->deleteCoupon($id, $this->get('dokudoki.collection'));
+                $this->pushFlash('notice', 'Coupon deleted');
+
+                return $this->redirectRouteOk('admin_coupon_listing');
+            } catch (\MongoException $e) {
+                $this->pushFlash('warning', 'Coupon was not deleted ' . $e->getMessage());
+            }
+        }
+
+        return $this->render('TrismegisteSocialBundle:Admin/Coupon:delete.html.twig', ['coupon' => $coupon]);
     }
 
 }
