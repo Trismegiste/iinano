@@ -21,7 +21,7 @@ class TicketRepository extends SecuredContentProvider
     /**
      * Add a ticket created from a coupon to a user, persist the user and the coupon
      *
-     * @param Coupon $coupon
+     * @param string $couponHash
      *
      * @throws InvalidCouponException if coupon does not exists
      */
@@ -103,6 +103,16 @@ class TicketRepository extends SecuredContentProvider
         $user->addTicket($ticket);
 
         $this->repository->persist($user);
+    }
+
+    public function deleteCoupon($id, \MongoCollection $coll)
+    {
+        $obj = $this->repository->findByPk($id);
+        if (!$obj instanceof \Trismegiste\SocialBundle\Ticket\Coupon) {
+            throw new \InvalidArgumentException(get_class($obj) . " is not a coupon");
+        }
+
+        $coll->remove(['_id' => $obj->getId()]);
     }
 
 }

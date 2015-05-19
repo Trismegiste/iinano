@@ -40,7 +40,7 @@ class CouponType extends AbstractType
                     ]
                 ])
                 ->add('maximumUse', 'integer', [
-                    'data' => 1,
+                    'data' => 1,  // @todo remove this default value to model
                     'constraints' => [
                         new NotBlank(),
                         new Range(['min' => 1, 'max' => 1000])

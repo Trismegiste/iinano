@@ -73,12 +73,9 @@ class CouponController extends Template
 
     public function deleteAction($id)
     {
-        $obj = $this->get('dokudoki.repository')->findByPk($id);
-        if ($obj instanceof \Trismegiste\SocialBundle\Ticket\Coupon) {
-            $this->get('dokudoki.collection')->remove(['_id' => $obj->getId()]);
+        $this->get('social.ticket.repository')->deleteCoupon($id,$this->get('dokudoki.collection'));
 
-            return new \Symfony\Component\HttpFoundation\Response('', 200);
-        }
+        return new \Symfony\Component\HttpFoundation\Response('', 200);
     }
 
 }
