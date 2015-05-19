@@ -15,19 +15,27 @@
 
 {% block responsive_sidebar %}
     <ul>
-        {{ pure.menu_item('admin_dashboard', {}, 'Admin' ) }}
+        {% if is_granted('ROLE_MANAGER') %}
+            {{ pure.menu_item('admin_dashboard', {}, 'Dashboard' ) }}
+        {% endif %}
         <li class="menu-item-divided"></li>
+        {% if is_granted('ROLE_MODERATOR') %}
             {{ pure.menu_item('admin_abusive_pub_listing', {}, 'Abuse/spam post') }}
             {{ pure.menu_item('admin_abusive_comm_listing', {}, 'Abuse/spam comm') }}
+        {% endif %}
+        {% if is_granted('ROLE_MANAGER') %}
             {{ pure.menu_item('admin_netizen_listing', {}, 'Users') }}
             {{ pure.menu_item('admin_coupon_listing', {}, 'Coupons') }}
             {{ pure.menu_item('admin_coupon_create', {}, 'New coupon') }}
-        <li class="menu-item-divided"></li>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <li class="menu-item-divided"></li>
             {{ pure.menu_item('admin_entrancefee_edit', {}, 'Fee') }}
             {{ pure.menu_item('admin_dynamic_config_edit', {}, 'Preferences') }}
+        {% endif %}
         <li class="menu-item-divided"></li>
-            {{ pure.menu_item('content_index', {}, 'Myself') }}
-            {{ pure.menu_item('trismegiste_logout', {}, 'Logout') }}
+        {{ pure.menu_item('content_index', {}, 'Myself') }}
+        {{ pure.menu_item('trismegiste_logout', {}, 'Logout') }}
     </ul>
 {% endblock %}
 
