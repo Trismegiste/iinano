@@ -75,11 +75,22 @@ class CouponController extends Template
 
     public function deleteAction($id)
     {
-        $this->get('social.ticket.repository')
-                ->deleteCoupon($id, $this->get('dokudoki.collection'));
-        $this->pushFlash('notice', 'Coupon deleted');
+        $repo = $this->get('dokudoki.repository');
+        $coupon = $repo->findByPk($id);
 
-        return $this->redirectRouteOk('admin_coupon_listing');
+        if ($this->getRequest()->getMethod() == 'POST') {
+            try {
+                $this->get('social.ticket.repository')
+                        ->deleteCoupon($id, $this->get('dokudoki.collection'));
+                $this->pushFlash('notice', 'Coupon deleted');
+
+                return $this->redirectRouteOk('admin_coupon_listing');
+            } catch (\MongoException $e) {
+                $this->pushFlash('warning', 'Coupon was not deleted ' . $e->getMessage());
+            }
+        }
+
+        return $this->render('TrismegisteSocialBundle:Admin/Coupon:delete.html.twig', ['coupon' => $coupon]);
     }
 
 }

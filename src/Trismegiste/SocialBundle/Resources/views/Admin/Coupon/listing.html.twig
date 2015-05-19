@@ -23,10 +23,9 @@
                         <td>{{ coupon.usedCounter }}/{{ coupon.maximumUse }}</td>
                         <td>
                             <a href="{{ path('admin_coupon_edit', {id: coupon.id}) }}" title="Edit"><i class="icon-pencil"></i></a>
-                            <form method="POST" action="{{ path('admin_coupon_delete', {id: coupon.id}) }}" class="pure-form">
-                                <button class="pure-button" title="Delete"><i class="icon-trash-empty"></i></button>
-                            </form>
-                            <a href="{{ path('guest_coupon_landing', {code: coupon.hashKey}) }}">Url</a> Flyer
+                            <a href="{{ path('admin_coupon_delete', {id: coupon.id}) }}" title="Delete"><i class="icon-trash-empty"></i></a>
+                            <a href="{{ path('guest_coupon_landing', {code: coupon.hashKey}) }}" title="Link"><i class="icon-eye"></i></a>
+                            <a href="#" title="Flyer"><i class="icon-eye"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
