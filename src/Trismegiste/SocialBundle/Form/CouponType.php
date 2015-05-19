@@ -33,21 +33,18 @@ class CouponType extends AbstractType
                 ])
                 ->add('durationValue', 'integer', [
                     'label' => 'Duration (days)',
-                    'data' => 5,
                     'constraints' => [
                         new NotBlank(),
                         new Range(['min' => 1, 'max' => 60])
                     ]
                 ])
                 ->add('maximumUse', 'integer', [
-                    'data' => 1,  // @todo remove this default value to model
                     'constraints' => [
                         new NotBlank(),
                         new Range(['min' => 1, 'max' => 1000])
                     ]
                 ])
                 ->add('expiredAt', 'date', [
-                    'data' => new \DateTime('+1 month'),
                     'years' => range(date('Y'), date('Y') + 2),
                 ])
                 ->add('Save', 'submit');

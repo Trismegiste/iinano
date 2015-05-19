@@ -6,9 +6,11 @@
 
 namespace Trismegiste\SocialBundle\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Form\CouponType;
-use Symfony\Component\HttpFoundation\Request;
+use Trismegiste\SocialBundle\Ticket\Coupon;
 
 /**
  * CouponController is a crud controller for coupons
@@ -26,7 +28,7 @@ class CouponController extends Template
 
     public function createAction(Request $request)
     {
-        $form = $this->createForm(new CouponType(), null, [
+        $form = $this->createForm(new CouponType(), new Coupon(), [
             'action' => $this->generateUrl('admin_coupon_create')
         ]);
 
@@ -73,9 +75,9 @@ class CouponController extends Template
 
     public function deleteAction($id)
     {
-        $this->get('social.ticket.repository')->deleteCoupon($id,$this->get('dokudoki.collection'));
+        $this->get('social.ticket.repository')->deleteCoupon($id, $this->get('dokudoki.collection'));
 
-        return new \Symfony\Component\HttpFoundation\Response('', 200);
+        return new Response('', 200);
     }
 
 }

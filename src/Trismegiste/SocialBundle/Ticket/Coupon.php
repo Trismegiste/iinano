@@ -22,7 +22,14 @@ class Coupon extends PurchaseChoice
     protected $usedCounter = 0;
 
     /** @var integer how many times this coupon can be used */
-    public $maximumUse = 1;
+    public $maximumUse;
+
+    public function __construct()
+    {
+        $this->expiredAt = new \DateTime('+1 month');
+        $this->maximumUse = 1;
+        $this->setDurationValue(5);
+    }
 
     /**
      * Gets the hash key code for this coupon
