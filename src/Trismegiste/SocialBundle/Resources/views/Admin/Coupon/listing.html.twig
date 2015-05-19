@@ -9,7 +9,6 @@
         <div class="pure-u-1">
             <table class="pure-table pure-table-horizontal pure-table-striped">
                 <tr>
-                    <th></th>
                     <th>Code</th>
                     <th>Duration in days</th>
                     <th>Expired at</th>
@@ -18,15 +17,13 @@
                 </tr>
                 {% for coupon in listing %}
                     <tr>
-                        <td><input type="checkbox" class="action-selection"/></td>
                         <td>{{ coupon.hashKey }}</td>
                         <td>{{ coupon.durationValue }}</td>
                         <td>{{ coupon.expiredAt|date('F j, Y') }}</td>
                         <td>{{ coupon.usedCounter }}/{{ coupon.maximumUse }}</td>
                         <td>
-                            <i class="icon-eye"></i>
                             <a href="{{ path('admin_coupon_edit', {id: coupon.id}) }}" title="Edit"><i class="icon-pencil"></i></a>
-                            <i class="icon-trash-empty"></i><br/>
+                            <a href="{{ path('admin_coupon_delete', {id: coupon.id}) }}" title="Delete"><i class="icon-trash-empty"></i></a><br/>
                             <a href="{{ path('guest_coupon_landing', {code: coupon.hashKey}) }}">Url</a> Flyer
                         </td>
                     </tr>

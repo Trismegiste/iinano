@@ -29,8 +29,8 @@ class CouponController extends Template
         $form = $this->createForm(new CouponType(), null, [
             'action' => $this->generateUrl('admin_coupon_create')
         ]);
-        $form->handleRequest($request);
 
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $coupon = $form->getData();
             $repo = $this->get('dokudoki.repository');
@@ -54,8 +54,8 @@ class CouponController extends Template
         $form = $this->createForm(new CouponType(), $coupon, [
             'action' => $this->generateUrl('admin_coupon_edit', ['id' => $id])
         ]);
-        $form->handleRequest($this->getRequest());
 
+        $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
             $coupon = $form->getData();
             try {
@@ -64,7 +64,7 @@ class CouponController extends Template
 
                 return $this->redirectRouteOk('admin_coupon_listing');
             } catch (\MongoException $e) {
-                $this->pushFlash('warning', 'Could not save the new coupon');
+                $this->pushFlash('warning', 'Could not save the coupon');
             }
         }
 
@@ -73,7 +73,12 @@ class CouponController extends Template
 
     public function deleteAction($id)
     {
+        $obj = $this->get('dokudoki.repository')->findByPk($id);
+        if ($obj instanceof \Trismegiste\SocialBundle\Ticket\Coupon) {
+            $this->get('dokudoki.collection')->remove(['_id' => $obj->getId()]);
 
+            return new \Symfony\Component\HttpFoundation\Response('', 200);
+        }
     }
 
 }

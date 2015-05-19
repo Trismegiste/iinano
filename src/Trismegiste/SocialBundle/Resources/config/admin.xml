@@ -46,6 +46,11 @@
         <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="_method">GET|POST</requirement>
     </route>
+    <route id="admin_coupon_delete" pattern="/coupon/{id}/delete">
+        <default key="_controller">TrismegisteSocialBundle:Admin/Coupon:edit</default>
+        <requirement key="id">%mongoid_regex%</requirement>
+        <requirement key="_method">GET</requirement>  <!-- todo : change to POST -->
+    </route>
 
     <route id="admin_entrancefee_edit" pattern="/config/fee/edit">
         <default key="_controller">TrismegisteSocialBundle:Admin/Fee:edit</default>
