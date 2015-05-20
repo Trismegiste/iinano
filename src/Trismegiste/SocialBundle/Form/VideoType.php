@@ -7,9 +7,10 @@
 namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Url;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Trismegiste\SocialBundle\Validator\YoutubeUrl;
 
 /**
  * VideoType is a form for Video
@@ -17,14 +18,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class VideoType extends AbstractType
 {
 
-    public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('url', 'url', [
                     'constraints' => [
                         new NotBlank(),
-                        new Url()
+                        new YoutubeUrl()
                     ],
-                    'attr' => ['data-form-focus' => null]
+                    'attr' => [
+                        'data-form-focus' => null,
+                        'placeholder' => 'Example: http://www.youtube.com/watch?v=azertyuiop'
+                    ]
                 ])
                 ->add('save', 'submit');
     }
