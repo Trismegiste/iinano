@@ -27,8 +27,12 @@ class YoutubeUrlValidator extends UrlValidator
         switch ($parts['host']) {
             case 'www.youtube.com':
             case 'youtube.com':
-                if (!isset($parts['query']['v'])) {
-                    $this->context->addViolation("This youtube page does not contain a video");
+                if (!empty($parts['query'])) {
+                    $param = [];
+                    parse_str($parts['query'], $param);
+                    if (!isset($param['v'])) {
+                        $this->context->addViolation("This youtube page does not contain a video");
+                    }
                 }
                 break;
             case 'youtu.be':

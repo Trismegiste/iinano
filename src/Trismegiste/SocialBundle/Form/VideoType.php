@@ -27,9 +27,10 @@ class VideoType extends AbstractType
                     ],
                     'attr' => [
                         'data-form-focus' => null,
-                        'placeholder' => 'Example: http://www.youtube.com/watch?v=azertyuiop'
+                        'placeholder' => 'Example http://www.youtube.com/watch?v=azertyuiop'
                     ]
                 ])
+                ->addModelTransformer(new VideoDataTransformer())
                 ->add('save', 'submit');
     }
 
