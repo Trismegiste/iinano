@@ -6,10 +6,11 @@
 
 namespace Trismegiste\SocialBundle\Repository;
 
-use Trismegiste\Yuurei\Persistence\RepositoryInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 use Trismegiste\SocialBundle\Security\Netizen;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 
 /**
  * NetizenRepository is a repository for Netizen (and also Author)
@@ -29,7 +30,7 @@ class NetizenRepository implements NetizenRepositoryInterface
      *
      * @param RepositoryInterface $repo the repository for MongoCollection
      * @param string $alias the class key alias for the Netizen objects stored with Dokudoki
-     * @param \Trismegiste\SocialBundle\Repository\AvatarRepository $storage a repository for storing avatar pictures
+     * @param AvatarRepository $storage a repository for storing avatar pictures
      *
      */
     public function __construct(RepositoryInterface $repo, $alias, AvatarRepository $storage)
@@ -146,6 +147,17 @@ class NetizenRepository implements NetizenRepositoryInterface
         $query = [MapAlias::CLASS_KEY => $this->classAlias];
 
         return $this->repository->getCursor($query)->count();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function promote(Netizen $user, SecurityContextInterface $ctx)
+    {
+        if (!$ctx->isGranted('ROLE_PROMOTE')) {
+            throw new AccessDeniedException("You have no right to promote someone");
+        }
+        $this->persist($user);
     }
 
 }

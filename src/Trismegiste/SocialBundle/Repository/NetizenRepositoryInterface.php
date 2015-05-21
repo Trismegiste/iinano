@@ -6,7 +6,9 @@
 
 namespace Trismegiste\SocialBundle\Repository;
 
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\Yuurei\Persistence\CollectionIterator;
 
 /**
  * NetizenRepositoryInterface is a contract for a NetizenRepository
@@ -19,7 +21,7 @@ interface NetizenRepositoryInterface
      *
      * @param string $nick
      *
-     * @return \Trismegiste\SocialBundle\Security\Netizen|null if the user is found or not
+     * @return Netizen|null if the user is found or not
      */
     public function findByNickname($nick);
 
@@ -28,7 +30,7 @@ interface NetizenRepositoryInterface
      *
      * @param \Iterator $nick an array of nickname as key and true as value
      *
-     * @return \Trismegiste\Yuurei\Persistence\CollectionIterator
+     * @return CollectionIterator
      */
     public function findBatchNickname(\Iterator $nick);
 
@@ -44,7 +46,7 @@ interface NetizenRepositoryInterface
      *
      * @param string $id
      *
-     * @return \Trismegiste\SocialBundle\Security\Netizen
+     * @return Netizen
      */
     public function findByPk($id);
 
@@ -60,7 +62,7 @@ interface NetizenRepositoryInterface
     /**
      * Update and persist a Netizen with an image resource
      *
-     * @param \Trismegiste\SocialBundle\Security\Netizen $user
+     * @param Netizen $user
      * @param resource $imageResource a GD image resource
      */
     public function updateAvatar(Netizen $user, $imageResource);
@@ -78,4 +80,14 @@ interface NetizenRepositoryInterface
      * @return int
      */
     public function countAllUser();
+
+    /**
+     * Change the group of a given Netizen
+     *
+     * @param Netizen $user
+     * @param SecurityContextInterface $ctx
+     *
+     * @throws AccessDeniedException if the current logged user has no right to do this action
+     */
+    public function promote(Netizen $user, SecurityContextInterface $ctx);
 }

@@ -60,7 +60,7 @@ class NetizenController extends Template
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
             try {
-                $repo->persist($netizen);
+                $repo->promote($netizen, $this->get('security.context'));
                 $this->pushFlash('notice', 'User promoted');
 
                 // return to the same page
