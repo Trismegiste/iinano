@@ -39,7 +39,7 @@ class VideoTypeTest extends PublishingTestCase
     public function getValidInputs()
     {
         $validated = $this->createData();
-        $validated->setUrl('https://youtu.be/sfd54sd546dsf');
+        $validated->setUrl('http://www.youtube.com/embed/sfd54sd546dsf');
         $post = [
             'url' => 'https://youtu.be/sfd54sd546dsf'
         ];
