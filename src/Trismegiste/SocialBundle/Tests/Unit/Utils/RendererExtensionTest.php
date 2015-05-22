@@ -123,4 +123,23 @@ class RendererExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expect, $result);
     }
 
+    public function getUrlSample()
+    {
+        return [
+            ['nothing', 'nothing'],
+            ['http://wikipedia.org', '<a href="http://wikipedia.org">http://wikipedia.org</a>'],
+            ['Before http://wikipedia.org after <escaped>', 'Before <a href="http://wikipedia.org">http://wikipedia.org</a> after &lt;escaped&gt;']
+        ];
+    }
+
+    /**
+     * @dataProvider getUrlSample
+     */
+    public function testUrlDecoratorFilter($value, $expect)
+    {
+        // set a variable in twig because constant are not escaped
+        $result = $this->twig->render("{{ example|auto_url }}", ['example' => $value]);
+        $this->assertEquals($expect, $result);
+    }
+
 }
