@@ -132,17 +132,47 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
         new NetizenRepository($this->repository, 123, $this->storage);
     }
 
-    public function testSearchUser()
+    protected function createIteratorMock()
     {
-        $mockIterator = $this->getMockBuilder('Trismegiste\Yuurei\Persistence\CollectionIterator')
-                ->disableOriginalConstructor()
-                ->getMock();
+        return $this->getMockBuilder('Trismegiste\Yuurei\Persistence\CollectionIterator')
+                        ->disableOriginalConstructor()
+                        ->getMock();
+    }
+
+    public function testSearchUserByName()
+    {
+        $mockIterator = $this->createIteratorMock();
         $this->repository->expects($this->once())
                 ->method('find')
                 ->with($this->equalTo(['-class' => 'netizen', 'author.nickname' => new \MongoRegex('/^user/')]))
                 ->willReturn($mockIterator);
 
         $this->sut->search(['nickname' => 'user']);
+    }
+
+    public function testSearchUserByRoleGroup()
+    {
+        $mockIterator = $this->createIteratorMock();
+        $this->repository->expects($this->once())
+                ->method('find')
+                ->with($this->equalTo(['-class' => 'netizen', 'roleGroup' => 'user']))
+                ->willReturn($mockIterator);
+
+        $this->sut->search(['group' => 'user']);
+    }
+
+    public function testSearchOrdering()
+    {
+        $mockIterator = $this->createIteratorMock();
+        $this->repository->expects($this->once())
+                ->method('find')
+                ->with($this->equalTo(['-class' => 'netizen']))
+                ->willReturn($mockIterator);
+        $mockIterator->expects($this->once())
+                ->method('sort')
+                ->with(['_id' => -1]);
+
+        $this->sut->search(['sort' => '_id -1']);
     }
 
     /**
