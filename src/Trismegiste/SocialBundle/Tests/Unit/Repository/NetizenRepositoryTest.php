@@ -67,6 +67,8 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->storage->expects($this->once())
                 ->method('updateAvatar');
+        $this->repository->expects($this->exactly(2))
+                ->method('persist');
 
         $user = new Netizen(new Author('kirk'));
         $user->setProfile(new Profile());
@@ -193,6 +195,32 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->willReturn(new \ArrayObject([1, 2, 3]));
 
         $this->assertEquals(3, $this->sut->countAllUser());
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     */
+    public function testPromoteNetizenWithoutRights()
+    {
+        $secu = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+
+        $user = new Netizen(new Author('kirk'));
+        $this->sut->promote($user, $secu);
+    }
+
+    public function testPromoteNetizenWithRights()
+    {
+        $secu = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $secu->expects($this->once())
+                ->method('isGranted')
+                ->with('ROLE_PROMOTE')
+                ->willReturn(true);
+
+        $this->repository->expects($this->once())
+                ->method('persist');
+
+        $user = new Netizen(new Author('kirk'));
+        $this->sut->promote($user, $secu);
     }
 
 }

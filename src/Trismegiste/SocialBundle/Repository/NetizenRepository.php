@@ -154,10 +154,11 @@ class NetizenRepository implements NetizenRepositoryInterface
      */
     public function promote(Netizen $user, SecurityContextInterface $ctx)
     {
-        if (!$ctx->isGranted('ROLE_PROMOTE')) {
+        if ($ctx->isGranted('ROLE_PROMOTE')) {
+            $this->repository->persist($user);
+        } else {
             throw new AccessDeniedException("You have no right to promote someone");
         }
-        $this->persist($user);
     }
 
 }
