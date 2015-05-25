@@ -28,7 +28,7 @@ class ChangePasswordType extends AbstractType
                         new Length(['min' => 4, 'max' => 40])
                     ]
                 ])
-                ->add('register', 'submit');
+                ->add('Change', 'submit');
     }
 
     public function getName()
