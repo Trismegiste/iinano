@@ -147,7 +147,9 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testPersistNewPayment()
     {
-        $ticket = new Ticket(new EntranceFee());
+        $fee = new EntranceFee();
+        $fee->setDurationValue(12);
+        $ticket = new Ticket($fee);
 
         $this->repository->expects($this->once())
                 ->method('persist');

@@ -57,4 +57,9 @@ class EntranceFee extends PurchaseChoice
         return 'month';
     }
 
+    public function getTitle()
+    {
+        return sprintf('payment %.2f %s', $this->amount, $this->currency);
+    }
+
 }

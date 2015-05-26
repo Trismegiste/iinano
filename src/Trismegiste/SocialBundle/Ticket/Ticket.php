@@ -19,6 +19,9 @@ class Ticket implements EntranceAccess
     /** @var \DateTime */
     protected $purchasedAt;
 
+    /** @var \DateTime */
+    protected $expiredAt;
+
     public function __construct(PurchaseChoice $purchaseSystem, \DateTime $now = null)
     {
         if (is_null($now)) {
@@ -26,7 +29,9 @@ class Ticket implements EntranceAccess
         }
 
         $this->purchase = $purchaseSystem;
-        $this->purchasedAt = $now;
+        $this->purchasedAt = clone $now;
+        $this->expiredAt = clone $now;
+        $this->expiredAt->modify($this->purchase->getDurationOffset());
     }
 
     /**
@@ -54,10 +59,7 @@ class Ticket implements EntranceAccess
      */
     public function getExpiredAt()
     {
-        $tmp = clone $this->purchasedAt;
-        $tmp->modify($this->purchase->getDurationOffset());
-
-        return $tmp;
+        return $this->expiredAt;
     }
 
     /**
@@ -65,8 +67,7 @@ class Ticket implements EntranceAccess
      */
     public function getTitle()
     {
-        preg_match('#([^\\\\]+)$#', get_class($this->purchase), $match);
-        return $match[1];
+        return $this->purchase->getTitle();
     }
 
 }

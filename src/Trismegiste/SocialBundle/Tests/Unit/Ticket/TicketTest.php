@@ -70,7 +70,9 @@ class TicketTest extends \PHPUnit_Framework_TestCase
 
     public function testGetTitle()
     {
-        $this->assertStringStartsWith('Mock', $this->sut->getTitle());
+        $this->choice->expects($this->once())
+                ->method('getTitle');
+        $this->sut->getTitle();
     }
 
 }

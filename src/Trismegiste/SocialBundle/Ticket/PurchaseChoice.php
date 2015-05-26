@@ -56,4 +56,10 @@ abstract class PurchaseChoice implements Persistence\Persistable
         $this->duration = (int) $num;
     }
 
+    /**
+     * Gets a human readable title for this purchase choice
+     *
+     * @return string
+     */
+    abstract public function getTitle();
 }

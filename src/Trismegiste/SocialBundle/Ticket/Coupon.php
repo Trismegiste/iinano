@@ -79,4 +79,9 @@ class Coupon extends PurchaseChoice
         return 'day';
     }
 
+    public function getTitle()
+    {
+        return 'coupon ' . $this->hashKey;
+    }
+
 }
