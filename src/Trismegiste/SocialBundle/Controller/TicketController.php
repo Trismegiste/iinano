@@ -15,13 +15,13 @@ use Trismegiste\SocialBundle\Security\TicketVoter;
 class TicketController extends Template
 {
 
-    public function confirmBuyTicketAction()
+    public function buyNewTicketAction()
     {
         if ($this->get('security.context')->isGranted(TicketVoter::SUPPORTED_ATTRIBUTE)) {
             return $this->redirectRouteOk('content_index');
         }
 
-        return $this->render('TrismegisteSocialBundle:Ticket:confirm_buy_ticket.html.twig');
+        return $this->render('TrismegisteSocialBundle:Ticket:buy_new_ticket.html.twig');
     }
 
     public function returnFromPayment()

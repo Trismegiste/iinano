@@ -68,8 +68,8 @@
         <requirement key="_method">GET|POST</requirement>
     </route>
 
-    <route id="confirm_buy_ticket" pattern="/ticket/new">
-        <default key="_controller">TrismegisteSocialBundle:Ticket:confirmBuyTicket</default>
+    <route id="buy_new_ticket" pattern="/ticket/new">
+        <default key="_controller">TrismegisteSocialBundle:Ticket:buyNewTicket</default>
         <requirement key="_method">GET</requirement>
     </route>
 

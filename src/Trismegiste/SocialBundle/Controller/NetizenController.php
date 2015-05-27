@@ -93,23 +93,17 @@ class NetizenController extends Template
     public function landingPageAction()
     {
         $secu = $this->get('security.context');
+        // default route
+        $route = 'buy_new_ticket';
 
-        // backoffice users :
         if ($secu->isGranted('ROLE_ADMIN')) {
             $route = 'admin_dashboard';
         } else if ($secu->isGranted('ROLE_MANAGER')) {
-            $route = 'admin_dashboard';
+            $route = 'admin_netizen_listing';
         } else if ($secu->isGranted('ROLE_MODERATOR')) {
             $route = 'admin_abusive_pub_listing';
-        }
-
-        // front users :
-        if (!isset($route)) {
-            if ($secu->isGranted(TicketVoter::SUPPORTED_ATTRIBUTE)) {
-                $route = 'content_index';
-            } else {
-                $route = 'confirm_buy_ticket';
-            }
+        } else if ($secu->isGranted(TicketVoter::SUPPORTED_ATTRIBUTE)) {
+            $route = 'content_index';
         }
 
         return $this->redirectRouteOk($route);
