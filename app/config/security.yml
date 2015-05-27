@@ -41,7 +41,6 @@ security:
         - { path: ^/admin/config/, roles: ROLE_ADMIN }
         - { path: ^/admin/abusereport/, roles: ROLE_MODERATOR }
         - { path: ^/admin/, roles: ROLE_MANAGER }
-        - { path: ^/ticket/, roles: ROLE_USER }
-        - { path: ^/afterlogin, roles: ROLE_USER }
+        - { path: ^/registered/, roles: ROLE_USER }
         - { path: ^/guest/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: VALID_ACCESS }
