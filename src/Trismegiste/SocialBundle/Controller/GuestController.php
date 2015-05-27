@@ -68,16 +68,13 @@ class GuestController extends Template
             if (!empty($coupon)) {
                 try {
                     $this->get('social.ticket.repository')->useCouponFor($coupon);
-
-                    // redirect wall
                     $session->remove('coupon');
-                    return $this->redirectRouteOk('content_index');
                 } catch (Ticket\InvalidCouponException $e) {
                     $this->pushFlash('warning', $e->getMessage());
                 }
             }
-            //redirect payment
-            return $this->redirectRouteOk('confirm_buy_ticket');
+            // gateway after authentication
+            return $this->redirectRouteOk('netizen_landing_page');
         }
 
         return $this->render('TrismegisteSocialBundle:Guest:register.html.twig', ['register' => $form->createView()]);
