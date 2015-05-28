@@ -75,5 +75,5 @@ iinano:
         appTitle: 'iinano'
         subTitle: "Clear & simple"
         minimumAge: 18
-        paypal: ''
+        google_tracking_id: ''
 

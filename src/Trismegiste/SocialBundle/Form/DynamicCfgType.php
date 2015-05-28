@@ -44,6 +44,7 @@ class DynamicCfgType extends AbstractType
                     'multiple' => false,
                     'constraints' => [new NotBlank()]
                 ])
+                ->add('google_tracking_id', 'text', ['required' => false])
                 ->add('Edit', 'submit');
     }
 
