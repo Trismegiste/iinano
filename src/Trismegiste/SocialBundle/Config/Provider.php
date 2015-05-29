@@ -11,8 +11,10 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 /**
  * Provider is a provider for dynamic config parameters coming from MongoDb
+ *
+ * @todo This object is obviously not SRP
  */
-class Provider implements CacheWarmerInterface, ProviderInterface
+class Provider implements CacheWarmerInterface, ProviderInterface, \ArrayAccess
 {
 
     const FILENAME = 'social_config.php';
@@ -104,6 +106,27 @@ class Provider implements CacheWarmerInterface, ProviderInterface
         }
 
         return $singleton;
+    }
+
+    public function offsetExists($offset)
+    {
+        return array_key_exists($offset, $this->read());
+    }
+
+    public function offsetGet($offset)
+    {
+        // no exist check by design
+        return $this->read()[$offset];
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        throw new \LogicException("Changing dynamic config is only possible with write()");
+    }
+
+    public function offsetUnset($offset)
+    {
+        throw new \LogicException("Changing dynamic config is only possible with write()");
     }
 
 }
