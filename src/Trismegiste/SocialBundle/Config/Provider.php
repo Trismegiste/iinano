@@ -60,7 +60,7 @@ class Provider implements CacheWarmerInterface, ProviderInterface
         }
 
         if (is_null($this->loadedConfig)) {
-            $this->loadedConfig = include $this->cacheDir . DIRECTORY_SEPARATOR . self::FILENAME;
+            $this->loadedConfig = require_once $this->cacheDir . DIRECTORY_SEPARATOR . self::FILENAME;
         }
 
         return $this->loadedConfig;
