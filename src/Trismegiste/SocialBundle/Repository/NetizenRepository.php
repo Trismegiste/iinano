@@ -154,6 +154,10 @@ class NetizenRepository implements NetizenRepositoryInterface
      */
     public function promote(Netizen $user, SecurityContextInterface $ctx)
     {
+        if ($user->getUsername() === $ctx->getToken()->getUsername()) {
+            throw new AccessDeniedException("You can't promote yourself");
+        }
+
         if ($ctx->isGranted('ROLE_PROMOTE')) {
             $this->repository->persist($user);
         } else {

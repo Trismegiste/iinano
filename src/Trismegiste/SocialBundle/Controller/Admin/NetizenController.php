@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Controller\Admin;
 
 use MongoException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Form\NetizenFilterType;
 use Trismegiste\SocialBundle\Form\NetizenRoleType;
@@ -67,6 +68,8 @@ class NetizenController extends Template
                 return $this->redirectRouteOk('admin_netizen_show', ['id' => $netizen->getId()]);
             } catch (MongoException $e) {
                 $this->pushFlash('warning', 'Cannot promote user');
+            } catch (AccessDeniedException $e) {
+                $this->pushFlash('warning', $e->getMessage());
             }
         }
 
