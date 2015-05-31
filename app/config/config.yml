@@ -29,7 +29,8 @@ twig:
             - '::purecss_form.html.twig'
             - 'TrismegisteSocialBundle:form:geolocation.html.twig'
     globals:
-        social_config: "@social.dynamic_config"
+        social_config:  "@social.dynamic_config"
+        benchmark:      "@social.benchmark"
 
 # Assetic Configuration
 assetic:

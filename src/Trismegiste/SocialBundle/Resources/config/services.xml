@@ -102,5 +102,7 @@
             <argument/> <!-- injected by Extension -->
         </service>
 
+        <service id="social.benchmark" class="Trismegiste\SocialBundle\Utils\PerformanceBenchmark"></service>
+        
     </services>
 </container>
