@@ -89,8 +89,8 @@ class PublishingController extends ContentController
         try {
             $post = $repo->findByPk($id);
 
-            $wallNick = $post->getAuthor()->getNickname();
-            $wallUser = $this->get('social.netizen.repository')->findByNickname($wallNick);
+            $wallUser = $this->getUser();
+            $wallNick = $wallUser->getUsername();
             $param = [
                 'publishing' => $post,
                 'wallNick' => $wallNick,
