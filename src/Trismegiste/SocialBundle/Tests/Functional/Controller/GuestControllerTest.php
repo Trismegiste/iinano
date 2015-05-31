@@ -67,7 +67,7 @@ class GuestControllerTest extends WebTestCasePlus
                 'dateOfBirth' => ['year' => 1984, 'month' => 11, 'day' => 13]
         ]]);
 
-        $this->assertEquals($this->generateUrl('confirm_buy_ticket'), $this->client->getHistory()->current()->getUri());
+        $this->assertEquals($this->generateUrl('buy_new_ticket'), $this->client->getHistory()->current()->getUri());
 
         $user = $this->repo->findByNickname('spock');
         $this->assertEquals('spock', $user->getUsername());
@@ -91,7 +91,7 @@ class GuestControllerTest extends WebTestCasePlus
         $form = $crawler->filter('form')->selectButton('Sign in')->form();
         $this->client->submit($form, ['_username' => 'spock', '_password' => 'idic']);
 
-        $this->assertEquals($this->generateUrl('confirm_buy_ticket'), $this->client->getHistory()->current()->getUri());
+        $this->assertEquals($this->generateUrl('buy_new_ticket'), $this->client->getHistory()->current()->getUri());
     }
 
     public function testLoginPageWithPayment()
@@ -99,7 +99,7 @@ class GuestControllerTest extends WebTestCasePlus
         $crawler = $this->getPage('trismegiste_login');
         $form = $crawler->filter('form')->selectButton('Sign in')->form();
         $this->client->submit($form, ['_username' => 'spock', '_password' => 'idic']);
-        $this->assertEquals($this->generateUrl('confirm_buy_ticket'), $this->client->getHistory()->current()->getUri());
+        $this->assertEquals($this->generateUrl('buy_new_ticket'), $this->client->getHistory()->current()->getUri());
 
         // faking a payment
         $ticketRepo = $this->getService('social.ticket.repository');
