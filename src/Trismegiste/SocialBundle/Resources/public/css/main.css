@@ -138,3 +138,11 @@ form .form-error {
 footer {
     padding: 0.6em 0.6em 2em;
 }
+
+.pure-form label {
+    margin-top: 0.6em;
+}
+
+.pure-form-stacked div div:hover {
+    background-color: #eee;
+}
