@@ -2,19 +2,20 @@
 A social network that follows SOLID -- **Work in progress**
 
 ## What
-It's a private social network web application for small communities/business.
+It's a **private social network** web application for small communities/business.
 Built on Symfony2 & MongoDB, it is an attempt to keep things small, light, simple
 and intuitive.
 
 The model consists of less than 150 NCLOC of PHP and the main bundle (excluding symfony and
-the dbal) is about 1500 NCLOC of PHP. There's a lot of twig of course, but they are
-dumb templates (only about 20 "ifs" in those templates).
+the dbal) is about 2000 NCLOC of PHP. There's a lot of twig of course, but they are
+dumb templates (only about 25 "ifs" in those templates).
 
-The model is smart enough to kept its integrity by itself, controllers are dumb
+The model is smart enough to keep its integrity by itself, controllers are dumb
 and lean, repositories are business-relevant and forms are very constrained.
 There is a double security on routes and on repositories.
 
-Since it's a private social network, there is no SEO at all.
+Since it's a private social network, there is no SEO at all, but you can add
+the google tracking of course.
 
 ## Why
 Because after struggling with Elgg (almost dead) and Oxwall (coding horror) and
@@ -45,7 +46,7 @@ Small business, small communities (from 100 to 10k people).
 Everything is public in the community and you can filter contents by your following,
 your followers and your friends. A friend is a following and a follower.
 
-Your customer, the community leader, wants to own his data ! If he's a manager, he's fed up
+The customer or the community leader, wants to own his data ! If he's a manager, he's fed up
 with his employees sharing critical business data and secrets
 on public full-open social networks since on a regular basis, facebook
 has security issues or policy changes which put all contents in free access
@@ -56,16 +57,16 @@ by those public networks : with iinano, there's no ads, no spams, no game, just
 content, clean and clear.
 
 ## Where
-Local server and AWS of course !
+AWS of course !
 
 ## FAQ
 
-### Y U NO use <insert your favorite piece of software here> ?
+### Y U NO use &lt;insert your favorite piece of software here&gt; ?
 Well, there's a good chance I've tried it and I rejected it because it was (choose one) :
 
 * too big
 * too slow
-* poorly coded
+* poorly coded/tested
 * poorly documented/supported
 
 For example, I've started this app with the famous twitter bootstrap CSS framework.
@@ -75,7 +76,7 @@ from scratch with PureCSS because of performance issue with its js components.
 
 I have tried AngularJS, that was cool but, apart its difficulty to "mingle" with Twig
 I drop it out because of its heavy weight and the vendor lock-in. And I had concerns about
-security in a full-REST config.
+security in a RESTful config.
 
 I've tried multiple javascript micro-frameworks like riot.js, soma.js and
 director.js, no way to be SOLID at maximum level (mainly because of javascript
@@ -97,12 +98,14 @@ manage with. Perhaps in the future with a full-stack solution (with CouldFront)
 ### How to make money if there's no ads ?
 
 First, there's no ways to pay your Amazon server with only advertising,
-unless you have millions of users (at least). Second, I'm currently developing a
-system of entrance fee with paypal.
+unless you have millions of users (at least). Second, Adblock seems to be
+more and more popular each day. Third, I'm currently developing a system of entrance
+fee with Stripe.js.
 
-### What about connection between iinano and <insert your favorite social network> ?
+### What about connection between iinano and &lt;insert your favorite social network&gt; ?
 
-I intend to add HybridAuth. But for now, I think people who pay for privacy on
+Currently facebook and twitter are only required for authenticating users
+and there's no plan to add more bridges. I think people who pay for privacy on
 a private social network don't want to mix public life and private life. So,
 wait and see...
 
@@ -116,18 +119,14 @@ and CouldFront.
 It's on purpose. My prerequisites was that front page must not require more
 than 3 queries (including the mandatory query for the logged user).
 
-The drawback is there are some esoteric mapreduces & MongoDB javascripts
-but it's a feature of MongoDB and V8 does not come back from the 80's,
-unlike SQL...
+The drawback is there are some esoteric mapreduces
+but it's a feature of MongoDB and V8 javascript is a modern language
+unlike the good thirty-year-old SQL.
 
 ### What is "Dokudoki", the DBAL of "iinano" ?
 
 It's a micro-ODM I've created for MongoDB. "Micro" because there is a minimal API :
 It does not require any mapping information, it does not require
-any concrete inheritance (only an interface)
-and it does not require empty constructor nor dumb getter/setter
-unlike many ORM/ODM which break SRP/ISP in the model.
-
-### What is trimegiste/prelude ?
-
-It's a subclass of the symfony Kernel to keep your AppKernel strictly OCP.
+any concrete inheritance (only one interface)
+and it does not require empty constructor nor zillions of dumb getter/setter
+(unlike many ORM/ODM) which break SRP/ISP in the model.
