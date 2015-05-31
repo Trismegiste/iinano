@@ -18,6 +18,10 @@ class InstallController extends Template
 
     public function createMinimalParameterAction(Request $request)
     {
+        if (0 !== $this->get('dokudoki.collection')->find()->count()) {
+            throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException("Already installed");
+        }
+
         $repo = $this->get('social.dynamic_config');
         $form = $this->createForm(new InstallParamType());
 
