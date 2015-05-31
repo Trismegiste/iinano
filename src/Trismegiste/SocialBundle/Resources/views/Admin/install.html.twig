@@ -1,0 +1,15 @@
+{% extends 'TrismegisteSocialBundle:Guest:layout.html.twig' %}
+
+{% form_theme install '::inline_form.html.twig' %}
+
+{% block full_body %}
+    <div class="content">
+        <div class="pure-g">
+            <div class="pure-u-1">
+                <h1>Install iinano</h1>
+                <p>Please provide at least one of these OAuth providers to login</p>
+                {{ form(install) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
