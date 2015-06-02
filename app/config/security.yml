@@ -26,6 +26,7 @@ security:
                 default_target_path: netizen_landing_page
                 always_use_default_target_path: true
                 csrf_provider: form.csrf_provider
+                success_handler: success_login_landing_page
             logout:
                 path:   trismegiste_logout
                 target: /

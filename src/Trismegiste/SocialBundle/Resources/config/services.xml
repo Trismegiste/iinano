@@ -103,6 +103,10 @@
         </service>
 
         <service id="social.benchmark" class="Trismegiste\SocialBundle\Utils\PerformanceBenchmark"></service>
-        
+
+        <service id="success_login_landing_page" class="Trismegiste\SocialBundle\Security\LandingPageSuccessHandler">
+            <argument type="service" id="security.http_utils" />
+        </service>
+
     </services>
 </container>
