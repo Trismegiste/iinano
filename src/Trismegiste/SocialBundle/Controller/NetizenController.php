@@ -26,6 +26,9 @@ class NetizenController extends Template
         } else {
             $user = $this->get('social.netizen.repository')->findByNickname($author);
         }
+        if (is_null($user)) {
+            throw $this->createNotFoundException($author);
+        }
 
         $follower = $this->get('social.netizen.repository')
                 ->findBatchNickname($user->getFollowerIterator());
