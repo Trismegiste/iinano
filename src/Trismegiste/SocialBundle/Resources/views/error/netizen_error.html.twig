@@ -1,0 +1,6 @@
+{# error when user is authenticated #}
+{% extends 'TrismegisteSocialBundle::layout.html.twig' %}
+{% block content %}
+    <h1>Oops! An Error Occurred</h1>
+    <h2>The server returned a "{{ status_code }} {{ status_text }}".</h2>
+{% endblock %}
