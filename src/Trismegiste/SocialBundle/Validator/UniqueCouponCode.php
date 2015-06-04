@@ -16,4 +16,9 @@ class UniqueCouponCode extends Constraint
 
     public $message = 'This coupon code "%string%" is already used';
 
+    public function validatedBy()
+    {
+        return 'unique_coupon_code';
+    }
+
 }

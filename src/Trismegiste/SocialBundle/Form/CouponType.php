@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Regex;
+use Trismegiste\SocialBundle\Validator\UniqueCouponCode;
 
 /**
  * CouponType is a form for Coupon entity
@@ -27,7 +28,8 @@ class CouponType extends AbstractType
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 5]),
-                        new Regex('#[\da-zA-Z]+#')
+                        new Regex('#[\da-zA-Z]+#'),
+                        new UniqueCouponCode()
                     ],
                     'attr' => ['placeholder' => 'case sensitive & minimum 5 characters']
                 ])

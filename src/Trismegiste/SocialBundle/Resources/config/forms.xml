@@ -64,5 +64,10 @@
             <argument>%security.role_hierarchy.roles%</argument>
         </service>
 
+        <service id="social.validator.unique_coupon_code" class="Trismegiste\SocialBundle\Validator\UniqueCouponCodeValidator">
+            <argument type="service" id="dokudoki.repository"/>
+            <tag name="validator.constraint_validator" alias="unique_coupon_code"/>
+        </service>
+
     </services>
 </container>
