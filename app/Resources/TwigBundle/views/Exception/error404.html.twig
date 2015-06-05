@@ -1,0 +1,6 @@
+{% if app.user %}
+    {% include 'TrismegisteSocialBundle:error:user/error404.html.twig' %}
+{% else %}
+    {% include 'TrismegisteSocialBundle:error:guest/error.html.twig' %}
+{% endif %}
+

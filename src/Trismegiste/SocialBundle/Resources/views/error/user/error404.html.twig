@@ -1,0 +1,7 @@
+{# error 404 when user is authenticated #}
+{% extends 'TrismegisteSocialBundle:error:user/error.html.twig' %}
+
+{% block error_message %}
+    <h1>Oops! An Error Occurred</h1>
+    <h2>This content no longer exists.</h2>
+{% endblock %}
