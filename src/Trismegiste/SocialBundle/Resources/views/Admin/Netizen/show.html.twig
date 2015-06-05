@@ -7,6 +7,17 @@
 {% block content %}
     <div class="pure-g">
         <div class="pure-u-1">
+            <a href="{{ path('wall_index',{wallNick: netizen.username, wallFilter:'self'}) }}" class="pure-button">
+                Go to wall
+            </a>
+            <a href="{{ path('netizen_show',{author: netizen.username}) }}" class="pure-button">
+                Go to profile
+            </a>
+            <a href="{{ path('admin_netizen_promote',{id: netizen.id}) }}" class="pure-button">
+                Change privileges
+            </a>
+        </div>
+        <div class="pure-u-1">
             <h2>{{ netizen.username }}</h2>
             <h3>{{ netizen.profile.fullName }}</h3>
             <div class="pure-g">
@@ -24,19 +35,8 @@
                     {% endif %}
                 </div>
                 <div class="pure-u-1">
-                    <a href="{{ path('wall_index',{wallNick: netizen.username, wallFilter:'self'}) }}" class="pure-button">
-                        Go to wall
-                    </a>
-                    <a href="{{ path('netizen_show',{author: netizen.username}) }}" class="pure-button">
-                        Go to profile
-                    </a>
-                    <a href="{{ path('admin_netizen_promote',{id: netizen.id}) }}" class="pure-button">
-                        Change privileges
-                    </a>
-                </div>
-                <div class="pure-u-1">
                     <h4>Ticket history</h4>
-                    <table class="pure-table pure-table-horizontal pure-table-striped">
+                    <table width="100%" class="pure-table pure-table-horizontal pure-table-striped">
                         <tr>
                             <th>Type</th>
                             <th>Valid</th>
