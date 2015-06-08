@@ -32,6 +32,12 @@
         <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="_method">GET|POST</requirement>
     </route>
+    <route id="admin_netizen_edit_ticket" pattern="/netizen/{id}/ticket/{pos}/edit">
+        <default key="_controller">TrismegisteSocialBundle:Admin/Netizen:promote</default>
+        <requirement key="id">%mongoid_regex%</requirement>
+        <requirement key="pos">\d+</requirement>
+        <requirement key="_method">GET|POST</requirement>
+    </route>
 
     <route id="admin_coupon_listing" pattern="/coupon/list">
         <default key="_controller">TrismegisteSocialBundle:Admin/Coupon:listing</default>
