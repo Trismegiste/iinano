@@ -51,9 +51,11 @@
                                 <td>{{ ticket.purchasedAt|date }}</td>
                                 <td>{{ ticket.expiredAt|date }}</td>
                                 <td>
-                                    <a href="{{ path('admin_netizen_edit_ticket',{id: netizen.id, pos:idx}) }}">
-                                        <i class="icon-pencil"></i>
-                                    </a>
+                                    {% if idx == 0 %}
+                                        <a href="{{ path('admin_netizen_edit_ticket',{id: netizen.id}) }}">
+                                            <i class="icon-pencil"></i>
+                                        </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}

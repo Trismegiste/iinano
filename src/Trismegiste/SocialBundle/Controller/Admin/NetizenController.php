@@ -12,7 +12,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Form\NetizenFilterType;
 use Trismegiste\SocialBundle\Form\NetizenRoleType;
+use Trismegiste\SocialBundle\Form\TicketType;
 use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
+use Trismegiste\SocialBundle\Security\Netizen;
 
 /**
  * NetizenController is a controller for administrating Netizen
@@ -85,6 +87,23 @@ class NetizenController extends Template
 
     public function showAction($id)
     {
+        return $this->render('TrismegisteSocialBundle:Admin:Netizen/show.html.twig', [
+                    'netizen' => $this->getRepository()->findByPk($id)
+        ]);
+    }
+
+    /**
+     * Edit last ticket of a Netizen
+     */
+    public function editTicketAction($id)
+    {
+        $repo = $this->getRepository();
+        /** @var Netizen */
+        $netizen = $repo->findByPk($id);
+        $ticket = $netizen->getLastTicket();
+
+        $form = $this->createForm(new TicketType(), $ticket);
+
         return $this->render('TrismegisteSocialBundle:Admin:Netizen/show.html.twig', [
                     'netizen' => $this->getRepository()->findByPk($id)
         ]);
