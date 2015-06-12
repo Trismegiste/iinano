@@ -104,8 +104,8 @@ class NetizenController extends Template
 
         $form = $this->createForm(new TicketType(), $ticket);
 
-        return $this->render('TrismegisteSocialBundle:Admin:Netizen/show.html.twig', [
-                    'netizen' => $this->getRepository()->findByPk($id)
+        return $this->render('TrismegisteSocialBundle:Admin:Netizen/edit.html.twig', [
+                    'form' => $form->createView()
         ]);
     }
 
