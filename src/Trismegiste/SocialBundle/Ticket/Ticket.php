@@ -62,6 +62,11 @@ class Ticket implements EntranceAccess
         return $this->expiredAt;
     }
 
+    public function setExpiredAt(\DateTime $newDate)
+    {
+        $this->expiredAt = $newDate;
+    }
+
     /**
      * @inheritdoc
      */
