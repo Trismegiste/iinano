@@ -41,12 +41,14 @@
             $(document).on('click', 'a[data-generate-flyer]', function (event) {
                 event.stopPropagation();
                 event.preventDefault();
-                var button = this;
 
-                console.log(this.data('generateFlyer'))
+                coupon.generateFlyer({
+                    url: $(this).data('generateFlyer')
+                });
             })
         })
     </script>
     <script src="{{ asset('bundles/trismegistesocial/js/pdfmake/pdfmake.min.js') }}"></script>
     <script src="{{ asset('bundles/trismegistesocial/js/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('bundles/trismegistesocial/js/couponflyer.js') }}"></script>
 {% endblock %}
