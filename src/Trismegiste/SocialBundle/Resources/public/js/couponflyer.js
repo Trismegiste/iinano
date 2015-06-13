@@ -6,8 +6,12 @@
 
 var coupon = {
     generateFlyer: function (info) {
-        console.log(info.url);
 
+        var docDefinition = {
+            content: info.url
+        };
+
+        pdfMake.createPdf(docDefinition).open();
     }
 
 }
