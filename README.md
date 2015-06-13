@@ -15,11 +15,11 @@ and lean, repositories are business-relevant and forms are very constrained.
 There is a double security on routes and on repositories.
 
 Since it's a private social network, there is no SEO at all, but you can add
-the google tracking of course.
+the google tracking.
 
 ## Why
 Because after struggling with Elgg (almost dead) and Oxwall (coding horror) and
-reviewing the newly Idno (critical design flaws and no unit tests),
+reviewing the new Idno (critical design flaws and no unit tests),
 I've decided to NOT contribute to Idno (sadly) but to retain the philosophy of these
 kind of small network and write an app from scratch.
 
@@ -111,7 +111,7 @@ wait and see...
 
 ### What about the cloud ?
 
-I think the next release of iinano will run exclusively on EC2, S3, DynamoDB
+I hope the next release of iinano will run exclusively on EC2, S3, DynamoDB
 and CouldFront.
 
 ### I've seen the model and the database content is denormalized, why ?
