@@ -104,12 +104,11 @@ class NetizenController extends Template
 
         $form = $this->createForm(new TicketType(), $ticket);
 
-
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
             try {
                 $repo->persist($netizen);
-                $this->pushFlash('notice', 'User promoted');
+                $this->pushFlash('notice', 'Expiration date of the last ticket successfully edited');
 
                 // return to the same page
                 return $this->redirectRouteOk('admin_netizen_show', ['id' => $netizen->getId()]);
