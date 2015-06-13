@@ -18,7 +18,8 @@ class TicketType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('expiredAt', 'date');
+        $builder->add('expiredAt', 'date')
+                ->add('edit', 'submit');
     }
 
     public function getName()

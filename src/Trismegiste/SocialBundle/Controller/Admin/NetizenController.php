@@ -104,6 +104,22 @@ class NetizenController extends Template
 
         $form = $this->createForm(new TicketType(), $ticket);
 
+
+        $form->handleRequest($this->getRequest());
+        if ($form->isValid()) {
+            try {
+                $repo->persist($netizen);
+                $this->pushFlash('notice', 'User promoted');
+
+                // return to the same page
+                return $this->redirectRouteOk('admin_netizen_show', ['id' => $netizen->getId()]);
+            } catch (MongoException $e) {
+                $this->pushFlash('warning', 'Cannot edit ticket');
+            } catch (AccessDeniedException $e) {
+                $this->pushFlash('warning', $e->getMessage());
+            }
+        }
+
         return $this->render('TrismegisteSocialBundle:Admin:Netizen/edit.html.twig', [
                     'form' => $form->createView()
         ]);
