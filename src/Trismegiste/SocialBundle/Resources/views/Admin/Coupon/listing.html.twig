@@ -43,6 +43,7 @@
                 event.preventDefault();
 
                 coupon.generateFlyer({
+                    title: '{{ social_config.appTitle }}',
                     url: $(this).data('generateFlyer')
                 });
             })

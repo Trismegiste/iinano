@@ -8,7 +8,20 @@ var coupon = {
     generateFlyer: function (info) {
 
         var docDefinition = {
-            content: info.url
+            content: [
+                {
+                    text: info.title + '\n\n',
+                    style: 'header'
+                },
+                { qr: info.url },
+                info.url
+            ],
+            styles: {
+                header: {
+                    fontSize: 24,
+                    bold: true
+                }
+            }
         };
 
         pdfMake.createPdf(docDefinition).open();
