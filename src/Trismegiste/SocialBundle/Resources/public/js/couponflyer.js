@@ -11,24 +11,27 @@ var coupon = {
             content: [
                 {
                     text: info.title,
-                    fontSize: 24,
+                    fontSize: 32,
                     bold: true,
                     alignment: 'center',
-                    margin: [0, 5]
+                    margin: [0, 10]
                 },
                 {
                     text: info.subTitle,
                     alignment: 'center',
-                    margin: [0, 5]
+                    margin: [0, 10],
+                    fontSize: 24
                 },
                 {
                     qr: info.url,
+                    fit: 400,
                     alignment: 'center',
-                    margin: [0, 20]
+                    margin: [0, 40]
                 },
                 {
                     text: info.url,
-                    alignment: 'center'
+                    alignment: 'center',
+                    fontSize: 14
                 }
             ]
         };
