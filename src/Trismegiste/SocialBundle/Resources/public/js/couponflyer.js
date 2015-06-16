@@ -10,18 +10,27 @@ var coupon = {
         var docDefinition = {
             content: [
                 {
-                    text: info.title + '\n\n',
-                    style: 'header'
-                },
-                { qr: info.url },
-                info.url
-            ],
-            styles: {
-                header: {
+                    text: info.title,
                     fontSize: 24,
-                    bold: true
+                    bold: true,
+                    alignment: 'center',
+                    margin: [0, 5]
+                },
+                {
+                    text: info.subTitle,
+                    alignment: 'center',
+                    margin: [0, 5]
+                },
+                {
+                    qr: info.url,
+                    alignment: 'center',
+                    margin: [0, 20]
+                },
+                {
+                    text: info.url,
+                    alignment: 'center'
                 }
-            }
+            ]
         };
 
         pdfMake.createPdf(docDefinition).open();
