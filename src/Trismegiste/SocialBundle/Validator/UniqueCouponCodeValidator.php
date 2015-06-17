@@ -33,7 +33,7 @@ class UniqueCouponCodeValidator extends ConstraintValidator
         }
 
         if ($this->repository->findOne($criterion)) {
-            $this->context->addViolation($constraint->message, ['%string%' => $value->hashKey]);
+            $this->context->addViolationAt('hashKey', $constraint->message, ['%string%' => $value->hashKey]);
         }
     }
 
