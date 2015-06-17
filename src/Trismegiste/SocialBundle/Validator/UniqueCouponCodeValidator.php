@@ -11,7 +11,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 
 /**
- * UniqueCouponCodeValidator is a for ensuring uniqueness of coupon hashkey
+ * UniqueCouponCodeValidator is a validator for ensuring uniqueness of coupon hashkey
  */
 class UniqueCouponCodeValidator extends ConstraintValidator
 {
@@ -25,8 +25,15 @@ class UniqueCouponCodeValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if ($this->repository->findOne(['-class' => 'coupon', 'hashKey' => $value])) {
-            $this->context->addViolation($constraint->message, ['%string%' => $value]);
+        /** @var $value Trismegiste\SocialBundle\Ticket\Coupon */
+        $criterion = ['-class' => 'coupon', 'hashKey' => $value->hashKey];
+
+        if ($value->getId() instanceof \MongoId) {
+            $criterion['_id'] = ['$ne' => $value->getId()];
+        }
+
+        if ($this->repository->findOne($criterion)) {
+            $this->context->addViolation($constraint->message, ['%string%' => $value->hashKey]);
         }
     }
 
