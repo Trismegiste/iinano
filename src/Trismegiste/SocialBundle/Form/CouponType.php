@@ -28,7 +28,7 @@ class CouponType extends AbstractType
                     'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 5]),
-                        new Regex('#[\da-zA-Z]+#')
+                        new Regex('#^[\da-zA-Z]+$#')
                     ],
                     'attr' => ['placeholder' => 'case sensitive & minimum 5 characters']
                 ])
