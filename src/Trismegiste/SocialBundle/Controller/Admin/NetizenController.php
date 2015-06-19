@@ -15,6 +15,7 @@ use Trismegiste\SocialBundle\Form\NetizenRoleType;
 use Trismegiste\SocialBundle\Form\TicketType;
 use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\SocialBundle\Utils\CsvResponse;
 
 /**
  * NetizenController is a controller for administrating Netizen
@@ -45,8 +46,17 @@ class NetizenController extends Template
             $exportAction = $filter->get('export')->isClicked();
             if (!$exportAction) {
                 $it->limit(100);
+            } else {
+                return new CsvResponse($it, [
+                    'nickname' => 'author.nickname',
+                    'joined' => 'profile.joinedAt',
+                    'followerCount' => 'followerCount',
+                    'fanCount' => 'fanCount',
+                    'publishingCounter' => 'profile.publishingCounter',
+                    'likeCounter' => 'profile.likeCounter'
+                ]);
             }
-        }
+        }new \DateTime();
 
         return $this->render('TrismegisteSocialBundle:Admin:Netizen/listing.html.twig', [
                     'listing' => $it,
