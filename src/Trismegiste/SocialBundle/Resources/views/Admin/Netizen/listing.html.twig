@@ -37,7 +37,8 @@
                     <th>Likes</th>
                     <th>Published</th>
                     <th>Likes on content</th>
-                    <th>Ticket</th>
+                    <th>From</th>
+                    <th>To</th>
                 </tr>
                 {% for netizen in listing %}
                     <tr>
@@ -47,11 +48,12 @@
                         <td>{{ netizen.fanCount|si }}</td>
                         <td>{{ netizen.profile.publishingCounter|si }}</td>
                         <td>{{ netizen.profile.likeCounter|si }}</td>
-                        <td>
-                            {% if netizen.hasValidTicket() %}
-                                <i class="icon-ok"></i>
-                            {% endif %}
-                        </td>
+                        {% if netizen.hasValidTicket() %}
+                            <td>{{ netizen.lastTicket.purchasedAt|timeago }}</td>
+                            <td>{{ netizen.lastTicket.expiredAt|timeago }}</td>
+                        {% else %}
+                            <td></td><td></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>
