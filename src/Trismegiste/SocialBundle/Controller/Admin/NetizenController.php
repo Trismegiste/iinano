@@ -53,10 +53,11 @@ class NetizenController extends Template
                     'followerCount' => 'followerCount',
                     'fanCount' => 'fanCount',
                     'publishingCounter' => 'profile.publishingCounter',
-                    'likeCounter' => 'profile.likeCounter'
+                    'likeCounter' => 'profile.likeCounter',
+                    'ticket' => 'lastTicket.expiredAt'
                 ]);
             }
-        }new \DateTime();
+        }
 
         return $this->render('TrismegisteSocialBundle:Admin:Netizen/listing.html.twig', [
                     'listing' => $it,

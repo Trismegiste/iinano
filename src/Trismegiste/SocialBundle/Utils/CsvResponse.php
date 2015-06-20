@@ -70,6 +70,9 @@ class CsvResponse extends Response
 
     private function getPrintable($val)
     {
+        if (is_null($val)) {
+            $val = 'null';
+        }
         if (is_string($val)) {
             $val = '"' . str_replace('"', '\"', $val) . '"';
         } else if ($val instanceof \DateTime) {
