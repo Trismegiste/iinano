@@ -24,6 +24,9 @@ class CsvResponse extends Response
     /** @var PropertyPath[] */
     protected $fieldPath = [];
 
+    /** @var \Closure[] */
+    protected $fieldRender = [];
+
     /** @var PropertyAccessor */
     protected $propertyAccessor;
 
@@ -34,7 +37,15 @@ class CsvResponse extends Response
         $this->headers->set('Mime-type', 'application/csv');
         $this->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'essai.csv');
         foreach ($path as $label => $column) {
-            $this->fieldPath[$label] = new PropertyPath($column);
+            if (is_string($column)) {
+                $this->fieldPath[$label] = new PropertyPath($column);
+                $this->fieldRender[$label] = function($val) {
+                    return $val;
+                };
+            } else {
+                $this->fieldPath[$label] = new PropertyPath($column['path']);
+                $this->fieldRender[$label] = $column['render'];
+            }
         }
         $this->propertyAccessor = new PropertyAccessor();
     }
@@ -61,22 +72,22 @@ class CsvResponse extends Response
         foreach ($this->iterator as $row) {
             echo PHP_EOL;
             $sepCol = '';
-            foreach ($this->fieldPath as $field) {
-                echo $sepCol, $this->getPrintable($this->propertyAccessor->getValue($row, $field));
+            foreach ($this->fieldPath as $field => $pa) {
+                $val = $this->propertyAccessor->getValue($row, $pa);
+                $val = call_user_func($this->fieldRender[$field], $val);
+                $val = $this->escape($val);
+                echo $sepCol, $val;
                 $sepCol = ',';
             }
         }
     }
 
-    private function getPrintable($val)
+    private function escape($val)
     {
         if (is_null($val)) {
-            $val = 'null';
-        }
-        if (is_string($val)) {
+            $val = '';
+        } else if (is_string($val)) {
             $val = '"' . str_replace('"', '\"', $val) . '"';
-        } else if ($val instanceof \DateTime) {
-            $val = '"' . $val->format('Y-m-d H:i:s') . '"';
         }
 
         return $val;

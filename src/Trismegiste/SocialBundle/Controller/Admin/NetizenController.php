@@ -49,12 +49,36 @@ class NetizenController extends Template
             } else {
                 return new CsvResponse($it, [
                     'nickname' => 'author.nickname',
-                    'joined' => 'profile.joinedAt',
+                    'joined' => [
+                        'path' => 'profile.joinedAt',
+                        'render' => function($val) {
+                            return $val->format('Y-m-d H:i:s');
+                        }
+                    ],
                     'followerCount' => 'followerCount',
                     'fanCount' => 'fanCount',
                     'publishingCounter' => 'profile.publishingCounter',
                     'likeCounter' => 'profile.likeCounter',
-                    'ticket' => 'lastTicket.expiredAt'
+                    'from' => [
+                        'path' => 'lastTicket',
+                        'render' => function($val) {
+                            if (!is_null($val)) {
+                                $val = $val->getPurchasedAt()->format('Y-m-d H:i:s');
+                            }
+
+                            return $val;
+                        }
+                    ],
+                    'to' => [
+                        'path' => 'lastTicket',
+                        'render' => function($val) {
+                            if (!is_null($val)) {
+                                $val = $val->getExpiredAt()->format('Y-m-d H:i:s');
+                            }
+
+                            return $val;
+                        }
+                    ]
                 ]);
             }
         }
