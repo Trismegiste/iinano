@@ -15,6 +15,7 @@ use Trismegiste\SocialBundle\Form\NetizenRoleType;
 use Trismegiste\SocialBundle\Form\TicketType;
 use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\SocialBundle\Utils\CsvResponse;
 
 /**
  * NetizenController is a controller for administrating Netizen
@@ -45,6 +46,40 @@ class NetizenController extends Template
             $exportAction = $filter->get('export')->isClicked();
             if (!$exportAction) {
                 $it->limit(100);
+            } else {
+                return new CsvResponse($it, [
+                    'nickname' => 'author.nickname',
+                    'joined' => [
+                        'path' => 'profile.joinedAt',
+                        'render' => function($val) {
+                            return $val->format('Y-m-d H:i:s');
+                        }
+                    ],
+                    'followerCount' => 'followerCount',
+                    'fanCount' => 'fanCount',
+                    'publishingCounter' => 'profile.publishingCounter',
+                    'likeCounter' => 'profile.likeCounter',
+                    'from' => [
+                        'path' => 'lastTicket',
+                        'render' => function($val) {
+                            if (!is_null($val)) {
+                                $val = $val->getPurchasedAt()->format('Y-m-d H:i:s');
+                            }
+
+                            return $val;
+                        }
+                    ],
+                    'to' => [
+                        'path' => 'lastTicket',
+                        'render' => function($val) {
+                            if (!is_null($val)) {
+                                $val = $val->getExpiredAt()->format('Y-m-d H:i:s');
+                            }
+
+                            return $val;
+                        }
+                    ]
+                ]);
             }
         }
 
