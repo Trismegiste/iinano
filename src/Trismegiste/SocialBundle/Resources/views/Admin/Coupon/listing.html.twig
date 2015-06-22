@@ -43,9 +43,11 @@
                 event.preventDefault();
 
                 coupon.generateFlyer({
+                    {% autoescape 'js' %}
                     title: '{{ social_config.appTitle }}',
                     subTitle: '{{ social_config.subTitle }}',
                     url: $(this).data('generateFlyer')
+                    {% endautoescape %}
                 });
             })
         })
