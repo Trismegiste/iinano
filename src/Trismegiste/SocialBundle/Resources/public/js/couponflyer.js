@@ -19,17 +19,29 @@ var coupon = {
                 {
                     text: info.subTitle,
                     alignment: 'center',
-                    margin: [0, 10],
+                    margin: [0, 5],
                     fontSize: 24
                 },
                 {
                     qr: info.url,
                     fit: 400,
                     alignment: 'center',
-                    margin: [0, 40]
+                    margin: [0, 30]
                 },
                 {
                     text: info.url,
+                    alignment: 'center',
+                    fontSize: 14,
+                    margin: [0, 10]
+                },
+                {
+                    text: "Connect with Facebook & Twitter",
+                    alignment: 'center',
+                    fontSize: 14,
+                    margin: [0, 20]
+                },
+                {
+                    text: info.freeTrialOf + " days of free trial until " + info.until,
                     alignment: 'center',
                     fontSize: 14
                 }

@@ -25,7 +25,12 @@
                             <a href="{{ path('admin_coupon_edit', {id: coupon.id}) }}" title="Edit"><i class="icon-pencil"></i></a>
                             <a href="{{ path('admin_coupon_delete', {id: coupon.id}) }}" title="Delete"><i class="icon-trash-empty"></i></a>
                             <a href="{{ path('guest_coupon_landing', {code: coupon.hashKey}) }}" title="Link"><i class="icon-eye"></i></a>
-                            <a data-generate-flyer="{{ url('guest_coupon_landing', {code: coupon.hashKey}) }}" href="#" title="Flyer"><i class="icon-eye"></i></a>
+                            <a data-generate-flyer="{{ url('guest_coupon_landing', {code: coupon.hashKey}) }}"
+                               data-coupon-duration="{{ coupon.durationValue }}"
+                               data-coupon-expiration="{{ coupon.expiredAt|date('F j, Y') }}"
+                               href="#" title="Flyer">
+                                <i class="icon-eye"></i>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -43,11 +48,11 @@
                 event.preventDefault();
 
                 coupon.generateFlyer({
-                    {% autoescape 'js' %}
-                    title: '{{ social_config.appTitle }}',
-                    subTitle: '{{ social_config.subTitle }}',
-                    url: $(this).data('generateFlyer')
-                    {% endautoescape %}
+                    title: '{{ social_config.appTitle|escape('js') }}',
+                    subTitle: '{{ social_config.subTitle|escape('js') }}',
+                    url: $(this).data('generateFlyer'),
+                    freeTrialOf: $(this).data('couponDuration'),
+                    until: $(this).data('couponExpiration')
                 });
             })
         })
