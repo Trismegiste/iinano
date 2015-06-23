@@ -47,39 +47,7 @@ class NetizenController extends Template
             if (!$exportAction) {
                 $it->limit(100);
             } else {
-                return new CsvResponse($it, [
-                    'nickname' => 'author.nickname',
-                    'joined' => [
-                        'path' => 'profile.joinedAt',
-                        'render' => function($val) {
-                            return $val->format('Y-m-d H:i:s');
-                        }
-                    ],
-                    'followerCount' => 'followerCount',
-                    'fanCount' => 'fanCount',
-                    'publishingCounter' => 'profile.publishingCounter',
-                    'likeCounter' => 'profile.likeCounter',
-                    'from' => [
-                        'path' => 'lastTicket',
-                        'render' => function($val) {
-                            if (!is_null($val)) {
-                                $val = $val->getPurchasedAt()->format('Y-m-d H:i:s');
-                            }
-
-                            return $val;
-                        }
-                    ],
-                    'to' => [
-                        'path' => 'lastTicket',
-                        'render' => function($val) {
-                            if (!is_null($val)) {
-                                $val = $val->getExpiredAt()->format('Y-m-d H:i:s');
-                            }
-
-                            return $val;
-                        }
-                    ]
-                ]);
+                return $this->buildCsvExport($it);
             }
         }
 
@@ -156,6 +124,43 @@ class NetizenController extends Template
 
         return $this->render('TrismegisteSocialBundle:Admin:Netizen/edit.html.twig', [
                     'form' => $form->createView()
+        ]);
+    }
+
+    protected function buildCsvExport(\Iterator $it)
+    {
+        return new CsvResponse($it, [
+            'nickname' => 'author.nickname',
+            'joined' => [
+                'path' => 'profile.joinedAt',
+                'render' => function($val) {
+                    return $val->format('Y-m-d H:i:s');
+                }
+            ],
+            'followerCount' => 'followerCount',
+            'fanCount' => 'fanCount',
+            'publishingCounter' => 'profile.publishingCounter',
+            'likeCounter' => 'profile.likeCounter',
+            'from' => [
+                'path' => 'lastTicket',
+                'render' => function($val) {
+                    if (!is_null($val)) {
+                        $val = $val->getPurchasedAt()->format('Y-m-d H:i:s');
+                    }
+
+                    return $val;
+                }
+            ],
+            'to' => [
+                'path' => 'lastTicket',
+                'render' => function($val) {
+                    if (!is_null($val)) {
+                        $val = $val->getExpiredAt()->format('Y-m-d H:i:s');
+                    }
+
+                    return $val;
+                }
+            ]
         ]);
     }
 
