@@ -6,9 +6,12 @@
 
 namespace Trismegiste\SocialBundle\Tests\Unit\Form;
 
+use Symfony\Bundle\FrameworkBundle\Validator\ConstraintValidatorFactory;
+use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Validator\Validation;
-use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 
 /**
  * a test case template for form type
@@ -16,15 +19,21 @@ use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 abstract class FormTestCase extends \PHPUnit_Framework_TestCase
 {
 
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $sut;
 
-    /** @var \Symfony\Component\Form\FormFactoryInterface */
+    /** @var FormFactoryInterface */
     protected $factory;
 
     protected function setUp()
     {
-        $validator = Validation::createValidator();
+        $dummyContainer = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $validators = $this->createValidator();
+        $validatorFactory = new ConstraintValidatorFactory($dummyContainer, $validators);
+        $validator = Validation::createValidatorBuilder()
+                ->setConstraintValidatorFactory($validatorFactory)
+                ->getValidator();
+
         $type = $this->createType();
         if (!is_array($type)) {
             $type = [$type];
@@ -36,6 +45,11 @@ abstract class FormTestCase extends \PHPUnit_Framework_TestCase
 
         $data = $this->createData();
         $this->sut = $this->factory->create($type[0]->getName(), $data);
+    }
+
+    protected function createValidator()
+    {
+        return [];
     }
 
     abstract protected function createType();

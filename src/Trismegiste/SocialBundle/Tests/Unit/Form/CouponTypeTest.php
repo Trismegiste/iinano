@@ -6,8 +6,10 @@
 
 namespace Trismegiste\SocialBundle\Tests\Unit\Form;
 
+use DateTime;
 use Trismegiste\SocialBundle\Form\CouponType;
 use Trismegiste\SocialBundle\Ticket\Coupon;
+use Trismegiste\SocialBundle\Validator\UniqueCouponCodeValidator;
 
 /**
  * CouponTypeTest tests the CouponType form
@@ -20,10 +22,16 @@ class CouponTypeTest extends FormTestCase
         return new CouponType();
     }
 
+    protected function createValidator()
+    {
+        $repo = $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface');
+        return ['unique_coupon_code' => new UniqueCouponCodeValidator($repo)];
+    }
+
     public function createData()
     {
         $obj = new Coupon();
-        $obj->expiredAt = new \DateTime('2015-01-01');
+        $obj->expiredAt = new DateTime('2015-01-01');
     }
 
     public function getInvalidInputs()
@@ -32,7 +40,7 @@ class CouponTypeTest extends FormTestCase
         $obj->hashKey = 'a';
         $obj->maximumUse = 0;
         $obj->setDurationValue(-5);
-        $obj->expiredAt = new \DateTime('2015-01-01');
+        $obj->expiredAt = new DateTime('2015-01-01');
         return [
             [
                 ['hashKey' => 'a', 'maximumUse' => 0, 'durationValue' => -5, 'expiredAt' => ['year' => 2015, 'month' => 1, 'day' => 1]],
@@ -48,7 +56,7 @@ class CouponTypeTest extends FormTestCase
         $obj->setDurationValue(5);
         $obj->hashKey = 'AZERTY';
         $obj->maximumUse = 50;
-        $obj->expiredAt = new \DateTime('2015-05-05');
+        $obj->expiredAt = new DateTime('2015-05-05');
         return [
             [
                 [
