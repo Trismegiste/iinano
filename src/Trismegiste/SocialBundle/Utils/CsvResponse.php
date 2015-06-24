@@ -34,8 +34,11 @@ class CsvResponse extends Response
     {
         parent::__construct('');
         $this->iterator = $content;
-        $this->headers->set('Mime-type', 'application/csv');
-        $this->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'essai.csv');
+
+        $d = $this->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'essai.csv');
+        $this->headers->set('Content-Disposition', $d);
+        $this->headers->set('Content-Type', 'application/pdf');
+
         foreach ($path as $label => $column) {
             if (is_string($column)) {
                 $this->fieldPath[$label] = new PropertyPath($column);
