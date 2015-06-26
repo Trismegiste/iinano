@@ -17,7 +17,8 @@ use Trismegiste\SocialBundle\Security\Profile;
 class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
 {
 
-    use \Trismegiste\SocialBundle\Tests\Helper\AssertSolid;
+    use \Trismegiste\SocialBundle\Tests\Helper\AssertSolid,
+        \Trismegiste\SocialBundle\Tests\Helper\SecurityContextMock;
 
     /** @var NetizenRepository */
     protected $sut;
@@ -202,7 +203,7 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testPromoteNetizenWithoutRights()
     {
-        $secu = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $secu = $this->createSecurityContextMock(new Author('spock'));
 
         $user = new Netizen(new Author('kirk'));
         $this->sut->promote($user, $secu);
@@ -210,7 +211,7 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testPromoteNetizenWithRights()
     {
-        $secu = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $secu = $this->createSecurityContextMock(new Author('spock'));
         $secu->expects($this->once())
                 ->method('isGranted')
                 ->with('ROLE_PROMOTE')
