@@ -6,16 +6,18 @@
 
 namespace Trismegiste\SocialBundle\Security;
 
-use Trismegiste\Socialist\User;
+use ArrayIterator;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Trismegiste\SocialBundle\Ticket\EntranceAccess;
 use Trismegiste\SocialBundle\Ticket\InvalidTicketException;
+use Trismegiste\Socialist\User;
 
 /**
  * Netizen is a User with features of login, security
  * and connection stuff with external provider
  */
-class Netizen extends User implements UserInterface
+class Netizen extends User implements UserInterface, EquatableInterface
 {
 
     /**
@@ -113,7 +115,7 @@ class Netizen extends User implements UserInterface
     /**
      * Sets the profiles for this user
      *
-     * @param \Trismegiste\SocialBundle\Security\Profile $pr
+     * @param Profile $pr
      */
     public function setProfile(Profile $pr)
     {
@@ -186,11 +188,17 @@ class Netizen extends User implements UserInterface
     /**
      * Get an interator on tickets
      *
-     * @return \ArrayIterator
+     * @return ArrayIterator
      */
     public function getTicketIterator()
     {
-        return new \ArrayIterator($this->ticket);
+        return new ArrayIterator($this->ticket);
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        return $this->author->isEqual($user->getAuthor()) &&
+                ($this->getRoles() === $user->getRoles());
     }
 
 }
