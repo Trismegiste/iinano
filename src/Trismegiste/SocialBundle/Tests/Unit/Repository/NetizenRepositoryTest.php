@@ -200,6 +200,7 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedExceptionMessage You have no right to promote someone
      */
     public function testPromoteNetizenWithoutRights()
     {
@@ -221,6 +222,18 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->method('persist');
 
         $user = new Netizen(new Author('kirk'));
+        $this->sut->promote($user, $secu);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedExceptionMessage You can't promote yourself
+     */
+    public function testNoPromoteNetizenOnHimself()
+    {
+        $user = new Netizen(new Author('spock'));
+        $secu = $this->createSecurityContextMockFromUser($user);
+
         $this->sut->promote($user, $secu);
     }
 
