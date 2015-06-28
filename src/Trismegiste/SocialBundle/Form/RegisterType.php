@@ -25,11 +25,13 @@ class RegisterType extends AbstractType
 
     protected $repository;
     protected $nicknameRegex;
+    protected $minAge;
 
-    public function __construct(NetizenFactory $repo, $regex)
+    public function __construct(NetizenFactory $repo, $regex, \ArrayAccess $config)
     {
         $this->repository = $repo;
         $this->nicknameRegex = $regex;
+        $this->minAge = $config['minimumAge'];
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -41,7 +43,7 @@ class RegisterType extends AbstractType
                                 new NotBlank(),
                                 new Length(['min' => 5, 'max' => 20]),
                                 new UniqueNickname(),
-                                new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#', 'message'=>"This nickname is not valid: only a-z, 0-9 & '-' characters are valid."])
+                                new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#', 'message' => "This nickname is not valid: only a-z, 0-9 & '-' characters are valid."])
                             ],
                             'mapped' => false,
                             'attr' => ['placeholder' => 'Choose a nickname of 5 to 20 char. : a-z, 0-9 and \'-\'']
@@ -69,7 +71,7 @@ class RegisterType extends AbstractType
                 ])
                 ->add('dateOfBirth', 'date', [
                     'property_path' => 'profile.dateOfBirth',
-                    'years' => range(date('Y') - 6, date('Y') - 100),
+                    'years' => range(date('Y') - $this->minAge, date('Y') - 100),
                     'empty_value' => 'Select',
                     'constraints' => new NotBlank()
                 ])
