@@ -9,7 +9,8 @@ class AppKernel extends Kernel
     {
         return [
             new Trismegiste\DokudokiBundle\TrismegisteDokudokiBundle(),
-            new Trismegiste\SocialBundle\TrismegisteSocialBundle()
+            new Trismegiste\SocialBundle\TrismegisteSocialBundle(),
+            new Trismegiste\OAuthBundle\TrismegisteOAuthBundle()
         ];
     }
 

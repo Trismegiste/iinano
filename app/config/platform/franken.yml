@@ -1,0 +1,4 @@
+parameters:
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
+    mongodb_server: 'localhost:27017'

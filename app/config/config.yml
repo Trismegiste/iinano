@@ -80,3 +80,5 @@ iinano:
         minimumAge: 18
         google_tracking_id: ''
 
+oauth:
+    config: social.netizen.repository

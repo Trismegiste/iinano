@@ -19,10 +19,11 @@
         "symfony/assetic-bundle": "2.3.*",
         "symfony/monolog-bundle": "2.3.*",
         "sensio/distribution-bundle": "2.3.*",
-        "trismegiste/dokudoki": "2.2.*",
-        "trismegiste/socialist": "dev-master",
+        "trismegiste/dokudoki": "~2.2",
+        "trismegiste/socialist": "~1.1",
         "trismegiste/symfony-prelude": "1.0.*",
-        "gregwar/image": "dev-master"
+        "gregwar/image": "~2.0",
+        "trismegiste/oauthbundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
