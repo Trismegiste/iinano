@@ -51,7 +51,7 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
             'fullName' => 'Daenerys Stormborn',
             'gender' => 'xx',
             'email' => 'mother@dragon.org',
-            'dateOfBirth' => ['year' => 2004, 'month' => 11, 'day' => 13]
+            'dateOfBirth' => ['year' => 1986, 'month' => 11, 'day' => 13]
         ];
         $this->sut->submit($submitted);
         $this->assertTrue($this->sut->isValid());

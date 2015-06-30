@@ -9,6 +9,7 @@
         <service id="social.type.netizen.register" class="Trismegiste\SocialBundle\Form\RegisterType">
             <argument type="service" id="security.netizen.factory"/>
             <argument>%nickname_regex%</argument>
+            <argument type="service" id="social.dynamic_config"/>
             <tag name="form.type" alias="netizen_register"/>
         </service>
 
