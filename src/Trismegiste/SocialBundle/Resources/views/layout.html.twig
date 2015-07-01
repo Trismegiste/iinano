@@ -22,7 +22,7 @@
             {{ pure.menu_item('private_create', {'author':''}, 'Private message') }}
         <li class="menu-item-divided"></li>
             {{ pure.menu_item('netizen_show', {author: app.user.username}, 'My profile') }}
-        <li class="menu-item-divided"><a href="{{ path('trismegiste_logout') }}">Logout</a></li>
+        <li class="menu-item-divided"><a href="{{ path('trismegiste_oauth_logout') }}">Logout</a></li>
     </ul>
 {% endblock %}
 
