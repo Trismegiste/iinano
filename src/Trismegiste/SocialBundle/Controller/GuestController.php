@@ -104,10 +104,20 @@ class GuestController extends Template
 
     public function connectAction()
     {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+        // get the login error if there is one
+        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+        } else {
+            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        }
+
         $config = $this->get('oauth.provider.factory')->getAvaliableProvider();
 
         return $this->render('TrismegisteSocialBundle:Guest:connect.html.twig', [
-                    'listing' => $config]);
+                    'listing' => $config, 'error' => $error]);
     }
 
 }

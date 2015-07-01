@@ -6,10 +6,12 @@
 
 namespace Trismegiste\SocialBundle\Security;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
 use Symfony\Component\Security\Http\HttpUtils;
 use Trismegiste\OAuthBundle\Oauth\ThirdPartyAuthentication;
@@ -27,7 +29,7 @@ class NotRegisteredHandler implements AuthenticationFailureHandlerInterface
     protected $httpUtils;
     protected $logger;
 
-    public function __construct(HttpUtils $httpUtils, \Psr\Log\LoggerInterface $logger)
+    public function __construct(HttpUtils $httpUtils, LoggerInterface $logger)
     {
         $this->httpUtils = $httpUtils;
         $this->logger = $logger;
@@ -50,6 +52,8 @@ class NotRegisteredHandler implements AuthenticationFailureHandlerInterface
             $this->logger->info('Go to register');
             $targetPath = 'guest_register';
             $request->getSession()->set(self::IDENTIFIED_TOKEN, [$exception->getToken()]);
+        } else {
+            $request->getSession()->set(SecurityContextInterface::AUTHENTICATION_ERROR, $exception);
         }
 
         return $this->httpUtils->createRedirectResponse($request, $targetPath);

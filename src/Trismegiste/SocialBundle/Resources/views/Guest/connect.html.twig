@@ -6,6 +6,14 @@
         .content .pure-u-1 {
             padding-bottom: 2em;
         }
+        .auth-error {
+            color: #ac2925;
+            background-color: pink;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
     </style>
 {% endblock %}
 
@@ -20,6 +28,11 @@
             </div>
             <div class="pure-u-1 pure-u-md-1-2">
                 <h3>Please authenticate yourself</h3>
+                {% if error %}
+                    <ul class="auth-error">
+                        <li>{{ error.message }}</li>
+                    </ul>
+                {% endif %}
                 <ul>
                     {% for provider in listing %}
                         <li>
