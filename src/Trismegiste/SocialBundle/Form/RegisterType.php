@@ -24,8 +24,6 @@ class RegisterType extends AbstractType
 
     protected $repository;
     protected $nicknameRegex;
-    protected $oauthProvider;
-    protected $oauthUid;
 
     public function __construct(NetizenFactory $repo, $regex)
     {
@@ -35,9 +33,6 @@ class RegisterType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->oauthProvider = $options['oauth_provider'];
-        $this->oauthUid = $options['oauth_uid'];
-
         $builder->add(
                         $builder->create('nickname', 'text', [
                             'constraints' => [
@@ -60,6 +55,8 @@ class RegisterType extends AbstractType
                     'empty_value' => 'Select',
                     'constraints' => new NotBlank()
                 ])
+                ->add('provider', 'hidden', ['mapped' => false, 'data' => $options['oauth_provider']])
+                ->add('uid', 'hidden', ['mapped' => false, 'data' => $options['oauth_uid']])
                 ->add('register', 'submit');
     }
 
@@ -71,11 +68,11 @@ class RegisterType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $factory = $this->repository;
-        $uid = $this->oauthUid;
-        $providerKey = $this->oauthProvider;
 
-        $emptyData = function (FormInterface $form, $data) use ($factory, $uid, $providerKey) {
+        $emptyData = function (FormInterface $form, $data) use ($factory) {
             $nickname = $form->get('nickname')->getData();
+            $providerKey = $form->get('provider')->getData();
+            $uid = $form->get('uid')->getData();
 
             return $form->isEmpty() && !$form->isRequired() ? null : $factory->create($nickname, $providerKey, $uid);
         };
