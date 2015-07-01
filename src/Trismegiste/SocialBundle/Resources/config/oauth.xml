@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <!-- step 1 : choose provider -->
+    <route id="trismegiste_oauth_connect" pattern="/guest/connect">
+        <default key="_controller">TrismegisteSocialBundle:Guest:connect</default>
+        <requirement key="_method">GET</requirement>
+    </route>
+
+    <!-- step 2 : redirect to provider with redirect_uri -->
+    <route id="trismegiste_oauth_connect_with" pattern="/guest/connect/{provider}">
+        <default key="_controller">TrismegisteSocialBundle:Guest:connectWith</default>
+        <requirement key="_method">GET</requirement>
+    </route>
+
+    <route id="trismegiste_oauth_dummyserver" pattern="/guest/oauth/authorize">
+        <default key="_controller">TrismegisteOAuthBundle:OAuthServer:authorize</default>
+    </route>
+
+</routes>

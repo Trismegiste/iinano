@@ -81,4 +81,4 @@ iinano:
         google_tracking_id: ''
 
 oauth:
-    config: social.netizen.repository
+    config: social.dynamic_config

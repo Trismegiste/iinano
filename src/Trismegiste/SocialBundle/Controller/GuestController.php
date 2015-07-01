@@ -101,4 +101,12 @@ class GuestController extends Template
         return $this->redirectRouteOk('guest_register');
     }
 
+    public function connectAction()
+    {
+        $config = $this->get('oauth.provider.factory')->getAvaliableProvider();
+
+        return $this->render('TrismegisteSocialBundle:Guest:connect.html.twig', [
+                    'listing' => $config]);
+    }
+
 }
