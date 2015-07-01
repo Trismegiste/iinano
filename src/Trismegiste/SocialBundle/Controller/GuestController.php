@@ -37,7 +37,9 @@ class GuestController extends Template
 
         $repo = $this->get('social.netizen.repository');
         $form = $this->createForm('netizen_register', null, [
-            'oauth_token' => $tokenFromOauth,
+            'oauth_nickname' => $tokenFromOauth->getAttribute('nickname'),
+            'oauth_uid' => $tokenFromOauth->getUserUniqueIdentifier(),
+            'oauth_provider' => $tokenFromOauth->getProviderKey(),
             'minimumAge' => $this->get('social.dynamic_config')['minimumAge']
         ]);
         $form->handleRequest($request);

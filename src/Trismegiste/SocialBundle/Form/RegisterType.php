@@ -24,6 +24,8 @@ class RegisterType extends AbstractType
 
     protected $repository;
     protected $nicknameRegex;
+    protected $oauthProvider;
+    protected $oauthUid;
 
     public function __construct(NetizenFactory $repo, $regex)
     {
@@ -33,6 +35,9 @@ class RegisterType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->oauthProvider = $options['oauth_provider'];
+        $this->oauthUid = $options['oauth_uid'];
+
         $builder->add(
                         $builder->create('nickname', 'text', [
                             'constraints' => [
@@ -43,7 +48,7 @@ class RegisterType extends AbstractType
                                 new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#', 'message' => "This nickname is not valid: only a-z, 0-9 & '-' characters are valid."])
                             ],
                             'mapped' => false,
-                            'data' => $options['oauth_token']->getAttribute('nickname'),
+                            'data' => $options['oauth_nickname'],
                             'attr' => ['placeholder' => 'Choose a nickname of 5 to 20 char. : a-z, 0-9 and \'-\'']
                         ])
                         ->addViewTransformer(new NicknameTransformer())
@@ -66,19 +71,20 @@ class RegisterType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $factory = $this->repository;
+        $uid = $this->oauthUid;
+        $providerKey = $this->oauthProvider;
 
-        $emptyData = function (FormInterface $form, $data) use ($factory) {
+        $emptyData = function (FormInterface $form, $data) use ($factory, $uid, $providerKey) {
             $nickname = $form->get('nickname')->getData();
-            $password = $form->get('password')->getData();
 
-            return $form->isEmpty() && !$form->isRequired() ? null : $factory->create($nickname, $password);
+            return $form->isEmpty() && !$form->isRequired() ? null : $factory->create($nickname, $providerKey, $uid);
         };
 
         $resolver->setDefaults([
                     'empty_data' => $emptyData,
                     'data_class' => 'Trismegiste\SocialBundle\Security\Netizen'
                 ])
-                ->setRequired(['oauth_token', 'minimumAge']);
+                ->setRequired(['oauth_nickname', 'oauth_provider', 'oauth_uid', 'minimumAge']);
     }
 
 }

@@ -58,6 +58,7 @@ dokudoki:
         author: 'Trismegiste\Socialist\Author'
         comm: 'Trismegiste\Socialist\Commentary'
         intern: 'Trismegiste\SocialBundle\Security\Credential\Internal'
+        oauth: 'Trismegiste\SocialBundle\Security\Credential\OAuth'
         profile: 'Trismegiste\SocialBundle\Security\Profile'
         small: 'Trismegiste\Socialist\SmallTalk'
         status: 'Trismegiste\Socialist\Status'
