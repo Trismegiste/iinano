@@ -15,7 +15,6 @@ use Trismegiste\SocialBundle\Security\NetizenFactory;
 use Symfony\Component\Form\FormInterface;
 use Trismegiste\SocialBundle\Validator\UniqueNickname;
 use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Constraints\Email;
 
 /**
  * RegisterType is a form to register an account
@@ -25,13 +24,11 @@ class RegisterType extends AbstractType
 
     protected $repository;
     protected $nicknameRegex;
-    protected $minAge;
 
-    public function __construct(NetizenFactory $repo, $regex, \ArrayAccess $config)
+    public function __construct(NetizenFactory $repo, $regex)
     {
         $this->repository = $repo;
         $this->nicknameRegex = $regex;
-        $this->minAge = $config['minimumAge'];
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -39,51 +36,25 @@ class RegisterType extends AbstractType
         $builder->add(
                         $builder->create('nickname', 'text', [
                             'constraints' => [
-                                // @todo all these constraints seem to me a little redundant
+                                // all these constraints seem to me a little redundant but they give clear error messages
                                 new NotBlank(),
                                 new Length(['min' => 5, 'max' => 20]),
                                 new UniqueNickname(),
                                 new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#', 'message' => "This nickname is not valid: only a-z, 0-9 & '-' characters are valid."])
                             ],
                             'mapped' => false,
+                            'data' => $options['oauth_token']->getAttribute('nickname'),
                             'attr' => ['placeholder' => 'Choose a nickname of 5 to 20 char. : a-z, 0-9 and \'-\'']
                         ])
                         ->addViewTransformer(new NicknameTransformer())
                 )
-                ->add('password', 'repeated', [
-                    'first_name' => 'password',
-                    'second_name' => 'confirm_password',
-                    'type' => 'password',
-                    'constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 4, 'max' => 40])
-                    ],
-                    'mapped' => false
-                ])
                 ->add('gender', 'gender', ['property_path' => 'profile.gender'])
-                ->add('fullName', 'text', [
-                    'constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 5, 'max' => 50])
-                    ],
-                    'property_path' => 'profile.fullName',
-                    'attr' => ['placeholder' => 'Your full name (public)']
-                ])
                 ->add('dateOfBirth', 'date', [
                     'property_path' => 'profile.dateOfBirth',
-                    'years' => range(date('Y') - $this->minAge, date('Y') - 100),
+                    'years' => range(date('Y') - $options['minimumAge'], date('Y') - 100),
                     'empty_value' => 'Select',
                     'constraints' => new NotBlank()
                 ])
-                ->add('email', 'email', [
-                    'attr' => ['placeholder' => "Private : a valid email used only if you've lost your password"],
-                    'property_path' => 'profile.email',
-                    'constraints' => [
-                        new NotBlank(),
-                        new Email()
-                    ]
-                ])
-                ->add('optionalCoupon', 'text', ['mapped' => false, 'required' => false])
                 ->add('register', 'submit');
     }
 
@@ -104,9 +75,10 @@ class RegisterType extends AbstractType
         };
 
         $resolver->setDefaults([
-            'empty_data' => $emptyData,
-            'data_class' => 'Trismegiste\SocialBundle\Security\Netizen'
-        ]);
+                    'empty_data' => $emptyData,
+                    'data_class' => 'Trismegiste\SocialBundle\Security\Netizen'
+                ])
+                ->setRequired(['oauth_token', 'minimumAge']);
     }
 
 }

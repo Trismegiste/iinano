@@ -51,7 +51,7 @@ class NotRegisteredHandler implements AuthenticationFailureHandlerInterface
                 ($exception->getToken()->getRoles()[0]->getRole() == ThirdPartyAuthentication::IDENTIFIED)) {
             $this->logger->info('Go to register');
             $targetPath = 'guest_register';
-            $request->getSession()->set(self::IDENTIFIED_TOKEN, [$exception->getToken()]);
+            $request->getSession()->set(self::IDENTIFIED_TOKEN, $exception->getToken());
         } else {
             $request->getSession()->set(SecurityContextInterface::AUTHENTICATION_ERROR, $exception);
         }

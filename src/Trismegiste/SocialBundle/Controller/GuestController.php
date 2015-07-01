@@ -6,11 +6,13 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
-use Trismegiste\SocialBundle\Controller\Template;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\SecurityContext;
+use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\SocialBundle\Security\NotRegisteredHandler;
 use Trismegiste\SocialBundle\Ticket;
 
 /**
@@ -26,17 +28,18 @@ class GuestController extends Template
 
     public function registerAction(Request $request)
     {
-        var_dump($request->getSession()->get(\Trismegiste\SocialBundle\Security\NotRegisteredHandler::IDENTIFIED_TOKEN));
-        // @todo block all users full authenticated
-
-        $repo = $this->get('social.netizen.repository');
-        $form = $this->createForm('netizen_register');
-        // is there a coupon in session ?
         $session = $this->getRequest()->getSession();
-        if ($session->has('coupon')) {
-            $form->get('optionalCoupon')->setData($session->get('coupon'));
+        $tokenFromOauth = $session->get(NotRegisteredHandler::IDENTIFIED_TOKEN);
+
+        if (is_null($tokenFromOauth)) {
+            throw new AccessDeniedHttpException("Not identified");
         }
 
+        $repo = $this->get('social.netizen.repository');
+        $form = $this->createForm('netizen_register', null, [
+            'oauth_token' => $tokenFromOauth,
+            'minimumAge' => $this->get('social.dynamic_config')['minimumAge']
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -45,7 +48,7 @@ class GuestController extends Template
             $repo->persist($user);
             $this->authenticateAccount($user);
             // coupon
-            $coupon = $form->get('optionalCoupon')->getData();
+            $coupon = $session->get('coupon');
             if (!empty($coupon)) {
                 try {
                     $this->get('social.ticket.repository')->useCouponFor($coupon);
