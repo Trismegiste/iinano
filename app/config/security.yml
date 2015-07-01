@@ -24,10 +24,10 @@ security:
             anonymous: ~
             oauth:
                 login_path:   trismegiste_oauth_connect
-                failure_path: trismegiste_oauth_connect
                 check_path:   trismegiste_oauth_check
                 remember_me:  true
                 success_handler: success_login_landing_page
+                failure_handler: failure_login_not_registered
             remember_me:
                 key: %secret%
                 lifetime: 30000000
@@ -44,4 +44,5 @@ security:
         - { path: ^/admin/, roles: ROLE_MANAGER }
         - { path: ^/registered/, roles: ROLE_USER }
         - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/sign, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: VALID_ACCESS }

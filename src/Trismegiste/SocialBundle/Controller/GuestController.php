@@ -46,6 +46,7 @@ class GuestController extends Template
 
     public function registerAction(Request $request)
     {
+        var_dump($request->getSession()->get(\Trismegiste\SocialBundle\Security\NotRegisteredHandler::IDENTIFIED_TOKEN));
         // @todo block all users full authenticated
 
         $repo = $this->get('social.netizen.repository');

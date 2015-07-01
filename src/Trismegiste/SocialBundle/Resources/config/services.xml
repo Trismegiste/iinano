@@ -108,5 +108,11 @@
             <argument type="service" id="security.http_utils" />
         </service>
 
+        <service id="failure_login_not_registered" class="Trismegiste\SocialBundle\Security\NotRegisteredHandler">
+            <argument type="service" id="security.http_utils" />
+            <argument type="service" id="logger" />
+            <tag name="monolog.logger" channel="security" />
+        </service>
+
     </services>
 </container>
