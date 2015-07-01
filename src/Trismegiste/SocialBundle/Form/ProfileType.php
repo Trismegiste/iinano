@@ -32,21 +32,9 @@ class ProfileType extends AbstractType
                     'required' => false,
                     'attr' => ['placeholder' => "Where you're currently living"]
                 ])
-                ->add('dateOfBirth', 'date', [
-                    'years' => range(date('Y') - 6, date('Y') - 100),
-                    'empty_value' => 'Select',
-                    'constraints' => new NotBlank()
-                ])
                 ->add('placeOfBirth', 'text', [
                     'required' => false,
                     'attr' => ['placeholder' => "Where you were born"]
-                ])
-                ->add('email', 'email', [
-                    'attr' => ['placeholder' => "Private : a valid email used only if you've lost your password"],
-                    'constraints' => [
-                        new NotBlank(),
-                        new Email()
-                    ]
                 ])
                 ->add('Save', 'submit');
     }
