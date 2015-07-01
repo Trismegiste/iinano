@@ -72,6 +72,7 @@ class NetizenProvider implements UserProviderInterface, OauthUserProviderInterfa
         $found = $this->userRepository->findOne([
             MapAlias::CLASS_KEY => $this->userClassAlias,
             'cred' => [
+                MapAlias::CLASS_KEY => 'oauth',
                 'uid' => $uid,
                 'provider' => $provider
             ]
