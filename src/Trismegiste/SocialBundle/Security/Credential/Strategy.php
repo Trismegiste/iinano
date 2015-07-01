@@ -12,7 +12,4 @@ namespace Trismegiste\SocialBundle\Security\Credential;
 interface Strategy
 {
 
-    public function getPassword();
-
-    public function getSalt();
 }

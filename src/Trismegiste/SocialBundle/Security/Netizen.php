@@ -54,7 +54,7 @@ class Netizen extends User implements UserInterface, EquatableInterface
      */
     public function getPassword()
     {
-        return $this->cred->getPassword();
+
     }
 
     /**
@@ -70,7 +70,7 @@ class Netizen extends User implements UserInterface, EquatableInterface
      */
     public function getSalt()
     {
-        return $this->cred->getSalt();
+
     }
 
     /**
