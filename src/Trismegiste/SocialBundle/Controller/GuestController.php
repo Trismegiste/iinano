@@ -84,7 +84,7 @@ class GuestController extends Template
         // we add the coupon in session n matter how it is valid or not
         $session->set('coupon', $code);
 
-        return $this->redirectRouteOk('guest_register');
+        return $this->redirectRouteOk('trismegiste_oauth_connect');
     }
 
     public function connectAction()
