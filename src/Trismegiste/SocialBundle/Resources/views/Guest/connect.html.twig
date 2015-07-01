@@ -22,7 +22,9 @@
                 <h3>Please authenticate yourself</h3>
                 <ul>
                     {% for provider in listing %}
-                        <li>{{ provider }}</li>
+                        <li>
+                            <a href="{{ path('trismegiste_oauth_connect_with', {provider:provider}) }}">{{ provider }}</a>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>

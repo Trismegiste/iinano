@@ -12,7 +12,7 @@
 
     <!-- step 2 : redirect to provider with redirect_uri -->
     <route id="trismegiste_oauth_connect_with" pattern="/guest/connect/{provider}">
-        <default key="_controller">TrismegisteSocialBundle:Guest:connectWith</default>
+        <default key="_controller">TrismegisteOAuthBundle:Authorize:connectWith</default>
         <requirement key="_method">GET</requirement>
     </route>
 
