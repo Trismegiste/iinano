@@ -24,26 +24,6 @@ class GuestController extends Template
         return $this->render('TrismegisteSocialBundle:Guest:about.html.twig');
     }
 
-    public function loginAction()
-    {
-        $request = $this->getRequest();
-        $session = $request->getSession();
-        // get the login error if there is one
-        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-        } else {
-            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
-        }
-
-        $config = $this->get('social.dynamic_config')->read();
-
-        return $this->render('TrismegisteSocialBundle:Guest:login.html.twig', [
-                    'error' => $error,
-                    'config' => $config
-        ]);
-    }
-
     public function registerAction(Request $request)
     {
         var_dump($request->getSession()->get(\Trismegiste\SocialBundle\Security\NotRegisteredHandler::IDENTIFIED_TOKEN));
