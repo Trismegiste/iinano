@@ -72,7 +72,6 @@
         <!-- SECURITY -->
 
         <service id="security.netizen.factory" class="Trismegiste\SocialBundle\Security\NetizenFactory">
-            <argument type="service" id="security.encoder_factory"/>
         </service>
 
         <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">

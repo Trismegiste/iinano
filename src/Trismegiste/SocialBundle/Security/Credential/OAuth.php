@@ -21,14 +21,14 @@ class OAuth implements Strategy
         $this->provider = $providerKey;
     }
 
-    public function getPassword()
+    public function getProviderKey()
     {
-
+        return $this->provider;
     }
 
-    public function getSalt()
+    public function getUid()
     {
-
+        return $this->uid;
     }
 
 }

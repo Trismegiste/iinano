@@ -92,14 +92,13 @@ class Netizen extends User implements UserInterface, EquatableInterface
     }
 
     /**
-     * For further support in authenticationProvider or security listener
+     * Gets the strategy for credentials
      *
-     * @return string fqcn
+     * @return \Trismegiste\SocialBundle\Security\Credential\Strategy $strat
      */
-    public function getCredentialType()
+    public function getCredential()
     {
-        // @todo perhaps a better idea to return an "abstract key type" of the credential
-        return get_class($this->cred);
+        return $this->cred;
     }
 
     /**

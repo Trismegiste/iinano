@@ -8,8 +8,6 @@ namespace Trismegiste\SocialBundle\Security;
 
 use Trismegiste\SocialBundle\Security\Netizen;
 use Trismegiste\Socialist\Author;
-use Trismegiste\SocialBundle\Security\Credential\Internal;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Trismegiste\SocialBundle\Security\Profile;
 
 /**
@@ -17,14 +15,6 @@ use Trismegiste\SocialBundle\Security\Profile;
  */
 class NetizenFactory
 {
-
-    /** @var EncoderFactoryInterface */
-    protected $encoderFactory;
-
-    public function __construct(EncoderFactoryInterface $encoderFactory)
-    {
-        $this->encoderFactory = $encoderFactory;
-    }
 
     /**
      * Creates a new Netizen from mandatory datas
@@ -46,21 +36,6 @@ class NetizenFactory
         $user->setGroup('ROLE_USER');
 
         return $user;
-    }
-
-    /**
-     * Set a new password to the given user (no persistence of whatsoever)
-     *
-     * @param Netizen $user
-     * @param string $plainPassword
-     */
-    public function setNewCredential(Netizen $user, $plainPassword)
-    {
-        $salt = \rand(100, 999);
-        $encoded = $this->encoderFactory
-                ->getEncoder($user) // @todo Demeter's law violation : inject encoder as a service with a factory ?
-                ->encodePassword($plainPassword, $salt);
-        $user->setCredential(new Internal($encoded, $salt));
     }
 
 }

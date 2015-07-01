@@ -8,8 +8,8 @@ namespace Trismegiste\SocialBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContext;
+use Trismegiste\OAuthBundle\Security\Token;
 use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Security\Netizen;
 use Trismegiste\SocialBundle\Security\NotRegisteredHandler;
@@ -71,7 +71,9 @@ class GuestController extends Template
      */
     protected function authenticateAccount(Netizen $account)
     {
-        $token = new UsernamePasswordToken($account, null, 'secured_area', $account->getRoles());
+        $cred = $account->getCredential();
+        $token = new Token('secured_area', $cred->getProviderKey(), $cred->getUid(), $account->getRoles());
+        $token->setUser($account);
         $this->get('security.context')->setToken($token);
     }
 

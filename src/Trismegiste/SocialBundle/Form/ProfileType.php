@@ -11,7 +11,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\Email;
 
 /**
  * ProfileType is a type for Profile entity

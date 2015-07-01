@@ -9,7 +9,6 @@ namespace Trismegiste\SocialBundle\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Trismegiste\SocialBundle\Controller\Template;
-use Trismegiste\SocialBundle\Form\ChangePasswordType;
 use Trismegiste\SocialBundle\Form\ProfileType;
 use Trismegiste\SocialBundle\Security\TicketVoter;
 
