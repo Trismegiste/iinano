@@ -37,7 +37,7 @@ class CsvResponse extends Response
 
         $d = $this->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'essai.csv');
         $this->headers->set('Content-Disposition', $d);
-        $this->headers->set('Content-Type', 'application/pdf');
+        $this->headers->set('Content-Type', 'application/csv');
 
         foreach ($path as $label => $column) {
             if (is_string($column)) {
