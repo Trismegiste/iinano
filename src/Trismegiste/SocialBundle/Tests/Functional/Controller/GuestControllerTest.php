@@ -32,7 +32,7 @@ class GuestControllerTest extends WebTestCasePlus
     {
         $this->collection->drop();
         $this->assertCount(0, $this->collection->find());
-        $this->addUserFixture('kirk');
+        $this->addUserFixture('admin');
         // entrance fee config
         $fee = new \Trismegiste\SocialBundle\Ticket\EntranceFee();
         $fee->setAmount(1000);

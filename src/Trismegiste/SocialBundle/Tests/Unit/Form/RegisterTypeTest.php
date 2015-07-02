@@ -48,7 +48,8 @@ class RegisterTypeTest extends WebTestCase
 
         $this->sut = $formFactory->create('netizen_register', null, [
             'csrf_protection' => false,
-            'minimumAge' => 6
+            'minimumAge' => 6,
+            'adminMode' => false
         ]);
     }
 
