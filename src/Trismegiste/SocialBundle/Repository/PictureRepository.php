@@ -94,6 +94,10 @@ class PictureRepository
                 ->setCacheDir($this->cacheDir)
                 ->cropResize($this->sizeConfig[self::MAX_RES], $this->sizeConfig[self::MAX_RES])
                 ->save($path);
+
+        if (!file_exists($path)) {
+            throw new \RuntimeException("Cannot save $syntheticName");
+        }
     }
 
     /**

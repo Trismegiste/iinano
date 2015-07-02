@@ -53,7 +53,7 @@ class PictureControllerTest extends WebTestCasePlus
 
         $this->client->request('GET', $route);
         $response = $this->client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode(), $route);
         $this->assertEquals('image/jpeg', $response->headers->get('Content-Type'));
         $this->assertTrue($response->headers->has('X-Sendfile'));
         $lastModif = $response->getLastModified();
