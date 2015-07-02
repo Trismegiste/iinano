@@ -38,4 +38,21 @@ class NetizenFactory
         return $user;
     }
 
+    /**
+     * Creates a new Admin
+     *
+     * @param string $nick
+     * @param string $OauthProviderKey the key of the OAuth provider (github,facebook,twitter...)
+     * @param string $uniqueUserId the unique id of the user given by the OAuth provider
+     *
+     * @return \Trismegiste\SocialBundle\Security\Netizen
+     */
+    public function createAdmin($nick, $OauthProviderKey, $uniqueUserId)
+    {
+        $user = $this->create($nick, $OauthProviderKey, $uniqueUserId);
+        $user->setGroup('ROLE_ADMIN');
+
+        return $user;
+    }
+
 }

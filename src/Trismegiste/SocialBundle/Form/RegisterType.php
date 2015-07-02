@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -81,17 +82,32 @@ class RegisterType extends AbstractType
         $providerKey = $this->getSessionAttr(Token::PROVIDER_KEY_ATTR);
         $uid = $this->getSessionAttr(Token::UNIQUE_ID_ATTR);
 
-        $emptyData = function (FormInterface $form, $data) use ($factory, $providerKey, $uid) {
-            $nickname = $form->get('nickname')->getData();
+        $emptyData = function (Options $options) use ($factory, $providerKey, $uid) {
+            // is the form in admin mode ?
+            $adminMode = $options['adminMode'];
+            return function (FormInterface $form, $data) use ($factory, $providerKey, $uid, $adminMode) {
+                $nickname = $form->get('nickname')->getData();
 
-            return $form->isEmpty() && !$form->isRequired() ? null : $factory->create($nickname, $providerKey, $uid);
+                // first view : all null
+                if ($form->isEmpty() && !$form->isRequired()) {
+                    return null;
+                } else {
+                    if ($adminMode) {
+                        // create an admin
+                        return $factory->createAdmin($nickname, $providerKey, $uid);
+                    } else {
+                        // create a simple user
+                        return $factory->create($nickname, $providerKey, $uid);
+                    }
+                }
+            };
         };
 
         $resolver->setDefaults([
                     'empty_data' => $emptyData,
                     'data_class' => 'Trismegiste\SocialBundle\Security\Netizen'
                 ])
-                ->setRequired(['minimumAge']);
+                ->setRequired(['minimumAge', 'adminMode']);
     }
 
 }

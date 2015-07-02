@@ -37,7 +37,8 @@ class GuestController extends Template
 
         $repo = $this->get('social.netizen.repository');
         $form = $this->createForm('netizen_register', null, [
-            'minimumAge' => $this->get('social.dynamic_config')['minimumAge']
+            'minimumAge' => $this->get('social.dynamic_config')['minimumAge'],
+            'adminMode' => ($repo->countAllUser() === 0)
         ]);
         $form->handleRequest($request);
 

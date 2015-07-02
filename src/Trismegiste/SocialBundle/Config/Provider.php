@@ -134,7 +134,7 @@ class Provider implements CacheWarmerInterface, ProviderInterface, \ArrayAccess,
     {
         $listing = [];
 
-        if (isset($this['oauth_provider'])) {
+        if (!empty($this['oauth_provider'])) {
             foreach ($this['oauth_provider'] as $pro => $cfg) {
                 if (!is_null($cfg)) {
                     $listing[$pro] = $cfg;
