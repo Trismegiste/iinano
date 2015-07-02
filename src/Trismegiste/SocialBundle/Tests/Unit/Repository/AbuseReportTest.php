@@ -25,12 +25,20 @@ class AbuseReportTest extends WebTestCase
     /** @var Symfony\Component\DependencyInjection\Container */
     protected $container;
 
+    /** @var \Trismegiste\Yuurei\Persistence\RepositoryInterface */
+    protected $repo;
+
+    /** @var \MongoCollection */
+    protected $coll;
+
     protected function setUp()
     {
         $kernel = static::createKernel();
         $kernel->boot();
         $this->container = $kernel->getContainer();
         $this->sut = $this->container->get('social.abusereport.repository');
+        $this->coll = $this->container->get('dokudoki.collection');
+        $this->repo = $this->container->get('dokudoki.repository');
     }
 
     public function getPublishing()
@@ -64,8 +72,8 @@ class AbuseReportTest extends WebTestCase
      */
     public function testCompileReport(Publishing $doc, array $assertion)
     {
-        $this->container->get('dokudoki.collection')->drop();
-        $this->container->get('dokudoki.repository')->persist($doc);
+        $this->coll->drop();
+        $this->repo->persist($doc);
 
         $result = $this->sut->findMostReportedPublish();
         $this->assertCount($assertion['pub'], $result);
@@ -82,6 +90,104 @@ class AbuseReportTest extends WebTestCase
             $comm = $result->current()['commentary'];
             $this->assertEquals(1, $comm['abusiveCount']);
         }
+    }
+
+    protected function initDbWithOneReportedPublishing()
+    {
+        $author = [];
+        foreach (['kirk', 'spock', 'mccoy'] as $nick) {
+            $author[] = new Author($nick);
+        }
+
+        $doc0 = new SmallTalk($author[0]);
+        $doc0->report($author[1]);
+        $doc0->report($author[2]);
+
+        $this->coll->drop();
+        $this->repo->persist($doc0);
+    }
+
+    protected function initDbWithOnePublishingWithReportedComment()
+    {
+        $author = [];
+        foreach (['kirk', 'spock', 'mccoy'] as $nick) {
+            $author[] = new Author($nick);
+        }
+
+        $doc = new SmallTalk($author[0]);
+        $comm = new Commentary($author[1]);
+        $comm->report($author[2]);
+        $comm->report($author[0]);
+        $doc->attachCommentary($comm);
+
+        $this->coll->drop();
+        $this->repo->persist($doc);
+    }
+
+    public function testBatchResetPubReportedCount()
+    {
+        $this->initDbWithOneReportedPublishing();
+
+        $result = $this->sut->findMostReportedPublish();
+        $this->assertCount(1, $result);
+        $reported = array_pop(iterator_to_array($result));
+        $this->assertEquals(2, $reported['abusiveCount']);
+
+        $this->sut->batchResetCounterPublish(iterator_to_array($result));
+        $result = $this->sut->findMostReportedPublish();
+        $this->assertCount(0, $result);
+        $updated = $this->coll->findOne(['_id' => $reported['_id']]);
+        $this->assertEquals(0, $updated['abusiveCount']);
+    }
+
+    public function testBatchDeleteReportedPub()
+    {
+        $this->initDbWithOneReportedPublishing();
+
+        $result = $this->sut->findMostReportedPublish();
+        $this->assertCount(1, $result);
+        $reported = array_pop(iterator_to_array($result));
+        $this->assertEquals(2, $reported['abusiveCount']);
+
+        $this->sut->batchDeletePublish(iterator_to_array($result));
+        $result = $this->sut->findMostReportedPublish();
+        $this->assertCount(0, $result);
+        $updated = $this->coll->findOne(['_id' => $reported['_id']]);
+        $this->assertNull($updated);
+    }
+
+    public function testBatchResetCommentReportedCount()
+    {
+        $this->initDbWithOnePublishingWithReportedComment();
+
+        $result = $this->sut->findMostReportedCommentary();
+        $this->assertCount(1, $result);
+        $reported = array_pop(iterator_to_array($result));
+        $this->assertEquals(2, $reported['commentary']['abusiveCount']);
+
+        $this->sut->batchResetCounterCommentary(iterator_to_array($result));
+        $result = $this->sut->findMostReportedCommentary();
+        $this->assertCount(0, $result);
+        $updated = $this->coll->findOne(['_id' => $reported['_id']]);
+        $this->assertEquals(0, $updated['commentary'][0]['abusiveCount']);
+    }
+
+    public function testBatchDeleteReportedComment()
+    {
+        $this->initDbWithOnePublishingWithReportedComment();
+
+        $result = $this->sut->findMostReportedCommentary();
+        $this->assertCount(1, $result);
+        $reported = array_pop(iterator_to_array($result));
+        $this->assertEquals(2, $reported['commentary']['abusiveCount']);
+        var_dump($reported);
+
+        $this->sut->batchDeleteCommentary(iterator_to_array($result));
+        $result = $this->sut->findMostReportedCommentary();
+        $this->assertCount(0, $result);
+        $updated = $this->coll->findOne(['_id' => $reported['_id']]);
+        var_dump($updated);
+        $this->assertCount(0, $updated['commentary']);
     }
 
 }
