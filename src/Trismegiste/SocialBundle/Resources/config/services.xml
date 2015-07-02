@@ -105,6 +105,7 @@
 
         <service id="success_login_landing_page" class="Trismegiste\SocialBundle\Security\LandingPageSuccessHandler">
             <argument type="service" id="security.http_utils" />
+            <argument type="service" id="security.context"/>
         </service>
 
         <service id="failure_login_not_registered" class="Trismegiste\SocialBundle\Security\NotRegisteredHandler">

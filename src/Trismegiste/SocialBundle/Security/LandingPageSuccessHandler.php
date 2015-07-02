@@ -8,6 +8,7 @@ namespace Trismegiste\SocialBundle\Security;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Http\HttpUtils;
 
@@ -19,33 +20,28 @@ class LandingPageSuccessHandler implements AuthenticationSuccessHandlerInterface
 
     protected $httpUtils;
 
-    public function __construct(HttpUtils $httpUtils)
+    /** @var SecurityContextInterface */
+    protected $security;
+
+    public function __construct(HttpUtils $httpUtils, SecurityContextInterface $secu)
     {
         $this->httpUtils = $httpUtils;
+        $this->security = $secu;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
-        switch ($token->getUser()->getGroup()) {
-            case 'ROLE_ADMIN': $route = 'admin_dashboard';
-                break;
-            case 'ROLE_MANAGER': $route = 'admin_netizen_listing';
-                break;
-            case 'ROLE_MODERATOR': $route = 'admin_abusive_pub_listing';
-                break;
-            case 'ROLE_USER': $route = 'content_index';
-                break;
-            default: $route = 'buy_new_ticket';
+        $route = 'buy_new_ticket';
+
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            $route = 'admin_dashboard';
+        } else if ($this->security->isGranted('ROLE_MANAGER')) {
+            $route = 'admin_netizen_listing';
+        } else if ($this->security->isGranted('ROLE_MODERATOR')) {
+            $route = 'admin_abusive_pub_listing';
+        } else if ($this->security->isGranted(TicketVoter::SUPPORTED_ATTRIBUTE)) {
+            $route = 'content_index';
         }
-//        if ($secu->isGranted()) {
-//
-//        } else if ($secu->isGranted('')) {
-//            $route = '';
-//        } else if ($secu->isGranted('')) {
-//            $route = '';
-//        } else if ($secu->isGranted(TicketVoter::SUPPORTED_ATTRIBUTE)) {
-//            $route = '';
-//        }
 
         return $this->httpUtils->createRedirectResponse($request, $route);
     }
