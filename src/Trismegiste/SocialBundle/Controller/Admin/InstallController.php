@@ -24,15 +24,15 @@ class InstallController extends Template
         }
 
         $repo = $this->get('social.dynamic_config');
-        $form = $this->createForm(new InstallParamType());
+        $config = $repo->read(true);
+        $form = $this->createForm(new InstallParamType(), $config['oauth_provider']);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $default = $repo->read(true);
-            $default['oauth_provider'] = $form->getData();
-            $repo->write($default);
+            $config['oauth_provider'] = $form->getData();
+            $repo->write($config);
 
-            return $this->redirectRouteOk('trismegiste_login');
+            return $this->redirectRouteOk('trismegiste_oauth_connect');
         }
 
         return $this->render('TrismegisteSocialBundle:Admin:install.html.twig', [

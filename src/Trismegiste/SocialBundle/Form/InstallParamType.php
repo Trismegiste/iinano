@@ -37,10 +37,12 @@ class InstallParamType extends AbstractType
         $resolver->setDefaults(['constraints' => new Callback([
                 'methods' => [function($data, ExecutionContextInterface $ctx) {
                         foreach ($data as $child) {
-                            foreach ($child as $id)
-                                if (!empty($id)) {
-                                    return;
-                                }
+                            if (!is_null($child)) {
+                                foreach ($child as $id)
+                                    if (!empty($id)) {
+                                        return;
+                                    }
+                            }
                         }
                         $ctx->addViolation('At least one of these providers must be filled');
                     }]
