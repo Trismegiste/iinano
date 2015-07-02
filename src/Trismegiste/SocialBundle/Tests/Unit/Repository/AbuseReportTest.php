@@ -180,13 +180,11 @@ class AbuseReportTest extends WebTestCase
         $this->assertCount(1, $result);
         $reported = array_pop(iterator_to_array($result));
         $this->assertEquals(2, $reported['commentary']['abusiveCount']);
-        var_dump($reported);
 
         $this->sut->batchDeleteCommentary(iterator_to_array($result));
         $result = $this->sut->findMostReportedCommentary();
         $this->assertCount(0, $result);
         $updated = $this->coll->findOne(['_id' => $reported['_id']]);
-        var_dump($updated);
         $this->assertCount(0, $updated['commentary']);
     }
 
