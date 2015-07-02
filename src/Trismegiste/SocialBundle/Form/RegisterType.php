@@ -8,13 +8,16 @@ namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Trismegiste\SocialBundle\Security\NetizenFactory;
 use Symfony\Component\Form\FormInterface;
-use Trismegiste\SocialBundle\Validator\UniqueNickname;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
+use Trismegiste\OAuthBundle\Security\Token;
+use Trismegiste\SocialBundle\Security\NetizenFactory;
+use Trismegiste\SocialBundle\Security\NotRegisteredHandler;
+use Trismegiste\SocialBundle\Validator\UniqueNickname;
 
 /**
  * RegisterType is a form to register an account
@@ -25,10 +28,19 @@ class RegisterType extends AbstractType
     protected $repository;
     protected $nicknameRegex;
 
-    public function __construct(NetizenFactory $repo, $regex)
+    /** @var SessionInterface */
+    protected $session;
+
+    public function __construct(NetizenFactory $repo, $regex, SessionInterface $session)
     {
         $this->repository = $repo;
         $this->nicknameRegex = $regex;
+        $this->session = $session;
+    }
+
+    protected function getSessionAttr($name)
+    {
+        return $this->session->get(NotRegisteredHandler::IDENTIFIED_TOKEN)->getAttribute($name);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -43,7 +55,7 @@ class RegisterType extends AbstractType
                                 new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#', 'message' => "This nickname is not valid: only a-z, 0-9 & '-' characters are valid."])
                             ],
                             'mapped' => false,
-                            'data' => $options['oauth_nickname'],
+                            'data' => $this->getSessionAttr('nickname'),
                             'attr' => ['placeholder' => 'Choose a nickname of 5 to 20 char. : a-z, 0-9 and \'-\'']
                         ])
                         ->addViewTransformer(new NicknameTransformer())
@@ -55,8 +67,6 @@ class RegisterType extends AbstractType
                     'empty_value' => 'Select',
                     'constraints' => new NotBlank()
                 ])
-                ->add('provider', 'hidden', ['mapped' => false, 'data' => $options['oauth_provider']])
-                ->add('uid', 'hidden', ['mapped' => false, 'data' => $options['oauth_uid']])
                 ->add('register', 'submit');
     }
 
@@ -68,11 +78,11 @@ class RegisterType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $factory = $this->repository;
+        $providerKey = $this->getSessionAttr(Token::PROVIDER_KEY_ATTR);
+        $uid = $this->getSessionAttr(Token::UNIQUE_ID_ATTR);
 
-        $emptyData = function (FormInterface $form, $data) use ($factory) {
+        $emptyData = function (FormInterface $form, $data) use ($factory, $providerKey, $uid) {
             $nickname = $form->get('nickname')->getData();
-            $providerKey = $form->get('provider')->getData();
-            $uid = $form->get('uid')->getData();
 
             return $form->isEmpty() && !$form->isRequired() ? null : $factory->create($nickname, $providerKey, $uid);
         };
@@ -81,7 +91,7 @@ class RegisterType extends AbstractType
                     'empty_data' => $emptyData,
                     'data_class' => 'Trismegiste\SocialBundle\Security\Netizen'
                 ])
-                ->setRequired(['oauth_nickname', 'oauth_provider', 'oauth_uid', 'minimumAge']);
+                ->setRequired(['minimumAge']);
     }
 
 }
