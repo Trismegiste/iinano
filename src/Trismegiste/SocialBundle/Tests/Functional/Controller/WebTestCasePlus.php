@@ -6,12 +6,17 @@
 
 namespace Trismegiste\SocialBundle\Tests\Functional\Controller;
 
+use DateTime;
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\BrowserKit\Cookie;
-use Trismegiste\Socialist\Author;
-use Trismegiste\SocialBundle\Ticket\Ticket;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Router;
+use Trismegiste\OAuthBundle\Security\Token;
 use Trismegiste\SocialBundle\Ticket\EntranceFee;
+use Trismegiste\SocialBundle\Ticket\Ticket;
+use Trismegiste\Socialist\Author;
 
 /**
  * WebTestCasePlus is an extended WebTestCase with usefull helper
@@ -19,7 +24,7 @@ use Trismegiste\SocialBundle\Ticket\EntranceFee;
 class WebTestCasePlus extends WebTestCase
 {
 
-    /** @var \Symfony\Bundle\FrameworkBundle\Client */
+    /** @var Client */
     protected $client = null;
 
     protected function setUp()
@@ -35,13 +40,13 @@ class WebTestCasePlus extends WebTestCase
     protected function generateUrl($route, $param = [])
     {
         return $this->getService('router')
-                        ->generate($route, $param, \Symfony\Component\Routing\Router::ABSOLUTE_URL);
+                        ->generate($route, $param, Router::ABSOLUTE_URL);
     }
 
     /**
      * For phpunit listener
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function getCurrentResponse()
     {
@@ -49,7 +54,7 @@ class WebTestCasePlus extends WebTestCase
     }
 
     /**
-     * @return \Symfony\Component\DomCrawler\Crawler
+     * @return Crawler
      */
     protected function getPage($route, $param = [])
     {
@@ -67,7 +72,8 @@ class WebTestCasePlus extends WebTestCase
         if (!is_null($user)) {
             $session = $this->client->getContainer()->get('session');
             $firewall = 'secured_area';
-            $token = new UsernamePasswordToken($user, null, $firewall, $user->getRoles());
+            $cred = $user->getCredential();
+            $token = new Token($firewall, $cred->getProviderKey(), $cred->getUid(), $user->getRoles());
             $session->set('_security_' . $firewall, serialize($token));
             $session->save();
             $cookie = new Cookie($session->getName(), $session->getId());
@@ -77,16 +83,16 @@ class WebTestCasePlus extends WebTestCase
         }
     }
 
-    protected function addUserFixture($nickname)
+    protected function addUserFixture($nickname, $uid = '123456789')
     {
-        $user = $this->getService('security.netizen.factory')->create($nickname, 'mellon');
+        $user = $this->getService('security.netizen.factory')->create($nickname, 'dummy', $uid);
         $fee = new EntranceFee();
         $fee->setDurationValue(12);
         $user->addTicket(new Ticket($fee));
         $prof = $user->getProfile();
         $prof->fullName = ucfirst($nickname);
         $prof->gender = 'xy';
-        $prof->dateOfBirth = \DateTime::createFromFormat(\DateTime::ISO8601, '1918-10-11T00:00:00Z');
+        $prof->dateOfBirth = DateTime::createFromFormat(DateTime::ISO8601, '1918-10-11T00:00:00Z');
         $prof->email = $nickname . '@server.tld';
         $this->getService('social.netizen.repository')->persist($user);
     }
@@ -100,11 +106,16 @@ class WebTestCasePlus extends WebTestCase
     }
 
     /**
-     * @return \Symfony\Component\DomCrawler\Crawler
+     * @return Crawler
      */
     protected function ajaxPost($uri)
     {
         return $this->client->request('POST', $uri, [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+    }
+
+    protected function assertCurrentRoute($route, $param = [])
+    {
+        $this->assertEquals($this->generateUrl($route, $param), $this->client->getHistory()->current()->getUri());
     }
 
 }

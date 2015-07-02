@@ -56,21 +56,29 @@ class GuestControllerTest extends WebTestCasePlus
 
     public function testRegisterWithPayment()
     {
-        $crawler = $this->getPage('guest_register');
+        $crawler = $this->getPage('trismegiste_oauth_connect');
+        $authLink = $crawler->selectLink('dummy')->link();
+        $crawler = $this->client->click($authLink);
+        $this->assertCurrentRoute('trismegiste_oauth_dummyserver', ['redirect' => $this->generateUrl('trismegiste_oauth_check', ['provider' => 'dummy'])]);
+        $oauthForm = $crawler->selectButton('Redirect')->form();
+        $crawler = $this->client->submit($oauthForm, [
+            'uid' => '1701',
+            'nickname' => 'spock'
+        ]);
+        $this->assertCurrentRoute('guest_register');
+
         $form = $crawler->selectButton('Register')->form();
         $this->client->submit($form, ['netizen_register' => [
                 'nickname' => 'spock',
-                'password' => ['password' => 'idic', 'confirm_password' => 'idic'],
-                'fullName' => 'Spock',
                 'gender' => 'xy',
-                'email' => 'dfsdfssdf@sddsqsdq.fr',
                 'dateOfBirth' => ['year' => 1984, 'month' => 11, 'day' => 13]
         ]]);
 
-        $this->assertEquals($this->generateUrl('buy_new_ticket'), $this->client->getHistory()->current()->getUri());
+        $this->assertCurrentRoute('buy_new_ticket');
 
         $user = $this->repo->findByNickname('spock');
         $this->assertEquals('spock', $user->getUsername());
+        $this->assertEquals('1701', $user->getCredential()->getUid());
 
         $token = $this->client->getContainer()->get('security.context')->getToken();
         $this->assertEquals($user, $token->getUser());
@@ -151,10 +159,8 @@ class GuestControllerTest extends WebTestCasePlus
     public function testLandingWithCoupon()
     {
         $crawler = $this->getPage('guest_coupon_landing', ['code' => 'AZERTY']);
-        $this->assertEquals($this->generateUrl('guest_register'), $this->client->getHistory()->current()->getUri());
-
-        $prefillCoupon = $crawler->filter('form input[id="netizen_register_optionalCoupon"]');
-        $this->assertEquals('AZERTY', $prefillCoupon->attr('value'));
+        $this->assertEquals($this->generateUrl('trismegiste_oauth_connect'), $this->client->getHistory()->current()->getUri());
+        $this->assertEquals('AZERTY', $this->getService('session')->get('coupon'));
     }
 
 }
