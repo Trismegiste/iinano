@@ -181,4 +181,27 @@ class GuestControllerTest extends WebTestCasePlus
         ]);
     }
 
+    public function testFailToRegisterWithoutOAuth()
+    {
+        $this->getPage('guest_register');
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @depends testLoginPageWithPayment
+     */
+    public function testFailToAccessConnectWhenAuthenticated()
+    {
+        $crawler = $this->getPage('trismegiste_oauth_connect');
+        $authLink = $crawler->selectLink('dummy')->link();
+        $crawler = $this->client->click($authLink);
+        $oauthForm = $crawler->selectButton('Redirect')->form();
+        $crawler = $this->client->submit($oauthForm, [
+            'uid' => '1701'
+        ]);
+
+        $this->getPage('trismegiste_oauth_connect');
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+    }
+
 }
