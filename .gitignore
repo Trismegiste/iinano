@@ -3,9 +3,12 @@
 /app/cache/*
 /app/config/parameters.yml
 /app/logs/*
-/storage/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
+/storage/cache/*
+/storage/picture/*
+!/storage/cache/.gitkeep
+!/storage/picture/.gitkeep
 /build/
 /vendor/
 /bin/
