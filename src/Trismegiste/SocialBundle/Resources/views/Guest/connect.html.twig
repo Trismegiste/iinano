@@ -1,0 +1,46 @@
+{% extends 'TrismegisteSocialBundle:Guest:layout.html.twig' %}
+
+{%block stylesheets %}
+    {{ parent() }}
+    <style>
+        .content .pure-u-1 {
+            padding-bottom: 2em;
+        }
+        .auth-error {
+            color: #ac2925;
+            background-color: pink;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+    </style>
+{% endblock %}
+
+{% block full_body %}
+    <div class="content">
+        <div class="pure-g">
+            <div class="pure-u-1 pure-u-md-1-2">
+                <h4>Welcome to</h4>
+                <h1>{{ social_config.appTitle }}</h1>
+                <h4>Currently 10k users &amp; 100k messages</h4>
+                <p>{{ social_config.subTitle }}</p>
+            </div>
+            <div class="pure-u-1 pure-u-md-1-2">
+                <h3>Please authenticate yourself</h3>
+                {% if error %}
+                    <ul class="auth-error">
+                        <li>{{ error.message }}</li>
+                    </ul>
+                {% endif %}
+                <ul>
+                    {% for provider in listing %}
+                        <li>
+                            <a href="{{ path('trismegiste_oauth_connect_with', {provider:provider}) }}">{{ provider }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

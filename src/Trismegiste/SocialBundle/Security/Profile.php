@@ -13,7 +13,6 @@ namespace Trismegiste\SocialBundle\Security;
 class Profile
 {
 
-    public $email;
     public $gender;
     public $fullName;
     public $location;

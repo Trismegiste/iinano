@@ -38,12 +38,9 @@ class ProfileTypeTest extends \PHPUnit_Framework_TestCase
     public function testInvalid()
     {
         $this->sut->submit([
-            'fullName' => '1234',
-            'email' => 'gfdgfdfg@dgfgf'
+            'fullName' => '1234'
         ]);
         $this->assertFalse($this->sut['fullName']->isValid());
-        $this->assertFalse($this->sut['email']->isValid());
-
         $this->assertFalse($this->sut->isValid());
     }
 
@@ -51,8 +48,8 @@ class ProfileTypeTest extends \PHPUnit_Framework_TestCase
     {
         $this->sut->submit([
             'fullName' => 'James T. Kirk',
-            'dateOfBirth' => ['year' => 2004, 'month' => 11, 'day' => 13],
-            'email' => 'jim@ufp.org'
+            'location' => 'San Francisco',
+            'placeOfBirth' => 'Iowa'
         ]);
 
         foreach ($this->sut as $name => $child) {

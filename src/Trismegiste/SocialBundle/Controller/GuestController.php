@@ -6,11 +6,13 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
-use Trismegiste\SocialBundle\Controller\Template;
-use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Security\Core\SecurityContext;
+use Trismegiste\OAuthBundle\Security\Token;
+use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\SocialBundle\Security\NotRegisteredHandler;
 use Trismegiste\SocialBundle\Ticket;
 
 /**
@@ -24,38 +26,19 @@ class GuestController extends Template
         return $this->render('TrismegisteSocialBundle:Guest:about.html.twig');
     }
 
-    public function loginAction()
-    {
-        $request = $this->getRequest();
-        $session = $request->getSession();
-        // get the login error if there is one
-        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
-        } else {
-            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
-            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
-        }
-
-        $config = $this->get('social.dynamic_config')->read();
-
-        return $this->render('TrismegisteSocialBundle:Guest:login.html.twig', [
-                    'error' => $error,
-                    'config' => $config
-        ]);
-    }
-
     public function registerAction(Request $request)
     {
-        // @todo block all users full authenticated
+        $session = $this->getRequest()->getSession();
+
+        if (!$session->has(NotRegisteredHandler::IDENTIFIED_TOKEN)) {
+            throw new AccessDeniedHttpException("Not identified");
+        }
+        $this->assertNotAuthenticated();
 
         $repo = $this->get('social.netizen.repository');
-        $form = $this->createForm('netizen_register');
-        // is there a coupon in session ?
-        $session = $this->getRequest()->getSession();
-        if ($session->has('coupon')) {
-            $form->get('optionalCoupon')->setData($session->get('coupon'));
-        }
-
+        $form = $this->createForm('netizen_register', null, [
+            'minimumAge' => $this->get('social.dynamic_config')['minimumAge']
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,8 +46,9 @@ class GuestController extends Template
             $user = $form->getData();
             $repo->persist($user);
             $this->authenticateAccount($user);
+            $session->remove(NotRegisteredHandler::IDENTIFIED_TOKEN);
             // coupon
-            $coupon = $form->get('optionalCoupon')->getData();
+            $coupon = $session->get('coupon');
             if (!empty($coupon)) {
                 try {
                     $this->get('social.ticket.repository')->useCouponFor($coupon);
@@ -73,7 +57,7 @@ class GuestController extends Template
                     $this->pushFlash('warning', $e->getMessage());
                 }
             }
-            // gateway after authentication
+            // @todo use the success login handler
             return $this->redirectRouteOk('netizen_landing_page');
         }
 
@@ -85,7 +69,9 @@ class GuestController extends Template
      */
     protected function authenticateAccount(Netizen $account)
     {
-        $token = new UsernamePasswordToken($account, null, 'secured_area', $account->getRoles());
+        $cred = $account->getCredential();
+        $token = new Token('secured_area', $cred->getProviderKey(), $cred->getUid(), $account->getRoles());
+        $token->setUser($account);
         $this->get('security.context')->setToken($token);
     }
 
@@ -98,7 +84,33 @@ class GuestController extends Template
         // we add the coupon in session n matter how it is valid or not
         $session->set('coupon', $code);
 
-        return $this->redirectRouteOk('guest_register');
+        return $this->redirectRouteOk('trismegiste_oauth_connect');
+    }
+
+    public function connectAction()
+    {
+        $this->assertNotAuthenticated();
+        $request = $this->getRequest();
+        $session = $request->getSession();
+        // get the login error if there is one
+        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+        } else {
+            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        }
+
+        $config = $this->get('oauth.provider.factory')->getAvaliableProvider();
+
+        return $this->render('TrismegisteSocialBundle:Guest:connect.html.twig', [
+                    'listing' => $config, 'error' => $error]);
+    }
+
+    protected function assertNotAuthenticated()
+    {
+        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new AccessDeniedHttpException("Already authenticated");
+        }
     }
 
 }

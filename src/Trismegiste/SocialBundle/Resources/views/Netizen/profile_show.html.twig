@@ -11,9 +11,6 @@
             Born at: {{ profile.placeOfBirth }}
         </div>
         <div class="pure-u-1 pure-u-md-1-2">
-            {% if app.user.author.isEqual(author) %}
-                Email (not public): {{ profile.email }}<br/>
-            {% endif %}
             Registered at: {{ profile.joinedAt|timeago }}<br/>
             Content counter: {{ profile.publishingCounter }}<br/>
             Commentary counter: {{ profile.commentaryCounter }}<br/>

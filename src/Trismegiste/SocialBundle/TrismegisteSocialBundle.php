@@ -23,7 +23,6 @@ class TrismegisteSocialBundle extends Bundle
     public function registerCommands(Application $application)
     {
         $application->addCommands([
-            new Cli\CreateUser(),
             new Cli\NormalizeDatabase(),
             new Cli\CliqueBench(),
             new Cli\MapReduceJob(),

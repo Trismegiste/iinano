@@ -52,16 +52,9 @@ class NetizenTest extends \PHPUnit_Framework_TestCase
     public function testCredentialStrategy()
     {
         $strat = $this->getMock('Trismegiste\SocialBundle\Security\Credential\Strategy');
-        $strat->expects($this->once())
-                ->method('getPassword');
-        $strat->expects($this->once())
-                ->method('getSalt');
 
         $this->sut->setCredential($strat);
-        $this->sut->getPassword();
-        $this->sut->getSalt();
-
-        $this->assertEquals(get_class($strat), $this->sut->getCredentialType());
+        $this->assertEquals($strat, $this->sut->getCredential());
         $this->sut->eraseCredentials(); // for CC
     }
 

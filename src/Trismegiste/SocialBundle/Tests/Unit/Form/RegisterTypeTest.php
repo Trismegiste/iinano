@@ -6,22 +6,30 @@
 
 namespace Trismegiste\SocialBundle\Tests\Unit\Form;
 
+use MongoCollection;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Form\FormInterface;
+use Trismegiste\OAuthBundle\Security\Token;
+use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
+use Trismegiste\SocialBundle\Security\NetizenFactory;
+use Trismegiste\SocialBundle\Security\NotRegisteredHandler;
+
 /**
- * RegisterTypeTest tests RegisterType
+ * RegisterTypeTest tests \Trismegiste\SocialBundle\Form\RegisterType
  */
-class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
+class RegisterTypeTest extends WebTestCase
 {
 
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $sut;
 
-    /** @var \Trismegiste\SocialBundle\Security\NetizenFactory */
+    /** @var NetizenFactory */
     protected $factory;
 
-    /** @var \MongoCollection */
+    /** @var MongoCollection */
     protected $collection;
 
-    /** @var \Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface */
+    /** @var NetizenRepositoryInterface */
     protected $repository;
 
     protected function setUp()
@@ -32,7 +40,16 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
         $this->collection = $kernel->getContainer()->get('dokudoki.collection');
         $this->factory = $kernel->getContainer()->get('security.netizen.factory');
         $this->repository = $kernel->getContainer()->get('social.netizen.repository');
-        $this->sut = $formFactory->create('netizen_register', null, ['csrf_protection' => false]);
+
+        $session = $kernel->getContainer()->get('session');
+        $token = new Token('secured_area', 'dummy', '123456789');
+        $token->setAttribute('nickname', 'dummy nickname');
+        $session->set(NotRegisteredHandler::IDENTIFIED_TOKEN, $token);
+
+        $this->sut = $formFactory->create('netizen_register', null, [
+            'csrf_protection' => false,
+            'minimumAge' => 6
+        ]);
     }
 
     /**
@@ -47,10 +64,7 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
     {
         $submitted = [
             'nickname' => 'daenerys-targa-7',
-            'password' => 'aaaa',
-            'fullName' => 'Daenerys Stormborn',
             'gender' => 'xx',
-            'email' => 'mother@dragon.org',
             'dateOfBirth' => ['year' => 1986, 'month' => 11, 'day' => 13]
         ];
         $this->sut->submit($submitted);
@@ -59,13 +73,14 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
         $this->assertInstanceOf('Trismegiste\SocialBundle\Security\Netizen', $user);
         $this->assertEquals('daenerys-targa-7', $user->getUsername());
         $this->assertEquals('xx', $user->getProfile()->gender);
-        $this->assertNotEmpty($user->getPassword());
-        $this->assertEquals('Daenerys Stormborn', $user->getProfile()->fullName);
+        $this->assertNotEmpty($user->getCredential());
+        $this->assertEquals('dummy', $user->getCredential()->getProviderKey());
+        $this->assertEquals('123456789', $user->getCredential()->getUid());
     }
 
     public function testNickTooShort()
     {
-        $submitted = ['nickname' => 'dany', 'password' => 'aaaa', 'fullName' => 'Daenerys Stormborn', 'gender' => 'xx'];
+        $submitted = ['nickname' => 'dany', 'gender' => 'xx'];
         $this->sut->submit($submitted);
         $this->assertFalse($this->sut->isValid());
         $this->assertRegexp('#too short#', $this->sut->get('nickname')->getErrors()[0]->getMessage());
@@ -74,19 +89,19 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
     public function getNicknameExample()
     {
         return [
-            ['illùvatar', 'Ainu Illùvatar'],
-            ['john snow', 'John Targaryen'],
-            ['john_snow', 'John Targaryen'],
-            ['Spock', 'Mr Spock']
+            ['illùvatar'],
+            ['john snow'],
+            ['john_snow'],
+            ['Spock']
         ];
     }
 
     /**
      * @dataProvider getNicknameExample
      */
-    public function testNickBadChar($nick, $full)
+    public function testNickBadChar($nick)
     {
-        $submitted = ['nickname' => $nick, 'fullName' => $full, 'password' => 'aaaa', 'gender' => 'xy'];
+        $submitted = ['nickname' => $nick, 'gender' => 'xy'];
         $this->sut->submit($submitted);
         $this->assertFalse($this->sut->isValid());
         $this->assertRegexp('#not valid#', $this->sut->get('nickname')->getErrors()[0]->getMessage());
@@ -94,10 +109,10 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 
     public function testAlreadyExisting()
     {
-        $obj = $this->factory->create('mcleod', 'aaaa');
+        $obj = $this->factory->create('mcleod', 'facebook', '456456456'); // registered with another provider
         $this->repository->persist($obj);
 
-        $submitted = ['nickname' => 'mcleod', 'fullName' => 'McLeod', 'gender' => 'xy', 'password' => 'aaaa'];
+        $submitted = ['nickname' => 'mcleod', 'gender' => 'xy'];
         $this->sut->submit($submitted);
         $this->assertRegexp('#already used#', $this->sut->get('nickname')->getErrors()[0]->getMessage());
     }

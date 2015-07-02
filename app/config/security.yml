@@ -20,22 +20,22 @@ security:
         secured_area:
             pattern:    ^/
             provider: proprietary
-            form_login:
-                check_path: trismegiste_logincheck
-                login_path: trismegiste_login
-                default_target_path: netizen_landing_page
-                always_use_default_target_path: true
-                csrf_provider: form.csrf_provider
-                success_handler: success_login_landing_page
-            logout:
-                path:   trismegiste_logout
-                target: /
+            stateless: false
             anonymous: ~
+            oauth:
+                login_path:   trismegiste_oauth_connect
+                check_path:   trismegiste_oauth_check
+                remember_me:  true
+                success_handler: success_login_landing_page
+                failure_handler: failure_login_not_registered
             remember_me:
                 key: %secret%
                 lifetime: 30000000
                 path: /
                 domain: ~
+            logout:
+                path:   trismegiste_oauth_logout
+                target: /
 
     access_control:
         - { path: "^/admin/netizen/[0-9a-f]+/promote", roles: ROLE_ADMIN }
@@ -43,5 +43,6 @@ security:
         - { path: ^/admin/abusereport/, roles: ROLE_MODERATOR }
         - { path: ^/admin/, roles: ROLE_MANAGER }
         - { path: ^/registered/, roles: ROLE_USER }
-        - { path: ^/guest/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/connect, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/sign, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: VALID_ACCESS }

@@ -1,13 +1,8 @@
+trismegiste_oauth:
+    resource: "@TrismegisteOAuthBundle/Resources/config/routing.xml"
+    prefix:   /
+
 trismegiste_front:
     resource: "@TrismegisteSocialBundle/Resources/config/routing.xml"
     prefix:   /
 
-trismegiste_login:
-    pattern: /guest/login
-    defaults: { _controller: TrismegisteSocialBundle:Guest:login }
-
-trismegiste_logincheck:
-    pattern: /login_check
-
-trismegiste_logout:
-    pattern: /logout

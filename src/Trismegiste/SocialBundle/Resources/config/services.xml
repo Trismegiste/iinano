@@ -72,7 +72,6 @@
         <!-- SECURITY -->
 
         <service id="security.netizen.factory" class="Trismegiste\SocialBundle\Security\NetizenFactory">
-            <argument type="service" id="security.encoder_factory"/>
         </service>
 
         <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">
@@ -106,6 +105,13 @@
 
         <service id="success_login_landing_page" class="Trismegiste\SocialBundle\Security\LandingPageSuccessHandler">
             <argument type="service" id="security.http_utils" />
+            <argument type="service" id="security.context"/>
+        </service>
+
+        <service id="failure_login_not_registered" class="Trismegiste\SocialBundle\Security\NotRegisteredHandler">
+            <argument type="service" id="security.http_utils" />
+            <argument type="service" id="logger" />
+            <tag name="monolog.logger" channel="security" />
         </service>
 
     </services>

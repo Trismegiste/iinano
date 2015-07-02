@@ -54,107 +54,154 @@ class GuestControllerTest extends WebTestCasePlus
         $this->assertCount(1, $iter);
     }
 
-    public function testRegisterWithPayment()
+    /**
+     * @depends initialize
+     */
+    public function testUnknownUserGoToRegister()
     {
-        $crawler = $this->getPage('guest_register');
+        $crawler = $this->getPage('trismegiste_oauth_connect');
+        $authLink = $crawler->selectLink('dummy')->link();
+        $crawler = $this->client->click($authLink);
+        $this->assertCurrentRoute('trismegiste_oauth_dummyserver', ['redirect' => $this->generateUrl('trismegiste_oauth_check', ['provider' => 'dummy'])]);
+        $oauthForm = $crawler->selectButton('Redirect')->form();
+        $crawler = $this->client->submit($oauthForm, [
+            'uid' => '1701',
+            'nickname' => 'spock'
+        ]);
+        $this->assertCurrentRoute('guest_register');
+    }
+
+    /**
+     * @depends testUnknownUserGoToRegister
+     */
+    public function testRegisterUntilPayment()
+    {
+        $crawler = $this->getPage('trismegiste_oauth_connect');
+        $authLink = $crawler->selectLink('dummy')->link();
+        $crawler = $this->client->click($authLink);
+        $this->assertCurrentRoute('trismegiste_oauth_dummyserver', ['redirect' => $this->generateUrl('trismegiste_oauth_check', ['provider' => 'dummy'])]);
+        $oauthForm = $crawler->selectButton('Redirect')->form();
+        $crawler = $this->client->submit($oauthForm, [
+            'uid' => '1701',
+            'nickname' => 'spock'
+        ]);
+        $this->assertCurrentRoute('guest_register');
+
         $form = $crawler->selectButton('Register')->form();
         $this->client->submit($form, ['netizen_register' => [
                 'nickname' => 'spock',
-                'password' => ['password' => 'idic', 'confirm_password' => 'idic'],
-                'fullName' => 'Spock',
                 'gender' => 'xy',
-                'email' => 'dfsdfssdf@sddsqsdq.fr',
                 'dateOfBirth' => ['year' => 1984, 'month' => 11, 'day' => 13]
         ]]);
 
-        $this->assertEquals($this->generateUrl('buy_new_ticket'), $this->client->getHistory()->current()->getUri());
+        $this->assertCurrentRoute('buy_new_ticket');
 
         $user = $this->repo->findByNickname('spock');
         $this->assertEquals('spock', $user->getUsername());
+        $this->assertEquals('1701', $user->getCredential()->getUid());
 
         $token = $this->client->getContainer()->get('security.context')->getToken();
         $this->assertEquals($user, $token->getUser());
     }
 
-    public function testLoginPageFail()
+    /**
+     * @depends testRegisterUntilPayment
+     */
+    public function testLoginWithoutPaymentGoToBuyTicket()
     {
-        $crawler = $this->getPage('trismegiste_login');
-        $form = $crawler->filter('form')->selectButton('Sign in')->form();
-        $this->client->submit($form, ['_username' => 'unknown', '_password' => 'passwoes']);
+        $crawler = $this->getPage('trismegiste_oauth_connect');
+        $authLink = $crawler->selectLink('dummy')->link();
+        $crawler = $this->client->click($authLink);
+        $oauthForm = $crawler->selectButton('Redirect')->form();
+        $crawler = $this->client->submit($oauthForm, [
+            'uid' => '1701'
+        ]);
 
-        $this->assertEquals($this->generateUrl('trismegiste_login'), $this->client->getHistory()->current()->getUri());
-    }
-
-    public function testLoginPageFailWithoutPayment()
-    {
-        $crawler = $this->getPage('trismegiste_login');
-        $form = $crawler->filter('form')->selectButton('Sign in')->form();
-        $this->client->submit($form, ['_username' => 'spock', '_password' => 'idic']);
-
-        $this->assertEquals($this->generateUrl('buy_new_ticket'), $this->client->getHistory()->current()->getUri());
-    }
-
-    public function testLoginPageWithPayment()
-    {
-        $crawler = $this->getPage('trismegiste_login');
-        $form = $crawler->filter('form')->selectButton('Sign in')->form();
-        $this->client->submit($form, ['_username' => 'spock', '_password' => 'idic']);
-        $this->assertEquals($this->generateUrl('buy_new_ticket'), $this->client->getHistory()->current()->getUri());
+        $this->assertCurrentRoute('buy_new_ticket');
 
         // faking a payment
         $ticketRepo = $this->getService('social.ticket.repository');
         $ticket = $ticketRepo->createTicketFromPayment();
         $ticketRepo->persistNewPayment($ticket);
-
-        $crawler = $this->getPage('trismegiste_login');
-        $form = $crawler->filter('form')->selectButton('Sign in')->form();
-        $this->client->submit($form, ['_username' => 'spock', '_password' => 'idic']);
-
-        $this->assertEquals($this->generateUrl('wall_index', [
-                    'wallNick' => 'spock',
-                    'wallFilter' => 'self'
-                ]), $this->client->getHistory()->current()->getUri());
     }
 
-    public function testRegisterWithCoupon()
+    /**
+     * @depends testRegisterUntilPayment
+     */
+    public function testLoginPageWithPayment()
     {
-        $crawler = $this->getPage('guest_register');
-        $form = $crawler->selectButton('Register')->form();
-        $this->client->submit($form, ['netizen_register' => [
-                'nickname' => 'coupon',
-                'password' => ['password' => 'idic', 'confirm_password' => 'idic'],
-                'fullName' => 'coupon',
-                'gender' => 'xy',
-                'email' => 'dfsdfssdf@sddsqsdq.fr',
-                'dateOfBirth' => ['year' => 1984, 'month' => 11, 'day' => 13],
-                'optionalCoupon' => 'ABCDE'
-        ]]);
+        $crawler = $this->getPage('trismegiste_oauth_connect');
+        $authLink = $crawler->selectLink('dummy')->link();
+        $crawler = $this->client->click($authLink);
+        $oauthForm = $crawler->selectButton('Redirect')->form();
+        $crawler = $this->client->submit($oauthForm, [
+            'uid' => '1701'
+        ]);
 
-        $this->assertEquals($this->generateUrl('wall_index', [
-                    'wallNick' => 'coupon',
-                    'wallFilter' => 'self'
-                ]), $this->client->getHistory()->current()->getUri());
-    }
-
-    public function testLoginPageWithCoupon()
-    {
-        $crawler = $this->getPage('trismegiste_login');
-        $form = $crawler->filter('form')->selectButton('Sign in')->form();
-        $this->client->submit($form, ['_username' => 'coupon', '_password' => 'idic']);
-
-        $this->assertEquals($this->generateUrl('wall_index', [
-                    'wallNick' => 'coupon',
-                    'wallFilter' => 'self'
-                ]), $this->client->getHistory()->current()->getUri());
+        $this->assertCurrentRoute('wall_index', [
+            'wallNick' => 'spock',
+            'wallFilter' => 'self'
+        ]);
     }
 
     public function testLandingWithCoupon()
     {
         $crawler = $this->getPage('guest_coupon_landing', ['code' => 'AZERTY']);
-        $this->assertEquals($this->generateUrl('guest_register'), $this->client->getHistory()->current()->getUri());
+        $this->assertEquals($this->generateUrl('trismegiste_oauth_connect'), $this->client->getHistory()->current()->getUri());
+        $this->assertEquals('AZERTY', $this->getService('session')->get('coupon'));
+    }
 
-        $prefillCoupon = $crawler->filter('form input[id="netizen_register_optionalCoupon"]');
-        $this->assertEquals('AZERTY', $prefillCoupon->attr('value'));
+    /**
+     * @depends testLandingWithCoupon
+     */
+    public function testRegisterWithCoupon()
+    {
+        $crawler = $this->getPage('guest_coupon_landing', ['code' => 'ABCDE']);
+
+        $crawler = $this->getPage('trismegiste_oauth_connect');
+        $authLink = $crawler->selectLink('dummy')->link();
+        $crawler = $this->client->click($authLink);
+        $oauthForm = $crawler->selectButton('Redirect')->form();
+        $crawler = $this->client->submit($oauthForm, [
+            'uid' => 'fr33',
+            'nickname' => 'kirk'
+        ]);
+        $this->assertCurrentRoute('guest_register');
+
+        $form = $crawler->selectButton('Register')->form();
+        $this->client->submit($form, ['netizen_register' => [
+                'nickname' => 'jkirk',
+                'gender' => 'xy',
+                'dateOfBirth' => ['year' => 1984, 'month' => 11, 'day' => 13]
+        ]]);
+
+        $this->assertCurrentRoute('wall_index', [
+            'wallNick' => 'jkirk',
+            'wallFilter' => 'self'
+        ]);
+    }
+
+    public function testFailToRegisterWithoutOAuth()
+    {
+        $this->getPage('guest_register');
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @depends testLoginPageWithPayment
+     */
+    public function testFailToAccessConnectWhenAuthenticated()
+    {
+        $crawler = $this->getPage('trismegiste_oauth_connect');
+        $authLink = $crawler->selectLink('dummy')->link();
+        $crawler = $this->client->click($authLink);
+        $oauthForm = $crawler->selectButton('Redirect')->form();
+        $crawler = $this->client->submit($oauthForm, [
+            'uid' => '1701'
+        ]);
+
+        $this->getPage('trismegiste_oauth_connect');
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
 
 }

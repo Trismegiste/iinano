@@ -8,14 +8,16 @@ namespace Trismegiste\SocialBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Trismegiste\SocialBundle\Security\NetizenFactory;
 use Symfony\Component\Form\FormInterface;
-use Trismegiste\SocialBundle\Validator\UniqueNickname;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
-use Symfony\Component\Validator\Constraints\Email;
+use Trismegiste\OAuthBundle\Security\Token;
+use Trismegiste\SocialBundle\Security\NetizenFactory;
+use Trismegiste\SocialBundle\Security\NotRegisteredHandler;
+use Trismegiste\SocialBundle\Validator\UniqueNickname;
 
 /**
  * RegisterType is a form to register an account
@@ -25,13 +27,20 @@ class RegisterType extends AbstractType
 
     protected $repository;
     protected $nicknameRegex;
-    protected $minAge;
 
-    public function __construct(NetizenFactory $repo, $regex, \ArrayAccess $config)
+    /** @var SessionInterface */
+    protected $session;
+
+    public function __construct(NetizenFactory $repo, $regex, SessionInterface $session)
     {
         $this->repository = $repo;
         $this->nicknameRegex = $regex;
-        $this->minAge = $config['minimumAge'];
+        $this->session = $session;
+    }
+
+    protected function getSessionAttr($name)
+    {
+        return $this->session->get(NotRegisteredHandler::IDENTIFIED_TOKEN)->getAttribute($name);
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -39,51 +48,25 @@ class RegisterType extends AbstractType
         $builder->add(
                         $builder->create('nickname', 'text', [
                             'constraints' => [
-                                // @todo all these constraints seem to me a little redundant
+                                // all these constraints seem to me a little redundant but they give clear error messages
                                 new NotBlank(),
                                 new Length(['min' => 5, 'max' => 20]),
                                 new UniqueNickname(),
                                 new Regex(['pattern' => '#^' . $this->nicknameRegex . '$#', 'message' => "This nickname is not valid: only a-z, 0-9 & '-' characters are valid."])
                             ],
                             'mapped' => false,
+                            'data' => $this->getSessionAttr('nickname'),
                             'attr' => ['placeholder' => 'Choose a nickname of 5 to 20 char. : a-z, 0-9 and \'-\'']
                         ])
                         ->addViewTransformer(new NicknameTransformer())
                 )
-                ->add('password', 'repeated', [
-                    'first_name' => 'password',
-                    'second_name' => 'confirm_password',
-                    'type' => 'password',
-                    'constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 4, 'max' => 40])
-                    ],
-                    'mapped' => false
-                ])
                 ->add('gender', 'gender', ['property_path' => 'profile.gender'])
-                ->add('fullName', 'text', [
-                    'constraints' => [
-                        new NotBlank(),
-                        new Length(['min' => 5, 'max' => 50])
-                    ],
-                    'property_path' => 'profile.fullName',
-                    'attr' => ['placeholder' => 'Your full name (public)']
-                ])
                 ->add('dateOfBirth', 'date', [
                     'property_path' => 'profile.dateOfBirth',
-                    'years' => range(date('Y') - $this->minAge, date('Y') - 100),
+                    'years' => range(date('Y') - $options['minimumAge'], date('Y') - 100),
                     'empty_value' => 'Select',
                     'constraints' => new NotBlank()
                 ])
-                ->add('email', 'email', [
-                    'attr' => ['placeholder' => "Private : a valid email used only if you've lost your password"],
-                    'property_path' => 'profile.email',
-                    'constraints' => [
-                        new NotBlank(),
-                        new Email()
-                    ]
-                ])
-                ->add('optionalCoupon', 'text', ['mapped' => false, 'required' => false])
                 ->add('register', 'submit');
     }
 
@@ -95,18 +78,20 @@ class RegisterType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $factory = $this->repository;
+        $providerKey = $this->getSessionAttr(Token::PROVIDER_KEY_ATTR);
+        $uid = $this->getSessionAttr(Token::UNIQUE_ID_ATTR);
 
-        $emptyData = function (FormInterface $form, $data) use ($factory) {
+        $emptyData = function (FormInterface $form, $data) use ($factory, $providerKey, $uid) {
             $nickname = $form->get('nickname')->getData();
-            $password = $form->get('password')->getData();
 
-            return $form->isEmpty() && !$form->isRequired() ? null : $factory->create($nickname, $password);
+            return $form->isEmpty() && !$form->isRequired() ? null : $factory->create($nickname, $providerKey, $uid);
         };
 
         $resolver->setDefaults([
-            'empty_data' => $emptyData,
-            'data_class' => 'Trismegiste\SocialBundle\Security\Netizen'
-        ]);
+                    'empty_data' => $emptyData,
+                    'data_class' => 'Trismegiste\SocialBundle\Security\Netizen'
+                ])
+                ->setRequired(['minimumAge']);
     }
 
 }

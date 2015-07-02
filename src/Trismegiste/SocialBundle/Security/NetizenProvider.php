@@ -6,12 +6,13 @@
 
 namespace Trismegiste\SocialBundle\Security;
 
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Trismegiste\Yuurei\Persistence\RepositoryInterface;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
+use Trismegiste\OAuthBundle\Security\OauthUserProviderInterface;
+use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 
 /**
  * NetizenProvider is a provider of symfony user based on Socialist User
@@ -24,12 +25,12 @@ use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
  * 5. tous ces services sont créés par une factory SecurityFactoryInterface
  * 6. ne pas oublier d'abonner la factory au service security dans le build du bundle
  */
-class NetizenProvider implements UserProviderInterface
+class NetizenProvider implements UserProviderInterface, OauthUserProviderInterface
 {
 
     protected $userClassAlias;
 
-    /** @var \Trismegiste\Yuurei\Persistence\RepositoryInterface */
+    /** @var RepositoryInterface */
     protected $userRepository;
 
     public function __construct(RepositoryInterface $repo, $alias)
@@ -64,6 +65,24 @@ class NetizenProvider implements UserProviderInterface
     public function supportsClass($class)
     {
         return $class === __NAMESPACE__ . '\Netizen';
+    }
+
+    public function findByOauthId($provider, $uid)
+    {
+        $found = $this->userRepository->findOne([
+            MapAlias::CLASS_KEY => $this->userClassAlias,
+            'cred' => [
+                MapAlias::CLASS_KEY => 'oauth',
+                'uid' => $uid,
+                'provider' => $provider
+            ]
+        ]);
+
+        if (is_null($found)) {
+            throw new UsernameNotFoundException("We don't know [$provider, $uid]");
+        }
+
+        return $found;
     }
 
 }
