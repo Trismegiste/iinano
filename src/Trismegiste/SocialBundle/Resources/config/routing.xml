@@ -104,4 +104,9 @@
         <requirement key="_method">GET</requirement>
     </route>
 
+    <route id="dynamic_config_create" pattern="/guest/install">
+        <default key="_controller">TrismegisteSocialBundle:Admin/Install:createMinimalParameter</default>
+        <requirement key="_method">GET|POST</requirement>
+    </route>
+
 </routes>
