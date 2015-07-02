@@ -74,11 +74,11 @@ class WebTestCasePlus extends WebTestCase
             $firewall = 'secured_area';
             $cred = $user->getCredential();
             $token = new Token($firewall, $cred->getProviderKey(), $cred->getUid(), $user->getRoles());
+            $token->setUser($user);
             $session->set('_security_' . $firewall, serialize($token));
             $session->save();
             $cookie = new Cookie($session->getName(), $session->getId());
             $this->client->getCookieJar()->set($cookie);
-// @todo is this redundant with the lines above ?
             $this->getService('security.context')->setToken($token);
         }
     }

@@ -23,7 +23,7 @@ class ContentControllerTest extends WebTestCasePlus
 
     public function testSecuredIndex()
     {
-        $loginUrl = $this->generateUrl('trismegiste_login');
+        $loginUrl = $this->generateUrl('trismegiste_oauth_connect');
         $this->getPage('content_index');
         $response = $this->client->getResponse();
         $this->assertTrue($response->isRedirect($loginUrl));
@@ -32,18 +32,11 @@ class ContentControllerTest extends WebTestCasePlus
     public function testAuthenticate()
     {
         $this->client->followRedirects(true);
+        $this->logIn('kirk');
 
-        $crawler = $this->getPage('trismegiste_login');
-        $form = $crawler->selectButton('Sign in')->form();
-        // set some values
-        $form['_username'] = 'kirk';
-        $form['_password'] = 'mellon';
-        $crawler = $this->client->submit($form);
-        $response = $this->client->getResponse();
-
+        $crawler = $this->getPage('content_index');
         // redirect to the wall
-        $wallUri = $this->generateUrl('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'self']);
-        $this->assertEquals($wallUri, $this->client->getHistory()->current()->getUri());
+        $this->assertCurrentRoute('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'self']);
 
         // check homepage
         $this->assertEquals(1, $crawler->filter('div#menu a[href$="kirk/self/"]:contains("Myself")')->count());
@@ -58,7 +51,7 @@ class ContentControllerTest extends WebTestCasePlus
         $this->assertEquals(302, $response->getStatusCode());
     }
 
-    public function testDeniedAccessAjaxMore()
+    public function testDeniedAccessAjaxMoreWithoutAjaxCall()
     {
         $this->logIn('kirk');
         $more = $this->generateUrl('ajax_content_more', ['wallNick' => 'kirk', 'wallFilter' => 'all', 'offset' => 0]);
