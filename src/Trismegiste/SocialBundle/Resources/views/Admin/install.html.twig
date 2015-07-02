@@ -2,11 +2,48 @@
 
 {% form_theme install '::inline_form.html.twig' %}
 
+{% block meta_title %}
+    {{ parent() }} | Installation
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .message-notice {
+            background-color: palegreen;
+            color: darkgreen;
+        }
+        .message-warning {
+            background-color: lightpink;
+            color: darkred;
+        }
+        .message-hero {
+            background-color: lightgrey;
+            color: black;
+            padding: 1em;
+        }
+    </style>
+{% endblock %}
+
 {% block full_body %}
     <div class="content">
+        <h1>Install iinano</h1>
+        <div class="pure-g">
+            {% for type in ['notice', 'warning'] %}
+                <div class="pure-u-1 message-{{ type }}">
+                    {% for msg in app.session.flashbag.get(type) %}
+                        <h2 class="text-center">{{ msg }}</h2>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            {% if providerCount > 0 %}
+                <div class="pure-u-1 message-hero">
+                    <h2 class="text-center"><a href="{{ path('trismegiste_oauth_connect') }}">Identify yourself and create your administrator account here</a></h2>
+                </div>
+            {% endif %}
+        </div>
         <div class="pure-g">
             <div class="pure-u-1">
-                <h1>Install iinano</h1>
                 <p>Please fill at least one of these OAuth providers to login</p>
                 {{ form(install) }}
             </div>

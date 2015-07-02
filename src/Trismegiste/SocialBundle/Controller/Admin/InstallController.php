@@ -12,7 +12,7 @@ use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Form\InstallParamType;
 
 /**
- * InstallController is a ...
+ * InstallController controls the first installation of the app
  */
 class InstallController extends Template
 {
@@ -29,14 +29,20 @@ class InstallController extends Template
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $config['oauth_provider'] = $form->getData();
-            $repo->write($config);
+            try {
+                $config['oauth_provider'] = $form->getData();
+                $repo->write($config);
+                $this->pushFlash('notice', 'The configuration has been saved, you can now create your admin account.');
 
-            return $this->redirectRouteOk('trismegiste_oauth_connect');
+                return $this->redirectRouteOk('dynamic_config_create');
+            } catch (\Exception $e) {
+                $this->pushFlash('warning', 'Cannot write configuration');
+            }
         }
 
         return $this->render('TrismegisteSocialBundle:Admin:install.html.twig', [
-                    'install' => $form->createView()
+                    'install' => $form->createView(),
+                    'providerCount' => count($repo->all())
         ]);
     }
 
