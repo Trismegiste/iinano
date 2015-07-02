@@ -6,22 +6,30 @@
 
 namespace Trismegiste\SocialBundle\Tests\Unit\Form;
 
+use MongoCollection;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Form\FormInterface;
+use Trismegiste\OAuthBundle\Security\Token;
+use Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface;
+use Trismegiste\SocialBundle\Security\NetizenFactory;
+use Trismegiste\SocialBundle\Security\NotRegisteredHandler;
+
 /**
  * RegisterTypeTest tests \Trismegiste\SocialBundle\Form\RegisterType
  */
-class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
+class RegisterTypeTest extends WebTestCase
 {
 
-    /** @var \Symfony\Component\Form\FormInterface */
+    /** @var FormInterface */
     protected $sut;
 
-    /** @var \Trismegiste\SocialBundle\Security\NetizenFactory */
+    /** @var NetizenFactory */
     protected $factory;
 
-    /** @var \MongoCollection */
+    /** @var MongoCollection */
     protected $collection;
 
-    /** @var \Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface */
+    /** @var NetizenRepositoryInterface */
     protected $repository;
 
     protected function setUp()
@@ -32,6 +40,12 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
         $this->collection = $kernel->getContainer()->get('dokudoki.collection');
         $this->factory = $kernel->getContainer()->get('security.netizen.factory');
         $this->repository = $kernel->getContainer()->get('social.netizen.repository');
+
+        $session = $kernel->getContainer()->get('session');
+        $token = new Token('secured_area', 'dummy', '123456789');
+        $token->setAttribute('nickname', 'dummy nickname');
+        $session->set(NotRegisteredHandler::IDENTIFIED_TOKEN, $token);
+
         $this->sut = $formFactory->create('netizen_register', null, [
             'csrf_protection' => false,
             'minimumAge' => 6
@@ -60,6 +74,8 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
         $this->assertEquals('daenerys-targa-7', $user->getUsername());
         $this->assertEquals('xx', $user->getProfile()->gender);
         $this->assertNotEmpty($user->getCredential());
+        $this->assertEquals('dummy', $user->getCredential()->getProviderKey());
+        $this->assertEquals('123456789', $user->getCredential()->getUid());
     }
 
     public function testNickTooShort()
@@ -93,7 +109,7 @@ class RegisterTypeTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 
     public function testAlreadyExisting()
     {
-        $obj = $this->factory->create('mcleod', 'aaaa');
+        $obj = $this->factory->create('mcleod', 'facebook', '456456456'); // registered with another provider
         $this->repository->persist($obj);
 
         $submitted = ['nickname' => 'mcleod', 'gender' => 'xy'];

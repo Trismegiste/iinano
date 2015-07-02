@@ -34,6 +34,7 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
         $this->container->setParameter('security.role_hierarchy.roles', []);
         $this->container->set('dokudoki.repository', $this->getMock('Trismegiste\Yuurei\Persistence\RepositoryInterface'));
         $this->container->set('security.context', $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface'));
+        $this->container->set('session', $this->getMock('Symfony\Component\HttpFoundation\Session\SessionInterface'));
         $this->container->set('logger', $this->getMock('Psr\Log\LoggerInterface'));
         $this->container->set('form.factory', $this->getMock('Symfony\Component\Form\FormFactoryInterface'));
         $this->container->set('security.http_utils', $this->getMockBuilder('Symfony\Component\Security\Http\HttpUtils')
