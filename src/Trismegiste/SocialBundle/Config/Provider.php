@@ -6,20 +6,21 @@
 
 namespace Trismegiste\SocialBundle\Config;
 
-use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
+use Trismegiste\OAuthBundle\DependencyInjection\ProviderConfigInterface;
+use Trismegiste\Yuurei\Persistence\RepositoryInterface;
 
 /**
  * Provider is a provider for dynamic config parameters coming from MongoDb
  *
  * @todo This object is obviously not SRP
  */
-class Provider implements CacheWarmerInterface, ProviderInterface, \ArrayAccess
+class Provider implements CacheWarmerInterface, ProviderInterface, \ArrayAccess, ProviderConfigInterface
 {
 
     const FILENAME = 'social_config.php';
 
-    /** @var Trismegiste\Yuurei\Persistence\RepositoryInterface */
+    /** @var \Trismegiste\Yuurei\Persistence\RepositoryInterface */
     protected $repo;
     protected $cacheDir;
     protected $defaultParam;
@@ -95,7 +96,7 @@ class Provider implements CacheWarmerInterface, ProviderInterface, \ArrayAccess
     /**
      * Get the unique entity in database (or create it)
      *
-     * @return \Trismegiste\SocialBundle\Config\ParameterBag
+     * @return ParameterBag
      */
     protected function getUniqueInstance()
     {
@@ -127,6 +128,11 @@ class Provider implements CacheWarmerInterface, ProviderInterface, \ArrayAccess
     public function offsetUnset($offset)
     {
         throw new \LogicException("Changing dynamic config is only possible with write()");
+    }
+
+    public function all()
+    {
+        return $this->read()['oauth_provider'];
     }
 
 }

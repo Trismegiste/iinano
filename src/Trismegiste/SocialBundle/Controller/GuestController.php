@@ -29,11 +29,11 @@ class GuestController extends Template
     public function registerAction(Request $request)
     {
         $session = $this->getRequest()->getSession();
-        $tokenFromOauth = $session->get(NotRegisteredHandler::IDENTIFIED_TOKEN);
 
-        if (is_null($tokenFromOauth)) {
+        if (!$session->has(NotRegisteredHandler::IDENTIFIED_TOKEN)) {
             throw new AccessDeniedHttpException("Not identified");
         }
+        $this->assertNotAuthenticated();
 
         $repo = $this->get('social.netizen.repository');
         $form = $this->createForm('netizen_register', null, [
@@ -46,6 +46,7 @@ class GuestController extends Template
             $user = $form->getData();
             $repo->persist($user);
             $this->authenticateAccount($user);
+            $session->remove(NotRegisteredHandler::IDENTIFIED_TOKEN);
             // coupon
             $coupon = $session->get('coupon');
             if (!empty($coupon)) {
@@ -56,7 +57,7 @@ class GuestController extends Template
                     $this->pushFlash('warning', $e->getMessage());
                 }
             }
-            // gateway after authentication
+            // @todo use the success login handler
             return $this->redirectRouteOk('netizen_landing_page');
         }
 
@@ -88,6 +89,7 @@ class GuestController extends Template
 
     public function connectAction()
     {
+        $this->assertNotAuthenticated();
         $request = $this->getRequest();
         $session = $request->getSession();
         // get the login error if there is one
@@ -102,6 +104,13 @@ class GuestController extends Template
 
         return $this->render('TrismegisteSocialBundle:Guest:connect.html.twig', [
                     'listing' => $config, 'error' => $error]);
+    }
+
+    protected function assertNotAuthenticated()
+    {
+        if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw new AccessDeniedHttpException("Already authenticated");
+        }
     }
 
 }
