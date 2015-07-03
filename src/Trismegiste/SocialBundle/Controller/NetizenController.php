@@ -56,7 +56,7 @@ class NetizenController extends Template
             $repo = $this->get('social.netizen.repository');
             $repo->updateAvatar($this->getUser(), $img);
 
-            $this->pushFlash('notice', 'Avatar updated');
+            $this->pushFlash('notice', 'Avatar updated, please press &lt;F5&gt; to refresh');
 
             return new JsonResponse(['status' => 'ok']);
         }
