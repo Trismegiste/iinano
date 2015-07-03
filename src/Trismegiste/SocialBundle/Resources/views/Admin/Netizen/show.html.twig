@@ -4,63 +4,64 @@
     {{ parent() }} | Show {{ netizen.username }}
 {% endblock %}
 
+
+{% block topbar %}
+    <ul>
+        {{ pure.menu_item('wall_index',{wallNick: netizen.username, wallFilter:'self'}, 'Go to wall' ) }}
+        {{ pure.menu_item('netizen_show',{author: netizen.username}, 'Go to profile' ) }}
+        {{ pure.menu_item('admin_netizen_promote',{id: netizen.id}, 'Change privileges' ) }}
+    </ul>
+{% endblock %}
+
 {% block content %}
     <div class="pure-g">
         <div class="pure-u-1">
-            <a href="{{ path('wall_index',{wallNick: netizen.username, wallFilter:'self'}) }}" class="pure-button">
-                Go to wall
-            </a>
-            <a href="{{ path('netizen_show',{author: netizen.username}) }}" class="pure-button">
-                Go to profile
-            </a>
-            <a href="{{ path('admin_netizen_promote',{id: netizen.id}) }}" class="pure-button">
-                Change privileges
-            </a>
-        </div>
-        <div class="pure-u-1">
-            <h2>{{ netizen.username }}</h2>
-            <h3>{{ netizen.profile.fullName }}</h3>
-            <div class="pure-g">
+            <article class="pure-g">
                 <div class="pure-u-1 pure-u-md-1-2">
+                    <h2>{{ netizen.username }}</h2>
+                    <h3>{{ netizen.profile.fullName }}</h3>
                     Gender: {{ netizen.profile.gender|gender }}<br/>
                     Location: {{ netizen.profile.location }}<br/>
-                </div>
-                <div class="pure-u-1 pure-u-md-1-2">
-                    Registered: {{ netizen.profile.joinedAt|timeago }}<br/>
                     Content counter: {{ netizen.profile.publishingCounter }}<br/>
                     Commentary counter: {{ netizen.profile.commentaryCounter }}<br/>
+                </div>
+                <div class="pure-u-1 pure-u-md-1-2">
+                    <h2>Group: {{ netizen.group|lower|slice(5) }}</h2>
+                    Registered: {{ netizen.profile.joinedAt|timeago }}<br/>
+                    Registered with: {{ netizen.credential.providerKey|capitalize }}<br/>
+                    {{ netizen.credential.providerKey|capitalize }} uid: {{ netizen.credential.uid }}<br/>
                     {% if netizen.lastTicket is not null %}
                         Next payment: {{ netizen.lastTicket.expiredAt|timeago }}
                     {% endif %}
                 </div>
-                <div class="pure-u-1">
-                    <h4>Ticket history</h4>
-                    <table width="100%" class="pure-table pure-table-horizontal pure-table-striped">
-                        <tr>
-                            <th>Type</th>
-                            <th>Valid</th>
-                            <th>Acquired at</th>
-                            <th>Expired at</th>
-                            <th>Actions</th>
-                        </tr>
-                        {% for idx, ticket in netizen.ticketIterator %}
-                            <tr>
-                                <td>{{ ticket.title }}</td>
-                                <td>{% if ticket.isValid() %}<i class="icon-ok"></i>{% endif %}</td>
-                                <td>{{ ticket.purchasedAt|date }}</td>
-                                <td>{{ ticket.expiredAt|date }}</td>
-                                <td>
-                                    {% if idx == 0 %}
-                                        <a href="{{ path('admin_netizen_edit_ticket',{id: netizen.id}) }}">
-                                            <i class="icon-pencil"></i>
-                                        </a>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            </div>
+            </article>
+        </div>
+        <div class="pure-u-1">
+            <h4>Ticket history</h4>
+            <table width="100%" class="pure-table pure-table-horizontal pure-table-striped">
+                <tr>
+                    <th>Type</th>
+                    <th>Valid</th>
+                    <th>Acquired at</th>
+                    <th>Expired at</th>
+                    <th>Actions</th>
+                </tr>
+                {% for idx, ticket in netizen.ticketIterator %}
+                    <tr>
+                        <td>{{ ticket.title }}</td>
+                        <td>{% if ticket.isValid() %}<i class="icon-ok"></i>{% endif %}</td>
+                        <td>{{ ticket.purchasedAt|date }}</td>
+                        <td>{{ ticket.expiredAt|date }}</td>
+                        <td>
+                            {% if idx == 0 %}
+                                <a href="{{ path('admin_netizen_edit_ticket',{id: netizen.id}) }}">
+                                    <i class="icon-pencil"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
         </div>
     </div>
 {% endblock %}
