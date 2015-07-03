@@ -14,18 +14,32 @@
             margin: 0;
             list-style-type: none;
         }
+        .alert-install {
+            background: pink;
+            color: black;
+            text-align: center;
+            padding: 1em;
+        }
     </style>
 {% endblock %}
 
 {% block full_body %}
     <div class="content">
         <div class="pure-g">
+            {% if install_url is defined %}
+                <div class="pure-u-1 alert-install">
+                    <h3>If you don't see any social networks below then you need
+                        to configure at least one <a href="{{ install_url }}">here</a>
+                    </h3>
+                </div>
+            {% endif %}
             <div class="pure-u-1 pure-u-md-1-2">
                 <h4>Welcome to</h4>
                 <h1>{{ social_config.appTitle }}</h1>
                 <h4>{{ social_config.subTitle }}</h4>
             </div>
             <div class="pure-u-1 pure-u-md-1-2">
+
                 <h3>Please authenticate yourself</h3>
                 {% if error %}
                     <ul class="auth-error">

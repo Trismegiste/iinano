@@ -38,7 +38,7 @@ class GuestController extends Template
         $repo = $this->get('social.netizen.repository');
         $form = $this->createForm('netizen_register', null, [
             'minimumAge' => $this->get('social.dynamic_config')['minimumAge'],
-            'adminMode' => ($repo->countAllUser() === 0)
+            'adminMode' => $this->hasNoUser()
         ]);
         $form->handleRequest($request);
 
@@ -88,23 +88,26 @@ class GuestController extends Template
         return $this->redirectRouteOk('trismegiste_oauth_connect');
     }
 
-    public function connectAction()
+    public function connectAction(Request $request)
     {
         $this->assertNotAuthenticated();
-        $request = $this->getRequest();
         $session = $request->getSession();
+
+        if ($this->hasNoUser()) {
+            $param['install_url'] = $this->generateUrl('dynamic_config_create');
+        }
+
         // get the login error if there is one
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+            $param['error'] = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         } else {
-            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+            $param['error'] = $session->get(SecurityContext::AUTHENTICATION_ERROR);
             $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         }
 
-        $config = $this->get('oauth.provider.factory')->getAvaliableProvider();
+        $param['listing'] = $this->get('oauth.provider.factory')->getAvaliableProvider();
 
-        return $this->render('TrismegisteSocialBundle:Guest:connect.html.twig', [
-                    'listing' => $config, 'error' => $error]);
+        return $this->render('TrismegisteSocialBundle:Guest:connect.html.twig', $param);
     }
 
     protected function assertNotAuthenticated()
@@ -112,6 +115,11 @@ class GuestController extends Template
         if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             throw new AccessDeniedHttpException("Already authenticated");
         }
+    }
+
+    protected function hasNoUser()
+    {
+        return (0 === $this->get('social.netizen.repository')->countAllUser());
     }
 
 }
