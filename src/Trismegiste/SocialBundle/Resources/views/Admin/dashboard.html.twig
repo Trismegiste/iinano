@@ -9,7 +9,36 @@
         <div class="pure-u-1 pure-u-md-1-2 dashboard-tile">
             <article>
                 <h1>Users</h1>
-                <h2>{{ user|si }}</h2>
+                <table class="pure-table pure-table-striped" width="100%">
+                    <tr><th>Count</th><td>{{ user|si }}</td></tr>
+                    <tr><th>Over the last year</th><td>1 per day</td></tr>
+                    <tr><th>Over the last month</th><td>10 per day</td></tr>
+                    <tr><th>Over the last 24h</th><td>100</td></tr>
+                </table>
+            </article>
+        </div>
+        <div class="pure-u-1 pure-u-md-1-2 dashboard-tile">
+            <article>
+                <h1>Fee</h1>
+                <table class="pure-table pure-table-striped" width="100%">
+                    <tr><th>Conversion rate</th><td>5%</td></tr>
+                    <tr><th>Renewing</th><td>42%</td></tr>
+                    <tr><th>Over the last month</th><td>200$</td></tr>
+                    <tr><th>Over the last year</th><td>2000$</td></tr>
+                    <tr><th>Total</th><td>4000$</td></tr>
+                </table>
+            </article>
+        </div>
+        <div class="pure-u-1 pure-u-md-1-2 dashboard-tile">
+            <article>
+                <h1>Health</h1>
+                <table class="pure-table pure-table-striped" width="100%">
+                    <tr><td>Load</td><td>{{ health.cpu.0 }} {{ health.cpu.1 }} {{ health.cpu.2 }}</td></tr>
+                    <tr><td>Memory</td><td>{{ health.memory|si }}</td></tr>
+                    <tr><td>Collection size</td><td>{{ health.mongo.size|si }}</td></tr>
+                    <tr><td>Doc avg size</td><td>{{ health.mongo.avgObjSize|si }}</td></tr>
+                    <tr><td>Index size</td><td>{{ health.mongo.totalIndexSize|si }}</td></tr>
+                </table>
             </article>
         </div>
         <div class="pure-u-1 pure-u-md-1-2 dashboard-tile">
@@ -17,23 +46,13 @@
                 <h1>Content</h1>
                 <table class="pure-table pure-table-striped" width="100%">
                     <tr><th>Type</th><th>Count</th></tr>
-                    {% for counter in content %}
+                            {% for counter in content %}
                         <tr>
                             <td>{{ counter._id }}</td>
                             <td>{{ counter.counter|si }}</td>
                         </tr>
                     {% endfor %}
                 </table>
-            </article>
-        </div>
-        <div class="pure-u-1 pure-u-md-1-2 dashboard-tile">
-            <article>
-                <h1>Health</h1>
-                <h2>Load {{ health.cpu.0 }} {{ health.cpu.1 }} {{ health.cpu.2 }}</h2>
-                <h2>Memory {{ health.memory|si }}</h2>
-                <h2>Collection size {{ health.mongo.size|si }}</h2>
-                <h2>Doc avg size {{ health.mongo.avgObjSize|si }}</h2>
-                <h2>Index size {{ health.mongo.totalIndexSize|si }}</h2>
             </article>
         </div>
     </div>

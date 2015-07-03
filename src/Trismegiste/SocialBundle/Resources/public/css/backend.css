@@ -1,6 +1,5 @@
 .dashboard-tile {
-    min-height: 300px;
-    padding-bottom: 40px;
+    padding-bottom: 3em;
 }
 
 .dashboard-tile article {
@@ -10,6 +9,7 @@
 
 .dashboard-tile h1 {
     font-size: 3em;
+    margin-bottom: 0.5em;
 }
 
 .dashboard-tile h2 {
@@ -17,7 +17,7 @@
 }
 
 .content {
-    padding: 1em;
+    padding: 2em;
 }
 
 .content article {

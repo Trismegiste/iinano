@@ -38,7 +38,7 @@ class Coupon extends PurchaseChoice
      */
     public function getHashKey()
     {
-        return $this->hashKey; // @todo hashids here could be cool
+        return $this->hashKey;
     }
 
     /**
