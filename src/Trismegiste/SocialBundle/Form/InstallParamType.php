@@ -23,7 +23,6 @@ class InstallParamType extends AbstractType
     {
         $builder->add('facebook', new AppKeyPairType())
                 ->add('twitter', new AppKeyPairType())
-                ->add('github', new AppKeyPairType())
                 ->add('Create', 'submit');
     }
 

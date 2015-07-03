@@ -29,7 +29,7 @@ class EntranceFeeType extends AbstractType
                     'precision' => 2
                 ])
                 ->add('currency', 'currency', [
-                    'preferred_choices' => ['USD', 'EUR', 'JPY'],
+                    'preferred_choices' => ['USD', 'GBP', 'EUR', 'JPY'],
                     'empty_value' => ''
                 ])
                 ->add('durationValue', 'choice', [
