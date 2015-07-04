@@ -44,6 +44,17 @@ class RegisterType extends AbstractType
         return $this->session->get(NotRegisteredHandler::IDENTIFIED_TOKEN)->getAttribute($name);
     }
 
+    protected function getDefaultGender()
+    {
+        if ($this->session->get(NotRegisteredHandler::IDENTIFIED_TOKEN)->hasAttribute('gender')) {
+            $fromOAuth = $this->getSessionAttr('gender');
+            switch ($fromOAuth) {
+                case 'male': return 'xy';
+                case 'female': return 'xx';
+            }
+        }
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
@@ -61,7 +72,10 @@ class RegisterType extends AbstractType
                         ])
                         ->addViewTransformer(new NicknameTransformer())
                 )
-                ->add('gender', 'gender', ['property_path' => 'profile.gender'])
+                ->add('gender', 'gender', [
+                    'property_path' => 'profile.gender',
+                    'data' => $this->getDefaultGender()
+                ])
                 ->add('dateOfBirth', 'date', [
                     'property_path' => 'profile.dateOfBirth',
                     'years' => range(date('Y') - $options['minimumAge'], date('Y') - 100),
