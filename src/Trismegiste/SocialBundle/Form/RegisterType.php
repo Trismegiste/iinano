@@ -41,17 +41,9 @@ class RegisterType extends AbstractType
 
     protected function getSessionAttr($name)
     {
-        return $this->session->get(NotRegisteredHandler::IDENTIFIED_TOKEN)->getAttribute($name);
-    }
-
-    protected function getDefaultGender()
-    {
-        if ($this->session->get(NotRegisteredHandler::IDENTIFIED_TOKEN)->hasAttribute('gender')) {
-            $fromOAuth = $this->getSessionAttr('gender');
-            switch ($fromOAuth) {
-                case 'male': return 'xy';
-                case 'female': return 'xx';
-            }
+        $token = $this->session->get(NotRegisteredHandler::IDENTIFIED_TOKEN);
+        if ($token->hasAttribute($name)) {
+            return $token->getAttribute($name);
         }
     }
 
@@ -74,7 +66,7 @@ class RegisterType extends AbstractType
                 )
                 ->add('gender', 'gender', [
                     'property_path' => 'profile.gender',
-                    'data' => $this->getDefaultGender()
+                    'data' => $this->getSessionAttr('gender')
                 ])
                 ->add('dateOfBirth', 'date', [
                     'property_path' => 'profile.dateOfBirth',
