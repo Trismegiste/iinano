@@ -24,15 +24,13 @@
             font-size: 10em;
             color: grey;
         }
-        a.facebook:hover {
-            color: darkblue;
-        }
-        a.twitter:hover {
-            color: #129FEA;
-        }
-        a.dummy:hover {
-            color: hotpink;
-        }
+        {# the things we do for better user experience: dynamic CSS #}
+        {% set providerColor={facebook:'darkblue', twitter:'#129FEA', dummy:'hotpink'} %}
+        {% for key, color in providerColor %}
+            a.{{ key }}{% if last_provider is not defined or key != last_provider %}:hover{% endif %} {
+                color: {{ color }};
+            }
+        {% endfor %}
         .icon-dummy-squared:before { content: '\e809'; } /* '' */
     </style>
 {% endblock %}
