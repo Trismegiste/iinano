@@ -106,6 +106,15 @@ class GuestController extends Template
         }
 
         $param['listing'] = $this->get('oauth.provider.factory')->getAvaliableProvider();
+        // put the last used provider stored in a cookie in first place in the list
+        $lastProviderKey = $request->cookies->get('oauth_provider');
+        if (!is_null($lastProviderKey)) {
+            $idx = array_search($lastProviderKey, $param['listing']);
+            if (false !== $idx) {
+                unset($param['listing'][$idx]);
+                array_unshift($param['listing'], $lastProviderKey);
+            }
+        }
 
         return $this->render('TrismegisteSocialBundle:Guest:connect.html.twig', $param);
     }

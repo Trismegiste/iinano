@@ -6,6 +6,7 @@
 
 namespace Trismegiste\SocialBundle\Security;
 
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -31,6 +32,10 @@ class LandingPageSuccessHandler implements AuthenticationSuccessHandlerInterface
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
+        // set a cookie to store the oauth provider for next connection
+        $cookie = new Cookie('oauth_provider', $token->getUser()
+                        ->getCredential()->getProviderKey(), new \DateTime('+1 month'));
+
         $route = 'buy_new_ticket';
 
         if ($this->security->isGranted('ROLE_ADMIN')) {
@@ -43,7 +48,10 @@ class LandingPageSuccessHandler implements AuthenticationSuccessHandlerInterface
             $route = 'content_index';
         }
 
-        return $this->httpUtils->createRedirectResponse($request, $route);
+        $response = $this->httpUtils->createRedirectResponse($request, $route);
+        $response->headers->setCookie($cookie);
+
+        return $response;
     }
 
 }
