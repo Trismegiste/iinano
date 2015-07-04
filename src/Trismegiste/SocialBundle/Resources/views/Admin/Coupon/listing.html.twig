@@ -24,7 +24,7 @@
                         <td>
                             <a href="{{ path('admin_coupon_edit', {id: coupon.id}) }}" title="Edit"><i class="icon-pencil"></i></a>
                             <a href="{{ path('admin_coupon_delete', {id: coupon.id}) }}" title="Delete"><i class="icon-trash-empty"></i></a>
-                            <a href="{{ path('guest_coupon_landing', {code: coupon.hashKey}) }}" title="Link"><i class="icon-link"></i></a>
+                            <a href="{{ url('guest_coupon_landing', {code: coupon.hashKey}) }}" title="Link"><i class="icon-link"></i></a>
                             <a data-generate-flyer="{{ url('guest_coupon_landing', {code: coupon.hashKey}) }}"
                                data-coupon-duration="{{ coupon.durationValue }}"
                                data-coupon-expiration="{{ coupon.expiredAt|date('F j, Y') }}"
@@ -54,6 +54,14 @@
                     freeTrialOf: $(this).data('couponDuration'),
                     until: $(this).data('couponExpiration')
                 });
+            })
+
+            $(document).on('click', 'i[class=icon-link]', function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+
+                alertify.alert('To copy this URL, click in the field below and press Ctrl-A then Ctrl-C<br/><br/>'
+                        + '<input value="' + $(this).parent().attr('href') + '"/>');
             })
         })
     </script>
