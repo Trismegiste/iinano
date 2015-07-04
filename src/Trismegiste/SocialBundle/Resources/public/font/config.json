@@ -9,79 +9,91 @@
     {
       "uid": "9dd9e835aebe1060ba7190ad2b2ed951",
       "css": "search",
-      "code": 59393,
-      "src": "fontawesome"
-    },
-    {
-      "uid": "17c21cd98db80e521e573eba247bd69b",
-      "css": "mail-squared",
-      "code": 59400,
+      "code": 59406,
       "src": "fontawesome"
     },
     {
       "uid": "d73eceadda1f594cec0536087539afbf",
       "css": "heart",
-      "code": 59394,
+      "code": 59393,
       "src": "fontawesome"
     },
     {
       "uid": "f3dc2d6d8fe9cf9ebff84dc260888cdf",
       "css": "heart-empty",
-      "code": 59399,
+      "code": 59394,
       "src": "fontawesome"
     },
     {
       "uid": "9d3d9d6ce1ec63eaa26281e6162853c9",
       "css": "camera-alt",
-      "code": 59396,
+      "code": 59395,
       "src": "fontawesome"
     },
     {
       "uid": "12f4ece88e46abd864e40b35e05b11cd",
       "css": "ok",
-      "code": 59402,
+      "code": 59392,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "0ddd3e8201ccc7d41f7b7c9d27eca6c1",
+      "css": "link",
+      "code": 59397,
       "src": "fontawesome"
     },
     {
       "uid": "c5fd349cbd3d23e4ade333789c29c729",
       "css": "eye",
-      "code": 59406,
+      "code": 59396,
       "src": "fontawesome"
     },
     {
       "uid": "c6be5a58ee4e63a5ec399c2b0d15cf2c",
       "css": "reply",
-      "code": 59392,
+      "code": 59398,
       "src": "fontawesome"
     },
     {
       "uid": "ab95e1351ebaec5850101097cbf7097f",
       "css": "quote-left",
-      "code": 59395,
+      "code": 59399,
       "src": "fontawesome"
     },
     {
       "uid": "d35a1d35efeb784d1dc9ac18b9b6c2b6",
       "css": "pencil",
-      "code": 59405,
+      "code": 59400,
       "src": "fontawesome"
     },
     {
       "uid": "09feb4465d9bd1364f4e301c9ddbaa92",
       "css": "retweet",
-      "code": 59397,
+      "code": 59402,
       "src": "fontawesome"
     },
     {
       "uid": "f48ae54adfb27d8ada53d0fd9e34ee10",
       "css": "trash-empty",
-      "code": 59403,
+      "code": 59405,
       "src": "fontawesome"
     },
     {
       "uid": "e99461abfef3923546da8d745372c995",
       "css": "cog",
-      "code": 59398,
+      "code": 59401,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "4743b088aa95d6f3b6b990e770d3b647",
+      "css": "facebook-squared",
+      "code": 59404,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "906348dc798a0d42715cc97c875e3ac6",
+      "css": "twitter-squared",
+      "code": 59403,
       "src": "fontawesome"
     }
   ]
