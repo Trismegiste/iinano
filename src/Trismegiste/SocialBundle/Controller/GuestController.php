@@ -58,8 +58,10 @@ class GuestController extends Template
                     $this->pushFlash('warning', $e->getMessage());
                 }
             }
-            // @todo use the success login handler
-            return $this->redirectRouteOk('netizen_landing_page');
+
+            return $this->get('success_login_landing_page')
+                            ->onAuthenticationSuccess($request, $this->get('security.context')
+                                    ->getToken());
         }
 
         return $this->render('TrismegisteSocialBundle:Guest:register.html.twig', ['register' => $form->createView()]);
