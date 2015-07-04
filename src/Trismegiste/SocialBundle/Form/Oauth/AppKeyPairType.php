@@ -20,8 +20,14 @@ class AppKeyPairType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('client_id', 'text', ['required' => false])
-                ->add('secret_id', 'text', ['required' => false])
+        $builder->add('client_id', 'text', [
+                    'label' => 'App ID',
+                    'required' => false
+                ])
+                ->add('secret_id', 'text', [
+                    'required' => false,
+                    'label' => 'Secret ID'
+                ])
                 ->addModelTransformer(new KeyPairTransformer());
     }
 

@@ -1,4 +1,4 @@
-{% extends 'TrismegisteSocialBundle:help:layout.html' %}
+{% extends 'TrismegisteSocialBundle:help:layout.html.twig' %}
 
 {% block help_content %}
     <h2>Add a new App in Twitter</h2>
@@ -7,7 +7,7 @@
         <li>Create a new App, choose "Website"</li>
         <li>Choose a name and a description</li>
         <li>Copy-paste this <pre>{{ url('content_index') }}</pre> in the field <strong>Website</strong></li>
-        <li>Copy-paste this <pre>{{ url('trismegiste_oauth_check') }}</pre> in the field <strong>Callback URL</strong></li>
+        <li>Copy-paste this <pre>{{ url('trismegiste_oauth_check', {provider:'twitter'}) }}</pre> in the field <strong>Callback URL</strong></li>
         <li>Check <strong>Yes I agree</strong></li>
         <li>Click on <strong>Create your Twitter application</strong></li>
         <li>After validation, click on the tab <strong>Key and access token</strong>.

@@ -45,6 +45,8 @@
         <div class="pure-g">
             <div class="pure-u-1">
                 <p>Please fill at least one of these OAuth providers to login</p>
+                <p><a target="_blank" href="{{ path('social_help',{id:'create_app_facebook'}) }}">Facebook</a></p>
+                <p><a target="_blank" href="{{ path('social_help',{id:'create_app_twitter'}) }}">Twitter</a></p>
                 {{ form(install) }}
             </div>
         </div>

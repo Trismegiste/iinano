@@ -109,4 +109,10 @@
         <requirement key="_method">GET|POST</requirement>
     </route>
 
+    <route id="social_help" pattern="/help/{id}">
+        <default key="_controller">TrismegisteSocialBundle:Help:show</default>
+        <requirement key="id">[_a-z]+</requirement>
+        <requirement key="_method">GET</requirement>
+    </route>
+
 </routes>
