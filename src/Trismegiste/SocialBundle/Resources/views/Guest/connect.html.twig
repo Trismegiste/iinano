@@ -19,13 +19,14 @@
             color: black;
             text-align: center;
             padding: 1em;
+            margin-bottom: 1em;
         }
         .social-oauth {
             font-size: 10em;
             color: grey;
         }
         {# the things we do for better user experience: dynamic CSS #}
-        {% set providerColor={facebook:'darkblue', twitter:'#129FEA', dummy:'hotpink'} %}
+        {% set providerColor={facebook:'#3B5998', twitter:'#4099FF', dummy:'hotpink'} %}
         {% for key, color in providerColor %}
             a.{{ key }}{% if last_provider is not defined or key != last_provider %}:hover{% endif %} {
                 color: {{ color }};
@@ -41,7 +42,7 @@
             {% if install_url is defined %}
                 <div class="pure-u-1 alert-install">
                     <h3>If you don't see any social networks below then you need
-                        to configure at least one <a href="{{ install_url }}">here</a>
+                        <a href="{{ install_url }}">to configure at least one here</a>
                     </h3>
                 </div>
             {% endif %}
@@ -50,7 +51,7 @@
                 <h3>{{ social_config.subTitle }}</h3>
             </div>
             <div class="pure-u-1 pure-u-md-2-3">
-                <h3>Please authenticate yourself with</h3>
+                <h3 class="text-center">Please authenticate yourself with</h3>
                 {% if error %}
                     <ul class="auth-error">
                         <li>{{ error.message }}</li>
