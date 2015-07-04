@@ -1,5 +1,5 @@
 {% extends "TrismegisteSocialBundle:PrivateMessage:message_show.html.twig" %}
 
 {% block pm_action %}
-    <a href="{{ path('private_markasread', {id: message.id}) }}" class="pure-button">&Cross;</a>
+    <a href="{{ path('private_markasread', {id: message.id}) }}" class="pure-button"><i class="icon-trash-empty"></i></a>
 {% endblock %}

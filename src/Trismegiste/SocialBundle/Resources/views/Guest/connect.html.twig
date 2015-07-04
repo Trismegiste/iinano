@@ -3,8 +3,8 @@
 {%block stylesheets %}
     {{ parent() }}
     <style>
-        .content .pure-u-1 {
-            padding-bottom: 2em;
+        .content .pure-u-md-1-3 {
+            padding-bottom: 1em;
         }
         .auth-error {
             color: #ac2925;
@@ -20,6 +20,18 @@
             text-align: center;
             padding: 1em;
         }
+        .social-oauth {
+            font-size: 10em;
+            color: grey;
+        }
+        {# the things we do for better user experience: dynamic CSS #}
+        {% set providerColor={facebook:'darkblue', twitter:'#129FEA', dummy:'hotpink'} %}
+        {% for key, color in providerColor %}
+            a.{{ key }}{% if last_provider is not defined or key != last_provider %}:hover{% endif %} {
+                color: {{ color }};
+            }
+        {% endfor %}
+        .icon-dummy-squared:before { content: '\e809'; } /* '' */
     </style>
 {% endblock %}
 
@@ -33,26 +45,28 @@
                     </h3>
                 </div>
             {% endif %}
-            <div class="pure-u-1 pure-u-md-1-2">
-                <h4>Welcome to</h4>
+            <div class="pure-u-1 pure-u-md-1-3">
                 <h1>{{ social_config.appTitle }}</h1>
-                <h4>{{ social_config.subTitle }}</h4>
+                <h3>{{ social_config.subTitle }}</h3>
             </div>
-            <div class="pure-u-1 pure-u-md-1-2">
-
-                <h3>Please authenticate yourself</h3>
+            <div class="pure-u-1 pure-u-md-2-3">
+                <h3>Please authenticate yourself with</h3>
                 {% if error %}
                     <ul class="auth-error">
                         <li>{{ error.message }}</li>
                     </ul>
                 {% endif %}
-                <ul>
+                <div class="pure-g">
                     {% for provider in listing %}
-                        <li>
-                            <a href="{{ path('trismegiste_oauth_connect_with', {provider:provider}) }}">{{ provider }}</a>
-                        </li>
+                        <div class="pure-u-1 pure-u-md-1-2 text-center">
+                            <a href="{{ path('trismegiste_oauth_connect_with', {provider:provider}) }}"
+                               title="Login with {{ provider|capitalize }}"
+                               class="social-oauth {{ provider }}">
+                                <i class="icon-{{ provider }}-squared"></i>
+                            </a>
+                        </div>
                     {% endfor %}
-                </ul>
+                </div>
             </div>
         </div>
     </div>

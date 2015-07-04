@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Iinano
+ * iinano
  */
 
 namespace Trismegiste\SocialBundle\Controller;
@@ -113,6 +113,7 @@ class GuestController extends Template
             if (false !== $idx) {
                 unset($param['listing'][$idx]);
                 array_unshift($param['listing'], $lastProviderKey);
+                $param['last_provider'] = $lastProviderKey;
             }
         }
 
