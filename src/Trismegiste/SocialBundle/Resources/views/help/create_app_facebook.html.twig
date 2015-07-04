@@ -1,0 +1,18 @@
+{% extends 'TrismegisteSocialBundle:help:layout.html' %}
+
+{% block help_content %}
+    <h2>Add a new App in Facebook</h2>
+    <ol>
+        <li>Got to <a href="https://developers.facebook.com/apps/">https://developers.facebook.com/apps/</a></li>
+        <li>Add a new App, choose <strong>WWW Website</strong></li>
+        <li>Choose a name for your app and a category</li>
+        <li>Scroll down and add this <pre>{{ url('content_index') }}</pre> in the field
+            <strong>Site URL</strong>, click on <strong>Next</strong></li>
+        <li>Scroll down until you reach <pre>Finished</pre></li>
+        <li>Ignore "Next step" and click on <strong>Skip to Developer Dashboard</strong></li>
+        <li>This page shows you the <strong>App ID</strong> and the <strong>App Secret</strong> to copy-paste in the form</li>
+        <li>Now you can try to register yourself on iinano, the first account is an Administrator</li>
+        <li>You can now configure the others parameters like fee amount, title and payment gateway</li>
+        <li>When you're ready, switch the App in "Public" mode in the <strong>Status &amp; Review</strong> tab</li>
+    </ol>
+{% endblock %}
