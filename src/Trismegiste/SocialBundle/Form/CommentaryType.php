@@ -31,10 +31,13 @@ class CommentaryType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add("message", 'textarea', ['constraints' => [
+        $builder->add("message", 'textarea', [
+                    'constraints' => [
                         new NotBlank(),
                         new Length(['min' => 3, 'max' => 280])
-            ]])
+                    ],
+                    'attr' => ['data-form-focus' => null]
+                ])
                 ->add('save', 'submit');
     }
 
