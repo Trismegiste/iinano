@@ -19,7 +19,12 @@
         <article>
             <h2>Recently registered</h2>
             {% for netizen in last_registered %}
-                {{ netizen.username }}
+                <div class="pure-u-1-6">
+                    <nav class="user">
+                        {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: netizen.author} %}
+                        <h4 class="text-center">{{ netizen.username }}</h4>
+                    </nav>
+                </div>
             {% endfor %}
         </article>
     </div>
