@@ -146,3 +146,9 @@ footer {
 .pure-form-stacked div div:hover {
     background-color: #eee;
 }
+
+.widget article {
+    margin-bottom: 1.6em;
+    margin-left: 0.6em;
+    margin-right: 0.6em;
+}

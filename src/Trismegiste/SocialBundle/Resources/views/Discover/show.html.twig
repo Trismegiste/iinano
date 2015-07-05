@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="entry">
+    <div class="widget">
         <article>
             <h2>Search</h2>
             <form class="pure-form" action="{{ path('search_listing') }}" method="GET">
@@ -15,11 +15,11 @@
         </article>
     </div>
 
-    <div class="entry">
+    <div class="widget">
         <article>
             <h2>Recently registered</h2>
             {% for netizen in last_registered %}
-                <div class="pure-u-1-6">
+                <div class="pure-u-1-4 pure-u-md-1-6 pure-u-xl-1-8">
                     <nav class="user">
                         {% include 'TrismegisteSocialBundle:Netizen:avatar_popup.html.twig' with {author: netizen.author} %}
                         <h4 class="text-center">{{ netizen.username }}</h4>
@@ -39,13 +39,4 @@
         <hr/>
     {% endfor %}
 
-{% endblock %}
-
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        .entry article {
-            margin-bottom: 1.6em;
-        }
-    </style>
 {% endblock %}
