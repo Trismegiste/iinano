@@ -21,6 +21,7 @@
         <li class="menu-item-divided"></li>
             {{ pure.menu_item('private_create', {'author':''}, 'Private message') }}
         <li class="menu-item-divided"></li>
+            {{ pure.menu_item('discover_show', {}, 'Explore') }}
             {{ pure.menu_item('netizen_show', {author: app.user.username}, 'My profile') }}
             {% if is_granted('ROLE_MANAGER') %}
             <li class="menu-item-divided"></li>
@@ -35,16 +36,6 @@
         {{ pure.menu_item('wall_index', { wallNick: app.user.username, wallFilter: 'following' }, 'Following' ) }}
         {{ pure.menu_item('wall_index', { wallNick: app.user.username, wallFilter: 'follower' }, 'Followers' ) }}
         {{ pure.menu_item('wall_index', { wallNick: app.user.username, wallFilter: 'friend' }, 'Friends' ) }}
-        <li>
-            <form class="pure-form pure-g" action="{{ path('search_listing') }}" method="GET">
-                <div class="pure-u-2-3">
-                    <input name="keyword" required="true" type="text" class="pure-input-1" placeholder="Search..." value="{{ keyword|default('') }}"/>
-                </div>
-                <div class=pure-u-1-3">
-                    <button type="submit" class="pure-button"><i class="icon-search"></i></button>
-                </div>
-            </form>
-        </li>
     </ul>
 {% endblock %}
 
