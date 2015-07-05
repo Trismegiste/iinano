@@ -54,13 +54,18 @@ class GuestControllerTest extends WebTestCasePlus
         $this->assertCount(1, $iter);
     }
 
+    protected function getConnectLink(\Symfony\Component\DomCrawler\Crawler $crawler, $providerKey)
+    {
+        return $crawler->filter("i[class='icon-$providerKey-squared']")->parents()->link();
+    }
+
     /**
      * @depends initialize
      */
     public function testUnknownUserGoToRegister()
     {
         $crawler = $this->getPage('trismegiste_oauth_connect');
-        $authLink = $crawler->selectLink('dummy')->link();
+        $authLink = $this->getConnectLink($crawler, 'dummy');
         $crawler = $this->client->click($authLink);
         $this->assertCurrentRoute('trismegiste_oauth_dummyserver', ['redirect' => $this->generateUrl('trismegiste_oauth_check', ['provider' => 'dummy'])]);
         $oauthForm = $crawler->selectButton('Redirect')->form();
@@ -77,7 +82,7 @@ class GuestControllerTest extends WebTestCasePlus
     public function testRegisterUntilPayment()
     {
         $crawler = $this->getPage('trismegiste_oauth_connect');
-        $authLink = $crawler->selectLink('dummy')->link();
+        $authLink = $this->getConnectLink($crawler, 'dummy');
         $crawler = $this->client->click($authLink);
         $this->assertCurrentRoute('trismegiste_oauth_dummyserver', ['redirect' => $this->generateUrl('trismegiste_oauth_check', ['provider' => 'dummy'])]);
         $oauthForm = $crawler->selectButton('Redirect')->form();
@@ -110,7 +115,7 @@ class GuestControllerTest extends WebTestCasePlus
     public function testLoginWithoutPaymentGoToBuyTicket()
     {
         $crawler = $this->getPage('trismegiste_oauth_connect');
-        $authLink = $crawler->selectLink('dummy')->link();
+        $authLink = $this->getConnectLink($crawler, 'dummy');
         $crawler = $this->client->click($authLink);
         $oauthForm = $crawler->selectButton('Redirect')->form();
         $crawler = $this->client->submit($oauthForm, [
@@ -131,7 +136,7 @@ class GuestControllerTest extends WebTestCasePlus
     public function testLoginPageWithPayment()
     {
         $crawler = $this->getPage('trismegiste_oauth_connect');
-        $authLink = $crawler->selectLink('dummy')->link();
+        $authLink = $this->getConnectLink($crawler, 'dummy');
         $crawler = $this->client->click($authLink);
         $oauthForm = $crawler->selectButton('Redirect')->form();
         $crawler = $this->client->submit($oauthForm, [
@@ -159,7 +164,7 @@ class GuestControllerTest extends WebTestCasePlus
         $crawler = $this->getPage('guest_coupon_landing', ['code' => 'ABCDE']);
 
         $crawler = $this->getPage('trismegiste_oauth_connect');
-        $authLink = $crawler->selectLink('dummy')->link();
+        $authLink = $this->getConnectLink($crawler, 'dummy');
         $crawler = $this->client->click($authLink);
         $oauthForm = $crawler->selectButton('Redirect')->form();
         $crawler = $this->client->submit($oauthForm, [
@@ -193,7 +198,7 @@ class GuestControllerTest extends WebTestCasePlus
     public function testFailToAccessConnectWhenAuthenticated()
     {
         $crawler = $this->getPage('trismegiste_oauth_connect');
-        $authLink = $crawler->selectLink('dummy')->link();
+        $authLink = $this->getConnectLink($crawler, 'dummy');
         $crawler = $this->client->click($authLink);
         $oauthForm = $crawler->selectButton('Redirect')->form();
         $crawler = $this->client->submit($oauthForm, [
