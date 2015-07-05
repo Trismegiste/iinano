@@ -1,0 +1,9 @@
+<div class="widget">
+    <article>
+        <h2>Search</h2>
+        <form class="pure-form" action="{{ path('search_listing') }}" method="GET">
+            <input name="keyword" required="true" type="text" placeholder="Search..." value="{{ keyword|default('') }}"/>
+            <button type="submit" class="pure-button"><i class="icon-search"></i></button>
+        </form>
+    </article>
+</div>
