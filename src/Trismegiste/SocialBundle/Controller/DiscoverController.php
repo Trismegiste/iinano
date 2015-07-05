@@ -23,13 +23,14 @@ class DiscoverController extends Controller
                             ->findLastEntries(0, 10),
                     'wallUser' => $this->getUser(),
                     'wallNick' => $this->getUser()->getUsername(),
-                    'wallFilter' => 'all'
+                    'wallFilter' => 'all',
+                    'pagination' => $this->container->getParameter('social.pagination')
         ]);
     }
 
     public function defaultContentIfEmptyAction()
     {
-          return $this->render('TrismegisteSocialBundle:Discover:default_content_if_empty.html.twig', [
+        return $this->render('TrismegisteSocialBundle:Discover:default_content_if_empty.html.twig', [
                     'last_registered' => $this->get('social.netizen.repository')
                             ->findLastRegistered(),
                     'last_content' => $this->get('social.publishing.repository')
