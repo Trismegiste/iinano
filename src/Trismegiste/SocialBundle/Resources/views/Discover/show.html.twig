@@ -5,14 +5,42 @@
 {% endblock %}
 
 {% block content %}
+    <div class="entry">
+        <article>
+            <h2>Search</h2>
+            <form class="pure-form" action="{{ path('search_listing') }}" method="GET">
+                <input name="keyword" required="true" type="text" placeholder="Search..." value="{{ keyword|default('') }}"/>
+                <button type="submit" class="pure-button"><i class="icon-search"></i></button>
+            </form>
+        </article>
+    </div>
 
-    <form class="pure-form pure-g" action="{{ path('search_listing') }}" method="GET">
-        <div class="pure-u-2-3">
-            <input name="keyword" required="true" type="text" class="pure-input-1" placeholder="Search..." value="{{ keyword|default('') }}"/>
-        </div>
-        <div class=pure-u-1-3">
-            <button type="submit" class="pure-button"><i class="icon-search"></i></button>
-        </div>
-    </form>
+    <div class="entry">
+        <article>
+            <h2>Recently registered</h2>
+            {% for netizen in last_registered %}
+                {{ netizen.username }}
+            {% endfor %}
+        </article>
+    </div>
 
+    <div class="entry">
+        <article>
+            <h2>Last contents</h2>
+        </article>
+    </div>
+    {% for content in last_content %}
+        {% include 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
+        <hr/>
+    {% endfor %}
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .entry article {
+            margin-bottom: 1.6em;
+        }
+    </style>
 {% endblock %}

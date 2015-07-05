@@ -165,4 +165,12 @@ class NetizenRepository implements NetizenRepositoryInterface
         }
     }
 
+    public function findLastRegistered($limit = 12)
+    {
+        return $this->repository
+                        ->find([MapAlias::CLASS_KEY => $this->classAlias])
+                        ->sort(['_id' => -1])
+                        ->limit($limit);
+    }
+
 }
