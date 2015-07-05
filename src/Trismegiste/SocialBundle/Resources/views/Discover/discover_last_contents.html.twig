@@ -1,0 +1,9 @@
+<div class="entry">
+    <article>
+        <h2>Last contents</h2>
+    </article>
+</div>
+{% for content in last_content %}
+    {% include 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
+    <hr/>
+{% endfor %}
