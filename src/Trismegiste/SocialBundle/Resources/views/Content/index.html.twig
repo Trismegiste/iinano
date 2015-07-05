@@ -17,13 +17,22 @@
     {% endblock %}
 
     {% block feed %}
-        {% include 'TrismegisteSocialBundle:Content:ajax/index_more.html.twig' %}
-        <div id="pagination"></div>
-        <div class="pure-g entry">
-            <div class="pure-u-1 text-center">
-                <a id="more-button" href="{{ path('ajax_content_more', {wallNick: wallNick, wallFilter: wallFilter, offset: pagination}) }}" class="pure-button">More</a>
+        {% set contentCount = 0 %}
+        {% for content in listing %}
+            {% include 'TrismegisteSocialBundle:Content:publishing_show.html.twig' %}
+            {% set contentCount = contentCount + 1 %}
+            <hr/>
+        {% endfor %}
+        {% if contentCount == 0 %}
+            {{ render(controller('TrismegisteSocialBundle:Discover:defaultContentIfEmpty')) }}
+        {% else %}
+            <div id="pagination"></div>
+            <div class="pure-g entry">
+                <div class="pure-u-1 text-center">
+                    <a id="more-button" href="{{ path('ajax_content_more', {wallNick: wallNick, wallFilter: wallFilter, offset: pagination}) }}" class="pure-button">More</a>
+                </div>
             </div>
-        </div>
+        {% endif %}
     {% endblock feed %}
 {% endblock %}
 
