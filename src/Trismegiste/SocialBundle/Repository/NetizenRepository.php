@@ -165,6 +165,9 @@ class NetizenRepository implements NetizenRepositoryInterface
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function findLastRegistered($limit = 12)
     {
         return $this->repository

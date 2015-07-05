@@ -90,4 +90,11 @@ interface NetizenRepositoryInterface
      * @throws AccessDeniedException if the current logged user has no right to do this action
      */
     public function promote(Netizen $user, SecurityContextInterface $ctx);
+
+    /**
+     * Gets a cursor on the last registered netizen
+     *
+     * @param int $limit
+     */
+    public function findLastRegistered($limit = 12);
 }
