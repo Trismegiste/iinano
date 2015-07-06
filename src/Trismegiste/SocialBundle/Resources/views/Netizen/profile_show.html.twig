@@ -8,7 +8,7 @@
             Gender: {{ profile.gender|gender }}<br/>
             Location: {{ profile.location }}<br/>
             {# this app behaves like a gentleman, sorry guys : #}
-            Born the: {{ profile.dateOfBirth|date(profile.gender == 'xx' ? 'F, jS' : "F, jS 'y") }}<br/>
+            Born the: {{ profile.dateOfBirth|date(profile.gender == 'xx' ? 'jS F' : "jS F 'y") }}<br/>
             Born at: {{ profile.placeOfBirth }}
         </div>
         <div class="pure-u-1 pure-u-md-1-2">
