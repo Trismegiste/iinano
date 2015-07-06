@@ -52,6 +52,7 @@ class CouponTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('toto', $this->sut->getHashKey());
         $this->assertEquals(5, $this->sut->getDurationValue());
         $this->assertEquals('+5 day', $this->sut->getDurationOffset());
+        $this->assertEquals('coupon toto', $this->sut->getTitle());
     }
 
 }
