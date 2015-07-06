@@ -97,7 +97,7 @@ class RepeatControllerTest extends WebTestCasePlus
         $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'self']);
         $button = $crawler->filter(".publishing nav")->selectLink('Delete')->link();
         $crawler = $this->client->click($button);
-        $this->assertCount(0, $crawler->filter(".publishing article:contains('message" . static::$random . "')"));
+        $this->assertCount(0, $this->collection->find(['owner.nickname' => 'kirk']));
     }
 
     public function testSourceNotFound()
