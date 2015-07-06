@@ -41,4 +41,9 @@ class EntraceFeeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('+12 month', $this->sut->getDurationOffset());
     }
 
+    public function testTitle()
+    {
+        $this->assertStringStartsWith('payment', $this->sut->getTitle());
+    }
+
 }
