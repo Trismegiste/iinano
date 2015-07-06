@@ -159,4 +159,38 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->persistNewPayment($ticket);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testDeleteNotFoundCoupon()
+    {
+        $coll = $this->getMockBuilder('MongoCollection')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $coll->expects($this->never())
+                ->method('remove');
+
+        $this->sut->deleteCoupon('5599f782e3f434f616787edc', $coll);
+    }
+
+    public function testDeleteCoupon()
+    {
+        $pk = '5599f782e3f434f616787edc';
+        $coll = $this->getMockBuilder('MongoCollection')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $coll->expects($this->once())
+                ->method('remove')
+                ->with(['_id' => new \MongoId($pk)]);
+
+        $coupon = new Coupon();
+        $coupon->setId(new \MongoId($pk));
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($pk)
+                ->willReturn($coupon);
+
+        $this->sut->deleteCoupon($pk, $coll);
+    }
+
 }

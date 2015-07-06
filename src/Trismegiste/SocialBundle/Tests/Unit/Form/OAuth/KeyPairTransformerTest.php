@@ -21,9 +21,14 @@ class KeyPairTransformerTest extends \PHPUnit_Framework_TestCase
         $this->sut = new KeyPairTransformer();
     }
 
-    public function testReverseTransform()
+    public function testReverseTransformToNull()
     {
         $this->assertNull($this->sut->reverseTransform(['client_id' => null, 'secret_id' => null]));
+    }
+
+    public function testReverseTransform()
+    {
+        $this->assertNotNull($this->sut->reverseTransform(['client_id' => 213, 'secret_id' => null]));
     }
 
     public function testIdentity()

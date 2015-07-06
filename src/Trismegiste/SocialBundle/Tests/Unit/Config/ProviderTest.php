@@ -68,6 +68,17 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($doc, $this->sut->read());
     }
 
+    public function testReadForceReload()
+    {
+        $doc = ['database' => 789];
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->with(['-class' => 'config'])
+                ->willReturn(new ParameterBag($doc));
+
+        $this->assertEquals($doc, $this->sut->read(true));
+    }
+
     public function testCachedRead()
     {
         $doc = ['config' => 456];
@@ -100,6 +111,34 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->sut->warmUp(sys_get_temp_dir());
         $this->assertEquals(['database' => 789], $this->sut->read());
+    }
+
+    public function testArrayAccessGet()
+    {
+        $this->sut->write(['config' => 456]);
+        $this->assertEquals(456, $this->sut['config']);
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testArrayAccessNoUnset()
+    {
+        unset($this->sut['nihil']);
+    }
+
+    /**
+     * @expectedException \LogicException
+     */
+    public function testArrayAccessNoSet()
+    {
+        $this->sut['nihil'] = 42;
+    }
+
+    public function testGetProviderKeys()
+    {
+        $this->sut->write(['oauth_provider' => ['facebook' => '']]);
+        $this->assertArrayHasKey('facebook', $this->sut->all());
     }
 
 }

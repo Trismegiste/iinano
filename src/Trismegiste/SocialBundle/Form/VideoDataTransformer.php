@@ -10,6 +10,10 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * VideoDataTransformer is a transformer from orignal video page url to embedded video url for iframe
+ * Currently only Youtube (what else ?)
+ * 
+ * Note: this transformer could have been coded at the field level (only the url) BUT if we want to change
+ * the template name in the Video entity, we need the parent object. So it is.
  */
 class VideoDataTransformer implements DataTransformerInterface
 {

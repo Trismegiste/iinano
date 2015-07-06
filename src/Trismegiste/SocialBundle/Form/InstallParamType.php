@@ -14,7 +14,7 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 use Trismegiste\SocialBundle\Form\Oauth\AppKeyPairType;
 
 /**
- * InstallParamType is a ...
+ * InstallParamType is a form to create/edit appkey for OAuth provider
  */
 class InstallParamType extends AbstractType
 {

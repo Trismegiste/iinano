@@ -8,8 +8,9 @@ namespace Trismegiste\SocialBundle\Tests\Unit\Repository;
 
 use Trismegiste\SocialBundle\Repository\NetizenRepository;
 use Trismegiste\SocialBundle\Security\Netizen;
-use Trismegiste\Socialist\Author;
 use Trismegiste\SocialBundle\Security\Profile;
+use Trismegiste\Socialist\Author;
+use Trismegiste\Yuurei\Persistence\CollectionIterator;
 
 /**
  * NetizenRepositoryTest tests NetizenRepository
@@ -235,6 +236,24 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
         $secu = $this->createSecurityContextMockFromUser($user);
 
         $this->sut->promote($user, $secu);
+    }
+
+    public function testFindLastRegistered()
+    {
+        $cursor = $this->getMockBuilder('MongoCursor')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $cursor->expects($this->once())
+                ->method('sort');
+        $cursor->expects($this->once())
+                ->method('limit');
+
+        $this->repository->expects($this->once())
+                ->method('find')
+                ->with($this->equalTo(['-class' => 'netizen']))
+                ->willReturn(new CollectionIterator($cursor, $this->repository));
+
+        $this->sut->findLastRegistered();
     }
 
 }
