@@ -40,7 +40,8 @@ class AbuseReportActionType extends AbstractType
                     'choices' => [
                         self::RESET => 'Reset report counter',
                         self::DELETE => 'Delete content'
-                    ]
+                    ],
+                    'constraints' => new NotBlank(['message' => 'Please select an action'])
                 ])
                 ->add('makeItSo', 'submit');
     }
