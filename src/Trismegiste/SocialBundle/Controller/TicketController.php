@@ -6,6 +6,10 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
+use Payum\Paypal\ExpressCheckout\Nvp\Api;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Security\TicketVoter;
 
@@ -21,12 +25,45 @@ class TicketController extends Template
             return $this->redirectRouteOk('content_index');
         }
 
-        return $this->render('TrismegisteSocialBundle:Ticket:buy_new_ticket.html.twig');
+        $api = $this->getPaypalApi();
+
+        $retour = $api->setExpressCheckout([
+            'RETURNURL' => $this->generateUrl('return_from_payment', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'CANCELURL' => $this->generateUrl('return_from_payment', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'PAYMENTREQUEST_0_AMT' => 9.99,
+            'PAYMENTREQUEST_0_PAYMENTACTION' => 'Sale',
+            'PAYMENTREQUEST_0_CURRENCYCODE' => 'EUR',
+            'NOSHIPPING' => 1
+        ]);
+        print_r($retour);
+        $url = $api->getAuthorizeTokenUrl($retour['TOKEN'], [
+            'useraction' => 'commit'
+        ]);
+
+        return $this->render('TrismegisteSocialBundle:Ticket:buy_new_ticket.html.twig', [
+                    'payment_url' => $url
+        ]);
     }
 
-    public function returnFromPayment()
+    public function returnFromPaymentAction(Request $request)
     {
+        $detail = $this->getPaypalApi()->getExpressCheckoutDetails([
+            'TOKEN' => $request->query->get('token')
+        ]);
 
+        print_r($detail);
+
+        return new Response('coucou');
+    }
+
+    protected function getPaypalApi()
+    {
+        return new Api([
+            'username' => 'trismegiste-facilitator_api1.voila.fr',
+            'password' => 'UUEMF2XQL4EX3TYJ',
+            'signature' => 'AFcWxV21C7fd0v3bYYYRCpSSRl31Ar98jnDSdjKrfA12tKK25f9kqu5Q',
+            'sandbox' => true
+        ]);
     }
 
 }

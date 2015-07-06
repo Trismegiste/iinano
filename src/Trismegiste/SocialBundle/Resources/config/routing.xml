@@ -71,6 +71,10 @@
         <default key="_controller">TrismegisteSocialBundle:Ticket:buyNewTicket</default>
         <requirement key="_method">GET</requirement>
     </route>
+    <route id="return_from_payment" pattern="/registered/callback">
+        <default key="_controller">TrismegisteSocialBundle:Ticket:returnFromPayment</default>
+        <requirement key="_method">GET</requirement>
+    </route>
 
     <route id="private_create" pattern="/private/{author}">
         <default key="_controller">TrismegisteSocialBundle:PrivateMessage:create</default>
