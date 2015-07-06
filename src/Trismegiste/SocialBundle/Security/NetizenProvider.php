@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Iinano
+ * iinano
  */
 
 namespace Trismegiste\SocialBundle\Security;

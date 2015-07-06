@@ -31,6 +31,13 @@ class NetizenFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Trismegiste\SocialBundle\Security\Profile', $user->getProfile());
         $this->assertEquals('dummy', $user->getCredential()->getProviderKey());
         $this->assertEquals('123456789', $user->getCredential()->getUid());
+        $this->assertEquals('ROLE_USER', $user->getGroup());
+    }
+
+    public function testAdminCreation()
+    {
+        $user = $this->sut->createAdmin('kirk', 'dummy', '123456789');
+        $this->assertEquals('ROLE_ADMIN', $user->getGroup());
     }
 
 }

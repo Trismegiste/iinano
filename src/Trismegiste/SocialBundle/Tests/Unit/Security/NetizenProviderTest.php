@@ -1,13 +1,13 @@
 <?php
 
 /*
- * Iinano
+ * iinano
  */
 
 namespace Trismegiste \SocialBundle\Tests\Unit\Security;
 
-use Trismegiste\SocialBundle\Security\NetizenProvider;
 use Trismegiste\SocialBundle\Security\Netizen;
+use Trismegiste\SocialBundle\Security\NetizenProvider;
 use Trismegiste\Socialist\Author;
 
 /**
@@ -51,7 +51,7 @@ class NetizenProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\UsernameNotFoundException
+     * @expectedException \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
      */
     public function testloadUserNotFound()
     {
@@ -80,7 +80,7 @@ class NetizenProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Symfony\Component\Security\Core\Exception\UnsupportedUserException
+     * @expectedException \Symfony\Component\Security\Core\Exception\UnsupportedUserException
      */
     public function testRefreshBadUser()
     {
@@ -92,6 +92,31 @@ class NetizenProviderTest extends \PHPUnit_Framework_TestCase
                 ->method('findByPk');
 
         $this->sut->refreshUser($randomUser);
+    }
+
+    public function testFindUserByOAuth()
+    {
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->with($this->equalTo([
+                            'cred' => [
+                                '-class' => 'oauth',
+                                'uid' => '1701',
+                                'provider' => 'ufp'
+                            ],
+                            '-class' => 'netizen'
+                ]))
+                ->will($this->returnValue($this->concreteUser));
+
+        $this->assertEquals($this->concreteUser, $this->sut->findByOauthId('ufp', '1701'));
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
+     */
+    public function testNotFoundUserByOAuth()
+    {
+        $this->assertEquals($this->concreteUser, $this->sut->findByOauthId('ufp', '1701'));
     }
 
 }
