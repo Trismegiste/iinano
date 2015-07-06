@@ -14,7 +14,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerI
 use Symfony\Component\Security\Http\HttpUtils;
 
 /**
- * LandingPageSuccessHandler is a ...
+ * LandingPageSuccessHandler is a AuthenticationSuccessHandler for the security layer
  */
 class LandingPageSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
@@ -30,6 +30,9 @@ class LandingPageSuccessHandler implements AuthenticationSuccessHandlerInterface
         $this->security = $secu;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         // set a cookie to store the oauth provider for next connection
