@@ -19,10 +19,9 @@
             {{ pure.menu_item('publishing_create', {type:"picture"}, 'Picture', '#anchor-form' ) }}
             {{ pure.menu_item('publishing_create', {type:"video"}, 'Video', '#anchor-form' ) }}
         <li class="menu-item-divided"></li>
-            {{ pure.menu_item('private_create', {'author':''}, 'Private message') }}
-        <li class="menu-item-divided"></li>
             {{ pure.menu_item('discover_show', {}, 'Explore') }}
             {{ pure.menu_item('netizen_show', {author: app.user.username}, 'My profile') }}
+            {{ pure.menu_item('private_create', {'author':''}, 'Private message') }}
             {% if is_granted('ROLE_MANAGER') %}
             <li class="menu-item-divided"></li>
                 {{ pure.menu_item('admin_dashboard', {}, 'Admin') }}
