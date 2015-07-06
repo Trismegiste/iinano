@@ -117,4 +117,33 @@ class NetizenTest extends \PHPUnit_Framework_TestCase
         $this->sut->addTicket($ticket);
     }
 
+    public function testUnused()
+    {
+        $this->sut->getSalt();
+        $this->sut->getPassword();
+    }
+
+    public function getComparableUser()
+    {
+        $user = new Netizen(new \Trismegiste\Socialist\Author('kirk'));
+        $user->setGroup('USER');
+        $user2 = clone $user;
+        $user->setGroup('ADMIN');
+        $user3 = clone $user;
+
+        return [
+            [$user, $user, true],
+            [$user, $user2, false],
+            [$user, $user3, true]
+        ];
+    }
+
+    /**
+     * @dataProvider getComparableUser
+     */
+    public function testIsEqual(Netizen $user1, Netizen $user2, $yesOrNo)
+    {
+        $this->assertEquals($yesOrNo, $user1->isEqualTo($user2));
+    }
+
 }
