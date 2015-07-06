@@ -11,9 +11,9 @@ use Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface;
 use Trismegiste\Socialist\SmallTalk;
 
 /**
- * SearchControllerTest tests search pages
+ * DiscoverControllerTest tests the DiscoverController
  */
-class SearchControllerTest extends WebTestCasePlus
+class DiscoverControllerTest extends WebTestCasePlus
 {
 
     /** @var MongoCollection */
@@ -44,24 +44,24 @@ class SearchControllerTest extends WebTestCasePlus
         $this->contentRepo->persist($doc);
     }
 
-    public function testSearchPage()
+    public function testShow()
     {
-        $crawler = $this->getPage('search_listing', ['keyword' => 'nothing']);
-        $this->assertEquals(200, $this->getCurrentResponse()->getStatusCode());
-        $this->assertCount(0, $crawler->filter('div.publishing:contains("different")'));
+        $crawler = $this->getPage('discover_show');
+        $this->assertCount(1, $crawler->filter('div.publishing:contains("different")'));
+        $this->assertCount(1, $crawler->filter('nav.user:contains("kirk")'));
     }
 
-    public function testSearchPageWithResult()
+    public function testNoDefaultContent()
     {
-        $crawler = $this->getPage('search_listing', ['keyword' => 'something']);
-        $this->assertCount(1, $crawler->filter('div.publishing:contains("different")'));
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'self']);
+        $this->assertCount(0, $crawler->filter('div.widget:contains("No content here")'));
     }
 
-    public function testAjaxMoreOnSearch()
+    public function testDefaultContent()
     {
-        $more = $this->generateUrl('ajax_search_more', ['keyword' => 'something', 'offset' => 0]);
-        $crawler = $this->client->request('GET', $more, [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
-        $this->assertCount(1, $crawler->filter('div.publishing:contains("different")'));
+        // no friend then empty page then default content
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'friend']);
+        $this->assertCount(1, $crawler->filter('div.widget:contains("No content here")'));
     }
 
 }
