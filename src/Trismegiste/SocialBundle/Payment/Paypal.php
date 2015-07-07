@@ -12,6 +12,7 @@ use Payum\Paypal\ExpressCheckout\Nvp\Api;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\SocialBundle\Repository\TicketRepository;
 use Trismegiste\SocialBundle\Security\Netizen;
 use Trismegiste\SocialBundle\Ticket\EntranceFee;
@@ -35,11 +36,15 @@ class Paypal implements Gateway
     /** @var LoggerInterface */
     protected $logger;
 
-    public function __construct(SessionInterface $sess, TicketRepository $repo, LoggerInterface $logger)
+    /** @var SecurityContextInterface */
+    protected $security;
+
+    public function __construct(SessionInterface $sess, SecurityContextInterface $secu, TicketRepository $repo, LoggerInterface $logger)
     {
         $this->session = $sess;
         $this->repository = $repo;
         $this->logger = $logger;
+        $this->security = $secu;
     }
 
     public function setConfig(array $cfg)
@@ -57,6 +62,7 @@ class Paypal implements Gateway
             $response = $api->setExpressCheckout([
                 'PAYMENTREQUEST_0_AMT' => $fee->getAmount(),
                 'PAYMENTREQUEST_0_CURRENCYCODE' => $fee->getCurrency(),
+                'PAYMENTREQUEST_0_DESC' => 'iinano',
                 'PAYMENTREQUEST_0_PAYMENTACTION' => Api::PAYMENTACTION_SALE,
                 'NOSHIPPING' => Api::NOSHIPPING_NOT_DISPLAY_ADDRESS
             ]);
@@ -69,7 +75,7 @@ class Paypal implements Gateway
             throw new PaymentMessage('Incorrect response from payment gateway');
         }
         if ($response['ACK'] !== Api::ACK_SUCCESS) {
-            throw new PaymentMessage($response['L_ERRORCODE0']);
+            throw new PaymentMessage($response['L_LONGMESSAGE0']);
         }
 
         $token = $response['TOKEN'];
@@ -80,7 +86,7 @@ class Paypal implements Gateway
 
     protected function validateReturn(Request $request)
     {
-        $currentUser = $request->getUser();
+        $currentUser = $this->security->getToken()->getUser();
         if (!$currentUser instanceof Netizen) {
             throw new PaymentMessage('User is not logged'); // or hacking
         }
@@ -94,19 +100,19 @@ class Paypal implements Gateway
             throw new PaymentMessage('Session has expired'); // or hacking
         }
 
-        $this->session->remove(self::PAYPAL_TOKEN);
+        //    $this->session->remove(self::PAYPAL_TOKEN);
     }
 
     public function processReturnFromGateway(Request $request)
     {
         $this->validateReturn($request);
 
-        $currentUser = $request->getUser();
+        $currentUser = $this->security->getToken()->getUser();
+        $token = $request->query->get('token');
         $api = $this->createApi();
 
-        $details = $api->getExpressCheckoutDetails([
-            'TOKEN' => $token
-        ]);
+        $details = $api->getExpressCheckoutDetails(['TOKEN' => $token]);
+        $this->logger->debug('paypal::getdetail', $details);
 
         if (Api::ACK_SUCCESS != $details['ACK'] ||
                 empty($details['PAYERID']) ||
@@ -121,11 +127,13 @@ class Paypal implements Gateway
         $ticket = $this->repository->createTicketFromPayment();
 
         $response = $api->doExpressCheckoutPayment($details);
+        $this->logger->debug('paypal::doPayment', $response);
+
         if (Api::ACK_SUCCESS == $response['ACK']) {
             $ticket->setTransactionInfo([
-                'transaction_id' => $response['TRANSACTIONID'],
+                'transaction_id' => $response['PAYMENTINFO_0_TRANSACTIONID'],
                 'payer_id' => $response['PAYERID'],
-                'email' => $response['EMAIL']
+                'email' => $details['EMAIL']
             ]);
             // save payment
             try {
@@ -133,12 +141,12 @@ class Paypal implements Gateway
             } catch (\Exception $e) {
                 $this->logger->error(sprintf('Payment was not saved for user %s transaction %s (reason: %s)')
                         , $currentUser->getUsername()
-                        , $response['TRANSACTIONID']
+                        , $response['PAYMENTINFO_0_TRANSACTIONID']
                         , $e->getMessage());
             }
         }
 
-        return $response['TRANSACTIONID'];
+        return $response['PAYMENTINFO_0_TRANSACTIONID'];
     }
 
     protected function createApi()

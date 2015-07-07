@@ -31,9 +31,15 @@ class Paypal
 
     public function configure(Gateway $gateway)
     {
-        $conf = $this->config['paypal'];
-        $conf['RETURNURL'] = $this->urlGenerator->generate($this->successRoute);
-        $conf['CANCELURL'] = $this->urlGenerator->generate($this->cancelRoute);
+        $conf = [
+            'username' => 'trismegiste-facilitator_api1.voila.fr',
+            'password' => 'UUEMF2XQL4EX3TYJ',
+            'signature' => 'AFcWxV21C7fd0v3bYYYRCpSSRl31Ar98jnDSdjKrfA12tKK25f9kqu5Q',
+            'sandbox' => true
+        ];
+        //    $this->config['paypal'];
+        $conf['return_url'] = $this->urlGenerator->generate($this->successRoute, [], UrlGeneratorInterface::ABSOLUTE_URL);
+        $conf['cancel_url'] = $this->urlGenerator->generate($this->cancelRoute, [], UrlGeneratorInterface::ABSOLUTE_URL);
         $gateway->setConfig($conf);
     }
 
