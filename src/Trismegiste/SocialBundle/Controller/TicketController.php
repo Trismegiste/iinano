@@ -31,14 +31,12 @@ class TicketController extends Template
             'RETURNURL' => $this->generateUrl('return_from_payment', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'CANCELURL' => $this->generateUrl('return_from_payment', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'PAYMENTREQUEST_0_AMT' => 9.99,
-            'PAYMENTREQUEST_0_PAYMENTACTION' => 'Sale',
+            'PAYMENTREQUEST_0_PAYMENTACTION' => Api::PAYMENTACTION_SALE,
             'PAYMENTREQUEST_0_CURRENCYCODE' => 'EUR',
-            'NOSHIPPING' => 1
+            'NOSHIPPING' => Api::NOSHIPPING_NOT_DISPLAY_ADDRESS
         ]);
         print_r($retour);
-        $url = $api->getAuthorizeTokenUrl($retour['TOKEN'], [
-            'useraction' => 'commit'
-        ]);
+        $url = $api->getAuthorizeTokenUrl($retour['TOKEN']);
 
         return $this->render('TrismegisteSocialBundle:Ticket:buy_new_ticket.html.twig', [
                     'payment_url' => $url
@@ -62,7 +60,8 @@ class TicketController extends Template
             'username' => 'trismegiste-facilitator_api1.voila.fr',
             'password' => 'UUEMF2XQL4EX3TYJ',
             'signature' => 'AFcWxV21C7fd0v3bYYYRCpSSRl31Ar98jnDSdjKrfA12tKK25f9kqu5Q',
-            'sandbox' => true
+            'sandbox' => true,
+            'useraction' => Api::USERACTION_COMMIT
         ]);
     }
 
