@@ -6,11 +6,15 @@
 
 namespace Trismegiste\SocialBundle\Repository;
 
-use Trismegiste\SocialBundle\Ticket\Ticket;
-use Trismegiste\SocialBundle\Ticket\Coupon;
+use InvalidArgumentException;
+use MongoCollection;
+use RuntimeException;
+use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 use Trismegiste\SocialBundle\Security\Netizen;
-use Trismegiste\SocialBundle\Ticket\InvalidCouponException;
+use Trismegiste\SocialBundle\Ticket\Coupon;
 use Trismegiste\SocialBundle\Ticket\EntranceFee;
+use Trismegiste\SocialBundle\Ticket\InvalidCouponException;
+use Trismegiste\SocialBundle\Ticket\Ticket;
 
 /**
  * TicketRepository is a repository for ticket coupon and fee
@@ -50,7 +54,7 @@ class TicketRepository extends SecuredContentProvider
      */
     public function findCouponByHash($hash)
     {
-        return $this->repository->findOne(['-class' => 'coupon', 'hashKey' => $hash]);
+        return $this->repository->findOne([MapAlias::CLASS_KEY => 'coupon', 'hashKey' => $hash]);
     }
 
     /**
@@ -78,14 +82,14 @@ class TicketRepository extends SecuredContentProvider
      *
      * @return Ticket
      *
-     * @throws \RuntimeException if no fee has been configured
+     * @throws RuntimeException if no fee has been configured
      */
     public function createTicketFromPayment()
     {
         /** @var EntranceFee */
-        $fee = $this->repository->findOne(['-class' => 'fee']);
+        $fee = $this->findEntranceFee();
         if (is_null($fee)) {
-            throw new \RuntimeException('no payment has been configured');
+            throw new RuntimeException('no payment has been configured');
         }
 
         return new Ticket($fee);
@@ -105,14 +109,19 @@ class TicketRepository extends SecuredContentProvider
         $this->repository->persist($user);
     }
 
-    public function deleteCoupon($id, \MongoCollection $coll)
+    public function deleteCoupon($id, MongoCollection $coll)
     {
         $obj = $this->repository->findByPk($id);
-        if (!$obj instanceof \Trismegiste\SocialBundle\Ticket\Coupon) {
-            throw new \InvalidArgumentException(get_class($obj) . " is not a coupon");
+        if (!$obj instanceof Coupon) {
+            throw new InvalidArgumentException(get_class($obj) . " is not a coupon");
         }
 
         $coll->remove(['_id' => $obj->getId()]);
+    }
+
+    public function findEntranceFee()
+    {
+        return $this->repository->findOne([MapAlias::CLASS_KEY => 'fee']);
     }
 
 }
