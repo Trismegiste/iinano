@@ -64,7 +64,8 @@ class Paypal implements Gateway
                 'PAYMENTREQUEST_0_CURRENCYCODE' => $fee->getCurrency(),
                 'PAYMENTREQUEST_0_DESC' => 'iinano',
                 'PAYMENTREQUEST_0_PAYMENTACTION' => Api::PAYMENTACTION_SALE,
-                'NOSHIPPING' => Api::NOSHIPPING_NOT_DISPLAY_ADDRESS
+                'NOSHIPPING' => Api::NOSHIPPING_NOT_DISPLAY_ADDRESS,
+                'ALLOWNOTE' => 0
             ]);
         } catch (HttpException $e) {
             $this->logger->critical('Paypal is not responding ' . $e->getMessage());
@@ -132,7 +133,7 @@ class Paypal implements Gateway
         if (Api::ACK_SUCCESS == $response['ACK']) {
             $ticket->setTransactionInfo([
                 'transaction_id' => $response['PAYMENTINFO_0_TRANSACTIONID'],
-                'payer_id' => $response['PAYERID'],
+                'payer_id' => $details['PAYERID'],
                 'email' => $details['EMAIL']
             ]);
             // save payment
