@@ -31,7 +31,7 @@ class Paypal
 
     public function configure(Gateway $gateway)
     {
-        $conf = $config['paypal'];
+        $conf = $this->config['paypal'];
         $conf['RETURNURL'] = $this->urlGenerator->generate($this->successRoute);
         $conf['CANCELURL'] = $this->urlGenerator->generate($this->cancelRoute);
         $gateway->setConfig($conf);

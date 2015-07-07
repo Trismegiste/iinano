@@ -93,6 +93,8 @@ class Paypal implements Gateway
         if ($token !== $this->session->get(self::PAYPAL_TOKEN)) {
             throw new PaymentMessage('Session has expired'); // or hacking
         }
+
+        $this->session->remove(self::PAYPAL_TOKEN);
     }
 
     public function processReturnFromGateway(Request $request)

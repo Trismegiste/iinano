@@ -114,5 +114,21 @@
             <tag name="monolog.logger" channel="security" />
         </service>
 
+        <service id="paypal_configurator" class="Trismegiste\SocialBundle\DependencyInjection\Configurator\Paypal" public="false">
+            <argument type="service" id="social.dynamic_config"/>
+            <argument type="service" id="routing"/>
+            <argument type="string">return_from_payment</argument>
+            <argument type="string">cancel_from_payment</argument>
+        </service>
+
+        <service id="social.payment.paypal" class="Trismegiste\SocialBundle\Payment">
+            <argument type="service" id="session"/>
+            <argument type="service" id="social.ticket.repository"/>
+            <argument type="service" id="logger"/>
+            <tag name="monolog.logger" channel="security" />
+            <configurator id="paypal_configurator" method="configure"/>
+        </service>
+
+
     </services>
 </container>
