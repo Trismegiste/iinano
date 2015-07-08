@@ -37,7 +37,7 @@ class Paypal
                 'username' => $paypal['username'],
                 'password' => $paypal['password'],
                 'signature' => $paypal['signature'],
-                'sandbox' => $paypal['sandbox']
+                'sandbox' => (bool) $paypal['sandbox']
             ];
         }
 
