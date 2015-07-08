@@ -39,6 +39,14 @@ class Paypal implements Gateway
     /** @var SecurityContextInterface */
     protected $security;
 
+    /**
+     * Ctor
+     * 
+     * @param SessionInterface $sess
+     * @param SecurityContextInterface $secu
+     * @param TicketRepository $repo
+     * @param LoggerInterface $logger
+     */
     public function __construct(SessionInterface $sess, SecurityContextInterface $secu, TicketRepository $repo, LoggerInterface $logger)
     {
         $this->session = $sess;
@@ -53,6 +61,13 @@ class Paypal implements Gateway
         $this->apiConfig = $cfg;
     }
 
+    /**
+     * Gets the url to the payment gateway
+     *
+     * @return string the url to put in a paypal button
+     *
+     * @throws PaymentMessage
+     */
     public function getUrlToGateway()
     {
         $api = $this->createApi();
@@ -62,7 +77,7 @@ class Paypal implements Gateway
             $response = $api->setExpressCheckout([
                 'PAYMENTREQUEST_0_AMT' => $fee->getAmount(),
                 'PAYMENTREQUEST_0_CURRENCYCODE' => $fee->getCurrency(),
-                'PAYMENTREQUEST_0_DESC' => 'iinano',
+                'PAYMENTREQUEST_0_DESC' => $this->apiConfig['appTitle'],
                 'PAYMENTREQUEST_0_PAYMENTACTION' => Api::PAYMENTACTION_SALE,
                 'NOSHIPPING' => Api::NOSHIPPING_NOT_DISPLAY_ADDRESS,
                 'ALLOWNOTE' => 0
@@ -85,9 +100,16 @@ class Paypal implements Gateway
         return $api->getAuthorizeTokenUrl($token);
     }
 
+    /**
+     * Basic checks if the redirection request from paypal is ok
+     *
+     * @param Request $request
+     *
+     * @throws PaymentMessage
+     */
     protected function validateReturn(Request $request)
     {
-        $currentUser = $this->security->getToken()->getUser();
+        $currentUser = $this->getUser();
         if (!$currentUser instanceof Netizen) {
             throw new PaymentMessage('User is not logged'); // or hacking
         }
@@ -100,15 +122,21 @@ class Paypal implements Gateway
         if ($token !== $this->session->get(self::PAYPAL_TOKEN)) {
             throw new PaymentMessage('Session has expired'); // or hacking
         }
-
-        //    $this->session->remove(self::PAYPAL_TOKEN);
     }
 
+    /**
+     * Process the request from the redirection of paypal
+     *
+     * @param Request $request
+     *
+     * @return string transaction id
+     *
+     * @throws PaymentMessage error to print
+     */
     public function processReturnFromGateway(Request $request)
     {
         $this->validateReturn($request);
 
-        $currentUser = $this->security->getToken()->getUser();
         $token = $request->query->get('token');
         $api = $this->createApi();
 
@@ -125,37 +153,58 @@ class Paypal implements Gateway
             throw new PaymentMessage("Payment already done");
         }
 
-        $ticket = $this->repository->createTicketFromPayment();
-
         $response = $api->doExpressCheckoutPayment($details);
         $this->logger->debug('paypal::doPayment', $response);
 
         if (Api::ACK_SUCCESS == $response['ACK']) {
-            $ticket->setTransactionInfo([
-                'transaction_id' => $response['PAYMENTINFO_0_TRANSACTIONID'],
-                'payer_id' => $details['PAYERID'],
-                'email' => $details['EMAIL']
-            ]);
-            // save payment
-            try {
-                $this->repository->persistNewPayment($ticket);
-            } catch (\Exception $e) {
-                $this->logger->error(sprintf('Payment was not saved for user %s transaction %s (reason: %s)')
-                        , $currentUser->getUsername()
-                        , $response['PAYMENTINFO_0_TRANSACTIONID']
-                        , $e->getMessage());
-            }
+            $this->persistance($response['PAYMENTINFO_0_TRANSACTIONID']
+                    , $details['PAYERID']
+                    , $details['EMAIL']);
         }
 
         return $response['PAYMENTINFO_0_TRANSACTIONID'];
     }
 
+    /**
+     * Persists the new ticket
+     *
+     * @param string $transactionId
+     * @param string $payerId
+     * @param string $payerEmail
+     */
+    protected function persistance($transactionId, $payerId, $payerEmail)
+    {
+        $ticket = $this->repository->createTicketFromPayment();
+
+        $ticket->setTransactionInfo([
+            'transactionId' => $transactionId,
+            'payerId' => $payerId,
+            'payerEmail' => $payerEmail
+        ]);
+        // save payment
+        try {
+            $this->repository->persistNewPayment($ticket);
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf('Payment was not saved for user %s transaction %s (reason: %s)')
+                    , $this->getUser()->getUsername()
+                    , $transactionId
+                    , $e->getMessage());
+        }
+    }
+
+    /**
+     * Creates Api for paypal
+     *
+     * @return Api
+     */
     protected function createApi()
     {
         return new Api($this->apiConfig);
     }
 
     /**
+     * Gets entrance fee model
+     *
      * @return EntranceFee
      *
      * @throws LogicException
@@ -169,6 +218,16 @@ class Paypal implements Gateway
         }
 
         return $fee;
+    }
+
+    /**
+     * Gets current user
+     *
+     * @return \Symfony\Component\Security\Core\User\UserInterface
+     */
+    protected function getUser()
+    {
+        return $this->security->getToken()->getUser();
     }
 
 }
