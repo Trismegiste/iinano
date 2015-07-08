@@ -20,8 +20,8 @@
         {% endif %}
         <li class="menu-item-divided"></li>
         {% if is_granted('ROLE_MODERATOR') %}
-            {{ pure.menu_item('admin_abusive_pub_listing', {}, 'Abuse/spam post') }}
-            {{ pure.menu_item('admin_abusive_comm_listing', {}, 'Abuse/spam comm') }}
+            {{ pure.menu_item('admin_abusive_pub_listing', {}, 'Posts moderation') }}
+            {{ pure.menu_item('admin_abusive_comm_listing', {}, 'Comments mod.') }}
         {% endif %}
         {% if is_granted('ROLE_MANAGER') %}
             {{ pure.menu_item('admin_netizen_listing', {}, 'Users') }}
