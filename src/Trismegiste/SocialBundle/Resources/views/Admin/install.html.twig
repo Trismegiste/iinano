@@ -1,6 +1,6 @@
 {% extends 'TrismegisteSocialBundle:Guest:layout.html.twig' %}
 
-{% form_theme install '::inline_form.html.twig' %}
+{% form_theme install '::inline_form.html.twig' _self %}
 
 {% block meta_title %}
     {{ parent() }} | Installation
@@ -25,6 +25,16 @@
     </style>
 {% endblock %}
 
+{% block _install_facebook_label %}
+    {{ block('form_label') }}
+    <a target="_blank" href="{{ path('social_help',{id:'create_app_facebook'}) }}">What is it ?</a>
+{% endblock %}
+
+{% block _install_twitter_label %}
+    {{ block('form_label') }}
+    <a target="_blank" href="{{ path('social_help',{id:'create_app_twitter'}) }}">What is it ?</a>
+{% endblock %}
+
 {% block full_body %}
     <div class="content">
         <h1>Install iinano</h1>
@@ -45,8 +55,6 @@
         <div class="pure-g">
             <div class="pure-u-1">
                 <p>Please fill at least one of these OAuth providers to login</p>
-                <p><a target="_blank" href="{{ path('social_help',{id:'create_app_facebook'}) }}">Facebook</a></p>
-                <p><a target="_blank" href="{{ path('social_help',{id:'create_app_twitter'}) }}">Twitter</a></p>
                 {{ form(install) }}
             </div>
         </div>
