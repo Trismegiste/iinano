@@ -22,13 +22,22 @@ class TicketController extends Template
             return $this->redirectRouteOk('content_index');
         }
 
-        $paypal = $this->get('social.payment.paypal');
-        $url = $paypal->getUrlToGateway();
+        $param = [];
+        try {
+            $paypal = $this->get('social.payment.paypal');
+            $param['payment_url'] = $paypal->getUrlToGateway();
+        } catch (\Exception $e) {
+            $this->pushFlash('warning', $e->getMessage());
+        }
 
-        return $this->render('TrismegisteSocialBundle:Ticket:buy_new_ticket.html.twig', [
-                    'payment_url' => $url,
-                    'fee' => $this->get('social.ticket.repository')->findEntranceFee()
-        ]);
+        $fee = $this->get('social.ticket.repository')->findEntranceFee();
+        if (!is_null($fee)) {
+            $param['fee'] = $fee;
+        } else {
+            $this->pushFlash('warning', 'Bad fee configuration');
+        }
+
+        return $this->render('TrismegisteSocialBundle:Ticket:buy_new_ticket.html.twig', $param);
     }
 
     public function returnFromPaymentAction(Request $request)
