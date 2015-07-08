@@ -41,7 +41,7 @@ class Paypal implements Gateway
 
     /**
      * Ctor
-     * 
+     *
      * @param SessionInterface $sess
      * @param SecurityContextInterface $secu
      * @param TicketRepository $repo
@@ -174,6 +174,7 @@ class Paypal implements Gateway
      */
     protected function persistance($transactionId, $payerId, $payerEmail)
     {
+        $this->session->remove(self::PAYPAL_TOKEN);
         $ticket = $this->repository->createTicketFromPayment();
 
         $ticket->setTransactionInfo([

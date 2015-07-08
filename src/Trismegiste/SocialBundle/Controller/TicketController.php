@@ -27,7 +27,8 @@ class TicketController extends Template
         $url = $paypal->getUrlToGateway();
 
         return $this->render('TrismegisteSocialBundle:Ticket:buy_new_ticket.html.twig', [
-                    'payment_url' => $url
+                    'payment_url' => $url,
+                    'fee' => $this->get('social.ticket.repository')->findEntranceFee()
         ]);
     }
 
