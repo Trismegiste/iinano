@@ -7,7 +7,6 @@
 namespace Trismegiste\SocialBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Trismegiste\SocialBundle\Controller\Template;
 use Trismegiste\SocialBundle\Security\TicketVoter;
 
@@ -35,11 +34,35 @@ class TicketController extends Template
     public function returnFromPaymentAction(Request $request)
     {
         $paypal = $this->get('social.payment.paypal');
-        $ret = $paypal->processReturnFromGateway($request);
 
-        print_r($ret);
+        try {
+            $ret = $paypal->processReturnFromGateway($request);
 
-        return new Response('coucou');
+            $this->pushFlash('notice', "Transaction number " . $ret);
+
+            return $this->redirectRouteOk('payment_summary', ['id' => $ret]);
+        } catch (\Exception $e) {
+            $this->pushFlash('warning', $e->getMessage());
+
+            return $this->redirectRouteOk('buy_new_ticket');
+        }
+    }
+
+    public function cancelFromPaymentAction(Request $request)
+    {
+        $this->pushFlash('warning', "You have cancelled the payment");
+
+        return $this->redirectRouteOk('buy_new_ticket');
+    }
+
+    /**
+     * Redirection after return from paypal to here to prevent "refresh" from user
+     */
+    public function paymentSummaryAction($id)
+    {
+        return $this->render('TrismegisteSocialBundle:Ticket:payment_summary.html.twig', [
+                    'transaction_id' => $id
+        ]);
     }
 
 }

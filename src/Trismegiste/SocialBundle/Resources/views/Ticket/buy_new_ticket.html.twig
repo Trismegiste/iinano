@@ -11,9 +11,14 @@
 {% endblock %}
 
 {% block content %}
+    {% for message in app.session.flashbag.get('warning') %}
+        <div class="pure-u-1 text-center error-message">
+            {{ message }}
+        </div>
+    {% endfor %}
     <h1>{{ social_config.appTitle }}</h1>
     <h2>Purchase a ticket with Paypal</h2>
-    <p>You're about to be redirected to a secured site for paying this order
+    <p>You're about to be redirected to a secured site for paying this order</p>
     <table class="pure-table pure-table-striped" width="100%">
         <tr>
             <td>Service</td>
