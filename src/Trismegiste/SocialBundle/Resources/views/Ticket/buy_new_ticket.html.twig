@@ -1,10 +1,45 @@
 {# Acquire a new ticket #}
-{% extends 'TrismegisteSocialBundle:Guest:layout.html.twig' %}
+{% extends 'TrismegisteSocialBundle:Ticket:layout.html.twig' %}
 
-{% block full_body %}
-    <div class="pure-g">
-        <div class="pure-u-1-1">
-            Purchase a ticket with Paypal
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        table {
+            margin-bottom: 2em;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% for message in app.session.flashbag.get('warning') %}
+        <div class="pure-u-1 text-center error-message">
+            {{ message }}
         </div>
-    </div>
+    {% endfor %}
+    <h1>{{ social_config.appTitle }}</h1>
+    <h2>Purchase a ticket with Paypal</h2>
+    <p>You're about to be redirected to a secured site for paying this order</p>
+    {% if fee is defined %}
+        <table class="pure-table pure-table-striped" width="100%">
+            <tr>
+                <td>Service</td>
+                <td>Full access to {{ social_config.appTitle }}</td>
+            </tr>
+            <tr>
+                <td>Total to pay</td>
+                <td>{{ fee.amount }} {{ fee.currency }}</td>
+            </tr>
+            <tr>
+                <td>Valid for</td>
+                <td>{{ fee.durationValue }} {{ fee.durationUnit }}(s)</td>
+            </tr>
+        </table>
+    {% endif %}
+    {% if payment_url is defined %}
+        <div class="text-right  ">
+            <a href="{{ payment_url }}">
+                <img src="https://www.paypalobjects.com/en_US/i/btn/x-click-but6.gif" alt="Click here to pay with paypal"/>
+            </a>
+        </div>
+    {% endif %}
 {% endblock %}

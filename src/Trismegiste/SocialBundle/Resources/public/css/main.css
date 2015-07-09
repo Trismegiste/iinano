@@ -151,3 +151,10 @@ footer {
     margin-left: 0.6em;
     margin-right: 0.6em;
 }
+
+.error-message {
+    color: #ac2925;
+    background-color: pink;
+    list-style-type: none;
+    padding: 1em;
+}

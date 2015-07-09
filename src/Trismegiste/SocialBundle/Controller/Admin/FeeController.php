@@ -23,7 +23,7 @@ class FeeController extends Template
     public function editAction()
     {
         $repo = $this->get('dokudoki.repository');
-        $fee = $repo->findOne([MapAlias::CLASS_KEY => 'fee']);
+        $fee = $repo->findOne([MapAlias::CLASS_KEY => 'fee']); // @todo use TicketRepository
         $form = $this->createForm(new EntranceFeeType(), $fee);
 
         $form->handleRequest($this->getRequest());

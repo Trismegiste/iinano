@@ -1,0 +1,17 @@
+{# Acquire a new ticket #}
+{% extends 'TrismegisteSocialBundle:Ticket:layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1>{{ social_config.appTitle }}</h1>
+    <h2>Thank you ! Your purchase has been validated</h2>
+    <p>Paypal has sent you an email with billig information.</p>
+    <p>Keep this transaction number to track your order : {{ transaction_id }}</p>
+    <p><a href="{{ path('content_index') }}" class="pure-button pure-button-primary">Go to your wall</a></p>
+{% endblock %}
