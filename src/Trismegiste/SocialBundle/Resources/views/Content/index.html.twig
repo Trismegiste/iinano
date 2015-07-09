@@ -37,8 +37,18 @@
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="{{ asset('bundles/trismegistesocial/js/init.js') }}"></script>
+    {% javascripts
+        'bundles/trismegistesocial/js/purecss/ui.js'
+        'bundles/trismegistesocial/js/jquery/jquery.min.js'
+        'bundles/trismegistesocial/js/alertify/alertify.js'
+        'bundles/trismegistesocial/js/beautiful/jquery.dropdown.min.js'
+        'bundles/trismegistesocial/js/duncanmcdougall/jquery.lightbox.min.js'
+        'bundles/trismegistesocial/js/fluidvids/fluidvids.min.js'
+        'bundles/trismegistesocial/js/init.js'
+        output='assetic/front.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script>
         $(document).ready(function () {
@@ -81,6 +91,18 @@
 {% endblock %}
 
 {% block stylesheets %}
-    {{ parent() }}
+    {% stylesheets
+        'bundles/trismegistesocial/css/pure-min.css'
+        'bundles/trismegistesocial/css/grids-responsive-min.css'
+        'bundles/trismegistesocial/css/side-menu.css'
+        'bundles/trismegistesocial/css/main.css'
+        'bundles/trismegistesocial/css/fontello.css'
+        'bundles/trismegistesocial/css/alertify.css'
+        'bundles/trismegistesocial/css/jquery.dropdown.css'
+        'bundles/trismegistesocial/css/jquery.lightbox.css'
+        filter='cssrewrite'
+        output="assetic/front.css" %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 {% endblock %}

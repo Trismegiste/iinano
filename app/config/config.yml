@@ -34,9 +34,10 @@ twig:
 
 # Assetic Configuration
 assetic:
-    debug:          %kernel.debug%
+    debug:          false
     use_controller: false
-    bundles:        [ ]
+    bundles:
+        - 'TrismegisteSocialBundle'
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -83,3 +84,4 @@ iinano:
 
 oauth:
     config: social.dynamic_config
+    dummytest: %kernel.debug%
