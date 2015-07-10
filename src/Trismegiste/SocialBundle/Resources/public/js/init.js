@@ -101,7 +101,7 @@ var social = {
             }).done(function (response) {
                 var lastClientValue = localStorage.getItem('privateMessage');
                 if ((lastClientValue != undefined) && (lastClientValue < response.lastUpdate.date)) {
-                    $('i[class=icon-eye]').addClass("blink");
+                    $('i[class=icon-mail]').addClass("blink");
                 }
             });
         }
