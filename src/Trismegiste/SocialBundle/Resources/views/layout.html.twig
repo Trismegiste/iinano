@@ -13,21 +13,24 @@
 {% block responsive_sidebar %}
     <ul>
         {{ pure.menu_item('wall_index', { wallNick: app.user.username, wallFilter: 'self' }, 'Myself' ) }}
-        <li class="menu-item-divided"></li>
-            {{ pure.menu_item('publishing_create', {type:"small"}, 'Message', '#anchor-form' ) }}
-            {{ pure.menu_item('publishing_create', {type:"status"}, 'Status', '#anchor-form' ) }}
-            {{ pure.menu_item('publishing_create', {type:"picture"}, 'Picture', '#anchor-form' ) }}
-            {{ pure.menu_item('publishing_create', {type:"video"}, 'Video', '#anchor-form' ) }}
-        <li class="menu-item-divided"></li>
-            {{ pure.menu_item('discover_show', {}, 'Explore') }}
-            {{ pure.menu_item('netizen_show', {author: app.user.username}, 'My profile') }}
+        <li class="menu-item-divided">
+        </li>
+        {{ pure.menu_item('publishing_create', {type:"small"}, 'Message', '#anchor-form' ) }}
+        {{ pure.menu_item('publishing_create', {type:"status"}, 'Status', '#anchor-form' ) }}
+        {{ pure.menu_item('publishing_create', {type:"picture"}, 'Picture', '#anchor-form' ) }}
+        {{ pure.menu_item('publishing_create', {type:"video"}, 'Video', '#anchor-form' ) }}
+        <li class="menu-item-divided">
+        </li>
+        {{ pure.menu_item('discover_show', {}, 'Explore') }}
+        {{ pure.menu_item('netizen_show', {author: app.user.username}, 'My profile') }}
         <li {% if app.request.attributes.get('_route') == 'private_create' %} class="pure-menu-selected" {% endif %}>
             <a href="{{ path('private_create') }}">Private msg <i class="icon-eye"></i></a>
         </li>
         {% if is_granted('ROLE_MANAGER') %}
-            <li class="menu-item-divided"></li>
-                {{ pure.menu_item('admin_dashboard', {}, 'Admin') }}
-            {% endif %}
+            <li class="menu-item-divided">
+            </li>
+            {{ pure.menu_item('admin_dashboard', {}, 'Admin') }}
+        {% endif %}
         <li class="menu-item-divided"><a href="{{ path('trismegiste_oauth_logout') }}">Logout</a></li>
     </ul>
 {% endblock %}

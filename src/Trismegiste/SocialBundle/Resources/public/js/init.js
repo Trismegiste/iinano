@@ -100,11 +100,9 @@ var social = {
                 type: 'GET'
             }).done(function (response) {
                 var lastClientValue = localStorage.getItem('privateMessage');
-                var lastServerValue = response.lastUpdate.date;
-                if ((lastClientValue != undefined) && (lastClientValue < lastServerValue)) {
+                if ((lastClientValue != undefined) && (lastClientValue < response.lastUpdate.date)) {
                     $('i[class=icon-eye]').addClass("blink");
                 }
-                localStorage.setItem('privateMessage', lastServerValue);
             });
         }
     }
