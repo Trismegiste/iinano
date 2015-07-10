@@ -50,7 +50,7 @@
         // update localStorage with last message date
         if (window.localStorage != undefined) {  // if no storage, forget about this feature
             $.ajax({
-                url: url,
+                url: '{{ path('private_get_lastpm') }}',
                 type: 'GET'
             }).done(function (response) {
                 localStorage.setItem('privateMessage', response.lastUpdate.date);
