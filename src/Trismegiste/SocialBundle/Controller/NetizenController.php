@@ -89,4 +89,15 @@ class NetizenController extends Template
         ]);
     }
 
+    public function ticketHistoryAction()
+    {
+        /* @var $user \Trismegiste\SocialBundle\Security\Netizen */
+        $user = $this->getUser();
+
+        return $this->render('TrismegisteSocialBundle:Netizen:ticket_history.html.twig', [
+                    'author' => $user->getAuthor(),
+                    'history' => $user->getTicketIterator()
+        ]);
+    }
+
 }
