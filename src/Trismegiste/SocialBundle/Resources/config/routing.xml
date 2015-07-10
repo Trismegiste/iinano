@@ -86,6 +86,10 @@
         <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="_method">GET</requirement>
     </route>
+    <route id="private_get_lastpm" pattern="/private/ajax/lastpm">
+        <default key="_controller">TrismegisteSocialBundle:PrivateMessage:ajaxGetLastMessage</default>
+        <requirement key="_method">GET</requirement>
+    </route>
 
     <import resource="@TrismegisteSocialBundle/Resources/config/wall.xml"
             prefix="/wall/{wallNick}/{wallFilter}">

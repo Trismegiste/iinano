@@ -71,6 +71,7 @@
             social.initConfirmDelete();
             social.initReportPopup();
             social.initFormFocus();
+            social.initPrivateMessageWarning('{{ path('private_get_lastpm') }}');
             try {
                 social.initLeafletShow();
             } catch (e) {

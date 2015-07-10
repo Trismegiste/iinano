@@ -82,6 +82,14 @@ class PrivateMessageRepository extends SecuredContentProvider
         $this->repository->persist($msg);
     }
 
+    /**
+     * Sets a PM as being read
+     *
+     * @param string $pk mongo id
+     *
+     * @throws \LogicException
+     * @throws AccessDeniedException
+     */
     public function persistAsRead($pk)
     {
         $pm = $this->repository->findByPk($pk);
@@ -95,6 +103,17 @@ class PrivateMessageRepository extends SecuredContentProvider
 
         $pm->markAsRead();
         $this->repository->persist($pm);
+    }
+
+    public function getLastReceived()
+    {
+        $iter = $this->findAllReceived()->limit(1);
+        $fetched = null;
+        foreach ($iter as $obj) {
+            $fetched = $obj;
+        }
+
+        return $fetched;
     }
 
 }
