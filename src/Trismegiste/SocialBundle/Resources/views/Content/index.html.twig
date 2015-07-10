@@ -48,7 +48,7 @@
         output='assetic/front.js' %}
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
+    {% include 'TrismegisteSocialBundle::js_flash.html.twig' %}
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     <script>
         $(document).ready(function () {
