@@ -10,22 +10,25 @@
             <ul>
                 {{ pure.menu_item('netizen_profile_edit', {}, 'Edit my profile') }}
                 {{ pure.menu_item('netizen_avatar_edit', {}, 'Change my avatar') }}
+                {{ pure.menu_item('netizen_ticket_history', {}, 'Ticket history') }}
             </ul>
         </div>
     {% endif %}
     <div class="pure-g profile-full entry">
-        <div class="pure-u-1-1 pure-u-md-1-3 pure-u-lg-1-4">
-            <header>
-                {% block profile_heading %}
-                    <img src="{{ path('picture_get', {storageKey:author.avatar, size:'full'}) }}" class="pure-img rounded"/>
-                {% endblock %}
-            </header>
-        </div>
-        <div class="pure-u-1-1 pure-u-md-2-3 pure-u-lg-3-4 profile-body">
-            <article>
-                {% block profile_content %}
-                {% endblock %}
-            </article>
-        </div>
+        {% block profile %}
+            <div class="pure-u-1-1 pure-u-md-1-3 pure-u-lg-1-4">
+                <header>
+                    {% block profile_heading %}
+                        <img src="{{ path('picture_get', {storageKey:author.avatar, size:'full'}) }}" class="pure-img rounded"/>
+                    {% endblock %}
+                </header>
+            </div>
+            <div class="pure-u-1-1 pure-u-md-2-3 pure-u-lg-3-4 profile-body">
+                <article>
+                    {% block profile_content %}
+                    {% endblock %}
+                </article>
+            </div>
+        {% endblock %}
     </div>
 {% endblock content %}

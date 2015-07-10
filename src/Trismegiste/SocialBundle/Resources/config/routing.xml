@@ -66,6 +66,9 @@
     <route id="netizen_avatar_edit" pattern="/profile/myself/avatar">
         <default key="_controller">TrismegisteSocialBundle:Netizen:editAvatar</default>
     </route>
+    <route id="netizen_ticket_history" pattern="/profile/myself/ticket">
+        <default key="_controller">TrismegisteSocialBundle:Netizen:ticketHistory</default>
+    </route>
 
     <route id="buy_new_ticket" pattern="/registered/ticket/new">
         <default key="_controller">TrismegisteSocialBundle:Ticket:buyNewTicket</default>
