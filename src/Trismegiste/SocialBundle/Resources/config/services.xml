@@ -93,6 +93,13 @@
             <argument type="service" id="social.dynamic_config" />
         </service>
 
+        <service id="access_denied.listener" class="Trismegiste\SocialBundle\Security\AccessDeniedListener">
+            <argument type="service" id="security.context"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="session"/>
+            <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException"/>
+        </service>
+
         <!-- misc -->
         <service id="social.dynamic_config" class="Trismegiste\SocialBundle\Config\Provider">
             <tag name="kernel.cache_warmer" priority="10" />
