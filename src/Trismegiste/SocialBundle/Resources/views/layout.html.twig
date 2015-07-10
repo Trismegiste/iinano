@@ -21,8 +21,10 @@
         <li class="menu-item-divided"></li>
             {{ pure.menu_item('discover_show', {}, 'Explore') }}
             {{ pure.menu_item('netizen_show', {author: app.user.username}, 'My profile') }}
-            {{ pure.menu_item('private_create', {'author':''}, 'Private message') }}
-            {% if is_granted('ROLE_MANAGER') %}
+        <li {% if app.request.attributes.get('_route') == 'private_create' %} class="pure-menu-selected" {% endif %}>
+            <a href="{{ path('private_create') }}">Private msg <i class="icon-eye"></i></a>
+        </li>
+        {% if is_granted('ROLE_MANAGER') %}
             <li class="menu-item-divided"></li>
                 {{ pure.menu_item('admin_dashboard', {}, 'Admin') }}
             {% endif %}
