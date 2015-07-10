@@ -92,5 +92,18 @@ var social = {
             players: ['www.youtube.com', 'player.vimeo.com']
         });
         $('iframe[data-fluid-video]').removeAttr('data-fluid-video'); // to prevent double init with more
+    },
+    initPrivateMessageWarning: function (url) {
+        if (window.localStorage != undefined) {  // if no storage, forget about this feature
+            $.ajax({
+                url: url,
+                type: 'GET'
+            }).done(function (response) {
+                var lastClientValue = localStorage.getItem('privateMessage');
+                if ((lastClientValue != undefined) && (lastClientValue < response.lastUpdate.date)) {
+                    $('i[class=icon-eye]').addClass("blink");
+                }
+            });
+        }
     }
 };

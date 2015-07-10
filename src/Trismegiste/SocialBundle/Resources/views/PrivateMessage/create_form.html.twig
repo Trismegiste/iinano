@@ -33,6 +33,7 @@
     {{ parent() }}
     <script src="{{ asset('bundles/trismegistesocial/js/pixabay/jquery.auto-complete-custom.js') }}"></script>
     <script>
+        // init autocomplete field
         $('input[type=text][data-social-autocomplete-author]').autoComplete({
             minChars: 2,
             source: function (term, response) {
@@ -45,6 +46,16 @@
                 });
             }
         });
+
+        // update localStorage with last message date
+        if (window.localStorage != undefined) {  // if no storage, forget about this feature
+            $.ajax({
+                url: url,
+                type: 'GET'
+            }).done(function (response) {
+                localStorage.setItem('privateMessage', response.lastUpdate.date);
+            });
+        }
     </script>
 {% endblock %}
 

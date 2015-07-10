@@ -6,7 +6,10 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Trismegiste\SocialBundle\Utils\KeyRegexFilter;
+use Trismegiste\Socialist\Author;
 
 /**
  * PrivateMessageController is a CRUD controller for Private Message
@@ -21,7 +24,7 @@ class PrivateMessageController extends Template
         ]);
 
         if (!empty($author)) {
-            $form->get('target')->setData(new \Trismegiste\Socialist\Author($author));
+            $form->get('target')->setData(new Author($author));
         }
 
         $repo = $this->get('social.private_message.repository');
@@ -48,7 +51,7 @@ class PrivateMessageController extends Template
         $nick = $request->query->get('q');
 
         $iter = $this->getUser()->getFollowerIterator();
-        $iter = new \Trismegiste\SocialBundle\Utils\KeyRegexFilter($iter, "#$nick#");
+        $iter = new KeyRegexFilter($iter, "#$nick#");
         $cursor = $this->get('social.netizen.repository')->findBatchNickname($iter);
         foreach ($cursor as $netizen) {
             $choice[] = [
@@ -61,7 +64,7 @@ class PrivateMessageController extends Template
             ];
         }
 
-        return new \Symfony\Component\HttpFoundation\JsonResponse($choice);
+        return new JsonResponse($choice);
     }
 
     public function markAsReadAction($id)
@@ -71,6 +74,17 @@ class PrivateMessageController extends Template
         $this->pushFlash('notice', 'PM marked as read');
 
         return $this->redirectRouteOk('private_create');
+    }
+
+    public function ajaxGetLastMessageAction()
+    {
+        $this->onlyAjaxRequest();
+        $repo = $this->get('social.private_message.repository');
+        /* @var $lastPm \Trismegiste\Socialist\PrivateMessage */
+        $lastPm = $repo->getLastReceived();
+        $lastUpdate = is_null($lastPm) ? new \DateTime('2000-01-01') : $lastPm->getSentAt();
+
+        return new JsonResponse(['lastUpdate' => $lastUpdate]);
     }
 
 }

@@ -158,3 +158,16 @@ footer {
     list-style-type: none;
     padding: 1em;
 }
+
+@-webkit-keyframes blink {
+    0% { color: red; }
+    100% { color: black; }
+}
+@keyframes blink {
+    0% { color: red; }
+    100% { color: black; }
+}
+.blink {
+    -webkit-animation: blink 1s linear infinite;
+    animation: blink 1s linear infinite;
+}
