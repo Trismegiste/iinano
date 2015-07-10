@@ -39,7 +39,7 @@ class LandingPageSuccessHandler implements AuthenticationSuccessHandlerInterface
         $cookie = new Cookie('oauth_provider', $token->getUser()
                         ->getCredential()->getProviderKey(), new \DateTime('+1 month'));
 
-        $route = 'buy_new_ticket';
+        $route = 'buy_new_ticket'; // @todo with the new 403 listener, this route is useless
 
         if ($this->security->isGranted('ROLE_ADMIN')) {
             $route = 'admin_dashboard';

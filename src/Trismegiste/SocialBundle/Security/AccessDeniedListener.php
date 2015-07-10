@@ -15,7 +15,9 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\OAuthBundle\Security\Token;
 
 /**
- * AccessDeniedListener is a ...
+ * AccessDeniedListener catches access denied exception and redirect to payment
+ * only if the user is valid and his ticket is invalid. 403s caused by security breach
+ * or firewall don't redirect to payment
  */
 class AccessDeniedListener
 {
