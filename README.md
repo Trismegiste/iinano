@@ -81,7 +81,7 @@ security in a RESTful config.
 I've tried multiple javascript micro-frameworks like riot.js, soma.js and
 director.js, no way to be SOLID at maximum level (mainly because of javascript
 design flaw) or to fall in the vendor lock-in. After that, I decide to keep
-all js stuff at the minimum level. A thing to remember:  one kilobyte of javascript
+all js stuff at the minimum level. A thing to remember: one kilobyte of javascript
 is one millisec of latency on client-side.
 
 I've thought to replace Symfony2 by Silex but the benefit would be unclear when
@@ -93,14 +93,14 @@ design it to be constrained in constructors.
 
 I've tried to store pictures on S3 but the signature system V4 is not what
 I want for maximum security and the read-write consistencies is difficult to
-manage with. Perhaps in the future with a full-stack solution (with CouldFront)
+manage with. Perhaps in the future with a full-stack Amazon solution (with CouldFront)
 
 ### How to make money if there's no ads ?
 
 First, there's no ways to pay your Amazon server with only advertising,
 unless you have millions of users (at least). Second, Adblock seems to be
 more and more popular each day. Third, I'm currently developing a system of entrance
-fee with Stripe.js.
+fee with Paypal.
 
 ### What about connection between iinano and &lt;insert your favorite social network&gt; ?
 
@@ -123,10 +123,6 @@ The drawback is there are some esoteric mapreduces
 but it's a feature of MongoDB and V8 javascript is a modern language
 unlike the good thirty-year-old SQL.
 
-### What is "Dokudoki", the DBAL of "iinano" ?
+## Team
 
-It's a micro-ODM I've created for MongoDB. "Micro" because there is a minimal API :
-It does not require any mapping information, it does not require
-any concrete inheritance (only one interface)
-and it does not require empty constructor nor zillions of dumb getter/setter
-(unlike many ORM/ODM) which break SRP/ISP in the model.
+* Lead developer : [Florent Genette](https://github.com/Trismegiste)
