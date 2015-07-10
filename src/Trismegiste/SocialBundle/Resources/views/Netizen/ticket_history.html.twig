@@ -2,25 +2,27 @@
 
 {% block profile %}
     <div class="pure-u-1-1">
-        <table width="100%" class="pure-table pure-table-horizontal pure-table-striped">
-            <tr>
-                <th>Type</th>
-                <th>Valid</th>
-                <th>Acquired at</th>
-                <th>Expired at</th>
-                <th>Details</th>
-            </tr>
-            {% for idx, ticket in history %}
+        <article>
+            <table width="100%" class="pure-table pure-table-horizontal pure-table-striped">
                 <tr>
-                    <td>{{ ticket.title }}</td>
-                    <td>{% if ticket.isValid() %}<i class="icon-ok"></i>{% endif %}</td>
-                    <td>{{ ticket.purchasedAt|date }}</td>
-                    <td>{{ ticket.expiredAt|date }}</td>
-                    <td>
-                       
-                    </td>
+                    <th>Type</th>
+                    <th>Valid</th>
+                    <th>Acquired at</th>
+                    <th>Expired at</th>
+                    <th>Details</th>
                 </tr>
-            {% endfor %}
-        </table>
+                {% for idx, ticket in history %}
+                    <tr>
+                        <td>{{ ticket.title }}</td>
+                        <td>{% if ticket.isValid() %}<i class="icon-ok"></i>{% endif %}</td>
+                        <td>{{ ticket.purchasedAt|date }}</td>
+                        <td>{{ ticket.expiredAt|date }}</td>
+                        <td>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </article>
     </div>
 {% endblock %}
