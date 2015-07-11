@@ -23,7 +23,7 @@ class Ticket implements EntranceAccess
     protected $expiredAt;
 
     /** var array */
-    protected $transactionInfo = []; // when associated with a transaction
+    protected $info = []; // when associated with a transaction
 
     public function __construct(PurchaseChoice $purchaseSystem, \DateTime $now = null)
     {
@@ -80,12 +80,12 @@ class Ticket implements EntranceAccess
 
     public function setTransactionInfo(array $info)
     {
-        $this->transactionInfo = $info;
+        $this->info = $info;
     }
 
     public function getTransactionInfo()
     {
-        return $this->transactionInfo;
+        return $this->info;
     }
 
 }

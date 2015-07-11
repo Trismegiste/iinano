@@ -17,9 +17,7 @@
                         <td>{% if ticket.isValid() %}<i class="icon-ok"></i>{% endif %}</td>
                         <td>{{ ticket.purchasedAt|date }}</td>
                         <td>{{ ticket.expiredAt|date }}</td>
-                        <td>
-
-                        </td>
+                        <td>{{ ticket.transactionInfo.transactionId|default('') }}</td>
                     </tr>
                 {% endfor %}
             </table>

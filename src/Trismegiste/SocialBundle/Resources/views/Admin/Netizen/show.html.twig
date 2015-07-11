@@ -44,6 +44,7 @@
                     <th>Valid</th>
                     <th>Acquired at</th>
                     <th>Expired at</th>
+                    <th>Transaction ID</th>
                     <th>Actions</th>
                 </tr>
                 {% for idx, ticket in netizen.ticketIterator %}
@@ -52,6 +53,11 @@
                         <td>{% if ticket.isValid() %}<i class="icon-ok"></i>{% endif %}</td>
                         <td>{{ ticket.purchasedAt|date }}</td>
                         <td>{{ ticket.expiredAt|date }}</td>
+                        <td>
+                            {% if ticket.transactionInfo is not empty %}
+                                {{ticket.transactionInfo.transactionId}}
+                            {% endif %}
+                        </td>
                         <td>
                             {% if idx == 0 %}
                                 <a href="{{ path('admin_netizen_edit_ticket',{id: netizen.id}) }}">
