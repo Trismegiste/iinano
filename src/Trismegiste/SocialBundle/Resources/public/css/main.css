@@ -160,14 +160,18 @@ footer {
 }
 
 @-webkit-keyframes blink {
-    0% { color: red; }
-    100% { color: black; }
+    0% { opacity: 1; }
+    100% { opacity: 0; }
 }
 @keyframes blink {
-    0% { color: red; }
-    100% { color: black; }
+    0% { opacity: 1; }
+    100% { opacity: 0; }
 }
 .blink {
     -webkit-animation: blink 1s linear infinite;
     animation: blink 1s linear infinite;
+}
+i.icon-mail {
+    color:red;
+    opacity: 0
 }
