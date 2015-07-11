@@ -10,7 +10,7 @@
         <article>
             <h4>{{ comment.author.nickname }}<time datetime="{{ comment.lastEdited|date() }}">{{ comment.lastEdited | timeago }}</time></h4>
 
-            {{ comment.message }}
+            {{ comment.message|auto_url }}
 
             <nav>
                 <div class="pub-action pure-g">
