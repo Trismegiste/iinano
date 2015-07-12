@@ -41,7 +41,7 @@ var coupon = {
                     margin: [0, 20]
                 },
                 {
-                    text: info.freeTrialOf + " days of free trial until " + info.until,
+                    text: info.freeTrialOf + " days of free trial.\nOffer valid until " + info.until,
                     alignment: 'center',
                     fontSize: 14
                 }
