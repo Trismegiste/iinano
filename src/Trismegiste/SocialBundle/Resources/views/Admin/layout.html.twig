@@ -17,8 +17,9 @@
     <ul>
         {% if is_granted('ROLE_MANAGER') %}
             {{ pure.menu_item('admin_dashboard', {}, 'Dashboard' ) }}
+            <li class="menu-item-divided">
+            </li>
         {% endif %}
-        <li class="menu-item-divided"></li>
         {% if is_granted('ROLE_MODERATOR') %}
             {{ pure.menu_item('admin_abusive_pub_listing', {}, 'Posts moderation') }}
             {{ pure.menu_item('admin_abusive_comm_listing', {}, 'Comments mod.') }}
@@ -29,12 +30,17 @@
             {{ pure.menu_item('admin_coupon_create', {}, 'New coupon') }}
         {% endif %}
         {% if is_granted('ROLE_ADMIN') %}
-            <li class="menu-item-divided"></li>
-            {{ pure.menu_item('admin_entrancefee_edit', {}, 'Fee') }}
+            <li class="menu-item-divided">
+            </li>
+            {% if not social_config.freeAccess %}
+                {{ pure.menu_item('admin_entrancefee_edit', {}, 'Fee') }}
+                {{ pure.menu_item('admin_paymentgateway_edit', {}, 'Paypal config') }}
+            {% endif %}
             {{ pure.menu_item('admin_dynamic_config_edit', {}, 'Preferences') }}
             {{ pure.menu_item('admin_oauthprovider_edit', {}, 'OAuth config') }}
         {% endif %}
-        <li class="menu-item-divided"></li>
+        <li class="menu-item-divided">
+        </li>
         {{ pure.menu_item('content_index', {}, 'Myself') }}
         {{ pure.menu_item('trismegiste_oauth_logout', {}, 'Logout') }}
     </ul>

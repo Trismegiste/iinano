@@ -84,4 +84,29 @@ class AdminController extends Template
         ]);
     }
 
+    public function editPaymentConfigAction()
+    {
+        $repo = $this->get('social.dynamic_config');
+        $config = $repo->read(true);
+        $form = $this->createForm(new \Trismegiste\SocialBundle\Form\PaypalType(), $config['paypal']);
+
+        $form->handleRequest($this->getRequest());
+        if ($form->isValid()) {
+            try {
+                $config['paypal'] = $form->getData();
+                $repo->write($config);
+                $this->pushFlash('notice', 'Paypal gateway config saved');
+
+                // return to the same page
+                return $this->redirectRouteOk('admin_paymentgateway_edit');
+            } catch (\MongoException $e) {
+                $this->pushFlash('warning', 'Cannot save Paypal config');
+            }
+        }
+
+        return $this->render('TrismegisteSocialBundle:Admin:dynamic_config_form.html.twig', [
+                    'form' => $form->createView()
+        ]);
+    }
+
 }

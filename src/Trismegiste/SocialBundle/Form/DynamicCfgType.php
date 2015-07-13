@@ -45,7 +45,6 @@ class DynamicCfgType extends AbstractType
                     'constraints' => [new NotBlank()]
                 ])
                 ->add('google_tracking_id', 'text', ['required' => false])
-                ->add('paypal', new Paypal())
                 ->add('Edit', 'submit');
     }
 

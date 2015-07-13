@@ -66,6 +66,10 @@
         <default key="_controller">TrismegisteSocialBundle:Admin/Admin:editDynamicConfig</default>
         <requirement key="_method">GET|POST</requirement>
     </route>
+    <route id="admin_paymentgateway_edit" pattern="/config/payment/edit">
+        <default key="_controller">TrismegisteSocialBundle:Admin/Admin:editPaymentConfig</default>
+        <requirement key="_method">GET|POST</requirement>
+    </route>
 
     <route id="admin_oauthprovider_edit" pattern="/config/oauth/edit">
         <default key="_controller">TrismegisteSocialBundle:Admin/Admin:editOAuthProviderKeyPair</default>

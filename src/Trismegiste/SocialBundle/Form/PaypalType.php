@@ -11,9 +11,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
- * COnfig for paypal
+ * Config for paypal
  */
-class Paypal extends AbstractType
+class PaypalType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -29,7 +29,8 @@ class Paypal extends AbstractType
                     'expanded' => true,
                     'multiple' => false,
                     'constraints' => [new NotBlank()]
-        ]);
+                ])
+                ->add('Edit', 'submit');
     }
 
     public function getName()
