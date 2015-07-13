@@ -41,4 +41,16 @@ class DiscoverController extends Controller
         ]);
     }
 
+    public function tourAction()
+    {
+        return $this->render('TrismegisteSocialBundle:Discover:app_tour.html.twig', [
+                    'wallUser' => $this->getUser(),
+                    'wallNick' => $this->getUser()->getUsername(),
+                    'wallFilter' => 'self',
+                    'pagination' => $this->container->getParameter('social.pagination'),
+                    'last_content' => $this->get('social.publishing.repository')
+                            ->findLastEntries(0, 10)
+        ]);
+    }
+
 }

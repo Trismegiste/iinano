@@ -1,0 +1,68 @@
+{# Welcome to new user : an app tour with Sheperd #}
+{% extends 'TrismegisteSocialBundle:Content:index.html.twig' %}
+
+{% block meta_title %}
+    {{ parent() }} | Explore
+{% endblock %}
+
+{% block content %}
+    {% include 'TrismegisteSocialBundle:Discover:discover_last_contents.html.twig' %}
+
+    <ol id="tour" style="display: none;">
+        <li data-target="#menu ul li a:eq(0)">
+            View all contents you've created by clicking on "Myself"
+        </li>
+        <li data-target="#menu ul li a:eq(1)">
+            Create a new content : Message, Status, Picture or Video
+        </li>
+        <li data-target=".topbar ul li:eq(0) a">
+            View all contents created by users you're currently following by clicking on "Following"
+        </li>
+        <li data-target=".topbar ul li:eq(1) a">
+            View all contents created by users who are following you by clicking on "Followers"
+        </li>
+        <li data-target=".topbar ul li:eq(2) a">
+            View all contents created by your friends by clicking on "Friends". A friend
+            is a follower and a following at the same time.
+        </li>
+        <li data-target=".publishing header">
+            Click on an avatar to view a user's wall.
+        </li>
+        <li data-target=".publishing .pub-action a:eq(0)">
+            Send a comment by clicking on "Reply"
+        </li>
+        <li data-target=".publishing .pub-action a:eq(1)">
+            Repeat/relay a message by clicking on <i class="icon-retweet"></i>
+        </li>
+        <li data-target=".publishing .pub-action a:eq(2)">
+            Click on <i class="icon-heart"></i> to like/unlike a message !
+        </li>
+        <li data-target="#menu ul li a:eq(6)">
+            Edit your avatar and your profile
+        </li>
+        <li data-target="#menu ul li a:eq(7)">
+            Read and send private messages
+        </li>
+        <li data-target="#menu ul li a:eq(5)">
+            Search &amp; explore contents from other users
+        </li>
+    </ol>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/trismegistesocial/js/crumble/jquery.browser.min.js') }}"></script>
+    <script src="{{ asset('bundles/trismegistesocial/js/crumble/jquery.grumble.min.js') }}"></script>
+    <script src="{{ asset('bundles/trismegistesocial/js/crumble/jquery.crumble.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tour').crumble();
+        })
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/grumble.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('bundles/trismegistesocial/css/crumble.css') }}"/>
+{% endblock %}
