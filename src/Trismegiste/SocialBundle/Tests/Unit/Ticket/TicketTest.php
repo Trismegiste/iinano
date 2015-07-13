@@ -82,11 +82,11 @@ class TicketTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expiration, $this->sut->getExpiredAt());
     }
 
-    public function testTransactionId()
+    public function testTransactionInfo()
     {
-        $this->assertEquals('', $this->sut->getTransactionId());
-        $this->sut->setTrasactionId('1234');
-        $this->assertEquals('1234', $this->sut->getTransactionId());
+        $this->assertEquals([], $this->sut->getTransactionInfo());
+        $this->sut->setTransactionInfo(['pk' => '1234']);
+        $this->assertEquals(['pk' => '1234'], $this->sut->getTransactionInfo());
     }
 
 }
