@@ -28,6 +28,7 @@ twig:
         resources:
             - '::purecss_form.html.twig'
             - 'TrismegisteSocialBundle:form:geolocation.html.twig'
+            - 'TrismegisteSocialBundle:form:oauthprovider_help.html.twig'
     globals:
         social_config:  "@social.dynamic_config"
         benchmark:      "@social.benchmark"

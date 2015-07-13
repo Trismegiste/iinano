@@ -1,0 +1,10 @@
+{# help lik under oauth provider label #}
+{% block _install_facebook_label %}
+    {{ block('form_label') }}
+    <a target="_blank" href="{{ path('social_help',{id:'create_app_facebook'}) }}">What is it ?</a>
+{% endblock %}
+
+{% block _install_twitter_label %}
+    {{ block('form_label') }}
+    <a target="_blank" href="{{ path('social_help',{id:'create_app_twitter'}) }}">What is it ?</a>
+{% endblock %}

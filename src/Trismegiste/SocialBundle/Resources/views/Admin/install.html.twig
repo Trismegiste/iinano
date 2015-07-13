@@ -1,6 +1,6 @@
 {% extends 'TrismegisteSocialBundle:Guest:layout.html.twig' %}
 
-{% form_theme install '::inline_form.html.twig' _self %}
+{% form_theme install '::inline_form.html.twig' %}
 
 {% block meta_title %}
     {{ parent() }} | Installation
@@ -23,16 +23,6 @@
             padding: 1em;
         }
     </style>
-{% endblock %}
-
-{% block _install_facebook_label %}
-    {{ block('form_label') }}
-    <a target="_blank" href="{{ path('social_help',{id:'create_app_facebook'}) }}">What is it ?</a>
-{% endblock %}
-
-{% block _install_twitter_label %}
-    {{ block('form_label') }}
-    <a target="_blank" href="{{ path('social_help',{id:'create_app_twitter'}) }}">What is it ?</a>
 {% endblock %}
 
 {% block full_body %}
