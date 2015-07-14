@@ -42,7 +42,9 @@ class AccessDeniedListenerTest extends \PHPUnit_Framework_TestCase
     {
         $this->urlGenerator = $this->getMock('Symfony\Component\Routing\Generator\UrlGeneratorInterface');
         $this->security = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $this->session = $this->getMock('Symfony\Component\HttpFoundation\Session\SessionInterface');
+        $this->session = $this->getMockBuilder('Symfony\Component\HttpFoundation\Session\Session')
+                ->disableOriginalConstructor()
+                ->getMock();
 
         $this->sut = new AccessDeniedListener($this->security, $this->urlGenerator, $this->session);
     }
@@ -125,9 +127,14 @@ class AccessDeniedListenerTest extends \PHPUnit_Framework_TestCase
                 ->method('getFlashBag')
                 ->willReturn($bag);
 
+        $this->urlGenerator->expects($this->once())
+                ->method('generate')
+                ->with('buy_new_ticket')
+                ->willReturn('/buy/new/ticket');
+
         $this->sut->onKernelException($event);
         $this->assertTrue($event->hasResponse());
-        $this->assertCOunt(1, $bag);
+        $this->assertCount(1, $bag);
     }
 
 }
