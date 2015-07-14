@@ -32,11 +32,14 @@ class RegisterTypeTest extends WebTestCase
     /** @var NetizenRepositoryInterface */
     protected $repository;
 
+    /** @var \Symfony\Component\Form\FormFactoryInterface */
+    protected $formFactory;
+
     protected function setUp()
     {
         $kernel = static::createKernel();
         $kernel->boot();
-        $formFactory = $kernel->getContainer()->get('form.factory');
+        $this->formFactory = $kernel->getContainer()->get('form.factory');
         $this->collection = $kernel->getContainer()->get('dokudoki.collection');
         $this->factory = $kernel->getContainer()->get('security.netizen.factory');
         $this->repository = $kernel->getContainer()->get('social.netizen.repository');
@@ -46,7 +49,7 @@ class RegisterTypeTest extends WebTestCase
         $token->setAttribute('nickname', 'dummy nickname');
         $session->set(NotRegisteredHandler::IDENTIFIED_TOKEN, $token);
 
-        $this->sut = $formFactory->create('netizen_register', null, [
+        $this->sut = $this->formFactory->create('netizen_register', null, [
             'csrf_protection' => false,
             'minimumAge' => 6,
             'adminMode' => false
@@ -116,6 +119,21 @@ class RegisterTypeTest extends WebTestCase
         $submitted = ['nickname' => 'mcleod', 'gender' => 'xy'];
         $this->sut->submit($submitted);
         $this->assertRegexp('#already used#', $this->sut->get('nickname')->getErrors()[0]->getMessage());
+    }
+
+    public function testAdminMode()
+    {
+        $this->sut = $this->formFactory->create('netizen_register', null, [
+            'csrf_protection' => false,
+            'minimumAge' => 6,
+            'adminMode' => true
+        ]);
+        $submitted = [
+            'nickname' => 'skywalker',
+            'gender' => 'xy',
+            'dateOfBirth' => ['year' => 1977, 'month' => 5, 'day' => 4]
+        ];
+        $this->sut->submit($submitted);
     }
 
 }
