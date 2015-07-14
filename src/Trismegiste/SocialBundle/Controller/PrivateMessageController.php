@@ -84,7 +84,10 @@ class PrivateMessageController extends Template
         $lastPm = $repo->getLastReceived();
         $lastUpdate = is_null($lastPm) ? new \DateTime('2000-01-01') : $lastPm->getSentAt();
 
-        return new JsonResponse(['lastUpdate' => $lastUpdate]);
+        $response = new JsonResponse(['lastUpdate' => $lastUpdate]);
+        $response->setExpires(new \DateTime('+1 minute'));
+
+        return $response;
     }
 
 }
