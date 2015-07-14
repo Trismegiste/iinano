@@ -7,7 +7,6 @@
 namespace Trismegiste\SocialBundle\DependencyInjection\Configurator;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Trismegiste\SocialBundle\Config\Provider;
 use Trismegiste\SocialBundle\Payment\Gateway;
 
 /**
@@ -21,7 +20,7 @@ class Paypal
     protected $cancelRoute;
     protected $successRoute;
 
-    public function __construct(Provider $config, UrlGeneratorInterface $urlGenerator, $success, $cancel)
+    public function __construct(\ArrayAccess $config, UrlGeneratorInterface $urlGenerator, $success, $cancel)
     {
         $this->config = $config;
         $this->urlGenerator = $urlGenerator;
