@@ -21,8 +21,12 @@ class PaypalType extends AbstractType
         $builder->add('username', 'text', [
                     'constraints' => new NotBlank()
                 ])
-                ->add('password')
-                ->add('signature')
+                ->add('password', 'text', [
+                    'constraints' => new NotBlank()
+                ])
+                ->add('signature', 'text', [
+                    'constraints' => new NotBlank()
+                ])
                 ->add('sandbox', 'choice', [
                     'choices' => [false => 'No', true => 'Yes'],
                     'label' => 'Sandbox',
