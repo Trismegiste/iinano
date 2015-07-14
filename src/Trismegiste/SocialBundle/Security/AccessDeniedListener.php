@@ -36,6 +36,7 @@ class AccessDeniedListener
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
+        // $session = $event->getRequest()->getSession(); @todo remove session from ctor and use request
 
         if ($exception instanceof AccessDeniedHttpException) {
             $token = $this->security->getToken();
