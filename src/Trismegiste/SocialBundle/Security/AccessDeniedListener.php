@@ -45,7 +45,7 @@ class AccessDeniedListener
                 if ($user instanceof Netizen) {
                     if (!$this->security->isGranted(TicketVoter::SUPPORTED_ATTRIBUTE)) {
                         $this->session->getFlashBag()->add('warning', 'Your subscribing has expired');
-                        $response = new RedirectResponse($this->router->generate('buy_new_ticket'));
+                        $response = new RedirectResponse($this->router->generate('buy_new_ticket')); // @todo parameter please
                         $event->setResponse($response);
                     }
                 }

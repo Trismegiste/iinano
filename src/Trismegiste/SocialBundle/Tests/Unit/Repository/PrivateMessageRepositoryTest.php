@@ -196,4 +196,19 @@ class PrivateMessageRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->persistAsRead(123);
     }
 
+    public function testGetLastReceived()
+    {
+        $this->security->expects($this->once())
+                ->method('isGranted')
+                ->with($this->equalTo(TicketVoter::SUPPORTED_ATTRIBUTE))
+                ->will($this->returnValue(true));
+
+        $this->repository->expects($this->once())
+                ->method('find')
+                ->will($this->returnValue($this->createMockCursor()));
+
+        $pm = $this->sut->getLastReceived();
+        $this->assertNull($pm);
+    }
+
 }
