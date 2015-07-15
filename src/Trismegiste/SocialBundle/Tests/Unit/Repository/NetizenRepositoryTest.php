@@ -233,8 +233,8 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testNoPromoteNetizenOnHimself()
     {
         $user = new Netizen(new Author('spock'));
+        $secu = $this->createSecurityContextMockFromUser(clone $user);
         $user->setGroup('ROLE_MANAGER');
-        $secu = $this->createSecurityContextMockFromUser($user);
 
         $this->sut->promote($user, $secu);
     }
