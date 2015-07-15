@@ -154,7 +154,8 @@ class NetizenRepository implements NetizenRepositoryInterface
      */
     public function promote(Netizen $user, SecurityContextInterface $ctx)
     {
-        if ($user->isEqualTo($ctx->getToken()->getUser())) {
+        // we only check the equality on author because, roles are just changing now
+        if ($user->getAuthor()->isEqual($ctx->getToken()->getUser()->getAuthor())) {
             throw new AccessDeniedException("You can't promote yourself");
         }
 

@@ -78,7 +78,7 @@ class NetizenControllerTest extends AdminControllerTestCase
     /**
      * @depends initialize
      */
-    public function fail_testHimselfPromotion()
+    public function testHimselfPromotion()
     {
         $this->client->followRedirects();
         $this->logIn('admin');
