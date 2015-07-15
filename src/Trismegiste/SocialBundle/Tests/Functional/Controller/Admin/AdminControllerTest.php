@@ -63,4 +63,29 @@ class AdminControllerTest extends AdminControllerTestCase
         $this->assertEquals($expected, $cfg['appTitle']);
     }
 
+    public function testEditOAuthProviderConfig()
+    {
+        $this->client->followRedirects();
+        $this->logIn('admin');
+
+        $crawler = $this->getPage('admin_oauthprovider_edit');
+        $form = $crawler->filter('div.content form')->form();
+        $randString = 'AZERTY' . rand(); // to find some bug with cache
+        $crawler = $this->client->submit($form, [
+            'install' => [
+                'facebook' => [
+                    'client_id' => $randString,
+                    'secret_id' => $randString
+                ],
+                'twitter' => [
+                    'client_id' => $randString,
+                    'secret_id' => $randString
+                ]
+            ]
+        ]);
+
+        $this->assertCount(4, $crawler->filter('div.content form input[value="' . $randString . '"]'));
+        $this->assertCount(1, $crawler->filter('script:contains("OAuth providers saved")'));
+    }
+
 }
