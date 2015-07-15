@@ -88,4 +88,25 @@ class AdminControllerTest extends AdminControllerTestCase
         $this->assertCount(1, $crawler->filter('script:contains("OAuth providers saved")'));
     }
 
+    public function testEditPaymentConfig()
+    {
+        $this->client->followRedirects();
+        $this->logIn('admin');
+
+        $crawler = $this->getPage('admin_paymentgateway_edit');
+        $form = $crawler->filter('div.content form')->form();
+        $randString = 'AZERTY' . rand(); // to find some bug with cache
+        $crawler = $this->client->submit($form, [
+            'paypal_config' => [
+                'username' => $randString,
+                'password' => 'pppp',
+                'signature' => 'ssss',
+                'sandbox' => true
+            ]
+        ]);
+
+        $this->assertCount(1, $crawler->filter('div.content form input[value="' . $randString . '"]'));
+        $this->assertCount(1, $crawler->filter('script:contains("config saved")'));
+    }
+
 }
