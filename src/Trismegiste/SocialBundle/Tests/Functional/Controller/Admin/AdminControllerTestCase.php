@@ -20,14 +20,16 @@ class AdminControllerTestCase extends WebTestCasePlus
         $collection->drop();
         $this->assertCount(0, $collection->find());
 
-        $this->addUserFixture('simple');
-        $this->addUserFixture('admin');
-
         $repo = $this->getService('social.netizen.repository');
-        $user = $repo->findByNickname('admin');
-        $user->setGroup('ROLE_ADMIN');
-        $repo->persist($user);
-        $this->assertCount(2, $collection->find());
+        $users = ['simple' => 'ROLE_USER', 'admin' => 'ROLE_ADMIN', 'moderator' => 'ROLE_MODERATOR', 'manager' => 'ROLE_MANAGER'];
+        foreach ($users as $nick => $group) {
+            $this->addUserFixture($nick);
+            $user = $repo->findByNickname($nick);
+            $user->setGroup($group);
+            $repo->persist($user);
+        }
+
+        $this->assertCount(count($users), $collection->find());
     }
 
     protected function assertSecuredPage($page)
