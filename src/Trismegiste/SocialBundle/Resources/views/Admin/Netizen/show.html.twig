@@ -28,8 +28,8 @@
                 <div class="pure-u-1 pure-u-md-1-2">
                     <h2>Group: {{ netizen.group|lower|slice(5) }}</h2>
                     Registered: {{ netizen.profile.joinedAt|timeago }}<br/>
-                    Registered with: {{ netizen.credential.providerKey|capitalize }}<br/>
-                    {{ netizen.credential.providerKey|capitalize }} uid: {{ netizen.credential.uid }}<br/>
+                    Registered with <i class="icon-{{ netizen.credential.providerKey }}-squared"></i><br/>
+                    <i class="icon-{{ netizen.credential.providerKey }}-squared"></i> uid: {{ netizen.credential.uid }}<br/>
                     {% if netizen.lastTicket is not null %}
                         Next payment: {{ netizen.lastTicket.expiredAt|timeago }}
                     {% endif %}
