@@ -53,7 +53,9 @@
                 url: '{{ path('private_get_lastpm') }}',
                 type: 'GET'
             }).done(function (response) {
-                localStorage.setItem('privateMessage', response.lastUpdate.date);
+                if (response.lastUpdate !== null) {
+                    localStorage.setItem('privateMessage', response.lastUpdate.date);
+                }
             });
         }
     </script>

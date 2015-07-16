@@ -99,9 +99,11 @@ var social = {
                 url: url,
                 type: 'GET'
             }).done(function (response) {
-                var lastClientValue = localStorage.getItem('privateMessage');
-                if ((lastClientValue != undefined) && (lastClientValue < response.lastUpdate.date)) {
-                    $('i[class=icon-mail]').addClass("blink");
+                if (response.lastUpdate !== null) {
+                    var lastClientValue = localStorage.getItem('privateMessage');
+                    if ((lastClientValue == undefined) || (lastClientValue < response.lastUpdate.date)) {
+                        $('i[class=icon-mail]').addClass("blink");
+                    }
                 }
             });
         }

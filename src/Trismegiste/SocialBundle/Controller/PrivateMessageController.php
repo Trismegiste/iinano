@@ -82,7 +82,7 @@ class PrivateMessageController extends Template
         $repo = $this->get('social.private_message.repository');
         /* @var $lastPm \Trismegiste\Socialist\PrivateMessage */
         $lastPm = $repo->getLastReceived();
-        $lastUpdate = is_null($lastPm) ? new \DateTime('2000-01-01') : $lastPm->getSentAt();
+        $lastUpdate = is_null($lastPm) ? null : $lastPm->getSentAt();
 
         $response = new JsonResponse(['lastUpdate' => $lastUpdate]);
         $response->setExpires(new \DateTime('+1 minute'));
