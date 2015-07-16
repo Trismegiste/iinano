@@ -1,0 +1,11 @@
+{# No freeAccess + No entrance fee => invite only, then a coupon in session during register is mandatory  #}
+{% extends 'TrismegisteSocialBundle:Ticket:layout.html.twig' %}
+
+{% block content %}
+    <h1>{{ social_config.appTitle }}</h1>
+    <h2>Thank you for your interest</h2>
+    <p>
+        But this is a private social network and you can register
+        only with an invitation or a valid coupon
+    </p>
+{% endblock %}
