@@ -132,4 +132,22 @@ class NetizenControllerTest extends AdminControllerTestCase
         $this->assertEquals(403, $this->getCurrentResponse()->getStatusCode());
     }
 
+    /**
+     * @depends testUserPromotion
+     */
+    public function testExportCsv()
+    {
+        $this->logIn('admin');
+        $crawler = $this->getPage('admin_netizen_listing');
+        $form = $crawler->selectButton('Export all')->form();
+        $this->client->submit($form, ['social_netizen_filter' => ['group' => 'ROLE_MODERATOR']]);
+
+        $csv = $this->client->getResponse();
+        $this->assertInstanceOf('Trismegiste\SocialBundle\Utils\CsvResponse', $csv);
+        $content = (string) $csv;
+        $this->assertRegExp('#^nickname#m', $content);
+        $this->assertRegExp('#^"simple"#m', $content);
+        $this->assertRegExp('#^"moderator"#m', $content);
+    }
+
 }

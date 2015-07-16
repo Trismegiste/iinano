@@ -34,8 +34,9 @@ class CsvResponse extends Response
     {
         parent::__construct('');
         $this->iterator = $content;
+        $filename = sprintf("export-%s.csv", date('Y-m-d-H-i-s'));
 
-        $d = $this->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'essai.csv');
+        $d = $this->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $filename);
         $this->headers->set('Content-Disposition', $d);
         $this->headers->set('Content-Type', 'application/csv');
 

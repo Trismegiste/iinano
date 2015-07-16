@@ -117,8 +117,6 @@ class NetizenController extends Template
                 return $this->redirectRouteOk('admin_netizen_show', ['id' => $netizen->getId()]);
             } catch (MongoException $e) {
                 $this->pushFlash('warning', 'Cannot edit ticket');
-            } catch (AccessDeniedException $e) {
-                $this->pushFlash('warning', $e->getMessage());
             }
         }
 
