@@ -117,4 +117,19 @@ class NetizenControllerTest extends AdminControllerTestCase
         $this->assertCount(1, $crawler->filter('table td:contains("April 1, 2019")'));
     }
 
+    /**
+     * @depends testAccessNetizenListing
+     */
+    public function testEditLastTicketWithoutPrivileges(Link $showUrl)
+    {
+        $this->client->followRedirects();
+        $this->logIn('moderator');
+
+        $this->client->click($showUrl);
+        $this->assertEquals(403, $this->getCurrentResponse()->getStatusCode());
+
+        $this->getPage('admin_netizen_listing');
+        $this->assertEquals(403, $this->getCurrentResponse()->getStatusCode());
+    }
+
 }
