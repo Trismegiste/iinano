@@ -23,3 +23,5 @@
 .content article {
     margin-bottom: 2em;
 }
+
+.icon-dummy-squared:before { content: '\e809'; } /* '' */

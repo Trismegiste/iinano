@@ -96,4 +96,25 @@ class NetizenControllerTest extends AdminControllerTestCase
         $this->assertCount(1, $crawler->filter('script:contains("promote yourself")'));
     }
 
+    /**
+     * @depends testAccessNetizenListing
+     */
+    public function testEditLastTicket(Link $showUrl)
+    {
+        $this->client->followRedirects();
+        $this->logIn('admin');
+
+        $crawler = $this->client->click($showUrl);
+        $this->assertCount(2, $crawler->filter('div.content table tr'));
+
+        $editLink = $crawler->filter('div.content tr td a i[class="icon-pencil"]')->parents()->link();
+        $crawler = $this->client->click($editLink);
+        $form = $crawler->selectButton('Edit')->form();
+        $crawler = $this->client->submit($form, ["admin_ticket" =>
+            ['expiredAt' => ['year' => 2019, 'month' => 4, 'day' => 1]]
+        ]);
+
+        $this->assertCount(1, $crawler->filter('table td:contains("April 1, 2019")'));
+    }
+
 }
