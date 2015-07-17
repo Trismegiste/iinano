@@ -132,7 +132,7 @@ class TicketRepository extends SecuredContentProvider
                     'ticket.1.purchase.-class' => 'coupon'
                 ])->count();
 
-        $expiredCoupon = $this->repository->getCursor([
+        $expiredCoupon = $convertedCoupon + $this->repository->getCursor([
                     MapAlias::CLASS_KEY => 'netizen',
                     'ticket.0.purchase.-class' => 'coupon',
                     'ticket.0.expiredAt' => ['$lte' => new \MongoDate()]
