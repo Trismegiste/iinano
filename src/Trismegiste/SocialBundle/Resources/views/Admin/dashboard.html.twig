@@ -11,9 +11,9 @@
                 <h1>Users</h1>
                 <table class="pure-table pure-table-striped" width="100%">
                     <tr><th>Count</th><td>{{ allUser|si }}</td></tr>
-                    <tr><th>Over the last year</th><td>{{userOverLastYearPerDay|number_format(1)}} per day</td></tr>
-                    <tr><th>Over the last month</th><td>{{userOverLastMonthPerDay|number_format(1)}} per day</td></tr>
                     <tr><th>Over the last 24h</th><td>{{userOverLast24h}}</td></tr>
+                    <tr><th>Over the last month</th><td>{{userOverLastMonthPerDay|number_format(1)}} per day</td></tr>
+                    <tr><th>Over the last year</th><td>{{userOverLastYearPerDay|number_format(1)}} per day</td></tr>
                 </table>
             </article>
         </div>
