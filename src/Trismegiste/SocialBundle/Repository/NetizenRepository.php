@@ -177,4 +177,17 @@ class NetizenRepository implements NetizenRepositoryInterface
                         ->limit($limit);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function countOnLastPeriod($day)
+    {
+        return $this->repository->getCursor([
+                    MapAlias::CLASS_KEY => $this->classAlias,
+                    'profile.joinedAt' => [
+                        '$gt' => new \MongoDate(time() - 86400 * $day) // not very accurate but for stats it will do
+                    ]
+                ])->count();
+    }
+
 }

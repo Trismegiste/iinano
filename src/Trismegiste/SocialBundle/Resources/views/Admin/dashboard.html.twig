@@ -10,10 +10,10 @@
             <article>
                 <h1>Users</h1>
                 <table class="pure-table pure-table-striped" width="100%">
-                    <tr><th>Count</th><td>{{ user|si }}</td></tr>
-                    <tr><th>Over the last year</th><td>1 per day</td></tr>
-                    <tr><th>Over the last month</th><td>10 per day</td></tr>
-                    <tr><th>Over the last 24h</th><td>100</td></tr>
+                    <tr><th>Count</th><td>{{ allUser|si }}</td></tr>
+                    <tr><th>Over the last year</th><td>{{userOverLastYearPerDay|number_format(1)}} per day</td></tr>
+                    <tr><th>Over the last month</th><td>{{userOverLastMonthPerDay|number_format(1)}} per day</td></tr>
+                    <tr><th>Over the last 24h</th><td>{{userOverLast24h}}</td></tr>
                 </table>
             </article>
         </div>

@@ -19,8 +19,13 @@ class AdminController extends Template
     public function dashboardAction()
     {
         $coll = $this->get('dokudoki.collection');
+        $netRepo = $this->get('social.netizen.repository');
         $param = [
-            'user' => $this->get('social.netizen.repository')->countAllUser(),
+            'allUser' => $netRepo->countAllUser(),
+            'userOverLast24h' => $netRepo->countOnLastPeriod(1),
+            'userOverLastWeekPerDay' => $netRepo->countOnLastPeriod(7) / 7.0,
+            'userOverLastMonthPerDay' => $netRepo->countOnLastPeriod(30) / 30.0,
+            'userOverLastYearPerDay' => $netRepo->countOnLastPeriod(365) / 365.0,
             'content' => $coll->aggregateCursor([['$group' => ['_id' => '$-class', 'counter' => ['$sum' => 1]]]]),
             'health' => [
                 'cpu' => sys_getloadavg(),

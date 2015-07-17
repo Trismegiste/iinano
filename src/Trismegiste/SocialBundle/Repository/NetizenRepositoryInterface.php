@@ -97,4 +97,13 @@ interface NetizenRepositoryInterface
      * @param int $limit
      */
     public function findLastRegistered($limit = 12);
+
+    /**
+     * Returns the count of last netizens over a period of time
+     *
+     * @param int $day
+     *
+     * @return int
+     */
+    public function countOnLastPeriod($day);
 }
