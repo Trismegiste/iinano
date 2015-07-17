@@ -24,9 +24,28 @@
                 <table class="pure-table pure-table-striped" width="100%">
                     <tr><th>Conversion rate</th><td>{{(100 * conversionRate)|number_format(0)}}%</td></tr>
                     <tr><th>Renewal rate</th><td>{{(100*renewalRate)|number_format(0)}}%</td></tr>
-                    <tr><th>Over the last month</th><td>200$</td></tr>
-                    <tr><th>Over the last year</th><td>2000$</td></tr>
-                    <tr><th>Total</th><td>4000$</td></tr>
+                    <tr>
+                        <th>Over the last month</th>
+                        <td>
+                            {% for sum in feeOverLastMonth %}
+                                {{sum.total}} {{sum._id}}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr><th>Over the last year</th>
+                        <td>
+                            {% for sum in feeOverLastYear %}
+                                {{sum.total}} {{sum._id}}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr><th>Total</th>
+                        <td>
+                            {% for sum in feeOverLastYear %}
+                                {{sum.total}} {{sum._id}}
+                            {% endfor %}
+                        </td>
+                    </tr>
                 </table>
             </article>
         </div>

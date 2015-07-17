@@ -29,6 +29,9 @@ class AdminController extends Template
             'userOverLastYearPerDay' => $netRepo->countOnLastPeriod(365) / 365.0,
             'conversionRate' => $ticketRepo->getConversionRate(),
             'renewalRate' => $ticketRepo->getRenewalRate(),
+            'feeOverLastMonth' => $this->getFeeTotalOver(30),
+            'feeOverLastYear' => $this->getFeeTotalOver(365),
+            'allFee' => $this->getFeeTotalOver(),
             'content' => $coll->aggregateCursor([['$group' => ['_id' => '$-class', 'counter' => ['$sum' => 1]]]]),
             'health' => [
                 'cpu' => sys_getloadavg(),
@@ -37,7 +40,6 @@ class AdminController extends Template
                 'memory' => memory_get_peak_usage(true)
             ]
         ];
-
 
         return $this->render('TrismegisteSocialBundle:Admin:dashboard.html.twig', $param);
     }
@@ -115,6 +117,27 @@ class AdminController extends Template
         return $this->render('TrismegisteSocialBundle:Admin:dynamic_config_form.html.twig', [
                     'form' => $form->createView()
         ]);
+    }
+
+    protected function getFeeTotalOver($periodInDay = null)
+    {
+        /* @var $coll \MongoCollection */
+        $coll = $this->get('dokudoki.collection');
+
+        $filterPeriod = ['ticket.purchase.-class' => 'fee'];
+        if (!is_null($periodInDay)) {
+            $filterPeriod['ticket.purchasedAt'] = ['$gte' => new \MongoDate(time() - 86400 * $periodInDay)];
+        }
+
+        $iter = $coll->aggregateCursor([
+            ['$match' => ['-class' => 'netizen']],
+            ['$unwind' => '$ticket'],
+            ['$project' => ['ticket' => true]],
+            ['$match' => $filterPeriod],
+            ['$group' => ['_id' => '$ticket.purchase.currency', 'total' => ['$sum' => '$ticket.purchase.amount']]]
+        ]);
+
+        return $iter;
     }
 
 }
