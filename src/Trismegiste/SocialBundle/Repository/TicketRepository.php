@@ -124,4 +124,47 @@ class TicketRepository extends SecuredContentProvider
         return $this->repository->findOne([MapAlias::CLASS_KEY => 'fee']);
     }
 
+    public function getConversionRate()
+    {
+        $convertedCoupon = $this->repository->getCursor([
+                    MapAlias::CLASS_KEY => 'netizen',
+                    'ticket.0.purchase.-class' => 'fee',
+                    'ticket.1.purchase.-class' => 'coupon'
+                ])->count();
+
+        $expiredCoupon = $this->repository->getCursor([
+                    MapAlias::CLASS_KEY => 'netizen',
+                    'ticket.0.purchase.-class' => 'coupon',
+                    'ticket.0.expiredAt' => ['$lte' => new \MongoDate()]
+                ])->count();
+
+        if ($expiredCoupon > 0) {
+            return $convertedCoupon / (float) $expiredCoupon;
+        }
+
+        return 0; // bof...
+    }
+
+    public function getRenewalRate()
+    {
+        $renewTicket = $this->repository->getCursor([
+                    MapAlias::CLASS_KEY => 'netizen',
+                    'ticket.0.purchase.-class' => 'fee',
+                    'ticket.1.purchase.-class' => 'fee',
+                    'ticket.0.expiredAt' => ['$gt' => new \MongoDate()]
+                ])->count();
+
+        $expiredFee = $this->repository->getCursor([
+                    MapAlias::CLASS_KEY => 'netizen',
+                    'ticket.0.purchase.-class' => 'fee',
+                    'ticket.0.expiredAt' => ['$lte' => new \MongoDate()]
+                ])->count();
+
+        if ($expiredFee > 0) {
+            return $renewTicket / (float) $expiredFee;
+        }
+
+        return 0; // bof...
+    }
+
 }

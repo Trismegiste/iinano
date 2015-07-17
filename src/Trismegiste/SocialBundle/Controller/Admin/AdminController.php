@@ -20,12 +20,15 @@ class AdminController extends Template
     {
         $coll = $this->get('dokudoki.collection');
         $netRepo = $this->get('social.netizen.repository');
+        $ticketRepo = $this->get('social.ticket.repository');
         $param = [
             'allUser' => $netRepo->countAllUser(),
             'userOverLast24h' => $netRepo->countOnLastPeriod(1),
             'userOverLastWeekPerDay' => $netRepo->countOnLastPeriod(7) / 7.0,
             'userOverLastMonthPerDay' => $netRepo->countOnLastPeriod(30) / 30.0,
             'userOverLastYearPerDay' => $netRepo->countOnLastPeriod(365) / 365.0,
+            'conversionRate' => $ticketRepo->getConversionRate(),
+            'renewalRate' => $ticketRepo->getRenewalRate(),
             'content' => $coll->aggregateCursor([['$group' => ['_id' => '$-class', 'counter' => ['$sum' => 1]]]]),
             'health' => [
                 'cpu' => sys_getloadavg(),

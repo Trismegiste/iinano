@@ -12,6 +12,7 @@
                 <table class="pure-table pure-table-striped" width="100%">
                     <tr><th>Count</th><td>{{ allUser|si }}</td></tr>
                     <tr><th>Over the last 24h</th><td>{{userOverLast24h}}</td></tr>
+                    <tr><th>Over the last week</th><td>{{userOverLastWeekPerDay|number_format(1)}} per day</td></tr>
                     <tr><th>Over the last month</th><td>{{userOverLastMonthPerDay|number_format(1)}} per day</td></tr>
                     <tr><th>Over the last year</th><td>{{userOverLastYearPerDay|number_format(1)}} per day</td></tr>
                 </table>
@@ -21,8 +22,8 @@
             <article>
                 <h1>Fee</h1>
                 <table class="pure-table pure-table-striped" width="100%">
-                    <tr><th>Conversion rate</th><td>5%</td></tr>
-                    <tr><th>Renewing</th><td>42%</td></tr>
+                    <tr><th>Conversion rate</th><td>{{(100 * conversionRate)|number_format(0)}}%</td></tr>
+                    <tr><th>Renewal rate</th><td>{{(100*renewalRate)|number_format(0)}}%</td></tr>
                     <tr><th>Over the last month</th><td>200$</td></tr>
                     <tr><th>Over the last year</th><td>2000$</td></tr>
                     <tr><th>Total</th><td>4000$</td></tr>
