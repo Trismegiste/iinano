@@ -8,33 +8,47 @@
 {% block content %}
     {% include 'TrismegisteSocialBundle:Discover:discover_last_contents.html.twig' %}
 
+    <ol id="prologue" style="display: none;">
+        <li data-target="#menuLink">Open the menu by clicking on this</li>
+        <li data-target="#menuLink span">The menu is open</li>
+    </ol>
+
     <ol id="tour" style="display: none;">
         <li data-target="#menu ul li a:eq(0)">
-            View all contents you've created by clicking on "Myself"
+            View your contents by clicking on "Myself"
         </li>
         <li data-target="#menu ul li a:eq(1)">
-            Create a new content : Message, Status, Picture or Video
+            Create a new message
+        </li>
+        <li data-target="#menu ul li a:eq(2)">
+            Create a message with your geolocation
+        </li>
+        <li data-target="#menu ul li a:eq(3)">
+            Send a picture
+        </li>
+        <li data-target="#menu ul li a:eq(4)">
+            Send an address of Youtube video
         </li>
         <li data-target=".topbar ul li:eq(0) a">
-            View all contents created by users you're currently following by clicking on "Following"
+            Filter contents created by users you're following
         </li>
-        <li data-target=".topbar ul li:eq(1) a">
-            View all contents created by users who are following you by clicking on "Followers"
+        <li data-target=".topbar ul li:eq(1) a" data-angle="180">
+            Filter contents created by users who are following you
         </li>
-        <li data-target=".topbar ul li:eq(2) a">
-            View all contents created by your friends by clicking on "Friends". A friend
+        <li data-target=".topbar ul li:eq(2) a" data-angle="225">
+            Filter contents created by friends : a friend
             is a follower and a following at the same time.
         </li>
         <li data-target=".publishing header">
             Click on an avatar to view a user's wall.
         </li>
         <li data-target=".publishing .pub-action a:eq(0)">
-            Send a comment by clicking on "Reply"
+            Send a comment by clicking on <i class="icon-reply"></i>
         </li>
         <li data-target=".publishing .pub-action a:eq(1)">
             Repeat/relay a message by clicking on <i class="icon-retweet"></i>
         </li>
-        <li data-target=".publishing .pub-action a:eq(2)">
+        <li data-target=".publishing .pub-action a:eq(2)" data-angle="225">
             Click on <i class="icon-heart"></i> to like/unlike a message !
         </li>
         <li data-target="#menu ul li a:eq(6)">
@@ -56,7 +70,20 @@
     <script src="{{ asset('bundles/trismegistesocial/js/crumble/jquery.crumble.min.js') }}"></script>
     <script>
         $(document).ready(function () {
-            $('#tour').crumble();
+            if ($('#menuLink').css('display') === 'block') {
+                $('#prologue').crumble({
+                    onStep: function () {
+                        if ($('#menu').css('left') !== '150px') {
+                            $('#menuLink').trigger('click');
+                        }
+                    },
+                    onFinish: function () {
+                        $('#tour').crumble({grumble: {distance: -15}});
+                    }
+                });
+            } else {
+                $('#tour').crumble({grumble: {distance: -15}});
+            }
         })
     </script>
 {% endblock %}
