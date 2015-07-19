@@ -11,7 +11,7 @@
         <div class="pure-g text-center">
             <div class="pure-u-2-3">
                 <article>
-                    <h2>{{ profile.fullName }}</h2>
+                    <h2>{{ profile.fullName is empty ? author.nickname : profile.fullName }}</h2>
                 </article>
             </div>
             <div class="pure-u-1-3 automargin">
