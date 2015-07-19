@@ -31,7 +31,10 @@
             </li>
             {{ pure.menu_item('admin_dashboard', {}, 'Admin') }}
         {% endif %}
-        <li class="menu-item-divided"><a href="{{ path('trismegiste_oauth_logout') }}">Logout</a></li>
+        <li class="menu-item-divided">
+        </li>
+        {{ pure.menu_item('social_welcome_tour', {}, 'Help') }}
+        {{ pure.menu_item('trismegiste_oauth_logout', {}, 'Logout') }}
     </ul>
 {% endblock %}
 
