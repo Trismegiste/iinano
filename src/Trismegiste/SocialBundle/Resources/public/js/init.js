@@ -46,8 +46,7 @@ var social = {
             var button = this;
             alertify.confirm("Are you sure you want to delete this entry ?", function (e) {
                 if (e) {
-                    // @todo must be a DELETE method
-                    window.location.href = button.href;
+                    $('form#'+$(button).data('socialDelete')).submit();
                 }
             });
         });

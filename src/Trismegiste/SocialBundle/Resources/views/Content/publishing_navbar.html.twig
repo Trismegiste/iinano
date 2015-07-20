@@ -23,6 +23,12 @@
             <a href="#" data-dropdown="#{{ dropdown_id }}" title="More..."><i class="icon-cog"></i></a>
         </div>
     </div>
+    <form action="{{ path('publishing_delete', {id: content.id}) }}"
+          method="POST"
+          style="display:none;"
+          id="form-delete-{{content.id}}">
+        <input type="hidden" name="_method" value="DELETE"/>
+    </form>
     <div id="{{ dropdown_id }}" class="dropdown dropdown-anchor-right dropdown-tip">
         <ul class="dropdown-menu">
             <li><a href="{{ path('pub_permalink', {id: content.id}) }}">Permalink</a></li>
@@ -30,7 +36,7 @@
                     {% if content.editable %}
                     <li><a href="{{ path('publishing_edit', {id: content.id}) }}#anchor-form">Edit</a></li>
                     {% endif %}
-                <li><a href="{{ path('publishing_delete', {id: content.id}) }}" data-social-delete>Delete</a></li>
+                <li><a href="#" data-social-delete="form-delete-{{content.id}}">Delete</a></li>
                 {% endif %}
             <li><a data-social-report href="{{ path('pub_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id}) }}">Report abuse/spam</a></li>
         </ul>
