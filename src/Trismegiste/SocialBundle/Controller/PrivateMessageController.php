@@ -85,7 +85,7 @@ class PrivateMessageController extends Template
         $lastUpdate = is_null($lastPm) ? null : $lastPm->getSentAt();
 
         $response = new JsonResponse(['lastUpdate' => $lastUpdate]);
-        $response->setExpires(new \DateTime('+1 minute'));
+        $response->setMaxAge(60);
 
         return $response;
     }
