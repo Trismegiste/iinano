@@ -6,28 +6,28 @@
 
 namespace Trismegiste\SocialBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 /**
  * RepeatController is a controller for Repeated published content
  */
 class RepeatController extends ContentController
 {
 
-    public function repeatAction($id, $wallNick, $wallFilter)
+    public function ajaxRepeatAction($id, $wallNick, $wallFilter)
     {
+        $this->onlyAjaxRequest();
         $repo = $this->get('social.publishing.repository');
 
         try {
             $pub = $repo->repeatPublishing($id);
-            $this->pushFlash('notice', "You've repeated a message from "
-                    . $pub->getEmbedded()->getAuthor()->getNickname());
+            $response = new JsonResponse(['message' => "You've repeated a message from "
+                . $pub->getEmbedded()->getAuthor()->getNickname()]);
         } catch (\RuntimeException $e) {
-            $this->pushFlash('warning', $e->getMessage());
+            $response = new JsonResponse(['message' => $e->getMessage()], 412);
         }
 
-        return $this->redirectRouteOk('wall_index', [
-                    'wallNick' => $wallNick,
-                    'wallFilter' => $wallFilter
-                        ], 'anchor-' . $id);
+        return $response;
     }
 
 }

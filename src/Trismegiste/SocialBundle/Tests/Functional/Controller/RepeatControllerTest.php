@@ -60,29 +60,37 @@ class RepeatControllerTest extends WebTestCasePlus
         $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'self']);
         $this->assertCount(1, $crawler->filter(".publishing article:contains('message" . static::$random . "')"));
 
-        $crawler = $this->getPage('pub_repeat_create', ['id' => $pk, 'wallNick' => 'spock', 'wallFilter' => 'self']);
-        $this->assertCount(1, $crawler->filter(".publishing article:contains('message" . static::$random . "')"));
+        $url = $crawler->filter('a[data-repeat-ajaxed]')->attr('data-repeat-ajaxed');
+        $this->ajaxPost($url);
+        $this->assertEquals("You've repeated a message from kirk", $this->getJsonResponse()->message);
     }
 
     /**
-     * @depends initialize
+     * @depends testRepeatOnce
      */
-    public function testRepeatHimself($pk)
+    public function testRepeatHimself()
     {
-        $crawler = $this->getPage('pub_repeat_create', ['id' => $pk, 'wallNick' => 'spock', 'wallFilter' => 'all']);
-        $this->assertCount(2, $crawler->filter(".publishing article:contains('message" . static::$random . "')"));
-        $this->assertCount(1, $crawler->filter("script:contains('repeat yourself')"));
+        // login with kirk and going to spock's page with a repeated message from kirk
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'spock', 'wallFilter' => 'self']);
+        $url = $crawler->filter('a[data-repeat-ajaxed]')->attr('data-repeat-ajaxed');
+        $this->ajaxPost($url);
+        $this->assertStatusCode(412);
+        $this->assertEquals("You cannot repeat yourself", $this->getJsonResponse()->message);
     }
 
     /**
-     * @depends initialize
+     * @depends testRepeatOnce
      */
-    public function testAlreadyRepeated($pk)
+    public function testAlreadyRepeated()
     {
         $this->logIn('spock');
-        $crawler = $this->getPage('pub_repeat_create', ['id' => $pk, 'wallNick' => 'spock', 'wallFilter' => 'self']);
+        $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'self']);
         $this->assertCount(1, $crawler->filter(".publishing article:contains('message" . static::$random . "')"));
-        $this->assertCount(1, $crawler->filter("script:contains('already have repeated')"));
+
+        $url = $crawler->filter('a[data-repeat-ajaxed]')->attr('data-repeat-ajaxed');
+        $this->ajaxPost($url);
+        $this->assertStatusCode(412);
+        $this->assertEquals("You already have repeated this content", $this->getJsonResponse()->message);
     }
 
     public function testNoEditOnRepeat()
@@ -95,8 +103,11 @@ class RepeatControllerTest extends WebTestCasePlus
     public function testDeleteSource()
     {
         $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'self']);
-        $button = $crawler->filter(".publishing nav")->selectLink('Delete')->link();
-        $crawler = $this->client->click($button);
+        $link = $crawler->filter(".publishing nav")->selectLink('Delete');
+        $hiddenFormId = $link->attr('data-social-delete');
+        $form = $crawler->filter("form#$hiddenFormId")->form();
+        $crawler = $this->client->click($form);
+
         $this->assertCount(0, $this->collection->find(['owner.nickname' => 'kirk']));
     }
 
@@ -106,15 +117,18 @@ class RepeatControllerTest extends WebTestCasePlus
         $crawler = $this->getPage('wall_index', ['wallNick' => 'spock', 'wallFilter' => 'self']);
         $button = $crawler->filter(".publishing h3:contains('has said') a:contains('ago')")->link();
         $this->client->click($button);
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+        $this->assertStatusCode(404);
     }
 
     public function testDeleteRepeat()
     {
         $this->logIn('spock');
         $crawler = $this->getPage('wall_index', ['wallNick' => 'spock', 'wallFilter' => 'self']);
-        $button = $crawler->filter(".publishing nav")->selectLink('Delete')->link();
-        $crawler = $this->client->click($button);
+        $link = $crawler->filter(".publishing nav")->selectLink('Delete');
+        $hiddenFormId = $link->attr('data-social-delete');
+        $form = $crawler->filter("form#$hiddenFormId")->form();
+        $crawler = $this->client->click($form);
+
         $this->assertCount(0, $crawler->filter(".publishing article:contains('message" . static::$random . "')"));
     }
 
