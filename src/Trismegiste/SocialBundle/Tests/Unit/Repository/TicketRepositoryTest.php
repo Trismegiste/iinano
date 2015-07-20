@@ -193,4 +193,29 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->deleteCoupon($pk, $coll);
     }
 
+    public function getConversionExample()
+    {
+        return [
+            [new \ArrayObject([1, 2]), new \ArrayObject([2, 3]), 0.5],
+            [new \ArrayObject(), new \ArrayObject([2, 3]), 0],
+            [new \ArrayObject([1, 2]), new \ArrayObject(), 1],
+            [new \ArrayObject(), new \ArrayObject(), 0]
+        ];
+    }
+
+    /**
+     * @dataProvider getConversionExample
+     */
+    public function testGetConversionRate($converted, $nonconverted, $rate)
+    {
+        $this->repository->expects($this->at(0))
+                ->method('getCursor')
+                ->willReturn(new \ArrayObject($converted));
+        $this->repository->expects($this->at(1))
+                ->method('getCursor')
+                ->willReturn(new \ArrayObject($nonconverted));
+
+        $this->assertEquals($rate, $this->sut->getConversionRate());
+    }
+
 }
