@@ -98,8 +98,10 @@ class CommentaryControllerTest extends WebTestCasePlus
     public function testDeleteCommentary($pk)
     {
         $crawler = $this->getPage('wall_index', $this->wallParam);
-        $link = $crawler->filter('div.commentary')->selectLink('Delete')->link();
-        $crawler = $this->client->click($link);
+        $link = $crawler->filter('div.commentary')->selectLink('Delete');
+        $hiddenFormId = $link->attr('data-social-delete');
+        $form = $crawler->filter("form#$hiddenFormId")->form();
+        $crawler = $this->client->click($form);
 
         $restore = $this->getService('dokudoki.repository')->findByPk($pk);
         $this->assertInstanceOf($this->rootFqcn, $restore);
@@ -169,7 +171,7 @@ class CommentaryControllerTest extends WebTestCasePlus
      */
     public function testHackDeleteCommentaryFromOther($pk)
     {
-        $crawler = $this->getPage('pub_commentary_delete', $pk);
+        $this->client->request('DELETE', $this->generateUrl('pub_commentary_delete', $pk));
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
 
