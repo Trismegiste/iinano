@@ -2,6 +2,28 @@
  * all initialization for main content
  */
 var social = {
+    initGetMoreContent: function (pagination) {
+        $('#more-button').on('click', function (event) {
+            $.ajax({
+                url: event.target.href,
+                success: function (data) {
+                    if ('' != data) {
+                        $('#pagination').append(data);
+                        var old = event.target.href;
+                        event.target.href = old.replace(/(\d+)$/, function (match, p1, offset, str) {
+                            return  pagination + Number(p1);
+                        })
+                        social.initLeafletShow();
+                        social.initLightBox();
+                        social.initFluidVideo();
+                    } else {
+                        $('#more-button').hide();
+                    }
+                }
+            });
+            event.preventDefault();
+        });
+    },
     initLeafletShow: function () {
         $('div[data-social-status-show]').each(function () {
 
