@@ -24,12 +24,17 @@
                         </a>
                     </div>
                 </div>
-
+                <form action="{{ path('pub_commentary_delete', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}"
+                      method="POST"
+                      style="display:none;"
+                      id="form-delete-{{dropdown_id}}">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                </form>
                 <div id="{{ dropdown_id }}" class="dropdown dropdown-anchor-right">
                     <ul class="dropdown-menu">
                         {% if is_granted('OWNER', comment) %}
                             <li><a href="{{ path('pub_commentary_edit', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}#anchor-form">Edit</a></li>
-                            <li><a href="{{ path('pub_commentary_delete', {wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}" data-social-delete>Delete</a></li>
+                            <li><a href="#" data-social-delete="form-delete-{{dropdown_id}}">Delete</a></li>
                             {% endif %}
                         <li><a data-social-report href="{{ path('commentary_abusivereport', {action: 'add', wallNick: wallNick, wallFilter: wallFilter, id: content.id, uuid: comment.uuid}) }}">Report abuse/spam</a></li>
                     </ul>

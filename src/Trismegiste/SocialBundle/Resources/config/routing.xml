@@ -18,18 +18,22 @@
     </route>
     <route id="pub_permalink" pattern="/pub/{id}">
         <default key="_controller">TrismegisteSocialBundle:Publishing:show</default>
+        <requirement key="_method">GET</requirement>
         <requirement key="id">%mongoid_regex%</requirement>
     </route>
     <route id="publishing_create" pattern="/pub/create/{type}">
         <default key="_controller">TrismegisteSocialBundle:Publishing:create</default>
+        <requirement key="_method">GET|POST</requirement>
         <requirement key="type">%crud_url_param_regex%</requirement>
     </route>
     <route id="publishing_edit" pattern="/pub/{id}/edit">
         <default key="_controller">TrismegisteSocialBundle:Publishing:edit</default>
+        <requirement key="_method">GET|POST</requirement>
         <requirement key="id">%mongoid_regex%</requirement>
     </route>
     <route id="publishing_delete" pattern="/pub/{id}/delete">
         <default key="_controller">TrismegisteSocialBundle:Publishing:delete</default>
+        <requirement key="_method">DELETE</requirement>
         <requirement key="id">%mongoid_regex%</requirement>
     </route>
 
