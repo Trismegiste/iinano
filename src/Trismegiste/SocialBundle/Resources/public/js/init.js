@@ -39,6 +39,20 @@ var social = {
             });
         });
     },
+    transformRepeatToAjax: function () {
+        $(document).on('click', 'a[data-repeat-ajaxed]', function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+            $.ajax({
+                url: $(this).data('repeatAjaxed'),
+                type: 'POST'
+            }).done(function (response) {
+                alertify.success(response.message);
+            }).error(function (xhr) {
+                alertify.error(xhr.responseJSON.message);
+            });
+        });
+    },
     initConfirmDelete: function () {
         $(document).on('click', 'a[data-social-delete]', function (event) {
             event.stopPropagation();
@@ -46,7 +60,7 @@ var social = {
             var button = this;
             alertify.confirm("Are you sure you want to delete this entry ?", function (e) {
                 if (e) {
-                    $('form#'+$(button).data('socialDelete')).submit();
+                    $('form#' + $(button).data('socialDelete')).submit();
                 }
             });
         });

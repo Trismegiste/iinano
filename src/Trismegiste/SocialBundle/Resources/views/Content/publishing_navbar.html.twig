@@ -9,7 +9,9 @@
         <div class="pure-u-1-4">
             <a
                 {% if not is_granted('OWNER', content) %}
-                    href="{{ path('pub_repeat_create', {wallNick: wallNick, wallFilter: wallFilter, id: content.id} ) }}" title="Repeat"
+                    data-repeat-ajaxed="{{ path('pub_repeat_create', {wallNick: wallNick, wallFilter: wallFilter, id: content.id} ) }}"
+                    title="Repeat"
+                    href="#"
                 {% endif %}
                 >
                 <i class="icon-retweet"></i>{{ content.getRepeatedCount() }}
