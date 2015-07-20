@@ -37,7 +37,7 @@ class AbuseReportControllerTest extends WebTestCasePlus
         $this->assertCount(1, $crawler->filter('div.publishing'));
         $link = $crawler->filter('div.publishing')->selectLink('Report abuse/spam')->link();
         $this->client->click($link);
-        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $this->assertStatusCode(302);
     }
 
     public function testReportedIsHidden()
@@ -66,7 +66,7 @@ class AbuseReportControllerTest extends WebTestCasePlus
 
         $link = $crawler->filter('div.commentary')->selectLink('Report abuse/spam')->link();
         $this->client->click($link);
-        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $this->assertStatusCode(302);
 
         $crawler = $this->client->followRedirect();
         $this->assertCount(0, $crawler->filter(".commentary article:contains('dummy comment')"));
@@ -76,9 +76,9 @@ class AbuseReportControllerTest extends WebTestCasePlus
     {
         $this->logIn('kirk');
         $this->getPage('admin_abusive_pub_listing');
-        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+        $this->assertStatusCode(403);
         $this->getPage('admin_abusive_comm_listing');
-        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+        $this->assertStatusCode(403);
     }
 
     public function testLogWithModeratorOnPublishListing()
@@ -91,7 +91,7 @@ class AbuseReportControllerTest extends WebTestCasePlus
 
         $this->logIn('moderat');
         $crawler = $this->getPage('admin_abusive_pub_listing');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStatusCode(200);
         $lineSet = $crawler->filter('table.abuse-listing tr');
         $this->assertCount(2, $lineSet);
         $this->assertCount(1, $lineSet->eq(1)->filter('td:contains("dummy message")'));
@@ -102,7 +102,7 @@ class AbuseReportControllerTest extends WebTestCasePlus
     {
         $this->logIn('moderat');
         $crawler = $this->getPage('admin_abusive_comm_listing');
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStatusCode(200);
         $lineSet = $crawler->filter('table.abuse-listing tr');
         $this->assertCount(2, $lineSet);
         $this->assertCount(1, $lineSet->eq(1)->filter('td:contains("dummy comment")'));

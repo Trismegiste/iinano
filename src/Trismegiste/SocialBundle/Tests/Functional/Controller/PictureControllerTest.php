@@ -36,7 +36,7 @@ class PictureControllerTest extends WebTestCasePlus
     {
         $this->logIn('kirk');
         $this->getPage('picture_get', ['size' => 'full', 'storageKey' => '07f0d.jpg']);
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode()); // headers->get('Content-Type')
+        $this->assertStatusCode(404);
     }
 
     public function testFirstRequest()
@@ -75,7 +75,7 @@ class PictureControllerTest extends WebTestCasePlus
             'HTTP_If-Modified-Since' => $last->format('D, d M Y H:i:s') . ' GMT',
             'HTTP_If-None-Match' => $etag
         ]);
-        $this->assertEquals(304, $this->client->getResponse()->getStatusCode());
+        $this->assertStatusCode(304);
     }
 
 }

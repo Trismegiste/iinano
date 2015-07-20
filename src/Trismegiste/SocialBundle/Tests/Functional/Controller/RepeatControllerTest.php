@@ -117,7 +117,7 @@ class RepeatControllerTest extends WebTestCasePlus
         $crawler = $this->getPage('wall_index', ['wallNick' => 'spock', 'wallFilter' => 'self']);
         $button = $crawler->filter(".publishing h3:contains('has said') a:contains('ago')")->link();
         $this->client->click($button);
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+        $this->assertStatusCode(404);
     }
 
     public function testDeleteRepeat()

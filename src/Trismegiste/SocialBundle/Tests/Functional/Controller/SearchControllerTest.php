@@ -47,7 +47,7 @@ class SearchControllerTest extends WebTestCasePlus
     public function testSearchPage()
     {
         $crawler = $this->getPage('search_listing', ['keyword' => 'nothing']);
-        $this->assertEquals(200, $this->getCurrentResponse()->getStatusCode());
+        $this->assertStatusCode(200);
         $this->assertCount(0, $crawler->filter('div.publishing:contains("different")'));
     }
 

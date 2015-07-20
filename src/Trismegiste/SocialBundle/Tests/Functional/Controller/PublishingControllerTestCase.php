@@ -79,7 +79,7 @@ abstract class PublishingControllerTestCase extends WebTestCasePlus
     public function testShow($pk)
     {
         $crawler = $this->getPage('pub_permalink', ['id' => $pk]);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertStatusCode(200);
         $this->assertRegExp('#kirk#', $crawler->filter('.publishing article h4')->text());
     }
 
