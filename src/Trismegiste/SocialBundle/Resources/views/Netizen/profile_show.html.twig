@@ -15,6 +15,7 @@
             Registered : {{ profile.joinedAt|timeago }}<br/>
             Content counter : {{ profile.publishingCounter }}<br/>
             Commentary counter : {{ profile.commentaryCounter }}<br/>
+            Likes on contents : {{profile.likeCounter}}<br/>
             {% if lastTicket is not null %}
                 Next payment : {{ lastTicket.expiredAt|timeago }}
             {% endif %}

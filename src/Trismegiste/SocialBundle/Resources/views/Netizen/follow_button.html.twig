@@ -1,7 +1,13 @@
 {% set defaultParam = {wallNick: wallNick, wallFilter: wallFilter, id: wallUser.id} %}
 
 {% if app.user.isFollowing(wallUser) %}
-    <a href="{{ path('netizen_follow', {action: 'remove'}|merge(defaultParam)) }}" class="pure-button">Unfollow</a>
+    {% set action_follow = path('netizen_follow', {action: 'remove'}|merge(defaultParam)) %}
+    {% set text_follow = "Unfollow" %}
 {% else %}
-    <a href="{{ path('netizen_follow', {action: 'add'}|merge(defaultParam)) }}" class="pure-button">Follow</a>
+    {% set action_follow = path('netizen_follow', {action: 'add'}|merge(defaultParam)) %}
+    {% set text_follow = "Follow" %}
 {% endif %}
+
+<form action="{{action_follow}}" method="POST" class="pure-form">
+    <button class="pure-button">{{text_follow}}</button>
+</form>
