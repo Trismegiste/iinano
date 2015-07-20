@@ -124,8 +124,10 @@ abstract class PublishingControllerTestCase extends WebTestCasePlus
     public function testDeleteFirst()
     {
         $crawler = $this->getPage('content_index');
-        $link = $crawler->selectLink('Delete')->link();
-        $crawler = $this->client->click($link);
+        $link = $crawler->selectLink('Delete');
+        $hiddenFormId = $link->attr('data-social-delete');
+        $form = $crawler->filter("form#$hiddenFormId")->form();
+        $crawler = $this->client->click($form);
 
         $this->assertCount(1, $this->contentRepo->findLastEntries());
     }
@@ -169,7 +171,7 @@ abstract class PublishingControllerTestCase extends WebTestCasePlus
         //override user
         $this->logIn('spock');
         // try to delete
-        $crawler = $this->getPage('publishing_delete', ['id' => $pk]);
+        $crawler = $this->client->request('DELETE', $this->generateUrl('publishing_delete', ['id' => $pk]));
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
 
