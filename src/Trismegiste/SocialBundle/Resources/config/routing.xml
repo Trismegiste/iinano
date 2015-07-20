@@ -140,4 +140,9 @@
         <requirement key="_method">GET</requirement>
     </route>
 
+    <route id="social_welcome_tour" pattern="/help/welcome/tour">
+        <default key="_controller">TrismegisteSocialBundle:Discover:tour</default>
+        <requirement key="_method">GET</requirement>
+    </route>
+
 </routes>
