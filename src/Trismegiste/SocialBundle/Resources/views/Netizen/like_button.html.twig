@@ -1,7 +1,13 @@
 {% set defaultParam = {wallNick: wallNick, wallFilter: wallFilter, id: wallUser.id} %}
 
 {% if wallUser.hasFan(app.user.author) %}
-    <a href="{{ path('netizen_famous', {action: 'remove'}|merge(defaultParam)) }}" class="pure-button fan-count"><i class="icon-heart"></i>  {{ wallUser.fanCount }}</a>
+    {% set action_like = path('netizen_famous', {action: 'remove'}|merge(defaultParam)) %}
+    {% set icon_like = "icon-heart" %}
 {% else %}
-    <a href="{{ path('netizen_famous', {action: 'add'}|merge(defaultParam)) }}" class="pure-button fan-count"><i class="icon-heart-empty"></i>  {{ wallUser.fanCount }}</a>
+    {% set action_like = path('netizen_famous', {action: 'add'}|merge(defaultParam)) %}
+    {% set icon_like = "icon-heart-empty" %}
 {% endif %}
+
+<form action="{{action_like}}" method="POST" class="pure-form">
+    <button class="pure-button fan-count"><i class="{{icon_like}}"></i> {{ wallUser.fanCount }}</button>
+</form>
