@@ -218,4 +218,29 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($rate, $this->sut->getConversionRate());
     }
 
+    public function getRenewalExample()
+    {
+        return [
+            [new \ArrayObject(), new \ArrayObject(), 0],
+            [new \ArrayObject([1, 2]), new \ArrayObject(), 1],
+            [new \ArrayObject(), new \ArrayObject([2, 3]), 0],
+            [new \ArrayObject([1]), new \ArrayObject([2, 3]), 1 / 3.0],
+        ];
+    }
+
+    /**
+     * @dataProvider getRenewalExample
+     */
+    public function testRenewalRate($rewed, $expired, $rate)
+    {
+        $this->repository->expects($this->at(0))
+                ->method('getCursor')
+                ->willReturn(new \ArrayObject($rewed));
+        $this->repository->expects($this->at(1))
+                ->method('getCursor')
+                ->willReturn(new \ArrayObject($expired));
+
+        $this->assertEquals($rate, $this->sut->getRenewalRate());
+    }
+
 }

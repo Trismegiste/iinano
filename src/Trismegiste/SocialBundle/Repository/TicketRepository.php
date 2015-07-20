@@ -160,8 +160,8 @@ class TicketRepository extends SecuredContentProvider
                     'ticket.0.expiredAt' => ['$lte' => new \MongoDate()]
                 ])->count();
 
-        if ($expiredFee > 0) {
-            return $renewTicket / (float) $expiredFee;
+        if (($expiredFee + $renewTicket) > 0) {
+            return $renewTicket / (float) ($expiredFee + $renewTicket);
         }
 
         return 0; // bof...
