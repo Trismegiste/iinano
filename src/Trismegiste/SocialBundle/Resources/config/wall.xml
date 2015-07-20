@@ -48,34 +48,38 @@
 
     <route id="netizen_famous" pattern="/user/{id}/like/{action}">
         <default key="_controller">TrismegisteSocialBundle:Social:likeNetizen</default>
-        <requirement key="_method">POST</requirement>
+        <requirement key="_method">PATCH</requirement>
         <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="action">(add|remove)</requirement>
     </route>
     <route id="netizen_follow" pattern="/user/{id}/follow/{action}">
         <default key="_controller">TrismegisteSocialBundle:Social:followNetizen</default>
-        <requirement key="_method">POST</requirement>
+        <requirement key="_method">PATCH</requirement>
         <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="action">(add|remove)</requirement>
     </route>
 
     <route id="pub_commentary_add" pattern="/pub/{id}/commentary/add">
+        <requirement key="_method">GET|POST</requirement>
         <default key="_controller">TrismegisteSocialBundle:Commentary:addOnPublishing</default>
         <requirement key="id">%mongoid_regex%</requirement>
     </route>
     <route id="pub_commentary_edit" pattern="/pub/{id}/commentary/{uuid}/edit">
         <default key="_controller">TrismegisteSocialBundle:Commentary:editOnPublishing</default>
+        <requirement key="_method">GET|POST</requirement>
         <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="uuid">%mongoid_regex%</requirement>
     </route>
     <route id="pub_commentary_delete" pattern="/pub/{id}/commentary/{uuid}/delete">
         <default key="_controller">TrismegisteSocialBundle:Commentary:deleteOnPublishing</default>
+        <requirement key="_method">POST</requirement>
         <requirement key="id">%mongoid_regex%</requirement>
         <requirement key="uuid">%mongoid_regex%</requirement>
     </route>
 
     <route id="pub_repeat_create" pattern="/pub/{id}/repeat">
         <default key="_controller">TrismegisteSocialBundle:Repeat:repeat</default>
+        <requirement key="_method">POST</requirement>
         <requirement key="id">%mongoid_regex%</requirement>
     </route>
 

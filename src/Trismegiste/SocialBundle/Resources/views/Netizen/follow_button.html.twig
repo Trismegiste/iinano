@@ -9,5 +9,6 @@
 {% endif %}
 
 <form action="{{action_follow}}" method="POST" class="pure-form">
+    <input type="hidden" name="_method" value="PATCH"/>
     <button class="pure-button">{{text_follow}}</button>
 </form>

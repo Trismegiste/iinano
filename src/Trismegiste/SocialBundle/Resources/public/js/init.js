@@ -46,6 +46,7 @@ var social = {
             var button = this;
             alertify.confirm("Are you sure you want to delete this entry ?", function (e) {
                 if (e) {
+                    // @todo must be a DELETE method
                     window.location.href = button.href;
                 }
             });
@@ -58,6 +59,7 @@ var social = {
             var button = this;
             alertify.confirm("Are you sure you want to report this content as abusive or spam", function (e) {
                 if (e) {
+                    // @todo must be a PATCH method
                     window.location.href = button.href;
                 }
             });

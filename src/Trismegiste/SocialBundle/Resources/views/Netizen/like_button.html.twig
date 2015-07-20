@@ -9,5 +9,6 @@
 {% endif %}
 
 <form action="{{action_like}}" method="POST" class="pure-form">
+    <input type="hidden" name="_method" value="PATCH"/>
     <button class="pure-button fan-count"><i class="{{icon_like}}"></i> {{ wallUser.fanCount }}</button>
 </form>
