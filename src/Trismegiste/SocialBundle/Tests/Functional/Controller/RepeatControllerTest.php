@@ -60,8 +60,10 @@ class RepeatControllerTest extends WebTestCasePlus
         $crawler = $this->getPage('wall_index', ['wallNick' => 'kirk', 'wallFilter' => 'self']);
         $this->assertCount(1, $crawler->filter(".publishing article:contains('message" . static::$random . "')"));
 
-        $crawler = $this->getPage('pub_repeat_create', ['id' => $pk, 'wallNick' => 'spock', 'wallFilter' => 'self']);
-        $this->assertCount(1, $crawler->filter(".publishing article:contains('message" . static::$random . "')"));
+        $url = $crawler->filter('a[data-repeat-ajaxed]')->attr('data-repeat-ajaxed');
+        $this->ajaxPost($url);
+        print_r($this->getJsonResponse());
+        $this->assertEquals("You've repeated a message from kirk", $this->getJsonResponse()->message);
     }
 
     /**
