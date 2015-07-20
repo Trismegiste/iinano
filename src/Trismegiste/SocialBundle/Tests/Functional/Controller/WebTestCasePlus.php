@@ -118,9 +118,14 @@ class WebTestCasePlus extends WebTestCase
         $this->assertEquals($this->generateUrl($route, $param), $this->client->getHistory()->current()->getUri());
     }
 
-    public function getJsonResponse()
+    protected function getJsonResponse()
     {
         return json_decode($this->client->getResponse()->getContent());
+    }
+
+    protected function assertStatusCode($code)
+    {
+        $this->assertEquals($code, $this->client->getResponse()->getStatusCode());
     }
 
 }
