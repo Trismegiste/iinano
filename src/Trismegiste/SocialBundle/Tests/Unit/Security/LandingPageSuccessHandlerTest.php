@@ -39,7 +39,7 @@ class LandingPageSuccessHandlerTest extends \PHPUnit_Framework_TestCase
     public function getUser()
     {
         return [
-            ['ROLE_USER', 'buy_new_ticket'],
+            ['ROLE_USER', 'content_index'],  // => will be intercepted by AccessDeniedListener in func test
             ['ROLE_MODERATOR', 'admin_abusive_pub_listing'],
             ['ROLE_MANAGER', 'admin_netizen_listing'],
             ['ROLE_ADMIN', 'admin_dashboard'],

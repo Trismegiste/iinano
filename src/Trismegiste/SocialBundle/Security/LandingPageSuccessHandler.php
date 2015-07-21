@@ -15,6 +15,9 @@ use Symfony\Component\Security\Http\HttpUtils;
 
 /**
  * LandingPageSuccessHandler is a AuthenticationSuccessHandler for the security layer
+ *
+ * It chooses the right page to land after successfully login.
+ * Note: it doesn't care about ticket validity: SRP
  */
 class LandingPageSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
@@ -39,7 +42,7 @@ class LandingPageSuccessHandler implements AuthenticationSuccessHandlerInterface
         $cookie = new Cookie('oauth_provider', $token->getUser()
                         ->getCredential()->getProviderKey(), new \DateTime('+1 month'));
 
-        $route = 'buy_new_ticket'; // @todo with the new 403 listener, this route is useless
+        $route = 'content_index';
 
         if ($this->security->isGranted('ROLE_ADMIN')) {
             $route = 'admin_dashboard';
@@ -47,8 +50,6 @@ class LandingPageSuccessHandler implements AuthenticationSuccessHandlerInterface
             $route = 'admin_netizen_listing';
         } else if ($this->security->isGranted('ROLE_MODERATOR')) {
             $route = 'admin_abusive_pub_listing';
-        } else if ($this->security->isGranted(TicketVoter::SUPPORTED_ATTRIBUTE)) {
-            $route = 'content_index';
         }
 
         $response = $this->httpUtils->createRedirectResponse($request, $route);

@@ -18,6 +18,8 @@ class TicketController extends Template
 
     public function buyNewTicketAction()
     {
+        // this redirection is not intended for programers assuming buyNewTicket is a landing page :
+        // It is intended for user accessing (by error or hack) to buyNewTicket
         if ($this->get('security.context')->isGranted(TicketVoter::SUPPORTED_ATTRIBUTE)) {
             return $this->redirectRouteOk('content_index');
         }
