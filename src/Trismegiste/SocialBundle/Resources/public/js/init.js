@@ -54,7 +54,7 @@ var social = {
             event.preventDefault();
             $.ajax({
                 url: this.href,
-                type: 'POST'
+                type: 'PATCH'
             }).done(function (response) {
                 $(event.currentTarget).replaceWith(response);
                 alertify.success("Like updated");
