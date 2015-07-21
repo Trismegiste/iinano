@@ -46,13 +46,18 @@ class AccessDeniedListenerTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
 
-        $this->sut = new AccessDeniedListener($this->security, $this->urlGenerator, $this->session);
+        $this->urlGenerator->expects($this->once())
+                ->method('generate')
+                ->with('payment_page')
+                ->willReturn('/buy/new/ticket');
+        $this->sut = new AccessDeniedListener($this->security, $this->urlGenerator, 'payment_page');
     }
 
     protected function createEvent(\Exception $e)
     {
         $kernel = $this->getMock('Symfony\Component\HttpKernel\KernelInterface');
         $request = new Request();
+        $request->setSession($this->session);
         $event = new GetResponseForExceptionEvent($kernel, $request, HttpKernelInterface::MASTER_REQUEST, $e);
 
         return $event;
@@ -62,6 +67,17 @@ class AccessDeniedListenerTest extends \PHPUnit_Framework_TestCase
     {
         $e = new AccessDeniedException();  // not an AccessDeniedHttpException
         $event = $this->createEvent($e);
+
+        $this->sut->onKernelException($event);
+        $this->assertFalse($event->hasResponse());
+    }
+
+    public function testAjaxRequest()
+    {
+        $event = $this->createEvent(new AccessDeniedHttpException());
+        $event->getRequest()->headers->set('X-Requested-With', 'XMLHttpRequest');
+        $this->security->expects($this->never())
+                ->method('getToken');
 
         $this->sut->onKernelException($event);
         $this->assertFalse($event->hasResponse());
@@ -126,11 +142,6 @@ class AccessDeniedListenerTest extends \PHPUnit_Framework_TestCase
         $this->session->expects($this->once())
                 ->method('getFlashBag')
                 ->willReturn($bag);
-
-        $this->urlGenerator->expects($this->once())
-                ->method('generate')
-                ->with('buy_new_ticket')
-                ->willReturn('/buy/new/ticket');
 
         $this->sut->onKernelException($event);
         $this->assertTrue($event->hasResponse());

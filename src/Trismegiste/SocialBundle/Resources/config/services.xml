@@ -96,7 +96,7 @@
         <service id="access_denied.listener" class="Trismegiste\SocialBundle\Security\AccessDeniedListener">
             <argument type="service" id="security.context"/>
             <argument type="service" id="router"/>
-            <argument type="service" id="session"/>
+            <argument type="string">buy_new_ticket</argument>
             <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException"/>
         </service>
 

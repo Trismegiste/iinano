@@ -23,30 +23,36 @@ class AccessDeniedListener
 {
 
     protected $security;
-    protected $router;
-    protected $session;
+    protected $paymentRoute;
 
-    public function __construct(SecurityContextInterface $secu, UrlGeneratorInterface $router, SessionInterface $sess)
+    public function __construct(SecurityContextInterface $secu, UrlGeneratorInterface $router, $paymentRoute)
     {
         $this->security = $secu;
-        $this->router = $router;
-        $this->session = $sess;
+        $this->paymentRoute = $router->generate($paymentRoute);
     }
 
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
-        // $session = $event->getRequest()->getSession(); @todo remove session from ctor and use request
+        $request = $event->getRequest();
+        $session = $request->getSession();
 
         if ($exception instanceof AccessDeniedHttpException) {
-            $token = $this->security->getToken();
-            if ($token instanceof Token) {
-                $user = $token->getUser();
-                if ($user instanceof Netizen) {
-                    if (!$this->security->isGranted(TicketVoter::SUPPORTED_ATTRIBUTE)) {
-                        $this->session->getFlashBag()->add('warning', 'Your subscribing has expired');
-                        $response = new RedirectResponse($this->router->generate('buy_new_ticket')); // @todo parameter please
-                        $event->setResponse($response);
+            // no redirection on ajax, could be messy :
+            if (!$request->isXmlHttpRequest()) {
+                $token = $this->security->getToken();
+                if ($token instanceof Token) {
+                    $user = $token->getUser();
+                    if ($user instanceof Netizen) {
+                        if (!$this->security->isGranted(TicketVoter::SUPPORTED_ATTRIBUTE)) {
+                            // we redirect to payment if it is a 403 Error
+                            // with a standard html request with OAuth user with an invalid ticket
+                            $session->getFlashBag()->add('warning', 'Your subscribing has expired');
+                            $response = new RedirectResponse($this->paymentRoute);
+                            $event->setResponse($response);
+                            // for example, accessing to forbidden resource with a valid ticket don't redirect to payment
+                            // the same if its a ajax request, an unauthenticated user (raw 403) etc...
+                        }
                     }
                 }
             }
