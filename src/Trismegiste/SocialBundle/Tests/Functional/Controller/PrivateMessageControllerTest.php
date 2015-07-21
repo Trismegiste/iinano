@@ -86,7 +86,7 @@ class PrivateMessageControllerTest extends WebTestCasePlus
         $this->logIn('spock');
         $crawler = $this->getPage('private_create');
         $this->assertCount(1, $crawler->filter("div.pm-received:contains('kirk')"));
-        $markButton = $crawler->filter("div.pm-received a i[class='icon-trash-empty']")->parents()->link();
+        $markButton = $crawler->filter("div.pm-received button i[class='icon-trash-empty']")->parents()->form();
         $crawler = $this->client->click($markButton);
         $this->assertCount(0, $crawler->filter("div.pm-received:contains('kirk')"));
     }
