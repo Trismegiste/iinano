@@ -15,9 +15,6 @@ use \Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * PrivateMessageRepository is a repository for PrivateMessage
- *
- * @todo queries need indexing [target.nickname:1 , sentAt:-1]
- * @todo queries need indexing [source.nickname:1 , sentAt:-1]
  */
 class PrivateMessageRepository extends SecuredContentProvider
 {
@@ -34,7 +31,7 @@ class PrivateMessageRepository extends SecuredContentProvider
     {
         return $this->repository->find([
                             MapAlias::CLASS_KEY => $this->classKey,
-                            'target.nickname' => $this->getNickname(), // @todo mongo sparse index for this key
+                            'target.nickname' => $this->getNickname(),
                             'read' => !$unread
                         ])
                         ->offset($offset)
@@ -45,7 +42,7 @@ class PrivateMessageRepository extends SecuredContentProvider
     {
         return $this->repository->find([
                             MapAlias::CLASS_KEY => $this->classKey,
-                            'source.nickname' => $this->getNickname(), // @todo mongo sparse index for this key
+                            'source.nickname' => $this->getNickname(),
                             'read' => !$unread
                         ])
                         ->offset($offset)

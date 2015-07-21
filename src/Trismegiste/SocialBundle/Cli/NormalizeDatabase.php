@@ -40,6 +40,9 @@ class NormalizeDatabase extends ContainerAwareCommand
         $collection->ensureIndex(['location' => "2dsphere"], ['sparse' => true]);
         // for text search
         $collection->ensureIndex(['message' => 'text', 'commentary.message' => 'text'], ['sparse' => true, 'weights' => ['message' => 3]]);
+        // indexing for private message search
+        $collection->ensureIndex(['target.nickname' => 1, 'sentAt' => -1, 'read' => 1], ['sparse' => true]);
+        $collection->ensureIndex(['source.nickname' => 1, 'sentAt' => -1, 'read' => 1], ['sparse' => true]);
     }
 
 }

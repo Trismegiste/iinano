@@ -9,7 +9,8 @@ namespace Trismegiste\SocialBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
- * DiscoverController is a ...
+ * DiscoverController implements the first of social networks :
+ * "Never show an empty page"
  */
 class DiscoverController extends Controller
 {
