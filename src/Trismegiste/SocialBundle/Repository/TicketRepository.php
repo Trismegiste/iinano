@@ -119,11 +119,22 @@ class TicketRepository extends SecuredContentProvider
         $coll->remove(['_id' => $obj->getId()]);
     }
 
+    /**
+     * Finds (or not) the unique entrance fee
+     *
+     * @return EntranceFee|null
+     */
     public function findEntranceFee()
     {
         return $this->repository->findOne([MapAlias::CLASS_KEY => 'fee']);
     }
 
+    /**
+     * Gets the conversion rate between users with expired coupon and
+     * users who have converted their subscription with a paid ticket
+     *
+     * @return float a ratio between 0 to 1
+     */
     public function getConversionRate()
     {
         $convertedCoupon = $this->repository->getCursor([
@@ -145,6 +156,12 @@ class TicketRepository extends SecuredContentProvider
         return 0; // bof...
     }
 
+    /**
+     * Gets the renewal rate between users with expired ticket and
+     * users who have bought at least one new ticket
+     *
+     * @return float a ratio between 0 to 1
+     */
     public function getRenewalRate()
     {
         $renewTicket = $this->repository->getCursor([
@@ -165,6 +182,22 @@ class TicketRepository extends SecuredContentProvider
         }
 
         return 0; // bof...
+    }
+
+    /**
+     * Persists the unique fee
+     *
+     * @param EntranceFee $fee
+     */
+    public function persistEntranceFee(EntranceFee $fee)
+    {
+        $dbFee = $this->findEntranceFee();
+
+        if (is_null($dbFee) || ($dbFee->getId() === $fee->getId())) {
+            $this->repository->persist($fee);
+        } else {
+            throw new \DomainException('Only one unique Fee must be configured');
+        }
     }
 
 }

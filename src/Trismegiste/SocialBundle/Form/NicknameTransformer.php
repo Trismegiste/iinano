@@ -26,7 +26,7 @@ class NicknameTransformer implements DataTransformerInterface
 
     public function transform($value)
     {
-        $value = iconv('UTF-8', 'ASCII//TRANSLIT', $value);  // @todo why TRANSLIT does not work ?
+        $value = iconv('UTF-8', 'ASCII//TRANSLIT', $value);  // warning: erratic on windows
 
         return preg_replace('#[^-a-z0-9]#', '-', strtolower($value));
     }

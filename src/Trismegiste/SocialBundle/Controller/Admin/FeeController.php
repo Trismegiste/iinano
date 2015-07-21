@@ -22,15 +22,16 @@ class FeeController extends Template
      */
     public function editAction()
     {
-        $repo = $this->get('dokudoki.repository');
-        $fee = $repo->findOne([MapAlias::CLASS_KEY => 'fee']); // @todo use TicketRepository
+        /* @var $repo \Trismegiste\SocialBundle\Repository\TicketRepository */
+        $repo = $this->get('social.ticket.repository');
+        $fee = $repo->findEntranceFee();
         $form = $this->createForm(new EntranceFeeType(), $fee);
 
         $form->handleRequest($this->getRequest());
         if ($form->isValid()) {
             $newFee = $form->getData();
             try {
-                $repo->persist($newFee);
+                $repo->persistEntranceFee($newFee);
                 $this->pushFlash('notice', 'Entrance fee saved');
 
                 // return to the same page
