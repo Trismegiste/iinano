@@ -150,8 +150,7 @@ class CommentaryControllerTest extends WebTestCasePlus
 
         $anchor = $crawler->filter("div.commentary a[id^=anchor]")
                         ->eq(0)->attr('id');
-        // @todo we could change the anchor system for commentary by relying only on uuid
-        // but the search for pk needs to be based on two anchors : publishing + commentary
+
         preg_match('#^anchor-([\da-f]{24})-([\da-f]{24})$#', $anchor, $match);
         $pk = array_merge(['id' => $match[1], 'uuid' => $match[2]], $this->wallParam);
         // try to get the form edit
