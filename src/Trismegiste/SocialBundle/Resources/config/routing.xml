@@ -67,9 +67,11 @@
     </route>
     <route id="netizen_profile_edit" pattern="/profile/myself/edit">
         <default key="_controller">TrismegisteSocialBundle:Netizen:editProfile</default>
+        <requirement key="_method">GET|POST</requirement>
     </route>
     <route id="netizen_avatar_edit" pattern="/profile/myself/avatar">
         <default key="_controller">TrismegisteSocialBundle:Netizen:editAvatar</default>
+        <requirement key="_method">GET|POST</requirement>
     </route>
     <route id="netizen_ticket_history" pattern="/profile/myself/ticket">
         <default key="_controller">TrismegisteSocialBundle:Netizen:ticketHistory</default>
