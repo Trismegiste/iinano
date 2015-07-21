@@ -53,6 +53,7 @@
     </route>
     <route id="guest_register" pattern="/sign/new">
         <default key="_controller">TrismegisteSocialBundle:Guest:register</default>
+        <requirement key="_method">GET|POST</requirement>
     </route>
     <route id="guest_coupon_landing" pattern="/sign/trial/{code}">
         <default key="_controller">TrismegisteSocialBundle:Guest:couponLanding</default>
