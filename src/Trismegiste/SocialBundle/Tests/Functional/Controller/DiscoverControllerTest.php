@@ -64,4 +64,10 @@ class DiscoverControllerTest extends WebTestCasePlus
         $this->assertCount(1, $crawler->filter('div.widget:contains("No content here")'));
     }
 
+    public function testTour()
+    {
+        $crawler = $this->getPage('social_welcome_tour');
+        $this->assertCount(2, $crawler->filter('.content ol'));
+    }
+
 }
