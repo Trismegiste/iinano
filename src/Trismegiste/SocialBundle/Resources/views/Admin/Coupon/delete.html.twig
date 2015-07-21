@@ -9,6 +9,7 @@
         <div class="pure-u-1 pure-u-md-1-2">
             <h3>Are you sure you want to delete the coupon {{ coupon.hashKey }} ?</h3>
             <form action="" method="POST" class="pure-form">
+                <input type="hidden" name="_method" value="DELETE"/>
                 <button class="pure-button">Delete</button>
             </form>
         </div>

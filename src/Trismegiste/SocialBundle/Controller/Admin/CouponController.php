@@ -78,7 +78,7 @@ class CouponController extends Template
         $repo = $this->get('dokudoki.repository');
         $coupon = $repo->findByPk($id);
 
-        if ($this->getRequest()->getMethod() == 'POST') {
+        if ($this->getRequest()->getMethod() == 'DELETE') {
             try {
                 $this->get('social.ticket.repository')
                         ->deleteCoupon($id, $this->get('dokudoki.collection'));

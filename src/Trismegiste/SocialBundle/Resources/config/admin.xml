@@ -54,7 +54,7 @@
     <route id="admin_coupon_delete" pattern="/coupon/{id}/delete">
         <default key="_controller">TrismegisteSocialBundle:Admin/Coupon:delete</default>
         <requirement key="id">%mongoid_regex%</requirement>
-        <requirement key="_method">GET|POST</requirement>
+        <requirement key="_method">GET|DELETE</requirement>
     </route>
 
     <route id="admin_entrancefee_edit" pattern="/config/fee/edit">
