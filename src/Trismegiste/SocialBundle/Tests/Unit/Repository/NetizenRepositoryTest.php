@@ -257,4 +257,20 @@ class NetizenRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->findLastRegistered();
     }
 
+    public function testCountOnPeriod()
+    {
+        $cursor = $this->getMockBuilder('MongoCursor')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $cursor->expects($this->once())
+                ->method('count');
+
+        $this->repository->expects($this->once())
+                ->method('getCursor')
+                ->with($this->arrayHasKey('-class'))
+                ->willReturn($cursor);
+
+        $this->sut->countOnLastPeriod(123);
+    }
+
 }
