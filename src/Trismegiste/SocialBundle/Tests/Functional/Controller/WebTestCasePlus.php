@@ -113,6 +113,14 @@ class WebTestCasePlus extends WebTestCase
         return $this->client->request('POST', $uri, [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
     }
 
+    /**
+     * @return Crawler
+     */
+    protected function ajaxPatch($uri)
+    {
+        return $this->client->request('PATCH', $uri, [], [], ['HTTP_X-Requested-With' => 'XMLHttpRequest']);
+    }
+
     protected function assertCurrentRoute($route, $param = [])
     {
         $this->assertEquals($this->generateUrl($route, $param), $this->client->getHistory()->current()->getUri());

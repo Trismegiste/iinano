@@ -61,7 +61,7 @@ class FamousControllerTest extends WebTestCasePlus
 
         $crawler = $this->getSelfWallCrawlerFor('kirk');
         $link = $crawler->filter('.publishing article nav a[title=Like]')->link()->getUri();
-        $crawler = $this->ajaxPost($link);
+        $crawler = $this->ajaxPatch($link);
         $this->assertCount(1, $crawler->filter('a[title=Unlike]'));
         $this->assertEquals(1, (int) $crawler->filter('a[title=Unlike]')->text());
 
@@ -82,7 +82,7 @@ class FamousControllerTest extends WebTestCasePlus
         $crawler = $this->getSelfWallCrawlerFor('kirk');
         $link = $crawler->filter('.publishing article nav a[title=Like]')->link()->getUri();
 
-        $crawler = $this->ajaxPost($link);
+        $crawler = $this->ajaxPatch($link);
         $this->assertCount(1, $crawler->filter('a[title=Unlike]'));
         $this->assertEquals(2, (int) $crawler->filter('a[title=Unlike]')->text());
 
@@ -103,7 +103,7 @@ class FamousControllerTest extends WebTestCasePlus
         $crawler = $this->getSelfWallCrawlerFor('kirk');
         $link = $crawler->filter('.publishing article nav a[title=Unlike]')->link()->getUri();
 
-        $crawler = $this->ajaxPost($link);
+        $crawler = $this->ajaxPatch($link);
         $this->assertCount(1, $crawler->filter('a[title=Like]'));
         $this->assertEquals(1, (int) $crawler->filter('a[title=Like]')->text());
 
@@ -125,7 +125,7 @@ class FamousControllerTest extends WebTestCasePlus
         // click on the 'like' on the commentary
         $crawler = $this->getSelfWallCrawlerFor('kirk');
         $link = $crawler->filter('.commentary article nav a[title=Like]')->link();
-        $crawler = $this->ajaxPost($link->getUri());
+        $crawler = $this->ajaxPatch($link->getUri());
         // check we have 'unlike' button
         $unlikeButton = $crawler->filter('a[title=Unlike]');
         $this->assertCount(1, $unlikeButton);
@@ -133,7 +133,7 @@ class FamousControllerTest extends WebTestCasePlus
         $this->assertEquals(1, (int) $unlikeButton->text());
 
         // click on the unlike
-        $crawler = $this->ajaxPost($unlikeButton->link()->getUri());
+        $crawler = $this->ajaxPatch($unlikeButton->link()->getUri());
         $this->assertEquals(0, (int) $crawler->filter('a[title=Like]')->text());
         // check the database
         $it = $repo->findLastEntries(0, 1);
