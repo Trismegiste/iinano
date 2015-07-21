@@ -243,4 +243,61 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($rate, $this->sut->getRenewalRate());
     }
 
+    public function testFindFee()
+    {
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->with(['-class' => 'fee']);
+        $this->sut->findEntranceFee();
+    }
+
+    public function testPersistFee()
+    {
+        $fee = new EntranceFee();
+
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->with(['-class' => 'fee']);
+        $this->repository->expects($this->once())
+                ->method('persist')
+                ->with($fee);
+
+        $this->sut->persistEntranceFee($fee);
+    }
+
+    public function testPersistExistingFee()
+    {
+        $fee = new EntranceFee();
+        $fee->setId(new \MongoId());
+
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->with(['-class' => 'fee'])
+                ->willReturn($fee);
+        $this->repository->expects($this->once())
+                ->method('persist')
+                ->with($fee);
+
+        $this->sut->persistEntranceFee($fee);
+    }
+
+    /**
+     * @expectedException \DomainException
+     */
+    public function testPersistDuplicateFee()
+    {
+        $fee = new EntranceFee();
+        $db = clone $fee;
+        $db->setId(new \MongoId());
+
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->with(['-class' => 'fee'])
+                ->willReturn($db);
+        $this->repository->expects($this->never())
+                ->method('persist');
+
+        $this->sut->persistEntranceFee($fee);
+    }
+
 }
