@@ -86,7 +86,7 @@ class PrivateMessageTypeTest extends FormTestCase
     protected function createPM()
     {
         $pm = new PrivateMessage(new Author('kirk'), new Author('spock'));
-        $refl = new \Trismegiste\Yuurei\Utils\InjectionClass($pm);
+        $refl = new \Trismegiste\Alkahest\Utils\InjectionClass($pm);
         $refl->injectProperty($pm, 'sentAt', new \DateTime('2019-04-01'));
 
         return $pm;
