@@ -23,16 +23,8 @@ security:
             stateless: false
             anonymous: ~
             oauth:
-                login_path:   trismegiste_oauth_connect
-                check_path:   trismegiste_oauth_check
-                remember_me:  true
                 success_handler: success_login_landing_page
                 failure_handler: failure_login_not_registered
-            remember_me:
-                key: %secret%
-                lifetime: 30000000
-                path: /
-                domain: ~
             logout:
                 path:   trismegiste_oauth_logout
                 target: /
