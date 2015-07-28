@@ -32,6 +32,7 @@ var social = {
 
             var map = L.map(this, {
                 scrollWheelZoom: false,
+                dragging: false,
                 center: origin,
                 zoom: item.data('socialStatusZoom')
             });
