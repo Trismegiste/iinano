@@ -23,6 +23,10 @@ class MongoStatusTest extends \PHPUnit_Framework_TestCase
         $this->collection = $this->getMockBuilder('MongoCollection')
                 ->disableOriginalConstructor()
                 ->getMock();
+        $this->collection->db = $this->getMockBuilder('MongoDB')
+                ->disableOriginalConstructor()
+                ->getMock();
+
         $this->sut = new MongoStatus($this->collection);
     }
 
@@ -30,6 +34,18 @@ class MongoStatusTest extends \PHPUnit_Framework_TestCase
     {
         $this->collection->expects($this->once())->method('aggregateCursor');
         $this->sut->getCounterPerAlias();
+    }
+
+    public function testGetCollectionStats()
+    {
+        $this->collection->db->expects($this->once())->method('execute');
+        $this->sut->getCollectionStats();
+    }
+
+    public function testGetDbStats()
+    {
+        $this->collection->db->expects($this->once())->method('execute');
+        $this->sut->getDbStats();
     }
 
 }
