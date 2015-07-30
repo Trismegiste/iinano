@@ -140,10 +140,10 @@ footer {
 }
 
 .pure-form label {
-    margin-top: 0.6em;
+    margin-top: 0.7em;
 }
 
-.pure-form-stacked div div:hover {
+.form-highlight div div:hover {
     background-color: #eee;
 }
 
