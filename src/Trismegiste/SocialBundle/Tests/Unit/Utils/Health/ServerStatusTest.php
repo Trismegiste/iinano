@@ -39,7 +39,14 @@ class ServerStatusTest extends \PHPUnit_Framework_TestCase
 
     public function testBandwidth()
     {
-        $this->sut->getMonthlyBandwidth();
+        $this->assertArrayHasKey('rx', $this->sut->getMonthlyBandwidth());
+        $this->assertArrayHasKey('tx', $this->sut->getMonthlyBandwidth());
+    }
+
+    public function testUnknowBandwidth()
+    {
+        $stat = new ServerStatus('waloo');
+        $this->assertEquals(['tx' => 0, 'rx' => 0], $stat->getMonthlyBandwidth());
     }
 
 }
