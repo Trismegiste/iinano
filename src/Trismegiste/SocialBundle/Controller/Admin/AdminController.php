@@ -38,7 +38,7 @@ class AdminController extends Template
                 'cpu' => $serverStats->getCpuLoad(),
                 'dokudoki' => $dbStatus->getCollectionStats(),
                 'mongo' => $dbStatus->getDbStats(),
-                'memory' => memory_get_peak_usage(true),
+                'memory' => $serverStats->getMemoryLoad(),
             ]
         ];
 

@@ -17,4 +17,28 @@ class ServerStatus
         return sys_getloadavg();
     }
 
+    /**
+     * Gets the stats for memory
+     * Works only on linux (who cares other platform ?)
+     *
+     * @return array
+     */
+    public function getMemoryLoad()
+    {
+        $data = explode("\n", file_get_contents("/proc/meminfo"));
+        $meminfo = [];
+        foreach ($data as $line) {
+            if (preg_match('#^([^:]+):(.+)$#', $line, $match)) {
+                $key = $match[1];
+                $value = $match[2];
+                if (preg_match('#^(\d+)\s+kB$#', trim($value), $match)) {
+                    $value = $match[1] * 1024;
+                }
+                $meminfo[$key] = $value;
+            }
+        }
+
+        return $meminfo;
+    }
+
 }
