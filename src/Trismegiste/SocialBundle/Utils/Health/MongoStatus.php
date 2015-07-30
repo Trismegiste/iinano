@@ -19,6 +19,11 @@ class MongoStatus
         $this->collection = $coll;
     }
 
+    /**
+     * Gets stats on app's main collection
+     *
+     * @return array
+     */
     public function getCollectionStats()
     {
         return $this->collection
@@ -26,6 +31,11 @@ class MongoStatus
                         ->execute(new \MongoCode('db.' . $this->collection->getName() . '.stats();'))['retval'];
     }
 
+    /**
+     * Gets stats on mongodb current database
+     *
+     * @return array
+     */
     public function getDbStats()
     {
         return $this->collection
@@ -33,6 +43,11 @@ class MongoStatus
                         ->execute(new \MongoCode('db.stats();'))['retval'];
     }
 
+    /**
+     * Gets a cursor on counters for each content type
+     * 
+     * @return \MongoCommandCursor
+     */
     public function getCounterPerAlias()
     {
         return $this->collection

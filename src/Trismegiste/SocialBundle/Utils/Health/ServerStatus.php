@@ -12,6 +12,11 @@ namespace Trismegiste\SocialBundle\Utils\Health;
 class ServerStatus
 {
 
+    /**
+     * Gets CPU load average like top
+     *
+     * @return array
+     */
     public function getCpuLoad()
     {
         return sys_getloadavg();
@@ -41,6 +46,11 @@ class ServerStatus
         return $meminfo;
     }
 
+    /**
+     * Gets the the ratio between free disk space and total disk space
+     * 
+     * @return float
+     */
     public function getFreeSpaceRatio()
     {
         return disk_free_space('/') / disk_total_space('/');
