@@ -59,7 +59,7 @@
                     <tr><td>Doc avg size</td><td>{{ health.dokudoki.avgObjSize|si }}</td></tr>
                     <tr><td>Index size</td><td>{{ health.dokudoki.totalIndexSize|si }}</td></tr>
                     <tr><td>DB size</td><td>{{ health.mongo.storageSize|si }}</td></tr>
-                    <tr><td>Used diskspace</td><td>{{(health.usedDisk*100)|number_format(0)}}%</td></tr>
+                    <tr><td>Free diskspace</td><td>{{(health.freeDisk*100)|number_format(0)}}%</td></tr>
                 </table>
             </article>
         </div>
