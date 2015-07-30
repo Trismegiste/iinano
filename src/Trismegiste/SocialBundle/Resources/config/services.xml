@@ -26,6 +26,8 @@
         <service id="database.status" class="Trismegiste\SocialBundle\Utils\Health\MongoStatus">
             <argument type="service" id="dokudoki.collection"/>
         </service>
+        <service id="server.status" class="Trismegiste\SocialBundle\Utils\Health\ServerStatus">
+        </service>
 
         <!-- Payment -->
         <service id="paypal_configurator" class="Trismegiste\SocialBundle\DependencyInjection\Configurator\Paypal" public="false">

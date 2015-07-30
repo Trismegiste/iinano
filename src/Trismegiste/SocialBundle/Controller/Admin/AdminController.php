@@ -18,8 +18,8 @@ class AdminController extends Template
 
     public function dashboardAction()
     {
-        $coll = $this->get('dokudoki.collection');
         $dbStatus = $this->get('database.status');
+        $serverStats = $this->get('server.status');
         $netRepo = $this->get('social.netizen.repository');
         $ticketRepo = $this->get('social.ticket.repository');
         $param = [
@@ -33,12 +33,12 @@ class AdminController extends Template
             'feeOverLastMonth' => $this->getFeeTotalOver(30),
             'feeOverLastYear' => $this->getFeeTotalOver(365),
             'allFee' => $this->getFeeTotalOver(),
-            'content' => $coll->aggregateCursor([['$group' => ['_id' => '$-class', 'counter' => ['$sum' => 1]]]]),
+            'content' => $dbStatus->getCounterPerAlias(),
             'health' => [
-                'cpu' => sys_getloadavg(),
+                'cpu' => $serverStats->getCpuLoad(),
                 'dokudoki' => $dbStatus->getCollectionStats(),
+                'mongo' => $dbStatus->getDbStats(),
                 'memory' => memory_get_peak_usage(true),
-
             ]
         ];
 

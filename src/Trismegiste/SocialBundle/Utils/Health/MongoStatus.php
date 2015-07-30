@@ -33,4 +33,14 @@ class MongoStatus
                         ->execute(new \MongoCode('db.stats();'))['retval'];
     }
 
+    public function getCounterPerAlias()
+    {
+        return $this->collection
+                        ->aggregateCursor([[
+                        '$group' => [
+                            '_id' => '$-class', 'counter' => ['$sum' => 1]
+                        ]
+        ]]);
+    }
+
 }
