@@ -53,7 +53,7 @@
             <article>
                 <h1>Health</h1>
                 <table class="pure-table pure-table-striped" width="100%">
-                    <tr><td>Load</td><td>{{ health.cpu.0 }} {{ health.cpu.1 }} {{ health.cpu.2 }}</td></tr>
+                    <tr><td>Load</td><td>{{ health.cpu.0*100 }}% {{ health.cpu.1*100 }}% {{ health.cpu.2*100 }}%</td></tr>
                     <tr><td>Free memory</td><td>{{health.memory.MemFree|si}}</td></tr>
                     <tr><td>Collection size</td><td>{{ health.dokudoki.size|si }}</td></tr>
                     <tr><td>Doc avg size</td><td>{{ health.dokudoki.avgObjSize|si }}</td></tr>
