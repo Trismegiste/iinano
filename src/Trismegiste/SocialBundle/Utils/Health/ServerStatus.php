@@ -83,7 +83,8 @@ class ServerStatus
 
             foreach ($monthly as $row) {
                 if (($row->date->year == date('Y')) && ($row->date->month == date('n'))) {
-                    return ['rx' => $row->rx, 'tx' => $row->tx];
+                    // returned values are in Kibibytes so, I normalize in SI :
+                    return ['rx' => 1024 * $row->rx, 'tx' => 1024 * $row->tx];
                 }
             }
         }
