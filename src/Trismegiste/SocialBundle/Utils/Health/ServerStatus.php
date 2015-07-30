@@ -41,4 +41,9 @@ class ServerStatus
         return $meminfo;
     }
 
+    public function getFreeSpaceRatio()
+    {
+        return disk_free_space('/') / disk_total_space('/');
+    }
+
 }

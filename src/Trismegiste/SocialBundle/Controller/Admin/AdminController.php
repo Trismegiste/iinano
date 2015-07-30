@@ -39,6 +39,7 @@ class AdminController extends Template
                 'dokudoki' => $dbStatus->getCollectionStats(),
                 'mongo' => $dbStatus->getDbStats(),
                 'memory' => $serverStats->getMemoryLoad(),
+                'usedDisk' => 1 - $serverStats->getFreeSpaceRatio()
             ]
         ];
 
