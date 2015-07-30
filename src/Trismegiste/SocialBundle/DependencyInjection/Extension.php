@@ -24,6 +24,8 @@ class Extension extends BaseExtension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('security.xml');
+        $loader->load('repository.xml');
         $loader->load('services.xml');
         $loader->load('forms.xml');
 

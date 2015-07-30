@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <import resource="@TrismegisteSocialBundle/Resources/config/oauth.xml">
+    <import resource="@TrismegisteSocialBundle/Resources/config/routing_oauth.xml">
     </import>
 
     <route id="content_index" pattern="/">
@@ -116,13 +116,13 @@
         <requirement key="_method">GET</requirement>
     </route>
 
-    <import resource="@TrismegisteSocialBundle/Resources/config/wall.xml"
+    <import resource="@TrismegisteSocialBundle/Resources/config/routing_wall.xml"
             prefix="/wall/{wallNick}/{wallFilter}">
         <requirement key="wallNick">%nickname_regex%</requirement>
         <requirement key="wallFilter">(self|follower|following|friend|all)</requirement>
     </import>
 
-    <import resource="@TrismegisteSocialBundle/Resources/config/admin.xml"
+    <import resource="@TrismegisteSocialBundle/Resources/config/routing_admin.xml"
             prefix="/admin">
     </import>
 

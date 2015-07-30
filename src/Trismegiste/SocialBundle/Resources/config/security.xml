@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="security.netizen.factory" class="Trismegiste\SocialBundle\Security\NetizenFactory">
+        </service>
+
+        <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">
+            <argument type="service" id="dokudoki.repository"/>
+            <argument/> <!-- injected by ImportAlias compiler pass -->
+        </service>
+
+        <service id="security.owner.voter" class="Trismegiste\SocialBundle\Security\OwnerVoter">
+            <tag name="security.voter"/>
+        </service>
+
+        <service id="security.listener.voter" class="Trismegiste\SocialBundle\Security\ListenerVoter">
+            <tag name="security.voter"/>
+        </service>
+
+        <service id="security.validticket.voter" class="Trismegiste\SocialBundle\Security\TicketVoter">
+            <tag name="security.voter"/>
+            <argument>%security.role_hierarchy.roles%</argument>
+            <argument type="service" id="social.dynamic_config" />
+        </service>
+
+        <service id="access_denied.listener" class="Trismegiste\SocialBundle\Security\AccessDeniedListener">
+            <argument type="service" id="security.context"/>
+            <argument type="service" id="router"/>
+            <argument type="string">buy_new_ticket</argument>
+            <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException"/>
+        </service>
+
+        <service id="success_login_landing_page" class="Trismegiste\SocialBundle\Security\LandingPageSuccessHandler">
+            <argument type="service" id="security.http_utils" />
+            <argument type="service" id="security.context"/>
+        </service>
+
+        <service id="failure_login_not_registered" class="Trismegiste\SocialBundle\Security\NotRegisteredHandler">
+            <argument type="service" id="security.http_utils" />
+            <argument type="service" id="logger" />
+            <tag name="monolog.logger" channel="security" />
+        </service>
+        
+    </services>
+
+</container>

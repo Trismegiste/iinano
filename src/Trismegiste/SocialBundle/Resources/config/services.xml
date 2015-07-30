@@ -6,98 +6,11 @@
 
     <services>
 
-        <!-- REPOSITORIES -->
-
-        <service id="social.securedcontent.template" abstract="true">
-            <argument type="service" id="dokudoki.repository"/>
-            <argument type="service" id="security.context"/>
-        </service>
-
-        <service id="social.private_message.repository"
-                 class="Trismegiste\SocialBundle\Repository\PrivateMessageRepository"
-                 parent="social.securedcontent.template">
-            <argument/> <!-- injected by ImportAlias compiler pass -->
-        </service>
-
-        <service id="social.avatar.repository" class="Trismegiste\SocialBundle\Repository\AvatarRepository">
-            <argument type="service" id="social.picture.storage"/>
-        </service>
-
-        <service id="social.picture.storage" class="Trismegiste\SocialBundle\Repository\PictureRepository">
-            <argument type="string">%kernel.root_dir%/../storage/picture</argument>
-            <argument type="string">%kernel.root_dir%/../storage/cache</argument>
-            <argument type="collection">
-                <argument key="tiny">100</argument>
-                <argument key="small">200</argument>
-                <argument key="medium">600</argument>
-                <argument key="full">1920</argument>
-            </argument>
-        </service>
-
-        <service id="social.netizen.repository" class="Trismegiste\SocialBundle\Repository\NetizenRepository">
-            <argument type="service" id="dokudoki.repository"/>
-            <argument/> <!-- injected by ImportAlias compiler pass -->
-            <argument type="service" id="social.avatar.repository"/>
-        </service>
-
-        <service id="social.abusereport.repository" class="Trismegiste\SocialBundle\Repository\AbuseReport">
-            <argument type="service" id="dokudoki.collection"/>
-            <argument/> <!-- injected by ImportAlias compiler pass -->
-        </service>
-
-        <service id="social.publishing.repository"
-                 class="Trismegiste\SocialBundle\Repository\PublishingRepository"
-                 parent="social.securedcontent.template">
-            <argument type="collection"/> <!-- injected by ImportAlias compiler pass -->
-        </service>
-
-        <service id="social.commentary.repository"
-                 class="Trismegiste\SocialBundle\Repository\CommentaryRepository"
-                 parent="social.securedcontent.template">
-        </service>
-
-        <service id="social.ticket.repository"
-                 class="Trismegiste\SocialBundle\Repository\TicketRepository"
-                 parent="social.securedcontent.template">
-        </service>
-
         <!-- TWIG -->
-
         <service id="twig.social.renderer" class="Trismegiste\SocialBundle\Utils\RendererExtension">
             <tag name="twig.extension"/>
             <argument>%s.html.twig</argument>
             <argument/> <!-- injected by ImportAlias compiler pass -->
-        </service>
-
-        <!-- SECURITY -->
-
-        <service id="security.netizen.factory" class="Trismegiste\SocialBundle\Security\NetizenFactory">
-        </service>
-
-        <service id="security.netizen.provider" class="Trismegiste\SocialBundle\Security\NetizenProvider">
-            <argument type="service" id="dokudoki.repository"/>
-            <argument/> <!-- injected by ImportAlias compiler pass -->
-        </service>
-
-        <service id="security.owner.voter" class="Trismegiste\SocialBundle\Security\OwnerVoter">
-            <tag name="security.voter"/>
-        </service>
-
-        <service id="security.listener.voter" class="Trismegiste\SocialBundle\Security\ListenerVoter">
-            <tag name="security.voter"/>
-        </service>
-
-        <service id="security.validticket.voter" class="Trismegiste\SocialBundle\Security\TicketVoter">
-            <tag name="security.voter"/>
-            <argument>%security.role_hierarchy.roles%</argument>
-            <argument type="service" id="social.dynamic_config" />
-        </service>
-
-        <service id="access_denied.listener" class="Trismegiste\SocialBundle\Security\AccessDeniedListener">
-            <argument type="service" id="security.context"/>
-            <argument type="service" id="router"/>
-            <argument type="string">buy_new_ticket</argument>
-            <tag name="kernel.event_listener" event="kernel.exception" method="onKernelException"/>
         </service>
 
         <!-- misc -->
@@ -110,17 +23,11 @@
 
         <service id="social.benchmark" class="Trismegiste\SocialBundle\Utils\PerformanceBenchmark"></service>
 
-        <service id="success_login_landing_page" class="Trismegiste\SocialBundle\Security\LandingPageSuccessHandler">
-            <argument type="service" id="security.http_utils" />
-            <argument type="service" id="security.context"/>
+        <service id="database.status" class="Trismegiste\SocialBundle\Utils\Health\MongoStatus">
+            <argument type="service" id="dokudoki.collection"/>
         </service>
 
-        <service id="failure_login_not_registered" class="Trismegiste\SocialBundle\Security\NotRegisteredHandler">
-            <argument type="service" id="security.http_utils" />
-            <argument type="service" id="logger" />
-            <tag name="monolog.logger" channel="security" />
-        </service>
-
+        <!-- Payment -->
         <service id="paypal_configurator" class="Trismegiste\SocialBundle\DependencyInjection\Configurator\Paypal" public="false">
             <argument type="service" id="social.dynamic_config"/>
             <argument type="service" id="router"/>
@@ -136,7 +43,6 @@
             <configurator service="paypal_configurator" method="configure"/>
             <tag name="monolog.logger" channel="security" />
         </service>
-
 
     </services>
 </container>

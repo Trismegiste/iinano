@@ -1,0 +1,65 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!-- REPOSITORIES -->
+
+        <service id="social.securedcontent.template" abstract="true">
+            <argument type="service" id="dokudoki.repository"/>
+            <argument type="service" id="security.context"/>
+        </service>
+
+        <service id="social.private_message.repository"
+                 class="Trismegiste\SocialBundle\Repository\PrivateMessageRepository"
+                 parent="social.securedcontent.template">
+            <argument/> <!-- injected by ImportAlias compiler pass -->
+        </service>
+
+        <service id="social.avatar.repository" class="Trismegiste\SocialBundle\Repository\AvatarRepository">
+            <argument type="service" id="social.picture.storage"/>
+        </service>
+
+        <service id="social.picture.storage" class="Trismegiste\SocialBundle\Repository\PictureRepository">
+            <argument type="string">%kernel.root_dir%/../storage/picture</argument>
+            <argument type="string">%kernel.root_dir%/../storage/cache</argument>
+            <argument type="collection">
+                <argument key="tiny">100</argument>
+                <argument key="small">200</argument>
+                <argument key="medium">600</argument>
+                <argument key="full">1920</argument>
+            </argument>
+        </service>
+
+        <service id="social.netizen.repository" class="Trismegiste\SocialBundle\Repository\NetizenRepository">
+            <argument type="service" id="dokudoki.repository"/>
+            <argument/> <!-- injected by ImportAlias compiler pass -->
+            <argument type="service" id="social.avatar.repository"/>
+        </service>
+
+        <service id="social.abusereport.repository" class="Trismegiste\SocialBundle\Repository\AbuseReport">
+            <argument type="service" id="dokudoki.collection"/>
+            <argument/> <!-- injected by ImportAlias compiler pass -->
+        </service>
+
+        <service id="social.publishing.repository"
+                 class="Trismegiste\SocialBundle\Repository\PublishingRepository"
+                 parent="social.securedcontent.template">
+            <argument type="collection"/> <!-- injected by ImportAlias compiler pass -->
+        </service>
+
+        <service id="social.commentary.repository"
+                 class="Trismegiste\SocialBundle\Repository\CommentaryRepository"
+                 parent="social.securedcontent.template">
+        </service>
+
+        <service id="social.ticket.repository"
+                 class="Trismegiste\SocialBundle\Repository\TicketRepository"
+                 parent="social.securedcontent.template">
+        </service>
+
+    </services>
+</container>

@@ -19,6 +19,7 @@ class AdminController extends Template
     public function dashboardAction()
     {
         $coll = $this->get('dokudoki.collection');
+        $dbStatus = $this->get('database.status');
         $netRepo = $this->get('social.netizen.repository');
         $ticketRepo = $this->get('social.ticket.repository');
         $param = [
@@ -35,9 +36,9 @@ class AdminController extends Template
             'content' => $coll->aggregateCursor([['$group' => ['_id' => '$-class', 'counter' => ['$sum' => 1]]]]),
             'health' => [
                 'cpu' => sys_getloadavg(),
-                'mongo' => $coll->db
-                        ->execute(new \MongoCode('db.dokudoki.stats();'))['retval'],
-                'memory' => memory_get_peak_usage(true)
+                'dokudoki' => $dbStatus->getCollectionStats(),
+                'memory' => memory_get_peak_usage(true),
+
             ]
         ];
 
