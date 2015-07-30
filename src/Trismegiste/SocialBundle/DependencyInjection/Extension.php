@@ -38,6 +38,9 @@ class Extension extends BaseExtension
         // inject default config in dynamic config
         $container->getDefinition('social.dynamic_config')
                 ->replaceArgument(2, $config['dynamic_default']);
+        // inject network interface name in server status
+        $container->getDefinition('server.status')
+                ->replaceArgument(0, $config['bandwidth']);
     }
 
     public function getAlias()

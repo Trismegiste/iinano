@@ -19,7 +19,7 @@ class ServerStatusTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->sut = new ServerStatus();
+        $this->sut = new ServerStatus('lo');
     }
 
     public function testCpu()
@@ -35,6 +35,11 @@ class ServerStatusTest extends \PHPUnit_Framework_TestCase
     public function testMemory()
     {
         $this->assertArrayHasKey('MemFree', $this->sut->getMemoryLoad());
+    }
+
+    public function testBandwidth()
+    {
+
     }
 
 }

@@ -33,6 +33,7 @@ class Configuration implements ConfigurationInterface
                         ->prototype('scalar')
                         ->end()
                     ->end()
+                    ->scalarNode('bandwidth')->defaultValue('eth0')->end()
                 ->end();
 
         return $treeBuilder;

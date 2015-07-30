@@ -27,6 +27,7 @@
             <argument type="service" id="dokudoki.collection"/>
         </service>
         <service id="server.status" class="Trismegiste\SocialBundle\Utils\Health\ServerStatus">
+            <argument/>  <!-- injected by Extension -->
         </service>
 
         <!-- Payment -->

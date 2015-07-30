@@ -60,6 +60,8 @@
                     <tr><td>Index size</td><td>{{ health.dokudoki.totalIndexSize|si }}</td></tr>
                     <tr><td>DB size</td><td>{{ health.mongo.storageSize|si }}</td></tr>
                     <tr><td>Free diskspace</td><td>{{(health.freeDisk*100)|number_format(0)}}%</td></tr>
+                    <tr><td>Output bandwidth</td><td>{{health.bandwidth.tx|si}}</td></tr>
+                    <tr><td>Input bandwidth</td><td>{{health.bandwidth.rx|si}}</td></tr>
                 </table>
             </article>
         </div>

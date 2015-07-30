@@ -22,6 +22,7 @@ class AdminController extends Template
         $serverStats = $this->get('server.status');
         $netRepo = $this->get('social.netizen.repository');
         $ticketRepo = $this->get('social.ticket.repository');
+
         $param = [
             'allUser' => $netRepo->countAllUser(),
             'userOverLast24h' => $netRepo->countOnLastPeriod(1),
@@ -39,7 +40,8 @@ class AdminController extends Template
                 'dokudoki' => $dbStatus->getCollectionStats(),
                 'mongo' => $dbStatus->getDbStats(),
                 'memory' => $serverStats->getMemoryLoad(),
-                'freeDisk' => $serverStats->getFreeSpaceRatio()
+                'freeDisk' => $serverStats->getFreeSpaceRatio(),
+                'bandwidth' => $serverStats->getMonthlyBandwidth()
             ]
         ];
 
