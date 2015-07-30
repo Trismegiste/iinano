@@ -67,7 +67,7 @@ class ServerStatus
      * Gets monthly bandwidth with the help of vnstat
      *
      * @return array with 'tx' & 'rx' keys
-     * 
+     *
      * @throws \RuntimeException
      */
     public function getMonthlyBandwidth()
@@ -78,11 +78,13 @@ class ServerStatus
         }
 
         $stat = json_decode($output);
-        $monthly = $stat->interfaces[0]->traffic->months;
+        if (!is_null($stat) && isset($stat->interfaces[0])) {
+            $monthly = $stat->interfaces[0]->traffic->months;
 
-        foreach ($monthly as $row) {
-            if (($row->date->year == date('Y')) && ($row->date->month == date('n'))) {
-                return ['rx' => $row->rx, 'tx' => $row->tx];
+            foreach ($monthly as $row) {
+                if (($row->date->year == date('Y')) && ($row->date->month == date('n'))) {
+                    return ['rx' => $row->rx, 'tx' => $row->tx];
+                }
             }
         }
 

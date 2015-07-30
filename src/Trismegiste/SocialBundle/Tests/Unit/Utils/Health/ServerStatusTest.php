@@ -19,7 +19,7 @@ class ServerStatusTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->sut = new ServerStatus('lo');
+        $this->sut = new ServerStatus('eth0');
     }
 
     public function testCpu()
@@ -39,7 +39,7 @@ class ServerStatusTest extends \PHPUnit_Framework_TestCase
 
     public function testBandwidth()
     {
-
+        $this->sut->getMonthlyBandwidth();
     }
 
 }
