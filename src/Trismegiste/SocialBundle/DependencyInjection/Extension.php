@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension as BaseExtension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -38,14 +39,34 @@ class Extension extends BaseExtension
         // inject default config in dynamic config
         $container->getDefinition('social.dynamic_config')
                 ->replaceArgument(2, $config['dynamic_default']);
-        // inject network interface name in server status
+        // inject network interface name in server status service for monitoring its bandwidth
+        $networkInterface = $config['bandwidth'];
+        $this->checkVnStatConfig($networkInterface);
         $container->getDefinition('server.status')
-                ->replaceArgument(0, $config['bandwidth']);
+                ->replaceArgument(0, $networkInterface);
     }
 
     public function getAlias()
     {
         return 'iinano';
+    }
+
+    /**
+     * Not in config class because even if the node is set to the default,
+     * vnstat installation must be checked upon
+     *
+     * @param string $inet
+     *
+     * @throws InvalidConfigurationException
+     */
+    private function checkVnStatConfig($inet)
+    {
+        if (empty(shell_exec('which vnstat'))) {
+            throw new InvalidConfigurationException("vnstat is not installed: https://github.com/vergoh/vnstat");
+        }
+        if (preg_match('#^Error#', shell_exec('vnstat -i ' . $inet))) {
+            throw new InvalidConfigurationException("Network interface '$inet' does not exist");
+        }
     }
 
 }
