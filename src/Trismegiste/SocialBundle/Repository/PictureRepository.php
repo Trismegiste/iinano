@@ -134,11 +134,16 @@ class PictureRepository
      */
     public function getImagePath($filename, $size = self::MAX_RES)
     {
+        if (!array_key_exists($size, $this->sizeConfig)) {
+            throw new \InvalidArgumentException("$size is not a valid size");
+        }
+
         $sourceImg = $this->getStoragePath($filename);
 
-        if (($size !== self::MAX_RES) && array_key_exists($size, $this->sizeConfig)) {
+        if (($size !== self::MAX_RES)) {
             $sourceImg = Image::open($sourceImg)
                     ->setCacheDir($this->cacheDir)
+              //      ->setFallback(__DIR__ . '/../Resources/icon/notfound.png') // @todo create the not found image fallback
                     ->resize($this->sizeConfig[$size])
                     ->guess();
         }
@@ -164,6 +169,26 @@ class PictureRepository
             $path = $this->getImagePath($pic->getStorageKey(), $key);
             @unlink($path);
         }
+    }
+
+    public function clearCache($dayOld)
+    {
+        $finder = new \Symfony\Component\Finder\Finder();
+        $it = $finder->in($this->cacheDir)
+                ->files()
+                ->date("< now - $dayOld days")
+                ->getIterator();
+
+        $cpt = 0;
+        foreach ($it as $file) {
+            /* @var $file \Symfony\Component\Finder\SplFileInfo */
+            $ret = @unlink($file->getPathname());
+            if ($ret) {
+                $cpt++;
+            }
+        }
+
+        return $cpt;
     }
 
 }
