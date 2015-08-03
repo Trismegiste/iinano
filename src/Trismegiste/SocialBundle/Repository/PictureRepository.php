@@ -158,4 +158,12 @@ class PictureRepository
         return sha1($nick . microtime(false) . rand());
     }
 
+    public function remove(Picture $pic)
+    {
+        foreach ($this->sizeConfig as $key => $maxSize) {
+            $path = $this->getImagePath($pic->getStorageKey(), $key);
+            @unlink($path);
+        }
+    }
+
 }

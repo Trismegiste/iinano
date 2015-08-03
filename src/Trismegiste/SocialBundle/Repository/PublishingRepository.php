@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Trismegiste\DokudokiBundle\Transform\Mediator\Colleague\MapAlias;
 use Trismegiste\Socialist\Follower;
 use Trismegiste\Yuurei\Persistence\Persistable;
+use Trismegiste\SocialBundle\Repository\DeletePub\DeleteStrategyInterface;
 
 /**
  * PublishingRepository is a business repository for subclasses of Publishing
@@ -21,6 +22,7 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
 
     protected $aliasFilter;
     protected $classAlias;
+    protected $deleteStrategy = [];
 
     /**
      * Ctor
@@ -34,6 +36,22 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
         parent::__construct($repo, $ctx);
         $this->aliasFilter = [MapAlias::CLASS_KEY => ['$in' => array_keys($aliases)]];
         $this->classAlias = $aliases;
+    }
+
+    public function addDeleteStrategy($type, DeleteStrategyInterface $strat)
+    {
+        if (!array_key_exists($type, $this->classAlias)) {
+            throw new \InvalidArgumentException("$type alias is unknown");
+        }
+        $this->deleteStrategy[$type] = $strat;
+    }
+
+    protected function preDeletePublishing(Publishing $pub)
+    {
+        $type = $this->getClassAlias($pub);
+        if (array_key_exists($type, $this->deleteStrategy)) {
+            $this->deleteStrategy[$type]->remove($pub);
+        }
     }
 
     public function create($alias)
@@ -131,6 +149,8 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
     {
         $pub = $this->findByPk($pk);
         $this->assertOwningRight($pub);
+        $this->preDeletePublishing($pub);
+
         $coll->remove(['_id' => new \MongoId($pk)]);
     }
 

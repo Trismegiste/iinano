@@ -49,6 +49,10 @@
                  class="Trismegiste\SocialBundle\Repository\PublishingRepository"
                  parent="social.securedcontent.template">
             <argument type="collection"/> <!-- injected by ImportAlias compiler pass -->
+            <call method="addDeleteStrategy">
+                <argument type="string">picture</argument>
+                <argument type="service" id="social.picture.delete.strategy"/>
+            </call>
         </service>
 
         <service id="social.commentary.repository"
@@ -59,6 +63,11 @@
         <service id="social.ticket.repository"
                  class="Trismegiste\SocialBundle\Repository\TicketRepository"
                  parent="social.securedcontent.template">
+        </service>
+
+        <service id="social.picture.delete.strategy"
+                 class="Trismegiste\SocialBundle\Repository\DeletePub\DeletePicture">
+            <argument type="service" id="social.picture.storage"/>
         </service>
 
     </services>
