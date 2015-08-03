@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * MapReduceJob is a ...
+ * MapReduceJob is a laucher for map reduce & update job
  */
 class MapReduceJob extends ContainerAwareCommand
 {
