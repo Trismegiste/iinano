@@ -6,8 +6,9 @@
 
 namespace Trismegiste\SocialBundle\Repository;
 
-use Trismegiste\Socialist\Publishing;
+use Trismegiste\SocialBundle\Repository\DeletePub\DeleteStrategyInterface;
 use Trismegiste\Socialist\Follower;
+use Trismegiste\Socialist\Publishing;
 
 /**
  * PublishingRepositoryInterface is a contract for a repository of published content
@@ -119,4 +120,12 @@ interface PublishingRepositoryInterface
      * @return int
      */
     public function countAllPublishing();
+
+    /**
+     * Add a strategy for performing additional tasks when deleting a Publishing entity
+     *
+     * @param string $type class alias
+     * @param DeleteStrategyInterface $strat
+     */
+    public function addDeleteStrategy($type, DeleteStrategyInterface $strat);
 }

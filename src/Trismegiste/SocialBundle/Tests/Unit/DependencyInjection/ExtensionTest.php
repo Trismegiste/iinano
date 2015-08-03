@@ -51,6 +51,9 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
             'nickname_regex' => '[-\\da-z]+'
         );
         $extension->load(array($minConfig), $this->container);
+        // inject minimum required alias
+        $this->container->getDefinition('social.publishing.repository')->replaceArgument(2, ['picture' => 'stdClass']);
+        // compile container
         $this->container->compile();
     }
 
