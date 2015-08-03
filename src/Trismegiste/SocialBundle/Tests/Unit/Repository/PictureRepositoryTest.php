@@ -97,6 +97,15 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
         new PictureRepository(__DIR__, __DIR__, ['yo' => 42]);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage yolo is not a valid size
+     */
+    public function testBadSizeRequest()
+    {
+        $this->sut->getImagePath('wesh.jpeg', 'yolo');
+    }
+
     public function testValid()
     {
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
