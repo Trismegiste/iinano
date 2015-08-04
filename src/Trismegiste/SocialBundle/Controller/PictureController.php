@@ -22,17 +22,11 @@ class PictureController extends Template
         $file = $this->get('social.picture.storage')
                 ->getImagePath($storageKey, $size);
 
-        if (!file_exists($file)) {
-            // no fallback image, a dead link is a dead link
-            $this->get('logger')->debug("$file not found");
-            throw $this->createNotFoundException($storageKey . ' not found');
-        }
-
         $response = new Response();
         $lastModif = \DateTime::createFromFormat('U', filemtime($file));
         $response->setLastModified($lastModif);
-        $response->setEtag(filesize($file));
-        $response->setPublic();
+        $response->setEtag(sha1(filesize($file)));
+        $response->setSharedMaxAge(3600);
 
         if ($response->isNotModified($this->getRequest())) {
             return $response;

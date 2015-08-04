@@ -23,7 +23,7 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->sut = new PictureRepository(sys_get_temp_dir(), sys_get_temp_dir(), ['full' => 1000, 'medium' => 200]);
+        $this->sut = new PictureRepository(sys_get_temp_dir(), sys_get_temp_dir(), ['full' => 1000, 'medium' => 200, 'tiny' => 50]);
         $this->author = new Author('kirk');
         $this->picture = new Picture($this->author);
     }
@@ -98,7 +98,7 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \OutOfBoundsException
      * @expectedExceptionMessage yolo is not a valid size
      */
     public function testBadSizeRequest()
@@ -139,8 +139,10 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testImagePath($key)
     {
         $path = $this->sut->getImagePath($key, 'medium');
-        $image = \imagecreatefrompng($path);
-        $this->assertEquals(200, \imagesx($image));
+        $info = \getimagesize($path);
+        $this->assertEquals(200, $info[0]);
+
+        return $key;
     }
 
     public function testUpsertImage()
@@ -155,8 +157,34 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testUpsertedImage($key)
     {
         $path = $this->sut->getImagePath($key, 'full');
-        $image = \imagecreatefromjpeg($path);
-        $this->assertEquals(123, \imagesx($image));
+        $info = \getimagesize($path);
+        $this->assertEquals(123, $info[0]);
+        $this->assertEquals(123, $info[1]);
+
+        return $key;
+    }
+
+    /** @depends testUpsertImage */
+    public function testThumbnailing($key)
+    {
+        $path = $this->sut->getImagePath($key, 'tiny');
+        $info = \getimagesize($path);
+        $this->assertEquals(50, $info[0]);
+        $this->assertEquals(50, $info[1]);
+    }
+
+    /** @depends testImagePath */
+    public function testRemove($key)
+    {
+        $this->assertFileExists($this->sut->getImagePath($key, 'full'));
+        $this->assertFileExists($this->sut->getImagePath($key, 'tiny'));
+
+        $pic = new Picture(new Author('kirk'));
+        $pic->setStorageKey($key);
+        $this->sut->remove($pic);
+
+        $this->assertFileNotExists($this->sut->getImagePath($key, 'full'));
+        $this->assertFileNotExists($this->sut->getImagePath($key, 'tiny'));
     }
 
 }

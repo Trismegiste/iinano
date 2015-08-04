@@ -33,6 +33,7 @@ class PictureRepository
      * @var string
      */
     protected $cacheDir;
+    protected $fallback;
 
     /**
      * Size configuration for pictures
@@ -57,6 +58,7 @@ class PictureRepository
             throw new \InvalidArgumentException("The size configuration for Picture is invalid : '" . self::MAX_RES . "' key is missing");
         }
         $this->sizeConfig = $sizeCfg;
+        $this->fallback = $this->storageDir . '/notfound.png';
     }
 
     /**
@@ -136,15 +138,18 @@ class PictureRepository
     public function getImagePath($filename, $size = self::MAX_RES)
     {
         if (!array_key_exists($size, $this->sizeConfig)) {
-            throw new \InvalidArgumentException("$size is not a valid size");
+            throw new \OutOfBoundsException("$size is not a valid size");
         }
 
         $sourceImg = $this->getStoragePath($filename);
+        if (!file_exists($sourceImg)) {
+            return $this->fallback;
+        }
 
         if (($size !== self::MAX_RES)) {
             $sourceImg = Image::open($sourceImg)
                     ->setCacheDir($this->cacheDir)
-                    //      ->setFallback(__DIR__ . '/../Resources/icon/notfound.png') // @todo create the not found image fallback
+                    ->setFallback($this->fallback)
                     ->resize($this->sizeConfig[$size])
                     ->guess();
         }
@@ -164,6 +169,12 @@ class PictureRepository
         return sha1($nick . microtime(false) . rand());
     }
 
+    /**
+     * Remove a picture in the storage (not in the database)
+     * Note: Remove all thumbnail to save diskspace
+     *
+     * @param Picture $pic
+     */
     public function remove(Picture $pic)
     {
         foreach ($this->sizeConfig as $key => $maxSize) {

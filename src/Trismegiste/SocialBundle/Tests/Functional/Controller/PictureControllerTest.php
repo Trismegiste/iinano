@@ -36,7 +36,8 @@ class PictureControllerTest extends WebTestCasePlus
     {
         $this->logIn('kirk');
         $this->getPage('picture_get', ['size' => 'full', 'storageKey' => '07f0d.jpg']);
-        $this->assertStatusCode(404);
+        $this->assertStatusCode(200);
+        $this->assertEquals('image/jpg', $this->client->getResponse()->headers->get('Content-Type'));
     }
 
     public function testFirstRequest()
