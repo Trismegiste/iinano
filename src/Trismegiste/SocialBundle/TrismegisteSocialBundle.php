@@ -14,7 +14,11 @@ class TrismegisteSocialBundle extends Bundle
      */
     public function getContainerExtension()
     {
-        return new DependencyInjection\Extension();
+        if (is_null($this->extension)) {
+            $this->extension = new DependencyInjection\Extension();
+        }
+
+        return $this->extension;
     }
 
     /**
