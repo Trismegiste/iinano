@@ -106,7 +106,7 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->getImagePath('wesh.jpeg', 'yolo');
     }
 
-    public function testValid()
+    public function testValidInsert()
     {
         $file = $this->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
                 ->disableOriginalConstructor()
@@ -134,7 +134,7 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testValid
+     * @depends testValidInsert
      */
     public function testImagePath($key)
     {
@@ -145,7 +145,18 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testUpsertImage()
     {
-        $this->markTestIncomplete();
+        $image = \imagecreatetruecolor(123, 123);
+        $this->sut->upsertResource('yolo', $image);
+
+        return 'yolo';
+    }
+
+    /** @depends testUpsertImage */
+    public function testUpsertedImage($key)
+    {
+        $path = $this->sut->getImagePath($key, 'full');
+        $image = \imagecreatefromjpeg($path);
+        $this->assertEquals(123, \imagesx($image));
     }
 
 }
