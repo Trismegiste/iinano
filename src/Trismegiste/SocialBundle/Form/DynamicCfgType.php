@@ -45,7 +45,15 @@ class DynamicCfgType extends AbstractType
                     'constraints' => [new NotBlank()]
                 ])
                 ->add('google_tracking_id', 'text', ['required' => false])
-                ->add('Edit', 'submit');
+                ->add('maintenanceMsg', 'textarea', [
+                    'required' => false,
+                    'label' => 'Maintenance message',
+                    'attr'=>['placeholder' => 'This message will appear at the top of all pages. Clear it completly to hide it.'],
+                    'constraints' => [
+                        new Length(['min' => 5, 'max' => 250])
+                    ]
+                ])
+                ->add('Save', 'submit');
     }
 
     public function getName()

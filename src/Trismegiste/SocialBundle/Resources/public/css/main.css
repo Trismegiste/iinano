@@ -176,3 +176,8 @@ i.icon-mail {
     color:red;
     opacity: 0
 }
+
+.maintenance-message {
+    background-color: wheat;
+    padding: 0.6em;
+}
