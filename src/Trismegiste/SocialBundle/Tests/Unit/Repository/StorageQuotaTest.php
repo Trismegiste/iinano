@@ -15,6 +15,7 @@ class StorageQuotaTest extends \PHPUnit_Framework_TestCase
 {
 
     protected $collection;
+    protected $storage;
 
     /** @var StorageQuota */
     protected $sut;
@@ -24,7 +25,10 @@ class StorageQuotaTest extends \PHPUnit_Framework_TestCase
         $this->collection = $this->getMockBuilder('MongoCollection')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $this->sut = new StorageQuota($this->collection, 'picture');
+        $this->storage = $this->getMockBuilder('Trismegiste\SocialBundle\Repository\PictureRepository')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $this->sut = new StorageQuota($this->collection, 'picture', $this->storage);
     }
 
     public function testTotal()
@@ -34,6 +38,11 @@ class StorageQuotaTest extends \PHPUnit_Framework_TestCase
                 ->willReturn(['ok' => 1, 'result' => []]);
 
         $this->sut->getPictureTotalSize();
+    }
+
+    public function test_deleteExceedingQuota()
+    {
+        $this->sut->deleteExceedingQuota(50);
     }
 
 }

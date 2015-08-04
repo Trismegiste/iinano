@@ -33,6 +33,7 @@
         <service id="social.storage.monitoring" class="Trismegiste\SocialBundle\Repository\StorageQuota">
             <argument type="service" id="dokudoki.collection"/>
             <argument type="string">picture</argument>
+            <argument type="service" id="social.picture.storage"/>
         </service>
 
         <!-- Payment -->

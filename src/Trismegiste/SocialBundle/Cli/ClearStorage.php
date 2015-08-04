@@ -36,7 +36,8 @@ class ClearStorage extends ContainerAwareCommand
         $output->writeln("<comment>$cached</comment> cached images were cleaned");
         // quota :
         $quota = $this->getContainer()->get('social.storage.monitoring');
-        $quota->deleteExceedingQuota();
+        $purged = $quota->deleteExceedingQuota(110e3);
+        $output->writeln("<comment>$purged</comment> images were deleted due to exceeding quota");
     }
 
 }

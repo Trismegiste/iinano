@@ -171,16 +171,13 @@ class PictureRepository
 
     /**
      * Remove a picture in the storage (not in the database)
-     * Note: Remove all thumbnail to save diskspace
      *
      * @param string $storageKey
      */
     public function remove($storageKey)
     {
-        foreach ($this->sizeConfig as $key => $maxSize) {
-            $path = $this->getImagePath((string) $storageKey, $key);
-            @unlink($path);
-        }
+        $path = $this->getImagePath((string) $storageKey);
+        @unlink($path);
     }
 
     public function clearCache($dayOld)

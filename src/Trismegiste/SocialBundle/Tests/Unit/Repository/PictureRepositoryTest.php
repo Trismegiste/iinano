@@ -176,13 +176,9 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
     /** @depends testImagePath */
     public function testRemove($key)
     {
-        $this->assertFileExists($this->sut->getImagePath($key, 'full'));
-        $this->assertFileExists($this->sut->getImagePath($key, 'tiny'));
-
+        $this->assertFileExists($this->sut->getImagePath($key));
         $this->sut->remove($key);
-
-        $this->assertFileNotExists($this->sut->getImagePath($key, 'full'));
-        $this->assertFileNotExists($this->sut->getImagePath($key, 'tiny'));
+        $this->assertFileNotExists($this->sut->getImagePath($key));
     }
 
 }
