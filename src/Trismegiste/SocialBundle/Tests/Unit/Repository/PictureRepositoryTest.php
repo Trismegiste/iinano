@@ -179,9 +179,7 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertFileExists($this->sut->getImagePath($key, 'full'));
         $this->assertFileExists($this->sut->getImagePath($key, 'tiny'));
 
-        $pic = new Picture(new Author('kirk'));
-        $pic->setStorageKey($key);
-        $this->sut->remove($pic);
+        $this->sut->remove($key);
 
         $this->assertFileNotExists($this->sut->getImagePath($key, 'full'));
         $this->assertFileNotExists($this->sut->getImagePath($key, 'tiny'));

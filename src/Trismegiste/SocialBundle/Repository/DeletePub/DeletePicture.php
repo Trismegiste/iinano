@@ -24,7 +24,11 @@ class DeletePicture implements DeleteStrategyInterface
 
     public function remove(Publishing $pub)
     {
-        $this->storage->remove($pub);
+        if (!$pub instanceof \Trismegiste\Socialist\Picture) {
+            throw new \InvalidArgumentException(get_class($pub) . ' is not a Picture');
+        }
+
+        $this->storage->remove($pub->getStorageKey());
     }
 
 }

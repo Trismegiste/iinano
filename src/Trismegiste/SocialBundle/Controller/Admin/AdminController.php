@@ -36,7 +36,7 @@ class AdminController extends Template
             'feeOverLastYear' => $this->getFeeTotalOver(365),
             'allFee' => $this->getFeeTotalOver(),
             'content' => $dbStatus->getCounterPerAlias(),
-            'storage' => $storage->getPictureSize(),
+            'storage' => $storage->getPictureTotalSize(),
             'health' => [
                 'cpu' => $serverStats->getCpuLoad(),
                 'dokudoki' => $dbStatus->getCollectionStats(),

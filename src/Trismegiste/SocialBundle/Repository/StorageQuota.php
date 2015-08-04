@@ -22,7 +22,7 @@ class StorageQuota
         $this->alias = $pictureAlias;
     }
 
-    public function getPictureSize()
+    public function getPictureTotalSize()
     {
         $result = $this->collection->aggregate([
             ['$match' => ['-class' => $this->alias]],
@@ -37,6 +37,31 @@ class StorageQuota
         }
 
         return $total;
+    }
+
+    public function deleteExceedingQuota($quota, PictureRepository $repo)
+    {
+        $threshold = 0.9 * $quota;
+        $currentSize = $this->getPictureTotalSize();
+
+        if ($currentSize > $threshold) {
+            $toPurge = $currentSize - $threshold;
+            // cleaning
+            $cursor = $this->collection->find(['-class' => 'picture'], ['storageKey' => true, 'size' => true])
+                    ->sort(['_id' => 1]);  // starting from older pictures
+
+            $sum = 0;
+            foreach ($cursor as $item) {
+                if ($sum < $toPurge) {
+                    $repo->remove($item['storageKey']);
+                    $this->collection->remove(['_id' => $item['_id']]);
+                    $sum += $item['size'];
+                } else {
+                    // when we have deleted enough old pictures to reach the exceeding size to purge
+                    break;
+                }
+            }
+        }
     }
 
 }

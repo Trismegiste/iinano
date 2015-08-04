@@ -35,17 +35,8 @@ class ClearStorage extends ContainerAwareCommand
         $cached = $storage->clearCache($dayOld);
         $output->writeln("<comment>$cached</comment> cached images were cleaned");
         // quota :
-        /* @var $collection \MongoCollection */
-        $collection = $this->getContainer()->get('dokudoki.collection');
-        $cursor = $collection->find(['-class' => 'picture'], ['size' => true])
-                ->sort(['_id' => -1]);
-        $sum = 0;
-        foreach ($cursor as $item) {
-            $sum += $item['size'];
-            if ($sum > $quota) {
-                $collection->remove(['_id' => $item['_id']]);
-            }
-        }
+        $quota = $this->getContainer()->get('social.storage.monitoring');
+        $quota->deleteExceedingQuota();
     }
 
 }

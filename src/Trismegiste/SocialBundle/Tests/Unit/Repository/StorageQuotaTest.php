@@ -33,7 +33,7 @@ class StorageQuotaTest extends \PHPUnit_Framework_TestCase
                 ->method('aggregate')
                 ->willReturn(['ok' => 1, 'result' => []]);
 
-        $this->sut->getPictureSize();
+        $this->sut->getPictureTotalSize();
     }
 
 }
