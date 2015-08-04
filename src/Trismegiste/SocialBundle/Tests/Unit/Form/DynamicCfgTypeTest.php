@@ -24,7 +24,14 @@ class DynamicCfgTypeTest extends FormTestCase
         return [
             [
                 ['appTitle' => 'a', 'minimumAge' => 5],
-                ['appTitle' => 'a', 'minimumAge' => 5, 'freeAccess' => null, 'subTitle' => null, 'google_tracking_id' => null],
+                [
+                    'appTitle' => 'a',
+                    'minimumAge' => 5,
+                    'freeAccess' => null,
+                    'subTitle' => null,
+                    'google_tracking_id' => null,
+                    'maintenanceMsg' => null
+                ],
                 ['appTitle', 'minimumAge', 'freeAccess']
             ]
         ];
@@ -35,7 +42,14 @@ class DynamicCfgTypeTest extends FormTestCase
         return [
             [
                 ['appTitle' => 'azerty', 'minimumAge' => 18, 'freeAccess' => 0,],
-                ['appTitle' => 'azerty', 'minimumAge' => 18, 'freeAccess' => false, 'subTitle' => null, 'google_tracking_id' => null]
+                [
+                    'appTitle' => 'azerty',
+                    'minimumAge' => 18,
+                    'freeAccess' => false,
+                    'subTitle' => null,
+                    'google_tracking_id' => null,
+                    'maintenanceMsg' => null
+                ]
             ]
         ];
     }
