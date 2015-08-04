@@ -60,9 +60,8 @@ interface PublishingRepositoryInterface
      * Delete a published content (with the help of the underliying mongo collection)
      *
      * @param string $pk
-     * @param \MongoCollection $coll
      */
-    public function delete($pk, \MongoCollection $coll);
+    public function delete($pk);
 
     /**
      * Get the class alias key for a Publishing subclass managed by this repository

@@ -145,13 +145,13 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
     /**
      * @inheritdoc
      */
-    public function delete($pk, \MongoCollection $coll)
+    public function delete($pk)
     {
         $pub = $this->findByPk($pk);
         $this->assertOwningRight($pub);
         $this->preDeletePublishing($pub);
 
-        $coll->remove(['_id' => new \MongoId($pk)]);
+        $this->repository->delete($pk);
     }
 
     /**

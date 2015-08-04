@@ -141,4 +141,9 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(200, \imagesx($image));
     }
 
+    public function testUpsertImage()
+    {
+        $this->fail();
+    }
+
 }

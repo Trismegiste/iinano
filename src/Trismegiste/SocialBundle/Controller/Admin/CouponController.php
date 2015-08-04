@@ -81,7 +81,7 @@ class CouponController extends Template
         if ($this->getRequest()->getMethod() == 'DELETE') {
             try {
                 $this->get('social.ticket.repository')
-                        ->deleteCoupon($id, $this->get('dokudoki.collection'));
+                        ->deleteCoupon($id);
                 $this->pushFlash('notice', 'Coupon deleted');
 
                 return $this->redirectRouteOk('admin_coupon_listing');

@@ -242,7 +242,7 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->with($this->equalTo('54390582e3f43405428b4568'))
                 ->will($this->returnValue($this->document));
 
-        $this->sut->delete('54390582e3f43405428b4568', $this->getMock('MongoCollection', [], [], '', false));
+        $this->sut->delete('54390582e3f43405428b4568');
     }
 
     public function testGetClassAlias()

@@ -71,7 +71,7 @@ class PublishingController extends ContentController
     {
         try {
             $repo = $this->get('social.publishing.repository');
-            $repo->delete($id, $this->getCollection());
+            $repo->delete($id);
             $this->pushFlash('notice', 'Message deleted');
         } catch (\MongoException $e) {
             $this->pushFlash('warning', 'Message not deleted');

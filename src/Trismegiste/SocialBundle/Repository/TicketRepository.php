@@ -109,14 +109,14 @@ class TicketRepository extends SecuredContentProvider
         $this->repository->persist($user);
     }
 
-    public function deleteCoupon($id, MongoCollection $coll)
+    public function deleteCoupon($id)
     {
         $obj = $this->repository->findByPk($id);
         if (!$obj instanceof Coupon) {
             throw new InvalidArgumentException(get_class($obj) . " is not a coupon");
         }
 
-        $coll->remove(['_id' => $obj->getId()]);
+        $this->repository->delete($id);
     }
 
     /**
