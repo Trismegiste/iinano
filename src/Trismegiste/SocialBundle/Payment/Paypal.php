@@ -77,7 +77,9 @@ class Paypal implements Gateway
             $response = $api->setExpressCheckout([
                 'PAYMENTREQUEST_0_AMT' => $fee->getAmount(),
                 'PAYMENTREQUEST_0_CURRENCYCODE' => $fee->getCurrency(),
-                'PAYMENTREQUEST_0_DESC' => $this->apiConfig['appTitle'],
+                'PAYMENTREQUEST_0_DESC' => sprintf('Access to %s for %d months'
+                        , $this->apiConfig['appTitle']
+                        , $fee->getDurationValue()),
                 'PAYMENTREQUEST_0_PAYMENTACTION' => Api::PAYMENTACTION_SALE,
                 'NOSHIPPING' => Api::NOSHIPPING_NOT_DISPLAY_ADDRESS,
                 'ALLOWNOTE' => 0

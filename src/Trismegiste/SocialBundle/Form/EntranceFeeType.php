@@ -41,7 +41,7 @@ class EntranceFeeType extends AbstractType
                         12 => 'one year',
                         6 => 'six months',
                         3 => 'three months',
-                        1 => 'one month'
+                    //  1 => 'one month'  // not a good idea IMO
                     ],
                     'expanded' => true,
                     'multiple' => false
