@@ -123,10 +123,12 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
         $file->expects($this->never())  // I don't keep original picture for saving storage space, I don't make a clone of Picasa or Flickr
                 ->method('move');
 
+        $this->assertEquals(0, $this->picture->getFileSize());
         $this->sut->insertUpload($this->picture, $file);
 
         $this->assertEquals('image/png', $this->picture->getMimeType());
         $this->assertRegexp('#^[\da-f]{40}\.png$#', $this->picture->getStorageKey());
+        $this->assertNotEquals(0, $this->picture->getFileSize());
 
         return $this->picture->getStorageKey();
     }
@@ -143,7 +145,7 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
 
     public function testUpsertImage()
     {
-        $this->fail();
+        $this->markTestIncomplete();
     }
 
 }

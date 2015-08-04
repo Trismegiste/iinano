@@ -98,6 +98,7 @@ class PictureRepository
         if (!file_exists($path)) {
             throw new \RuntimeException("Cannot save $syntheticName");
         }
+        $pub->setFileSize(filesize($path));
     }
 
     /**
@@ -143,7 +144,7 @@ class PictureRepository
         if (($size !== self::MAX_RES)) {
             $sourceImg = Image::open($sourceImg)
                     ->setCacheDir($this->cacheDir)
-              //      ->setFallback(__DIR__ . '/../Resources/icon/notfound.png') // @todo create the not found image fallback
+                    //      ->setFallback(__DIR__ . '/../Resources/icon/notfound.png') // @todo create the not found image fallback
                     ->resize($this->sizeConfig[$size])
                     ->guess();
         }
