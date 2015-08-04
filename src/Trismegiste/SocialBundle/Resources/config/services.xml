@@ -30,6 +30,11 @@
             <argument/>  <!-- injected by Extension -->
         </service>
 
+        <service id="social.storage.monitoring" class="Trismegiste\SocialBundle\Repository\StorageQuota">
+            <argument type="service" id="dokudoki.collection"/>
+            <argument type="string">picture</argument>
+        </service>
+
         <!-- Payment -->
         <service id="paypal_configurator" class="Trismegiste\SocialBundle\DependencyInjection\Configurator\Paypal" public="false">
             <argument type="service" id="social.dynamic_config"/>

@@ -22,6 +22,7 @@ class AdminController extends Template
         $serverStats = $this->get('server.status');
         $netRepo = $this->get('social.netizen.repository');
         $ticketRepo = $this->get('social.ticket.repository');
+        $storage = $this->get('social.storage.monitoring');
 
         $param = [
             'allUser' => $netRepo->countAllUser(),
@@ -35,6 +36,7 @@ class AdminController extends Template
             'feeOverLastYear' => $this->getFeeTotalOver(365),
             'allFee' => $this->getFeeTotalOver(),
             'content' => $dbStatus->getCounterPerAlias(),
+            'storage' => $storage->getPictureSize(),
             'health' => [
                 'cpu' => $serverStats->getCpuLoad(),
                 'dokudoki' => $dbStatus->getCollectionStats(),
