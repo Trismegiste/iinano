@@ -40,7 +40,7 @@ class Extension extends BaseExtension
         $container->getDefinition('social.dynamic_config')
                 ->replaceArgument(2, $config['dynamic_default']);
         // inject network interface name in server status service for monitoring its bandwidth
-        $networkInterface = $config['bandwidth'];
+        $networkInterface = $config['quota']['bandwidth']['name'];
         $this->checkVnStatConfig($networkInterface);
         $container->getDefinition('server.status')
                 ->replaceArgument(0, $networkInterface);
