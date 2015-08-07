@@ -1,0 +1,7 @@
+{% extends 'TrismegisteSocialBundle:help:layout.html.twig' %}
+
+{% block help_content %}
+    <h2>Collection Size</h2>
+    <p>This application has a size limit for the database (currently: {{1000000000|si}}).</p>
+    <p>When this limit is reached, old documents (message, status, pictures...) are deleted to make room for new ones</p>
+{% endblock %}
