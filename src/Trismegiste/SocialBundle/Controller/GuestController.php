@@ -35,13 +35,6 @@ class GuestController extends Template
         }
         $this->assertNotAuthenticated();
 
-        // check for access type of this app :
-        if (!$this->get('social.dynamic_config')->read()['freeAccess'] &&
-                is_null($this->get('social.ticket.repository')->findEntranceFee()) &&
-                !$session->has('coupon')) {
-            return $this->render('TrismegisteSocialBundle:Ticket:invite_only.html.twig');
-        }
-
         // register form
         $repo = $this->get('social.netizen.repository');
         $form = $this->createForm('netizen_register', null, [
