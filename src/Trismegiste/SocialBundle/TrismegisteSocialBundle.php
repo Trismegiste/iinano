@@ -35,6 +35,7 @@ class TrismegisteSocialBundle extends Bundle
             new Cli\DummyFill\Netizen(),
             new Cli\DummyFill\AddFanRelation(),
             new Cli\DummyFill\AddFollowRelation(),
+            new Cli\DummyFill\Publish(),
         ]);
     }
 
