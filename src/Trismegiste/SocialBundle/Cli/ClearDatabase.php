@@ -25,7 +25,7 @@ class ClearDatabase extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $quota = 30000;
+        $quota = 3000;
         $maxSize = $quota * 0.9;
 
         $output->writeln('<info>Cleaning database</info>');
@@ -46,15 +46,18 @@ class ClearDatabase extends ContainerAwareCommand
                             ]
                         ]
                     ])
-                    ->sort(['_id' => 1]);
+                    ->sort(['_id' => 1])
+                    ->limit((int) $objectEstimate);
 
             $pk2Delete = [];
             foreach ($cursor as $doc) {
-                $pk2Delete[] = $doc['_id'];
+                $pk2Delete[] = (string) $doc['_id'];
             }
-
-            $ret = $this->getCollection()->remove(['_id' => ['$in' => $pk2Delete]]);
-            $cleaned = $ret['n'];
+            // delete
+            foreach ($pk2Delete as $pk) {
+                $this->getContainer()->get('social.publishing.repository')->delete($pk, true);
+            }
+            $cleaned = count($pk2Delete);
         }
 
         $output->writeln("<comment>$cleaned</comment> records were deleted");
