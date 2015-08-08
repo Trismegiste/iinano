@@ -34,7 +34,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'pagination' => 20,
             'commentary_preview' => 3,
             'dynamic_default' => [],
-            'bandwidth' => 'eth0'
+            'quota' => [
+                'storage' => ['picture' => 10e9, 'database' => 2e9],
+                'bandwidth' => ['limit' => 300e9, 'name' => 'eth0']
+            ]
         );
         $this->assertEquals($expected, $cfg);
     }
@@ -51,13 +54,16 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     public function testFullConfig()
     {
         $cfg = $this->processConfig('config_full.yml');
-        $expected = array(
+        $expected = [
             'nickname_regex' => '[-\\da-z]+',
             'pagination' => 30,
             'commentary_preview' => 5,
             'dynamic_default' => [],
-            'bandwidth' => 'eth0'
-        );
+            'quota' => [
+                'storage' => ['picture' => 33, 'database' => 22],
+                'bandwidth' => ['limit' => 444, 'name' => 'eth0']
+            ]
+        ];
         $this->assertEquals($expected, $cfg);
     }
 

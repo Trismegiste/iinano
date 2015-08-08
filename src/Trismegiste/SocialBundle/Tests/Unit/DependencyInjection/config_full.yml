@@ -1,4 +1,10 @@
 nickname_regex: "[-\da-z]+"
 pagination: 30
 commentary_preview: 5
-bandwidth: eth0
+quota:
+    bandwidth:
+        limit: 444
+        name: eth0
+    storage:
+        picture: 33
+        database: 22
