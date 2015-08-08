@@ -32,7 +32,7 @@ class TrismegisteSocialBundle extends Bundle
             new Cli\MapReduceJob(),
             new Cli\ClearStorage(),
             new Cli\ClearDatabase(),
-            new Cli\FillWithDummy()
+            new Cli\DummyFill\Netizen()
         ]);
     }
 
