@@ -2,6 +2,6 @@
 
 {% block help_content %}
     <h2>Collection Size</h2>
-    <p>This application has a size limit for the database (currently: {{1000000000|si}}).</p>
+    <p>This application has a size limit for the database (currently: {{app_quota.storage.database|si}}Bytes).</p>
     <p>When this limit is reached, old contents (message, status, pictures...) are deleted to make room for new ones</p>
 {% endblock %}
