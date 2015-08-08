@@ -24,30 +24,35 @@ class FillWithDummy extends ContainerAwareCommand
     {
         $this->setName('social:fill:dummy')
                 ->setDescription('Fill with dummy data')
-                ->addArgument('nickname', InputArgument::REQUIRED)
-                ->addArgument('count', InputArgument::OPTIONAL, 'how many', 20);
+                ->addArgument('what', InputArgument::REQUIRED)
+                ->addArgument('count', InputArgument::REQUIRED, 'how many');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("Fill...");
         $cardinal = $input->getArgument('count');
-        $nickname = $input->getArgument('nickname');
+        $whatType = $input->getArgument('what');
 
+        call_user_func([$this, 'fill' . $whatType], $cardinal, $output);
+    }
+
+    protected function fillNetizen($count, OutputInterface $output)
+    {
+        /* @var $userFactory \Trismegiste\SocialBundle\Security\NetizenFactory */
+        $userFactory = $this->getContainer()->get('security.netizen.factory');
+        /* @var $progressBar \Symfony\Component\Console\Helper\ProgressHelper */
+        $progressBar = $this->getHelper('progress');
+        /* @var $userRepo \Trismegiste\SocialBundle\Repository\NetizenRepositoryInterface */
         $userRepo = $this->getContainer()->get('social.netizen.repository');
-        $contentRepo = $this->getContainer()->get('dokudoki.repository');
 
-        $user = $userRepo->findByNickname($nickname);
-        if (is_null($user)) {
-            throw new \InvalidArgumentException("$nickname does not exists");
+        $progressBar->start($output, $count);
+        for ($k = 0; $k < $count; $k++) {
+            $user = $userFactory->create("iinano-netizen-$k", 'dummy', 'id' . $k);
+            $userRepo->persist($user);
+            $progressBar->advance();
         }
-
-        for ($k = 0; $k < $cardinal; $k++) {
-            $doc = new \Trismegiste\Socialist\SmallTalk($user->getAuthor());
-            $doc->setMessage("One small talk $k for iinano, one giant doc for mongo");
-            $contentRepo->persist($doc);
-            sleep(1);
-        }
+        $progressBar->finish();
     }
 
 }

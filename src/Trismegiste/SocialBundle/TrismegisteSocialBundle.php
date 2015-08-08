@@ -32,10 +32,8 @@ class TrismegisteSocialBundle extends Bundle
             new Cli\MapReduceJob(),
             new Cli\ClearStorage(),
             new Cli\ClearDatabase(),
+            new Cli\FillWithDummy()
         ]);
-        if ($this->container->getParameter('kernel.environment') == 'dev') {
-            $application->add(new Cli\FillWithDummy());
-        }
     }
 
     public function build(ContainerBuilder $container)
