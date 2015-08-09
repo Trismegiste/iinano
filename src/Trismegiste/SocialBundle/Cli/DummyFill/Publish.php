@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Publish creates follow relation between Netizen
+ * Publish creates Publishing contents
  *
  * @codeCoverageIgnore
  */
