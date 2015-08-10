@@ -33,6 +33,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'nickname_regex' => '[-\\da-z]+',
             'pagination' => 20,
             'commentary_preview' => 3,
+            'commentary_limit' => 30,
             'dynamic_default' => [],
             'quota' => [
                 'storage' => ['picture' => 10e9, 'database' => 2e9],
@@ -58,6 +59,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'nickname_regex' => '[-\\da-z]+',
             'pagination' => 30,
             'commentary_preview' => 5,
+            'commentary_limit' => 99,
             'dynamic_default' => [],
             'quota' => [
                 'storage' => ['picture' => 33, 'database' => 22],

@@ -39,7 +39,7 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->setConstructorArgs([$this->author])
                 ->setMethods(null)
                 ->getMock();
-        $this->sut = new PublishingRepository($this->repository, $this->security, ['message' => get_class($this->document)]);
+        $this->sut = new PublishingRepository($this->repository, $this->security, ['message' => get_class($this->document)], 6);
     }
 
     protected function createMongoCursorMock()
@@ -233,6 +233,7 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $pub = $this->sut->create('message');
         $this->assertEquals($this->author, $pub->getAuthor());
+        $this->assertInstanceOf('Trismegiste\Socialist\Publishing', $pub);
     }
 
     public function testDeleteByPk()
