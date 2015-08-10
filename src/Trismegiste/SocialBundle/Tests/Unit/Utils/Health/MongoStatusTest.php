@@ -27,7 +27,7 @@ class MongoStatusTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
 
-        $this->sut = new MongoStatus($this->collection);
+        $this->sut = new MongoStatus($this->collection, 500);
     }
 
     public function testGetCounterPerAlias()
@@ -46,6 +46,18 @@ class MongoStatusTest extends \PHPUnit_Framework_TestCase
     {
         $this->collection->db->expects($this->once())->method('execute');
         $this->sut->getDbStats();
+    }
+
+    public function testQuota()
+    {
+        $this->collection->db->expects($this->once())
+                ->method('execute')
+                ->willReturn(['retval' => ['size' => 400]]);
+
+        $this->collection->expects($this->never())
+                ->method('find');
+
+        $this->sut->findExceedingQuotaDocument();
     }
 
 }
