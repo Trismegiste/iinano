@@ -49,6 +49,7 @@
                  class="Trismegiste\SocialBundle\Repository\PublishingRepository"
                  parent="social.securedcontent.template">
             <argument type="collection"/> <!-- injected by ImportAlias compiler pass -->
+            <argument/> <!-- injected by Extension -->
             <call method="addDeleteStrategy">
                 <argument type="string">picture</argument>
                 <argument type="service" id="social.picture.delete.strategy"/>

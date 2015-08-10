@@ -23,6 +23,7 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
     protected $aliasFilter;
     protected $classAlias;
     protected $deleteStrategy = [];
+    protected $cappedLimitForCommentaries;
 
     /**
      * Ctor
@@ -30,12 +31,14 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
      * @param \Trismegiste\Yuurei\Persistence\RepositoryInterface $repo
      * @param \Symfony\Component\Security\Core\SecurityContextInterface $ctx
      * @param array $aliases a list a class key => FQCN for each document
+     * @param int $cappedCommentary
      */
-    public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx, array $aliases)
+    public function __construct(RepositoryInterface $repo, SecurityContextInterface $ctx, array $aliases, $cappedCommentary = null)
     {
         parent::__construct($repo, $ctx);
         $this->aliasFilter = [MapAlias::CLASS_KEY => ['$in' => array_keys($aliases)]];
         $this->classAlias = $aliases;
+        $this->cappedLimitForCommentaries = $cappedCommentary;
     }
 
     public function addDeleteStrategy($type, DeleteStrategyInterface $strat)
@@ -62,7 +65,10 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
 
         $refl = new \ReflectionClass($this->classAlias[$alias]);
 
-        return $refl->newInstance($this->getAuthor());
+        $pub = $refl->newInstance($this->getAuthor());
+        $pub->setCommentaryLimit($this->cappedLimitForCommentaries);
+
+        return $pub;
     }
 
     public function persist(Publishing $pub)

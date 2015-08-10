@@ -48,6 +48,9 @@ class Extension extends BaseExtension implements PrependExtensionInterface
         // inject storage quota for db
         $container->getDefinition('database.status')
                 ->replaceArgument(1, $config['quota']['storage']['database']);
+        // capped limit for commentaries collection :
+        $container->getDefinition('social.publishing.repository')
+                ->replaceArgument(3, $config['commentary_limit']);
     }
 
     public function getAlias()
@@ -73,6 +76,11 @@ class Extension extends BaseExtension implements PrependExtensionInterface
         }
     }
 
+    /**
+     * Inject quota param into twig globals
+     *
+     * @param ContainerBuilder $container
+     */
     public function prepend(ContainerBuilder $container)
     {
         $configs = $container->getExtensionConfig($this->getAlias());
