@@ -25,50 +25,30 @@ class ClearDatabase extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $quota = 3000;
-        $maxSize = $quota * 0.9;
-
         $output->writeln('<info>Cleaning database</info>');
-        $cleaned = 0;
 
-        $health = $this->getContainer()->get('database.status')->getCollectionStats();
-        if ($health['size'] > $maxSize) {
-            $objectEstimate = ($health['size'] - $maxSize) / $health['avgObjSize'];
-            $cursor = $this->getCollection()->find([
-                        '-class' => [
-                            '$in' => [
-                                'small',
-                                'status',
-                                'picture',
-                                'video',
-                                'repeat',
-                                'private'
-                            ]
-                        ]
-                    ])
-                    ->sort(['_id' => 1])
-                    ->limit((int) $objectEstimate);
+        $cursor = $this->getContainer()
+                ->get('database.status')
+                ->findExceedingQuotaDocument();
 
-            $pk2Delete = [];
-            foreach ($cursor as $doc) {
-                $pk2Delete[] = (string) $doc['_id'];
-            }
-            // delete
-            foreach ($pk2Delete as $pk) {
-                $this->getContainer()->get('social.publishing.repository')->delete($pk, true);
-            }
-            $cleaned = count($pk2Delete);
+        $pk2Delete = [];
+        foreach ($cursor as $doc) {
+            $pk2Delete[] = (string) $doc['_id'];
         }
+        $cleaned = count($pk2Delete);
+        // delete
+        $progressBar = $this->getHelper('progress');
+        $progressBar->start($output, $cleaned);
+
+        foreach ($pk2Delete as $pk) {
+            $this->getContainer()
+                    ->get('social.publishing.repository')
+                    ->delete($pk, true);
+            $progressBar->advance();
+        }
+        $progressBar->finish();
 
         $output->writeln("<comment>$cleaned</comment> records were deleted");
-    }
-
-    /**
-     * @return \MongoCollection
-     */
-    private function getCollection()
-    {
-        return $this->getContainer()->get('dokudoki.collection');
     }
 
 }

@@ -45,6 +45,9 @@ class Extension extends BaseExtension implements PrependExtensionInterface
         $this->checkVnStatConfig($networkInterface);
         $container->getDefinition('server.status')
                 ->replaceArgument(0, $networkInterface);
+        // inject storage quota for db
+        $container->getDefinition('database.status')
+                ->replaceArgument(1, $config['quota']['storage']['database']);
     }
 
     public function getAlias()

@@ -25,6 +25,7 @@
 
         <service id="database.status" class="Trismegiste\SocialBundle\Utils\Health\MongoStatus">
             <argument type="service" id="dokudoki.collection"/>
+            <argument/> <!-- injected by Extension -->
         </service>
         <service id="server.status" class="Trismegiste\SocialBundle\Utils\Health\ServerStatus">
             <argument/>  <!-- injected by Extension -->

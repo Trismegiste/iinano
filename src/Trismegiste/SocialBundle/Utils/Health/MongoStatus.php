@@ -13,9 +13,17 @@ class MongoStatus
 {
 
     protected $collection;
+    protected $dbMaxSize;
 
-    public function __construct(\MongoCollection $coll)
+    /**
+     * Ctor
+     *
+     * @param \MongoCollection $coll
+     * @param int $size size in bytes
+     */
+    public function __construct(\MongoCollection $coll, $size)
     {
+        $this->dbMaxSize = (int) $size;
         $this->collection = $coll;
     }
 
@@ -45,7 +53,7 @@ class MongoStatus
 
     /**
      * Gets a cursor on counters for each content type
-     * 
+     *
      * @return \MongoCommandCursor
      */
     public function getCounterPerAlias()
@@ -56,6 +64,36 @@ class MongoStatus
                             '_id' => '$-class', 'counter' => ['$sum' => 1]
                         ]
         ]]);
+    }
+
+    /**
+     * Get a cursor on old object to delete to get under the sotorage quota for this collection
+     *
+     * @return \Traversable
+     */
+    public function findExceedingQuotaDocument()
+    {
+        $health = $this->getCollectionStats();
+
+        if ($health['size'] > $this->dbMaxSize) {
+            $objectEstimate = ($health['size'] - $this->dbMaxSize) / $health['avgObjSize'];
+            return $this->collection->find([
+                                '-class' => [
+                                    '$in' => [
+                                        'small',
+                                        'status',
+                                        'picture',
+                                        'video',
+                                        'repeat',
+                                        'private'
+                                    ]
+                                ]
+                            ])
+                            ->sort(['_id' => 1])
+                            ->limit((int) $objectEstimate);
+        }
+
+        return [];
     }
 
 }
