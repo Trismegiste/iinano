@@ -181,4 +181,10 @@ class PictureRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertFileNotExists($this->sut->getImagePath($key));
     }
 
+    public function testClearCache()
+    {
+        $cpt = $this->sut->clearCache(0);
+        $this->assertGreaterThan(0, $cpt);
+    }
+
 }
