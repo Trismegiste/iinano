@@ -43,7 +43,7 @@ class ClearDatabase extends ContainerAwareCommand
         foreach ($pk2Delete as $pk) {
             $this->getContainer()
                     ->get('social.publishing.repository')
-                    ->delete($pk, true);
+                    ->deleteAdmin($pk);
             $progressBar->advance();
         }
         $progressBar->finish();

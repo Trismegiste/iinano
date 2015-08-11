@@ -151,14 +151,24 @@ class PublishingRepository extends SecuredContentProvider implements PublishingR
     /**
      * @inheritdoc
      */
-    public function delete($pk, $superAdminMode = false)
+    public function delete($pk)
     {
         $pub = $this->findByPk($pk);
-        if (!$superAdminMode) {
-            $this->assertOwningRight($pub);
-        }
-        $this->preDeletePublishing($pub);
 
+        $this->assertOwningRight($pub);
+
+        $this->preDeletePublishing($pub);
+        $this->repository->delete($pk);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function deleteAdmin($pk)
+    {
+        $pub = $this->findByPk($pk);
+
+        $this->preDeletePublishing($pub);
         $this->repository->delete($pk);
     }
 

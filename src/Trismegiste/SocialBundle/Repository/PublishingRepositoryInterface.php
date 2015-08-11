@@ -64,6 +64,14 @@ interface PublishingRepositoryInterface
     public function delete($pk);
 
     /**
+     * Delete a published content (with the help of the underliying mongo collection)
+     * without checking owning rights
+     *
+     * @param string $pk
+     */
+    public function deleteAdmin($pk);
+
+    /**
      * Get the class alias key for a Publishing subclass managed by this repository
      *
      * @return string

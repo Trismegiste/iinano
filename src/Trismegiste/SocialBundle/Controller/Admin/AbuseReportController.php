@@ -40,7 +40,7 @@ class AbuseReportController extends Template
 
                 case AbuseReportActionType::DELETE :
                     try {
-                        $reportRepo->batchDeletePublish($data['selection_list']);
+                        $this->batchDeletePublish($data['selection_list']);
                         $this->pushFlash('notice', count($data['selection_list']) . ' contents deleted');
 
                         return $this->redirectRouteOk('admin_abusive_pub_listing');
@@ -95,6 +95,15 @@ class AbuseReportController extends Template
                     'listing' => $iterator,
                     'form' => $form->createView()
         ]);
+    }
+
+    private function batchDeletePublish(array $selection)
+    {
+        /* @var $repo \Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface */
+        $repo = $this->get('social.publishing.repository');
+        foreach ($selection as $doc) {
+            $repo->deleteAdmin((string) $pk['_id']);
+        }
     }
 
 }
