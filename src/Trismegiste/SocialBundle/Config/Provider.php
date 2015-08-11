@@ -130,6 +130,9 @@ class Provider implements CacheWarmerInterface, ProviderInterface, \ArrayAccess,
         throw new \LogicException("Changing dynamic config is only possible with write()");
     }
 
+    /**
+     * @inheritdoc
+     */
     public function all()
     {
         $listing = [];

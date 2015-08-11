@@ -89,19 +89,3 @@ class Ticket implements EntranceAccess
     }
 
 }
-
-/* @todo Statistique & predction pour les tickets
- *
- * * 1ere stat :
- * Pour chaque ticket valide en cours
- *  - on ajoute +1 le jour/mois d'achat
- *  - on ajoute -1 le jour/mois d'expiration (dans un an)
- *  - pour les inscriptions futures, on prend la moyenne sur l'année précédente
- *  - on peut projeter les inscriptions (payantes) en cours
- *  - on encadre la courbe avec la moyenne par 2 autres courbes :
- *      - une sans inscription
- *      - une avec le max d'inscription sur un mois (?) de l'année précédente
- *
- * * 2e stat
- * Taux de renouvellement
- */
