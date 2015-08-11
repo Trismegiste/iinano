@@ -39,7 +39,11 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->setConstructorArgs([$this->author])
                 ->setMethods(null)
                 ->getMock();
-        $this->sut = new PublishingRepository($this->repository, $this->security, ['message' => get_class($this->document)], 6);
+        $this->sut = new PublishingRepository($this->repository, $this->security, [
+            'message' => get_class($this->document),
+            'retweet' => 'Trismegiste\Socialist\Repeat'
+                ]
+                , 6);
     }
 
     protected function createMongoCursorMock()
@@ -246,6 +250,17 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->sut->delete('54390582e3f43405428b4568');
     }
 
+    public function testDeleteAdminByPk()
+    {
+        $doc = new \Trismegiste\Socialist\Repeat(new Author('khan'));
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo('54390582e3f43405428b4568'))
+                ->will($this->returnValue($doc));
+
+        $this->sut->deleteAdmin('54390582e3f43405428b4568');
+    }
+
     public function testGetClassAlias()
     {
         $this->assertEquals('message', $this->sut->getClassAlias($this->document));
@@ -302,6 +317,87 @@ class PublishingRepositoryTest extends \PHPUnit_Framework_TestCase
                 ->willReturn(new \ArrayObject([1, 2, 3]));
 
         $this->assertEquals(3, $this->sut->countAllPublishing());
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage already
+     */
+    public function testAlreadyRepeated()
+    {
+        $id = '54390582e3f43405428b4568';
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo($id))
+                ->will($this->returnValue($this->document));
+
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->willReturn(true);
+
+        $this->sut->repeatPublishing($id);
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage yourself
+     */
+    public function testRepeatYourself()
+    {
+        $id = '54390582e3f43405428b4568';
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo($id))
+                ->will($this->returnValue($this->document));
+
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->willReturn(null);
+
+        $this->sut->repeatPublishing($id);
+    }
+
+    public function testRetweet()
+    {
+        $id = '54390582e3f43405428b4568';
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo($id))
+                ->will($this->returnValue(new \Trismegiste\Socialist\SmallTalk(new Author('spock'))));
+
+        $this->repository->expects($this->once())
+                ->method('findOne')
+                ->willReturn(null);
+
+        $retweet = $this->sut->repeatPublishing($id);
+        $this->assertInstanceOf('Trismegiste\Socialist\Repeat', $retweet);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testBadTypeForDeleteStrategy()
+    {
+        $strat = $this->getMock('Trismegiste\SocialBundle\Repository\DeletePub\DeleteStrategyInterface');
+        $this->sut->addDeleteStrategy('unknown', $strat);
+    }
+
+    public function testDeleteStrategy()
+    {
+        $strat = $this->getMock('Trismegiste\SocialBundle\Repository\DeletePub\DeleteStrategyInterface');
+        $strat->expects($this->once())
+                ->method('remove')
+                ->with($this->document);
+
+        $this->sut->addDeleteStrategy('message', $strat);
+
+        $id = '54390582e3f43405428b4568';
+        $this->repository->expects($this->once())
+                ->method('findByPk')
+                ->with($this->equalTo($id))
+                ->will($this->returnValue($this->document));
+
+        $this->sut->delete($id);
     }
 
 }

@@ -102,7 +102,7 @@ class AbuseReportController extends Template
         /* @var $repo \Trismegiste\SocialBundle\Repository\PublishingRepositoryInterface */
         $repo = $this->get('social.publishing.repository');
         foreach ($selection as $doc) {
-            $repo->deleteAdmin((string) $pk['_id']);
+            $repo->deleteAdmin((string) $doc['_id']);
         }
     }
 
