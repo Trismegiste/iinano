@@ -36,7 +36,7 @@ class CouponType extends AbstractType
                     'label' => 'Duration (days)',
                     'constraints' => [
                         new NotBlank(),
-                        new Range(['min' => 1, 'max' => 60])
+                        new Range(['min' => 1, 'max' => 360])
                     ]
                 ])
                 ->add('maximumUse', 'integer', [
