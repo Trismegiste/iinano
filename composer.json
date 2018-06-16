@@ -21,14 +21,12 @@
         "sensio/distribution-bundle": "2.3.*",
         "trismegiste/dokudoki": "~2.3",
         "trismegiste/socialist": "~1.1",
-        "trismegiste/symfony-prelude": "1.0.*",
         "gregwar/image": "~2.0",
         "trismegiste/oauthbundle": "dev-master",
         "payum/paypal-express-checkout-nvp": "^0.15.1"
     },
     "scripts": {
         "post-install-cmd": [
-            "Trismegiste\\Prelude\\Composer\\Script::installPlatform",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
