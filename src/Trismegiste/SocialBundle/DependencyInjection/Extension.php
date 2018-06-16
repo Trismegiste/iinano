@@ -42,7 +42,7 @@ class Extension extends BaseExtension implements PrependExtensionInterface
                 ->replaceArgument(2, $config['dynamic_default']);
         // inject network interface name in server status service for monitoring its bandwidth
         $networkInterface = $config['quota']['bandwidth']['name'];
-        $this->checkVnStatConfig($networkInterface);
+      //  $this->checkVnStatConfig($networkInterface);
         $container->getDefinition('server.status')
                 ->replaceArgument(0, $networkInterface);
         // inject storage quota for db
