@@ -1,4 +1,0 @@
-parameters:
-    locale: en
-    secret: boz
-    mongodb_server: 'localhost:27017'

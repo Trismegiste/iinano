@@ -28,4 +28,4 @@ assetic:
     use_controller: true
 
 dokudoki:
-    database: iinano_%developer.name%
+    database: iinano_dev
