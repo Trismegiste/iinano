@@ -10,6 +10,7 @@ use Trismegiste\Yuurei\Persistence;
 
 /**
  * PurchaseChoice is a contract for different systems for acquiring Ticket
+ * Conceptually, in an e-commerce, this is a product
  */
 abstract class PurchaseChoice implements Persistence\Persistable
 {

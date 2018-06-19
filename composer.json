@@ -22,7 +22,7 @@
         "trismegiste/dokudoki": "~2.3",
         "trismegiste/socialist": "~1.1",
         "gregwar/image": "~2.0",
-        "trismegiste/oauthbundle": "dev-master",
+        "trismegiste/oauthbundle": "~1.4",
         "payum/paypal-express-checkout-nvp": "^0.15.1"
     },
     "scripts": {
