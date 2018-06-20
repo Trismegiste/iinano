@@ -32,7 +32,7 @@
         {% if is_granted('ROLE_ADMIN') %}
             <li class="menu-item-divided">
             </li>
-            {% if not social_config.freeAccess %}
+            {% if not social_config.freeAccess and false %}
                 {{ pure.menu_item('admin_entrancefee_edit', {}, 'Fee') }}
                 {{ pure.menu_item('admin_paymentgateway_edit', {}, 'Paypal config') }}
             {% endif %}
