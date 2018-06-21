@@ -28,7 +28,7 @@ class Coupon extends PurchaseChoice
     {
         $this->expiredAt = new \DateTime('+3 month');
         $this->maximumUse = 100;
-        $this->setDurationValue(180);
+        $this->setDurationValue(365);
     }
 
     /**

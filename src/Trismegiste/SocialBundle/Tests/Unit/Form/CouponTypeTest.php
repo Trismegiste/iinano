@@ -40,12 +40,13 @@ class CouponTypeTest extends FormTestCase
         $obj->hashKey = 'a';
         $obj->maximumUse = 0;
         $obj->setDurationValue(-5);
-        $obj->expiredAt = new DateTime('2015-01-01');
+        $obj->expiredAt = new DateTime();
+        $obj->expiredAt->setTime(0, 0);
         return [
-            [
-                ['hashKey' => 'a', 'maximumUse' => 0, 'durationValue' => -5, 'expiredAt' => ['year' => 2015, 'month' => 1, 'day' => 1]],
+                [
+                    ['hashKey' => 'a', 'maximumUse' => 0, 'durationValue' => -5, 'expiredAt' => ['year' => date('Y'), 'month' => date('n'), 'day' => date('d')]],
                 $obj,
-                ['hashKey', 'maximumUse', 'durationValue']
+                    ['hashKey', 'maximumUse', 'durationValue']
             ]
         ];
     }
@@ -56,14 +57,15 @@ class CouponTypeTest extends FormTestCase
         $obj->setDurationValue(5);
         $obj->hashKey = 'AZERTY';
         $obj->maximumUse = 50;
-        $obj->expiredAt = new DateTime('2015-05-05');
+        $obj->expiredAt = new DateTime();
+        $obj->expiredAt->setTime(0, 0);
         return [
-            [
                 [
+                    [
                     'durationValue' => 5,
                     'hashKey' => 'AZERTY',
                     'maximumUse' => 50,
-                    'expiredAt' => ['year' => 2015, 'month' => 5, 'day' => 5]
+                    'expiredAt' => ['year' => date('Y'), 'month' => date('n'), 'day' => date('d')]
                 ],
                 $obj
             ]
