@@ -28,7 +28,7 @@ class CouponTest extends \PHPUnit_Framework_TestCase
     public function testCounter()
     {
         $this->assertEquals(0, $this->sut->getUsedCounter());
-        $this->assertEquals(1, $this->sut->maximumUse);
+        $this->assertEquals(100, $this->sut->maximumUse);
         $this->sut->incUse();
         $this->assertEquals(1, $this->sut->getUsedCounter());
     }
@@ -36,7 +36,9 @@ class CouponTest extends \PHPUnit_Framework_TestCase
     public function testValidityWithCounter()
     {
         $this->assertTrue($this->sut->isValid());
-        $this->sut->incUse();
+
+        for ($k = 0; $k < 100; $k++)
+            $this->sut->incUse();
         $this->assertFalse($this->sut->isValid());
     }
 
