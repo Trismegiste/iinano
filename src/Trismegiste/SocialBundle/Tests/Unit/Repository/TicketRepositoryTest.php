@@ -82,6 +82,7 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $coupon = new Coupon();
         $coupon->expiredAt = new \DateTime('tomorrow');
+        $coupon->maximumUse = 1;
         $coupon->incUse();
         $this->assertFalse($coupon->isValid());
 
@@ -92,6 +93,7 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $coupon = new Coupon();
         $coupon->expiredAt = new \DateTime('tomorrow');
+        $coupon->maximumUse = 1;
         $this->assertTrue($coupon->isValid());
 
         $ticket = $this->sut->createTicketFromCoupon($coupon);
@@ -103,6 +105,7 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $coupon = new Coupon();
         $coupon->expiredAt = new \DateTime('tomorrow');
+        $coupon->maximumUse = 1;
 
         $this->repository->expects($this->once())
                 ->method('findOne')
@@ -190,10 +193,10 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
     public function getConversionExample()
     {
         return [
-            [new \ArrayObject([1, 2]), new \ArrayObject([2, 3]), 0.5],
-            [new \ArrayObject(), new \ArrayObject([2, 3]), 0],
-            [new \ArrayObject([1, 2]), new \ArrayObject(), 1],
-            [new \ArrayObject(), new \ArrayObject(), 0]
+                [new \ArrayObject([1, 2]), new \ArrayObject([2, 3]), 0.5],
+                [new \ArrayObject(), new \ArrayObject([2, 3]), 0],
+                [new \ArrayObject([1, 2]), new \ArrayObject(), 1],
+                [new \ArrayObject(), new \ArrayObject(), 0]
         ];
     }
 
@@ -215,10 +218,10 @@ class TicketRepositoryTest extends \PHPUnit_Framework_TestCase
     public function getRenewalExample()
     {
         return [
-            [new \ArrayObject(), new \ArrayObject(), 0],
-            [new \ArrayObject([1, 2]), new \ArrayObject(), 1],
-            [new \ArrayObject(), new \ArrayObject([2, 3]), 0],
-            [new \ArrayObject([1]), new \ArrayObject([2, 3]), 1 / 3.0],
+                [new \ArrayObject(), new \ArrayObject(), 0],
+                [new \ArrayObject([1, 2]), new \ArrayObject(), 1],
+                [new \ArrayObject(), new \ArrayObject([2, 3]), 0],
+                [new \ArrayObject([1]), new \ArrayObject([2, 3]), 1 / 3.0],
         ];
     }
 
